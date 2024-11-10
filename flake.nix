@@ -19,7 +19,7 @@
     nixosConfigurations.caprine = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./hosts/caprine/configuration.nix
+        ./hosts/caprine/config.nix
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         {
@@ -34,7 +34,7 @@
     nixosConfigurations.goat = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./hosts/goat/configuration.nix
+        ./hosts/goat/config.nix
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         {
