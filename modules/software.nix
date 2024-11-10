@@ -10,7 +10,6 @@
       thunar-archive-plugin
       thunar-volman
     ];
-    lazygit.enable = true;
   };
 
   environment.systemPackages = with pkgs; [

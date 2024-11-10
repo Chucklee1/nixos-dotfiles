@@ -5,7 +5,7 @@
     homeManagerIntegration.autoImport = true;
     image = ../home-folder/pictures/wallpapers/clouds-sunset.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-terminal-dark.yaml";
-    opacity.terminal = 0.8;
+    opacity.terminal = 0.9;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
     cursor.size = 24;

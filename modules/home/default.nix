@@ -1,5 +1,9 @@
-{ pkgs, lib, config, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
   # sym linking
   home.file.".config/niri/config.kdl".source = ../../home-folder/niri.kdl;
 
@@ -16,6 +20,7 @@
 
   # smaller dotfiles
   programs = {
+    lazygit.enable = true;
     fuzzel.enable = true;
     wlogout.enable = true;
     waybar.enable = true;
