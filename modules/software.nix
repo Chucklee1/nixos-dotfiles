@@ -1,6 +1,10 @@
-{ pkgs, lib, config, ... }:
 {
-    programs = {
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
+  programs = {
     thunar.enable = true;
     thunar.plugins = with pkgs.xfce; [
       thunar-archive-plugin
@@ -34,6 +38,6 @@
     unzip
     file-roller
     tree
-    isoimagewriter 
+    isoimagewriter
   ];
 }

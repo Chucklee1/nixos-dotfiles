@@ -8,7 +8,7 @@
     ./GPU/nvidia.nix
     ./GPU/radeon.nix
     ./system.nix
-    ./general.nix
+    ./software.nix
     ./niri.nix
     ./theming.nix
   ];

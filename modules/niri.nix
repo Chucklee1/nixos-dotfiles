@@ -1,5 +1,9 @@
-{ pkgs, lib, config, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
   # file manager
   programs = {
     seahorse.enable = true; # password app
@@ -8,7 +12,6 @@
 
   # env packages
   environment.systemPackages = with pkgs; [
-
     # Wayland & Display Utilities
     wayland-utils
     wayland-scanner

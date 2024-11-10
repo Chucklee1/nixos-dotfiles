@@ -1,19 +1,23 @@
-{ pkgs, lib, config, ... }:
-  {
-  imports = [ 
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
+  imports = [
     ./hardware-configuration.nix
-    ../../modules/default.nix 
-  ]; 
-  
+    ../../modules/default.nix
+  ];
+
   # modules
-  nvidia.enable = false;
+  nvidia.enable = true;
   radeon.enable = false;
 
   # user
   networking.hostName = "goat";
   users.users.goat = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];  
+    extraGroups = ["wheel" "networkmanager"];
   };
 
   # ================================================================ #
