@@ -60,6 +60,7 @@
         v = "nvim";
         exec-waybar = "pkill waybar && waybar &";
         exec-swww = "pkill swww && swww init && swww img ~/nixos-dotfiles/home-folder/pictures/wallpapers/mono-forest.PNG";
+        wayland-code = "code --enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-caprine = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#caprine --show-trace";
         update-goat = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#goat --show-trace";
