@@ -6,7 +6,7 @@
 }: {
   imports = [
     ./wayland.nix
-    ./xession.nix
+    ./xsession.nix
   ];
   # user theming
   gtk.iconTheme.name = "Papirus-Dark";
