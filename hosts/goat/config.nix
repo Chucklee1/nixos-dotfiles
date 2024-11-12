@@ -11,13 +11,21 @@
 
   # modules
   nvidia.enable = true;
-  radeon.enable = false;
 
   # user
   networking.hostName = "goat";
   users.users.goat = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
+  };
+
+  home-manager = {
+    users.goat = {
+      imports = [../../modules/home/default.nix];
+      home.username = "goat";
+      home.homeDirectory = "/home/goat";
+      home.stateVersion = "24.05"; # D O  N O T  C H A N G E
+    };
   };
 
   # ================================================================ #

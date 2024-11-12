@@ -41,7 +41,6 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
-          home-manager.users.goat = import ./hosts/goat/home.nix;
         }
       ];
     };

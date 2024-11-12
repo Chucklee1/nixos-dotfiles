@@ -135,6 +135,9 @@
     brightnessctl
   ];
 
+  # opengl option, renamed to graphics as of 24.11
+  hardware.graphics.enable = true;
+
   # bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -158,8 +161,6 @@
 
   # misc services
   services = {
-    # opengl option, renamed to graphics as of 24.11
-    graphics.enable = true;
     printing.enable = true;
     gvfs.enable = true;
     tumbler.enable = true;

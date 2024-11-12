@@ -4,7 +4,7 @@
   config,
   ...
 }: {
-  imports = [];
+  imports = [./waybar.nix];
   # sym linking
   home.file.".config/niri/config.kdl".source = ../../home-folder/niri.kdl;
 
@@ -17,6 +17,8 @@
     vscode-fhs
     musescore
     wineWowPackages.waylandFull
+    libnotify
+    dunst
     swww
   ];
 
