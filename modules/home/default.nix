@@ -6,10 +6,11 @@
 }: {
   imports = [./waybar.nix];
   # sym linking
-  home.file.".config/niri/config.kdl".source = ../../home-folder/niri.kdl;
+  home.file.".config/niri/config.kdl".source = ../../home/niri.kdl;
 
   # user theming
   gtk.iconTheme.name = "Papirus-Dark";
+  gtk.iconTheme.package = pkgs.papirus-icon-theme;
 
   # packages
   home.packages = with pkgs; [

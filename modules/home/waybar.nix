@@ -4,116 +4,165 @@
     style = builtins.readFile ./style.css;
     settings = [
       {
-        layer = "top";
-        position = "top";
+        layer = "bottom";
+        position = "bottom";
         mod = "dock";
         exclusive = true;
-        passtrough = false;
         gtk-layer-shell = true;
-        height = 0;
+        margin-bottom = -1;
+        passthrough = false;
+        height = 41;
+
         modules-left = [
-          "custom/divider"
-          "custom/weather"
-          "custom/divider"
-          "cpu"
-          "custom/divider"
-          "memory"
+          "custom/os_button"
+          "wlr/taskbar"
         ];
-        modules-center = ["hyprland/window"];
+
+        modules-center = [];
+
         modules-right = [
+          "cpu"
+          "temperature"
+          "memory"
+          "disk"
           "tray"
-          "network"
-          "custom/divider"
-          "backlight"
-          "custom/divider"
           "pulseaudio"
-          "custom/divider"
+          "network"
           "battery"
-          "custom/divider"
           "clock"
         ];
-        "hyprland/window" = {format = "{}";};
-        "wlr/workspaces" = {
-          on-scroll-up = "hyprctl dispatch workspace e+1";
-          on-scroll-down = "hyprctl dispatch workspace e-1";
-          all-outputs = true;
-          on-click = "activate";
+
+        "custom/os_button" = {
+          format = "";
+          "on-click" = "fuzzel";
+          tooltip = false;
         };
-        battery = {format = "󰁹 {}%";};
+
         cpu = {
-          interval = 10;
-          format = "󰻠 {}%";
+          interval = 5;
+          format = " {usage}%";
           max-length = 10;
-          on-click = "";
         };
-        memory = {
+
+        temperature = {
+          "hwmon-path-abs" = "/sys/devices/platform/coretemp.0/hwmon";
+          "input-filename" = "temp2_input";
+          "critical-threshold" = 75;
+          tooltip = false;
+          "format-critical" = "({temperatureC}°C)";
+          format = "({temperatureC}°C)";
+        };
+
+        disk = {
           interval = 30;
-          format = "  {}%";
-          format-alt = " {used:0.1f}G";
-          max-length = 10;
-        };
-        backlight = {
-          format = "󰖨 {}";
-          device = "acpi_video0";
-        };
-        "custom/weather" = {
+          format = "󰋊 {percentage_used}%";
+          path = "/";
           tooltip = true;
-          format = "{}";
-          restart-interval = 300;
-          exec = "/home/roastbeefer/.cargo/bin/weather";
+          unit = "GB";
+          "tooltip-format" = "Available {free} of {total}";
         };
+
+        memory = {
+          interval = 10;
+          format = " {percentage}%";
+          max-length = 10;
+          tooltip = true;
+          "tooltip-format" = "RAM - {used:0.1f}GiB used";
+        };
+
+        "wlr/taskbar" = {
+          format = "{icon}";
+          "icon-size" = 28;
+          spacing = 3;
+          "on-click-middle" = "close";
+          "tooltip-format" = "{title}";
+          "ignore-list" = [];
+          "on-click" = "activate";
+        };
+
         tray = {
-          icon-size = 13;
-          tooltip = false;
-          spacing = 10;
+          "icon-size" = 18;
+          spacing = 3;
         };
-        network = {
-          format = "󰖩 {essid}";
-          format-disconnected = "󰖪 disconnected";
-        };
+
         clock = {
-          format = " {:%I:%M %p   %m/%d} ";
-          tooltip-format = ''
-            <big>{:%Y %B}</big>
-            <tt><small>{calendar}</small></tt>'';
-        };
-        pulseaudio = {
-          format = "{icon} {volume}%";
-          tooltip = false;
-          format-muted = " Muted";
-          on-click = "pamixer -t";
-          on-scroll-up = "pamixer -i 5";
-          on-scroll-down = "pamixer -d 5";
-          scroll-step = 5;
-          format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = ["" "" ""];
+          format = " {:%R}";
+          "tooltip-format" = "<tt><small>{calendar}</small></tt>";
+          calendar = {
+            mode = "year";
+            "mode-mon-col" = 3;
+            "weeks-pos" = "right";
+            "on-scroll" = 1;
+            "on-click-right" = "mode";
+            format = {
+              months = "<span color='#ffead3'><b>{}</b></span>";
+              days = "<span color='#ecc6d9'><b>{}</b></span>";
+              weeks = "<span color='#99ffdd'><b>W{}</b></span>";
+              weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+              today = "<span color='#ff6699'><b><u>{}</u></b></span>";
+            };
+          };
+          actions = {
+            "on-click-right" = "mode";
+            "on-click-forward" = "tz_up";
+            "on-click-backward" = "tz_down";
+            "on-scroll-up" = "shift_up";
+            "on-scroll-down" = "shift_down";
           };
         };
-        "pulseaudio#microphone" = {
-          format = "{format_source}";
-          tooltip = false;
-          format-source = " {volume}%";
-          format-source-muted = " Muted";
-          on-click = "pamixer --default-source -t";
-          on-scroll-up = "pamixer --default-source -i 5";
-          on-scroll-down = "pamixer --default-source -d 5";
-          scroll-step = 5;
+
+        network = {
+          "format-wifi" = " {icon}";
+          "format-ethernet" = "  ";
+          "format-disconnected" = "󰌙";
+          "format-icons" = [
+            "󰤯 "
+            "󰤟 "
+            "󰤢 "
+            "󰤢 "
+            "󰤨 "
+          ];
         };
-        "custom/divider" = {
-          format = " | ";
-          interval = "once";
-          tooltip = false;
+
+        battery = {
+          states = {
+            good = 95;
+            warning = 30;
+            critical = 20;
+          };
+          format = "{icon} {capacity}%";
+          "format-charging" = " {capacity}%";
+          "format-plugged" = " {capacity}%";
+          "format-alt" = "{time} {icon}";
+          "format-icons" = [
+            "󰂎"
+            "󰁺"
+            "󰁻"
+            "󰁼"
+            "󰁽"
+            "󰁾"
+            "󰁿"
+            "󰂀"
+            "󰂁"
+            "󰂂"
+            "󰁹"
+          ];
         };
-        "custom/endright" = {
-          format = "_";
-          interval = "once";
-          tooltip = false;
+
+        pulseaudio = {
+          "max-volume" = 150;
+          "scroll-step" = 10;
+          format = "{icon}";
+          "tooltip-format" = "{volume}%";
+          "format-muted" = " ";
+          "format-icons" = {
+            default = [
+              " "
+              " "
+              " "
+            ];
+          };
+          "on-click" = "pavucontrol";
         };
       }
     ];
