@@ -19,6 +19,7 @@
     extraGroups = ["wheel" "networkmanager"];
   };
 
+  # home manager
   home-manager = {
     users.goat = {
       imports = [../../modules/home/default.nix];

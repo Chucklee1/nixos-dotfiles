@@ -2,12 +2,6 @@
 prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
-spawn-at-startup "dunst"
-spawn-at-startup "swww" "init"
-spawn-at-startup "waybar"
-spawn-at-startup "lxqt-policykit-agent"
-
-
 // input devices, yk
 input {
     keyboard {
