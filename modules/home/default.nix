@@ -4,22 +4,10 @@
   config,
   ...
 }: {
-  # sym linking
-  home.file.".config/niri/config.kdl".source = ../../home/niri.kdl;
-
-  # env
-  home.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    NIXPKGS_ALLOW_UNFREE = "1";
-    XDG_SESSION_TYPE = "wayland";
-    GDK_BACKEND = "wayland";
-    CLUTTER_BACKEND = "wayland";
-    QT_QPA_PLATFORM = "wayland";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    SDL_VIDEODRIVER = "x11";
-    MOZ_ENABLE_WAYLAND = "1";
-  };
+  imports = [
+    ./wayland.nix
+    ./xession.nix
+  ];
   # user theming
   gtk.iconTheme.name = "Papirus-Dark";
   gtk.iconTheme.package = pkgs.papirus-icon-theme;
@@ -31,19 +19,12 @@
     musescore
     wineWowPackages.waylandFull
     # wm stuff
-    swaylock-effects
-    swayidle
     libnotify
     dunst
-    swww
   ];
 
   # smaller dotfiles
   programs = {
-    lazygit.enable = true;
-    fuzzel.enable = true;
-    wlogout.enable = true;
-
     git = {
       enable = true;
       userEmail = "cooperkang4@gamil.com";
