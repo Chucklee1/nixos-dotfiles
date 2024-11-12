@@ -7,18 +7,101 @@
   imports = [
     ./GPU/nvidia.nix
     ./GPU/radeon.nix
-    ./system.nix
-    ./software.nix
-    ./theming.nix
   ];
-  # file manager
+  # Bootloader.
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    plymouth.enable = true;
+  };
+
+  # tty settings
+  console.font = "Lat2-Terminus16";
+  console.useXkbConfig = true;
+
+  # nix
+  nixpkgs.config.allowUnfree = true;
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = ["nix-command" "flakes"];
+  };
+
+  # idk
+  networking.networkmanager.enable = true;
+  time.timeZone = "America/Vancouver";
+  i18n.defaultLocale = "en_CA.UTF-8";
+
   programs = {
+    thunar.enable = true;
+    thunar.plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+    ];
     seahorse.enable = true; # password app
     niri.enable = true;
   };
 
+  stylix = {
+    enable = true;
+    homeManagerIntegration.autoImport = true;
+    image = ../home-folder/pictures/wallpapers/clouds-sunset.jpg;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-terminal-dark.yaml";
+    opacity.terminal = 0.9;
+    cursor.package = pkgs.bibata-cursors;
+    cursor.name = "Bibata-Modern-Classic";
+    cursor.size = 24;
+    fonts = {
+      monospace = {
+        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+        name = "JetBrainsMono Nerd Font Mono";
+      };
+      sansSerif = {
+        package = pkgs.noto-fonts-cjk-sans;
+        name = "Noto Sans CJK";
+      };
+      serif = {
+        package = pkgs.noto-fonts-cjk-serif;
+        name = "Noto Serif CJK";
+      };
+      sizes = {
+        applications = 12;
+        terminal = 12;
+        desktop = 11;
+        popups = 12;
+      };
+    };
+  };
+
+  fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})];
+
   # env packages
   environment.systemPackages = with pkgs; [
+    # Development Tools
+    ripgrep
+    alejandra
+    nixd
+    libgccjit
+    rustc
+
+    # Command-Line Utilities
+    killall
+    pciutils
+    sl
+    cowsay
+    neofetch
+
+    # Web & Networking Utilities
+    wget
+    git
+    curl
+
+    # Compression & Archiving
+    unrar
+    unzip
+    file-roller
+    tree
+    isoimagewriter
+
     # Wayland & Display Utilities
     wayland-utils
     wayland-scanner
