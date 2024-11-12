@@ -38,6 +38,10 @@
     ];
     seahorse.enable = true; # password app
     niri.enable = true;
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
   };
 
   stylix = {
@@ -103,6 +107,8 @@
     isoimagewriter
 
     # Wayland & Display Utilities
+    wayland
+    wayland-protocols
     wayland-utils
     wayland-scanner
     egl-wayland
