@@ -70,21 +70,17 @@ binds {
 
     // move focus
     Mod+Left  { focus-column-left; }
-    Mod+Down  { focus-window-down; }
-    Mod+Up    { focus-window-up; }
     Mod+Right { focus-column-right; }
-    Mod+Home { focus-column-first; }
-    Mod+End  { focus-column-last; }
+    Mod+Up    { focus-workspace-up; }
+    Mod+Down  { focus-workspace-down; }
     // move window and focus
     Mod+Shift+Left  { move-column-left; }
-    Mod+Shift+Down  { move-window-down; }
-    Mod+Shift+Up    { move-window-up; }
     Mod+Shift+Right { move-column-right; }
-    Mod+Shift+Home { move-column-to-first; }
-    Mod+Shift+End  { move-column-to-last; }
     // mouse movement
-    Mod+WheelScrollDown        cooldown-ms=150 { focus-column-right; }
     Mod+WheelScrollUp          cooldown-ms=150 { focus-column-left; }
+    Mod+WheelScrollDown        cooldown-ms=150 { focus-column-right; }
+    Mod+Shift+WheelScrollUp    cooldown-ms=150 { focus-workspace-up; }
+    Mod+Shift+WheelScrollDown  cooldown-ms=150 { focus-workspace-down; }
     // move specific workspace focus
     Mod+1 { focus-workspace 1; }
     Mod+2 { focus-workspace 2; }
@@ -98,14 +94,14 @@ binds {
     Mod+BracketLeft  { consume-or-expel-window-left; }
     Mod+BracketRight { consume-or-expel-window-right; }
     // window presets
-    Mod+R { switch-preset-column-width; }
+    Mod+R       { switch-preset-column-width; }
     Mod+Shift+R { reset-window-height; }
-    Mod+M { maximize-column; }
+    Mod+M       { maximize-column; }
     Mod+Shift+M { fullscreen-window; }
-    Mod+C { center-column; }
+    Mod+C       { center-column; }
     // move windows percise
-    Mod+Minus { set-column-width "-10%"; }
-    Mod+Equal { set-column-width "+10%"; }
+    Mod+Minus       { set-column-width "-10%"; }
+    Mod+Equal       { set-column-width "+10%"; }
     Mod+Shift+Minus { set-window-height "-5%"; }
     Mod+Shift+Equal { set-window-height "+5%"; }
 
