@@ -6,8 +6,9 @@
 }: {
   imports = [
     ./wayland.nix
-    ./xsession.nix
   ];
+  # sym linking
+  home.file.".config/niri/config.kdl".source = ../../home/niri.kdl;
   # user theming
   gtk.iconTheme.name = "Papirus-Dark";
   gtk.iconTheme.package = pkgs.papirus-icon-theme;
@@ -21,10 +22,16 @@
     # wm stuff
     libnotify
     dunst
+    swaylock-effects
+    swayidle
+    swww
   ];
 
   # smaller dotfiles
   programs = {
+    lazygit.enable = true;
+    fuzzel.enable = true;
+    wlogout.enable = true;
     git = {
       enable = true;
       userEmail = "cooperkang4@gamil.com";
@@ -71,5 +78,11 @@
         update-goat = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#goat --show-trace";
       };
     };
+  };
+
+  # misc
+  wayland.windowManager = {
+    hyprland.enable = true;
+    river.enable = true;
   };
 }
