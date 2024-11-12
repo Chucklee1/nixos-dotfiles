@@ -4,10 +4,7 @@
   config,
   ...
 }: {
-  imports = [
-    ./waybar.nix
-    ./hyprland.nix
-  ];
+  imports = [./waybar.nix];
   # sym linking
   home.file.".config/niri/config.kdl".source = ../../home/niri.kdl;
 
