@@ -13,7 +13,7 @@
         height = 35;
 
         modules-left = ["custom/os_button"];
-        custom.os_button = {
+        "custom/os_button" = {
           format = "";
           on-click = "fuzzel";
           tooltip = false;
