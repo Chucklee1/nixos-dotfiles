@@ -93,6 +93,7 @@
     wget
     git
     curl
+    networkmanagerapplet
 
     # Compression & Archiving
     unrar
@@ -107,8 +108,6 @@
     egl-wayland
     qt5.qtwayland
     qt6.qtwayland
-    networkmanagerapplet
-    swww
 
     # Clipboard & Clipboard Management
     wl-clipboard
@@ -136,42 +135,37 @@
     brightnessctl
   ];
 
-  # hardware
-  hardware = {
-    # opengl option, renamed to graphics as of 24.11
-    graphics.enable = true;
-    # bluetooth
-    bluetooth.enable = true;
-    bluetooth.powerOnBoot = true;
-    # disable pulse audio
-    pulseaudio.enable = false;
+  # bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
+  # sound
+  hardware.pulseaudio.enable = false;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
   };
 
-  # services
+  # display-manager
+  services.displayManager = {
+    enable = true;
+    ly.enable = true;
+    defaultSession = "niri";
+  };
+
+  # misc services
   services = {
-    # printing
+    # opengl option, renamed to graphics as of 24.11
+    graphics.enable = true;
     printing.enable = true;
-    # bluetooth applet
-    blueman.enable = true;
-    # sound
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-    # misc services
     gvfs.enable = true;
     tumbler.enable = true;
     fstrim.enable = true;
     gnome.gnome-keyring.enable = true;
     openssh.enable = true;
-    # display-manager
-    displayManager = {
-      enable = true;
-      ly.enable = true;
-      defaultSession = "niri";
-    };
   };
 
   # security

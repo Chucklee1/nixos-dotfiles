@@ -4,6 +4,7 @@
   config,
   ...
 }: {
+  imports = [];
   # sym linking
   home.file.".config/niri/config.kdl".source = ../../home-folder/niri.kdl;
 
@@ -14,8 +15,9 @@
   home.packages = with pkgs; [
     firefox
     vscode-fhs
-    papirus-icon-theme
+    musescore
     wineWowPackages.waylandFull
+    swww
   ];
 
   # smaller dotfiles
@@ -23,7 +25,6 @@
     lazygit.enable = true;
     fuzzel.enable = true;
     wlogout.enable = true;
-    waybar.enable = true;
 
     git = {
       enable = true;
