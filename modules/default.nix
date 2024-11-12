@@ -133,6 +133,7 @@
     playerctl
     pavucontrol
     brightnessctl
+    wlsunset
   ];
 
   # opengl option, renamed to graphics as of 24.11

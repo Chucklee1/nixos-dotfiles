@@ -2,6 +2,16 @@
 prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
+spawn-at-startup "dunst"
+spawn-at-startup "swww" "init"
+spawn-at-startup "waybar"
+spawn-at-startup "lxqt-policykit-agent"
+spawn-at-startup "wlsunset"
+spawn-at-startup "swayidle" 
+    "timeout" "300" "swaylock" "-f" "-c" "000000"
+    "timeout" "600" "swaymsg" "output" "*" "dpms" "off"
+    "resume" "swaymsg" "output" "*" "dpms" "on"
+
 // input devices, yk
 input {
     keyboard {

@@ -5,18 +5,6 @@
   ...
 }: {
   imports = [./waybar.nix];
-
-  # startup
-  home.startupCommands = ''
-      dunst
-      swww init
-      waybar
-      lxqt-policykit-agent
-    swayidle \
-      timeout 300 'swaylock -f -c 000000' \   # Locks screen after 5 minutes of inactivity
-      timeout 600 'swaymsg "output * dpms off"' \  # Turns off screen after 10 minutes
-      resume 'swaymsg "output * dpms on"' &    # Turns screen back on upon activity
-  '';
   # sym linking
   home.file.".config/niri/config.kdl".source = ../../home/niri.kdl;
 
@@ -31,7 +19,7 @@
     musescore
     wineWowPackages.waylandFull
     # wm stuff
-    swaylock
+    swaylock-effects
     swayidle
     libnotify
     dunst
