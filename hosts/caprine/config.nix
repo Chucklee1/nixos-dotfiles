@@ -22,7 +22,10 @@
   # home manager
   home-manager = {
     users.caprine = {
-      imports = [../../modules/home/default.nix];
+      imports = [
+        ../../modules/home/default.nix
+        ../../modules/home/waybar-laptop.nix
+      ];
       home.username = "caprine";
       home.homeDirectory = "/home/caprine";
       home.stateVersion = "24.05"; # D O  N O T  C H A N G E
