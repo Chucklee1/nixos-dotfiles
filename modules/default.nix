@@ -6,7 +6,6 @@
 }: {
   imports = [
     ./GPU/nvidia.nix
-    ./GPU/radeon.nix
   ];
   # Bootloader.
   boot = {
