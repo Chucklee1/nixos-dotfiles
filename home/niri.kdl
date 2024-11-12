@@ -7,11 +7,10 @@ spawn-at-startup "swww" "init"
 spawn-at-startup "waybar"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-at-startup "wlsunset"
-spawn-at-startup "swayidle" 
-    "timeout" "300" "swaylock" "-f" "-c" "000000"
-    "timeout" "600" "swaymsg" "output" "*" "dpms" "off"
-    "resume" "swaymsg" "output" "*" "dpms" "on"
-
+environment {
+  XDG_CURRENT_DESKTOP "niri"
+  XDG_SESSION_DESKTOP "niri"
+}
 // input devices, yk
 input {
     keyboard {
