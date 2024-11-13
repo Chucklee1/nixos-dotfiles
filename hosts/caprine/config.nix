@@ -24,7 +24,6 @@
     users.caprine = {
       imports = [
         ../../modules/home/default.nix
-        ../../modules/home/waybar-laptop.nix
       ];
       home.username = "caprine";
       home.homeDirectory = "/home/caprine";

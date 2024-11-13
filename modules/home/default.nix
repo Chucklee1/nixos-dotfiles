@@ -4,22 +4,11 @@
   config,
   ...
 }: {
-  # sym linking
-  home.file.".config/niri/config.kdl".source = ../../home/niri.kdl;
+  imports = [
+    ./waybar.nix
+    ./niri.nix
+  ];
 
-  # env
-  home.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    NIXPKGS_ALLOW_UNFREE = "1";
-    XDG_SESSION_TYPE = "wayland";
-    GDK_BACKEND = "wayland";
-    CLUTTER_BACKEND = "wayland";
-    QT_QPA_PLATFORM = "wayland";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    SDL_VIDEODRIVER = "x11";
-    MOZ_ENABLE_WAYLAND = "1";
-  };
   # user theming
   gtk.iconTheme.name = "Papirus-Dark";
   gtk.iconTheme.package = pkgs.papirus-icon-theme;
@@ -31,10 +20,10 @@
     musescore
     wineWowPackages.waylandFull
     # wm stuff
-    swaylock-effects
-    swayidle
     libnotify
     dunst
+    swaylock-effects
+    swayidle
     swww
   ];
 
@@ -43,7 +32,6 @@
     lazygit.enable = true;
     fuzzel.enable = true;
     wlogout.enable = true;
-
     git = {
       enable = true;
       userEmail = "cooperkang4@gamil.com";
@@ -83,7 +71,7 @@
         sv = "sudo nvim";
         v = "nvim";
         exec-waybar = "pkill waybar && waybar &";
-        exec-swww = "pkill swww && swww init && swww img ~/nixos-dotfiles/home-folder/pictures/wallpapers/mono-forest.PNG";
+        exec-swww = "pkill swww && swww init && swww img ~/nixos-dotfiles/wallpapers/mono-forest.PNG";
         wayland-code = "code --enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-caprine = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#caprine --show-trace";

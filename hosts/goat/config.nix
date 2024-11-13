@@ -24,7 +24,6 @@
     users.goat = {
       imports = [
         ../../modules/home/default.nix
-        ../../modules/home/waybar-desktop.nix
       ];
       home.username = "goat";
       home.homeDirectory = "/home/goat";
