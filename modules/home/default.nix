@@ -8,7 +8,6 @@
     ./waybar.nix
     ./niri.nix
   ];
-
   # user theming
   gtk.iconTheme.name = "Papirus-Dark";
   gtk.iconTheme.package = pkgs.papirus-icon-theme;
@@ -79,4 +78,12 @@
       };
     };
   };
+
+  # stuff
+  useGlobalPkgs = true;
+  useUserPackages = true;
+  backupFileExtension = "backup";
+
+  # D O  N O T  C H A N G E
+  home.stateVersion = "24.05";
 }

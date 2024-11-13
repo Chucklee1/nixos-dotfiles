@@ -7,6 +7,7 @@
   imports = [
     ./GPU/nvidia.nix
   ];
+
   # Bootloader.
   boot = {
     loader.systemd-boot.enable = true;
@@ -210,4 +211,7 @@
       pkgs.xdg-desktop-portal-gtk
     ];
   };
+
+  # D O  N O T  C H A N G E
+  system.stateVersion = "24.05";
 }

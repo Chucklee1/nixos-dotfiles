@@ -6,6 +6,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   outputs = {
@@ -13,19 +14,33 @@
     nixpkgs,
     home-manager,
     stylix,
+    niri,
     ...
   } @ inputs: {
     # caprine - macbook profile
     nixosConfigurations.caprine = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./hosts/caprine/config.nix
+        ./hardware/caprine-hardware-configuration.nix
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup";
+          # modules
+          nvidia.enable = false;
+          # user
+          networking.hostName = "caprine";
+          users.users.caprine = {
+            isNormalUser = true;
+            extraGroups = ["wheel" "networkmanager"];
+          };
+          # home manager user specific configs
+          home-manager = {
+            users.caprine = {
+              imports = [../../modules/home/default.nix];
+              home.username = "caprine";
+              home.homeDirectory = "/home/caprine";
+            };
+          };
         }
       ];
     };
@@ -33,13 +48,27 @@
     nixosConfigurations.goat = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./hosts/goat/config.nix
+        ./niri.nix
+        ./hardware/goat-hardware-configuration.nix
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup";
+          # modules
+          nvidia.enable = true;
+          # user
+          networking.hostName = "goat";
+          users.users.goat = {
+            isNormalUser = true;
+            extraGroups = ["wheel" "networkmanager"];
+          };
+          # home manager user specific configs
+          home-manager = {
+            users.goat = {
+              imports = [../../modules/home/default.nix];
+              home.username = "goat";
+              home.homeDirectory = "/home/goat";
+            };
+          };
         }
       ];
     };
