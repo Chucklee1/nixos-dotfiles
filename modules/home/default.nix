@@ -20,7 +20,6 @@
     musescore
     wineWowPackages.waylandFull
     # wm stuff
-    gtk3-nocsd
     libnotify
     dunst
     swaylock-effects
