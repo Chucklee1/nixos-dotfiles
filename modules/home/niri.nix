@@ -4,16 +4,17 @@
     prefer-no-csd
     screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
-    spawn-at-startup dunst
-    spawn-at-startup swww init
-    spawn-at-startup waybar
-    spawn-at-startup lxqt-policykit-agent
-    spawn-at-startup wlsunset
+    spawn-at-startup "dunst"
+    spawn-at-startup "swww-daemon"
+    spawn-at-startup "waybar"
+    spawn-at-startup "lxqt-policykit-agent"
+    spawn-at-startup "wlsunset"
     environment {
       XDG_CURRENT_DESKTOP "niri"
       XDG_SESSION_DESKTOP "niri"
       XDG_SESSION_TYPE "wayland"
       GDK_BACKEND "wayland"
+      GTK_CSD "0"
       CLUTTER_BACKEND "wayland"
       QT_QPA_PLATFORM "wayland"
       QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
