@@ -38,15 +38,12 @@
     ];
     seahorse.enable = true; # password app
     niri.enable = true;
-    hyprland = {
-      enable = true;
-    };
   };
 
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
-    image = ../home/wallpapers/clouds-sunset.jpg;
+    image = ../wallpapers/clouds-sunset.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-terminal-dark.yaml";
     opacity.terminal = 0.6;
     cursor.package = pkgs.bibata-cursors;
@@ -166,7 +163,6 @@
   };
   # misc services
   services = {
-    xserver.enable = true;
     printing.enable = true;
     gvfs.enable = true;
     tumbler.enable = true;
