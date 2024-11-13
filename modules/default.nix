@@ -38,7 +38,7 @@
       thunar-volman
     ];
     seahorse.enable = true; # password app
-    niri.enable = false;
+    niri.enable = true;
   };
 
   stylix = {
