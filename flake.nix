@@ -22,7 +22,9 @@
       system = "x86_64-linux";
       modules = [
         ./hardware/caprine-hardware-configuration.nix
+        ./modules/default.nix
         stylix.nixosModules.stylix
+        niri.homeModules.niri
         home-manager.nixosModules.home-manager
         {
           # modules
@@ -48,8 +50,8 @@
     nixosConfigurations.goat = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./niri.nix
         ./hardware/goat-hardware-configuration.nix
+        ./modules/default.nix
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         {
