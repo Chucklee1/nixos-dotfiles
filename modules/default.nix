@@ -40,7 +40,6 @@
     niri.enable = true;
     hyprland = {
       enable = true;
-      xwayland.enable = true;
     };
   };
 
@@ -49,7 +48,7 @@
     homeManagerIntegration.autoImport = true;
     image = ../home/wallpapers/clouds-sunset.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-terminal-dark.yaml";
-    opacity.terminal = 0.9;
+    opacity.terminal = 0.6;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
     cursor.size = 24;
