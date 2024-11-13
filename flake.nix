@@ -24,7 +24,6 @@
         ./hardware/caprine-hardware-configuration.nix
         ./modules/default.nix
         stylix.nixosModules.stylix
-        niri.homeModules.niri
         home-manager.nixosModules.home-manager
         {
           # modules
@@ -37,8 +36,11 @@
           };
           # home manager user specific configs
           home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
             users.caprine = {
-              imports = [../../modules/home/default.nix];
+              imports = [./modules/home/default.nix];
               home.username = "caprine";
               home.homeDirectory = "/home/caprine";
             };
@@ -65,8 +67,11 @@
           };
           # home manager user specific configs
           home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
             users.goat = {
-              imports = [../../modules/home/default.nix];
+              imports = [./modules/home/default.nix];
               home.username = "goat";
               home.homeDirectory = "/home/goat";
             };
