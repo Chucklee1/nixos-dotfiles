@@ -107,7 +107,6 @@
   services.displayManager = {
     enable = true;
     ly.enable = true;
-    defaultSession = "niri";
   };
   # misc services
   services = {

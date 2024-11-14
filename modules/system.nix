@@ -1,6 +1,13 @@
-{pkgs, lib, config, inputs, ...}:  # Bootloader.
-{  
-  system.stateVersion = "24.05"; # do not change
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+# Bootloader.
+{
+  # D O  N O T  C H A N G E
+  system.stateVersion = "24.05";
 
   # boot loader
   boot = {
@@ -43,7 +50,6 @@
     backupFileExtension = "backup";
     users = {
       goat = {
-        specialArgs = config.specialArgs
         imports = [./home/default-home.nix];
         home.username = "goat";
         home.homeDirectory = "/home/goat";

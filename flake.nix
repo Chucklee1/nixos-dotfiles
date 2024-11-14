@@ -26,8 +26,26 @@
         {
           # modules
           nvidia.enable = true;
-          # user
+          # user hostname
           networking.hostName = "goat";
+          # system user config
+          users.users.goat = {
+            isNormalUser = true;
+            extraGroups = ["wheel" "networkmanager"];
+          };
+          # home manager user config
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
+            users = {
+              goat = {
+                imports = [./home/default-home.nix];
+                home.username = "goat";
+                home.homeDirectory = "/home/goat";
+              };
+            };
+          };
         }
       ];
     };
@@ -45,8 +63,26 @@
         {
           # modules
           nvidia.enable = false;
-          # user
+          # user hostname
           networking.hostName = "caprine";
+          # system user config
+          users.users.caprine = {
+            isNormalUser = true;
+            extraGroups = ["wheel" "networkmanager"];
+          };
+          # home manager user config
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
+            users = {
+              caprine = {
+                imports = [./home/default-home.nix];
+                home.username = "caprine";
+                home.homeDirectory = "/home/caprine";
+              };
+            };
+          };
         }
       ];
     };
