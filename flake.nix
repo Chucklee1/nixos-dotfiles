@@ -38,8 +38,10 @@
       modules = [
         ./hardware/caprine-hardware-configuration.nix
         ./modules/default-config.nix
+        ./modules/niri.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
+        inputs.niri.nixosModules.niri
         {
           # modules
           nvidia.enable = false;
