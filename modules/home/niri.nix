@@ -120,7 +120,7 @@
       Mod+Ctrl+3 { move-column-to-workspace 3; }
       Mod+Ctrl+4 { move-column-to-workspace 4; }
 
-      // put window in same column or take out of
+      // move windows in and out of same column
       Mod+BracketLeft  { consume-or-expel-window-left; }
       Mod+BracketRight { consume-or-expel-window-right; }
 
