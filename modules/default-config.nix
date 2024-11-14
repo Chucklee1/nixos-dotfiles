@@ -7,7 +7,6 @@
 }: {
   imports = [
     ./GPU/nvidia.nix # toggle module
-    ./system.nix
     ./theming.nix
   ];
   # D O  N O T  C H A N G E
