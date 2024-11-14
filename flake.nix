@@ -22,8 +22,8 @@
         ./hardware/goat-hardware-configuration.nix
         ./modules/default-config.nix
         inputs.home-manager.nixosModules.home-manager
-        inputs.niri.homeModules.niri
-        inputs.niri.nixosModules.niri
+        inputs.stylix.nixosModules.stylix
+        inputs.niri.homeManagerModules.niri
         {
           # modules
           nvidia.enable = true;
@@ -43,7 +43,6 @@
               goat = {
                 imports = [
                   ./home/default-home.nix
-                  inputs.niri.homeModules.niri
                 ];
                 home.username = "goat";
                 home.homeDirectory = "/home/goat";

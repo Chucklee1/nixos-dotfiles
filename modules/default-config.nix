@@ -107,6 +107,7 @@
       thunar-archive-plugin
       thunar-volman
     ];
+    niri.enable = true;
     seahorse.enable = true; # password app
   };
 
