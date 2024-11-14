@@ -31,16 +31,38 @@
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  programs = {
-    thunar.enable = true;
-    thunar.plugins = with pkgs.xfce; [
-      thunar-archive-plugin
-      thunar-volman
-    ];
-    seahorse.enable = true; # password app
-    niri.enable = true;
+  # system user config
+  users.users = {
+    goat = {
+      isNormalUser = true;
+      extraGroups = ["wheel" "networkmanager"];
+    };
+    caprine = {
+      isNormalUser = true;
+      extraGroups = ["wheel" "networkmanager"];
+    };
+  };
+  # home manager user config
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
+    users = {
+      goat = {
+        imports = [./home/default-home.nix];
+        home.username = "goat";
+        home.homeDirectory = "/home/goat";
+      };
+      caprine = {
+        imports = [./home/default-home.nix];
+        home.username = "caprine";
+        home.homeDirectory = "/home/caprine";
+      };
+    };
   };
 
+  # theming
+  fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})]; # needed for waybar and misc icons
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
@@ -71,8 +93,6 @@
       };
     };
   };
-
-  fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})];
 
   # env packages
   environment.systemPackages = with pkgs; [
@@ -138,6 +158,17 @@
     brightnessctl
     wlsunset
   ];
+
+  # programs
+  programs = {
+    thunar.enable = true;
+    thunar.plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+    ];
+    seahorse.enable = true; # password app
+    niri.enable = true;
+  };
 
   # opengl option, renamed to graphics as of 24.11
   hardware.graphics.enable = true;

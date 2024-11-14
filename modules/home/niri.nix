@@ -40,7 +40,7 @@
     // output devices, monitor, yk
     output "DP-1" {
       mode "1920x1080@165.001"
-      scale 1.0 // You can use integer or fractional scale, for example use 1.5 for 150% scale.
+      scale 1.0
       transform "normal"
       position x=1280 y=0
     }
@@ -79,8 +79,16 @@
       XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
       XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
       XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
-      XF86MonBrightnessDown { spawn "brightnessctl" "s" "5%-"; }
-      XF86MonBrightnessUp { spawn "brightnessctl" "s" "5%+"; }
+
+      // needs playerctl
+      XF86AudioNext  { spawn "playerctl" "next"; }
+      XF86AudioPause { spawn "playerctl" "play-pause"; }
+      XF86AudioPlay  { spawn "playerctl" "play-pause"; }
+      XF86AudioPrev  { spawn "playerctl" "previous"; }
+
+      XF86MonBrightnessDown { spawn "brightnessctl" "s" "1%-"; }
+      XF86MonBrightnessUp { spawn "brightnessctl" "s" "1%+"; }
+
 
       // quiting n killin
       Mod+Q { close-window; }
@@ -91,39 +99,43 @@
       Mod+Right { focus-column-right; }
       Mod+Up    { focus-workspace-up; }
       Mod+Down  { focus-workspace-down; }
+
       // move window and focus
       Mod+Shift+Left  { move-column-left; }
       Mod+Shift+Right { move-column-right; }
+
       // mouse movement
       Mod+WheelScrollUp          cooldown-ms=150 { focus-column-left; }
       Mod+WheelScrollDown        cooldown-ms=150 { focus-column-right; }
       Mod+Shift+WheelScrollUp    cooldown-ms=150 { focus-workspace-up; }
       Mod+Shift+WheelScrollDown  cooldown-ms=150 { focus-workspace-down; }
+
       // move specific workspace focus
-      Mod+1 { focus-workspace 1; }
-      Mod+2 { focus-workspace 2; }
-      Mod+3 { focus-workspace 3; }
-      Mod+4 { focus-workspace 4; }
+      Mod+1      { focus-workspace 1; }
+      Mod+2      { focus-workspace 2; }
+      Mod+3      { focus-workspace 3; }
+      Mod+4      { focus-workspace 4; }
       Mod+Ctrl+1 { move-column-to-workspace 1; }
       Mod+Ctrl+2 { move-column-to-workspace 2; }
       Mod+Ctrl+3 { move-column-to-workspace 3; }
       Mod+Ctrl+4 { move-column-to-workspace 4; }
+
       // put window in same column or take out of
       Mod+BracketLeft  { consume-or-expel-window-left; }
       Mod+BracketRight { consume-or-expel-window-right; }
+
       // window presets
       Mod+R       { switch-preset-column-width; }
       Mod+Shift+R { reset-window-height; }
       Mod+M       { maximize-column; }
       Mod+Shift+M { fullscreen-window; }
       Mod+C       { center-column; }
+
       // move windows percise
       Mod+Minus       { set-column-width "-10%"; }
       Mod+Equal       { set-column-width "+10%"; }
       Mod+Shift+Minus { set-window-height "-5%"; }
       Mod+Shift+Equal { set-window-height "+5%"; }
-
-      // XF86Fn
     }
   '';
 }

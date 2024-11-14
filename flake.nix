@@ -22,7 +22,7 @@
       system = "x86_64-linux";
       modules = [
         ./hardware/caprine-hardware-configuration.nix
-        ./modules/default.nix
+        ./modules/default-config.nix
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         {
@@ -30,21 +30,6 @@
           nvidia.enable = false;
           # user
           networking.hostName = "caprine";
-          users.users.caprine = {
-            isNormalUser = true;
-            extraGroups = ["wheel" "networkmanager"];
-          };
-          # home manager user specific configs
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            users.caprine = {
-              imports = [./modules/home/default.nix];
-              home.username = "caprine";
-              home.homeDirectory = "/home/caprine";
-            };
-          };
         }
       ];
     };
@@ -53,7 +38,7 @@
       system = "x86_64-linux";
       modules = [
         ./hardware/goat-hardware-configuration.nix
-        ./modules/default.nix
+        ./modules/default-config.nix
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         {
@@ -61,21 +46,6 @@
           nvidia.enable = true;
           # user
           networking.hostName = "goat";
-          users.users.goat = {
-            isNormalUser = true;
-            extraGroups = ["wheel" "networkmanager"];
-          };
-          # home manager user specific configs
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            users.goat = {
-              imports = [./modules/home/default.nix];
-              home.username = "goat";
-              home.homeDirectory = "/home/goat";
-            };
-          };
         }
       ];
     };
