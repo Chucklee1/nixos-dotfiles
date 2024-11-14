@@ -8,7 +8,7 @@
   imports = [
     ./GPU/nvidia.nix # toggle module
     ./system.nix
-    ./theme.nix
+    ./theming.nix
   ];
 
   # env packages

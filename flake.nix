@@ -23,6 +23,7 @@
         ./modules/default-config.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
+        inputs.niri.nixosModules.niri
         {
           # modules
           nvidia.enable = true;
@@ -43,6 +44,7 @@
                 imports = [./home/default-home.nix];
                 home.username = "goat";
                 home.homeDirectory = "/home/goat";
+                programs.niri.enable = true;
               };
             };
           };
