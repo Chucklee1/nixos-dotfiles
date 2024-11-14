@@ -17,11 +17,12 @@
     # goat - desktop profile
     nixosConfigurations.goat = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
       modules = [
         ./hardware/goat-hardware-configuration.nix
         ./modules/default-config.nix
-        stylix.nixosModules.stylix
-        home-manager.nixosModules.home-manager
+        inputs.home-manager.nixosModules.home-manager
+        inputs.stylix.nixosModules.stylix
         {
           # modules
           nvidia.enable = true;
@@ -33,11 +34,12 @@
     # caprine - macbook profile
     nixosConfigurations.caprine = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
       modules = [
         ./hardware/caprine-hardware-configuration.nix
         ./modules/default-config.nix
-        stylix.nixosModules.stylix
-        home-manager.nixosModules.home-manager
+        inputs.home-manager.nixosModules.home-manager
+        inputs.stylix.nixosModules.stylix
         {
           # modules
           nvidia.enable = false;
