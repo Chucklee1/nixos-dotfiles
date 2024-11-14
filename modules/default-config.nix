@@ -2,97 +2,14 @@
   lib,
   config,
   pkgs,
+  imports,
   ...
 }: {
   imports = [
-    ./GPU/nvidia.nix
+    ./GPU/nvidia.nix # toggle module
+    ./system.nix
+    ./theme.nix
   ];
-
-  # Bootloader.
-  boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-    plymouth.enable = true;
-  };
-
-  # tty settings
-  console.font = "Lat2-Terminus16";
-  console.useXkbConfig = true;
-
-  # nix
-  nixpkgs.config.allowUnfree = true;
-  nix.settings = {
-    auto-optimise-store = true;
-    experimental-features = ["nix-command" "flakes"];
-  };
-
-  # idk
-  networking.networkmanager.enable = true;
-  time.timeZone = "America/Vancouver";
-  i18n.defaultLocale = "en_CA.UTF-8";
-
-  # system user config
-  users.users = {
-    goat = {
-      isNormalUser = true;
-      extraGroups = ["wheel" "networkmanager"];
-    };
-    caprine = {
-      isNormalUser = true;
-      extraGroups = ["wheel" "networkmanager"];
-    };
-  };
-  # home manager user config
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    backupFileExtension = "backup";
-    users = {
-      goat = {
-        imports = [./home/default-home.nix];
-        home.username = "goat";
-        home.homeDirectory = "/home/goat";
-      };
-      caprine = {
-        imports = [./home/default-home.nix];
-        home.username = "caprine";
-        home.homeDirectory = "/home/caprine";
-      };
-    };
-  };
-
-  # theming
-  fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})]; # needed for waybar and misc icons
-  stylix = {
-    enable = true;
-    homeManagerIntegration.autoImport = true;
-    image = ../wallpapers/clouds-sunset.jpg;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-terminal-dark.yaml";
-    opacity.terminal = 0.6;
-    cursor.package = pkgs.bibata-cursors;
-    cursor.name = "Bibata-Modern-Classic";
-    cursor.size = 24;
-    fonts = {
-      monospace = {
-        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
-        name = "JetBrainsMono Nerd Font Mono";
-      };
-      sansSerif = {
-        package = pkgs.noto-fonts-cjk-sans;
-        name = "Noto Sans CJK";
-      };
-      serif = {
-        package = pkgs.noto-fonts-cjk-serif;
-        name = "Noto Serif CJK";
-      };
-      sizes = {
-        applications = 12;
-        terminal = 12;
-        desktop = 11;
-        popups = 12;
-      };
-    };
-  };
 
   # env packages
   environment.systemPackages = with pkgs; [
@@ -167,7 +84,6 @@
       thunar-volman
     ];
     seahorse.enable = true; # password app
-    niri.enable = true;
   };
 
   # opengl option, renamed to graphics as of 24.11
@@ -242,7 +158,4 @@
       pkgs.xdg-desktop-portal-gtk
     ];
   };
-
-  # D O  N O T  C H A N G E
-  system.stateVersion = "24.05";
 }

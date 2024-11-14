@@ -6,7 +6,6 @@
 }: {
   imports = [
     ./waybar.nix
-    ./niri.nix
   ];
   # user theming
   gtk.iconTheme.name = "Papirus-Dark";
