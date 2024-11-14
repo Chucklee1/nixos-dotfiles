@@ -12,27 +12,8 @@
   outputs = {
     self,
     nixpkgs,
-    home-manager,
-    stylix,
-    niri,
     ...
   } @ inputs: {
-    # caprine - macbook profile
-    nixosConfigurations.caprine = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./hardware/caprine-hardware-configuration.nix
-        ./modules/default-config.nix
-        stylix.nixosModules.stylix
-        home-manager.nixosModules.home-manager
-        {
-          # modules
-          nvidia.enable = false;
-          # user
-          networking.hostName = "caprine";
-        }
-      ];
-    };
     # goat - desktop profile
     nixosConfigurations.goat = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -46,6 +27,22 @@
           nvidia.enable = true;
           # user
           networking.hostName = "goat";
+        }
+      ];
+    };
+    # caprine - macbook profile
+    nixosConfigurations.caprine = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./hardware/caprine-hardware-configuration.nix
+        ./modules/default-config.nix
+        stylix.nixosModules.stylix
+        home-manager.nixosModules.home-manager
+        {
+          # modules
+          nvidia.enable = false;
+          # user
+          networking.hostName = "caprine";
         }
       ];
     };
