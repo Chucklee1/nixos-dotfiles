@@ -66,7 +66,7 @@
     };
     oh-my-posh = {
       enable = true;
-      enableBashIntigration = true;
+      enableBashIntegration = true;
       useTheme = "pure";
     };
     neovim = {
