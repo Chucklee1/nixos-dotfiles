@@ -12,7 +12,6 @@
   outputs = {
     self,
     nixpkgs,
-    home-manager,
     ...
   } @ inputs: {
     # desktop profile
