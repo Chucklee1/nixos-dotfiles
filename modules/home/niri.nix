@@ -25,6 +25,8 @@
     in [
       # Waybar
       {command = ["${lib.getExe pkgs.waybar}"];}
+      # swww
+      {command = ["exec-swww"];}
       # LXQt PolicyKit Agent
       {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
       # Dunst
