@@ -64,6 +64,20 @@
     wlsunset
   ];
 
+  # home-manager packages
+  home-manager.users.goat.home.packages = with pkgs; [
+    firefox
+    vscode-fhs
+    musescore
+    wineWowPackages.waylandFull
+    # wm stuff
+    libnotify
+    dunst
+    swaylock-effects
+    swayidle
+    swww
+  ];
+
   # system programs
   programs = {
     niri.enable = true;
