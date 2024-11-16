@@ -14,27 +14,25 @@
     nixpkgs,
     home-manager,
     ...
-  } @ inputs: let 
-    shared-modules = [
-      ./modules/default-config.nix
-    ];
-  in  {
+  } @ inputs: {
     # desktop profile
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
-      modules = shared-modules ++ [
+      modules = [
         ./hardware/desktop.nix
-        { nvidia.enable = true; }
+        ./modules/default-config.nix
+        {nvidia.enable = true;}
       ];
     };
     # macbook profile
     nixosConfigurations.macbook = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
-      modules = shared-modules ++ [
+      modules = [
         ./hardware/macbook.nix
-        { nvidia.enable = false; }
+        ./modules/default-config.nix
+        {nvidia.enable = false;}
       ];
     };
   };
