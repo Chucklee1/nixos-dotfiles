@@ -62,7 +62,7 @@
     };
   };
 
-  # overlay packages ( I wanted to clearly see packages from overlays which is why niri is not in infasoftware.nix)
+  # overlay packages
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
