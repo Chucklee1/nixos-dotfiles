@@ -13,7 +13,7 @@
     XDG_SESSION_DESKTOP = "niri";
     XDG_SESSION_TYPE = "wayland";
     GDK_BACKEND = "wayland";
-    GTK_CSD ="0";
+    GTK_CSD = "0";
     CLUTTER_BACKEND = "wayland";
     QT_QPA_PLATFORM = "wayland";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
@@ -22,7 +22,7 @@
     MOZ_ENABLE_WAYLAND = "1";
     NIXOS_OZONE_WL = "1";
   };
-# user theming
+  # user theming
   gtk.iconTheme.name = "Papirus-Dark";
   gtk.iconTheme.package = pkgs.papirus-icon-theme;
 
@@ -85,10 +85,10 @@
         v = "nvim";
         exec-waybar = "pkill waybar && waybar &";
         exec-swww = "pkill swww && swww init && swww img ~/nixos-dotfiles/wallpapers/mono-forest.PNG";
-        ozonify = "code --enable-features=UseOzonePlatform --ozone-platform=wayland";
+        ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
-        update-caprine = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#caprine --show-trace";
-        update-goat = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#goat --show-trace";
+        update-desktop = "sudo nixos-rebuild switch --flake ./nixos-dotfiles#desktop --show-trace";
+        update-macbook = "sudo nixos-rebuild switch --flake ./nixos-dotfiles#macbook --show-trace";
       };
     };
   };
