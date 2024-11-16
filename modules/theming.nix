@@ -45,7 +45,6 @@
   home-manager.users.goat = {
     # stylix targets
     stylix.targets = {
-      niri.enable = true;
       neovim.enable = true;
     };
     # gtk specifics

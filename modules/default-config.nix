@@ -10,7 +10,7 @@
     ./infasoftware.nix
     ./theming.nix
     ./wayland.nix
-    #./niri.nix
+    ./niri.nix
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
     inputs.niri.nixosModules.niri
@@ -78,5 +78,13 @@
         };
       };
     };
+  };
+  # -----------------------------------------------------------
+  # niri setup ( wont work in home manager idk why )
+  # -----------------------------------------------------------
+  nixpkgs.overlays = [inputs.niri.overlays.niri];
+  programs.niri = {
+    enable = true;
+    package = pkgs.niri-unstable; # make niri use overlay poackage
   };
 }
