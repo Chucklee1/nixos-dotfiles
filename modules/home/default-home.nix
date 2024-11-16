@@ -29,6 +29,7 @@
   home.packages = with pkgs; [
     firefox
     vscode-fhs
+    btop
     musescore
     wineWowPackages.waylandFull
     # wm stuff
