@@ -10,19 +10,7 @@
     hotkey-overlay.skip-at-startup = false;
     screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
     # startup
-    spawn-at-startup = let
-      # Helper function for session-based wrappers
-      get-wayland-display = "systemctl --user show-environment | awk -F 'WAYLAND_DISPLAY=' '{print $2}' | awk NF";
-      wrapper = name: op:
-        pkgs.writeScript "${name}" ''
-          if [ "$(${get-wayland-display})" ${op} "$WAYLAND_DISPLAY" ]; then
-            exec "$@"
-          fi
-        '';
-
-      only-on-session = wrapper "only-on-session" "=";
-      only-without-session = wrapper "only-without-session" "!=";
-    in [
+    spawn-at-startup = [
       # Waybar
       {command = ["${lib.getExe pkgs.waybar}"];}
       # swww
