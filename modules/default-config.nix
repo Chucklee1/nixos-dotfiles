@@ -13,23 +13,6 @@
     inputs.niri.nixosModules.niri
   ];
 
-  # user
-  networking.hostName = "goat";
-  users.users.goat = { 
-    isNormalUser = true; 
-    extraGroups = ["wheel" "networkmanager"];
-    };
-  home-manager = { 
-    useUserPackages = true; 
-    useGlobalPkgs = true;
-    extraSpecialArgs = {inherit inputs;};
-    users.goat = { 
-      imports = [./home/default-home.nix];
-      home.username = "goat";
-      home.homeDirectory = "/home/goat";
-    }; 
-  };
-  
   boot.loader = {
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
@@ -37,6 +20,7 @@
     grub.efiSupport = true;
     grub.device = "nodev";
   };
+
   # D O  N O T  C H A N G E
   system.stateVersion = "24.05";
 
@@ -59,6 +43,23 @@
   networking.networkmanager.enable = true;
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
+
+  # user
+  networking.hostName = "goat";
+  users.users.goat = {
+    isNormalUser = true;
+    extraGroups = ["wheel" "networkmanager"];
+  };
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    extraSpecialArgs = {inherit inputs;};
+    users.goat = {
+      imports = [./home/default-home.nix];
+      home.username = "goat";
+      home.homeDirectory = "/home/goat";
+    };
+  };
 
   # env packages
   environment.systemPackages = with pkgs; [
