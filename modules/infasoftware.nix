@@ -64,6 +64,12 @@
     wlsunset
   ];
 
+  # system overlay program
+  programs.niri = {
+    enable = true;
+    package = pkgs.niri-unstable;
+  };
+
   # home manager programs
   home-manager.users.goat = {
     programs = {

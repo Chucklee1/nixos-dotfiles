@@ -78,12 +78,6 @@
     };
   };
 
-  # overlay packages
-  programs.niri = {
-    enable = true;
-    package = pkgs.niri-unstable;
-  };
-
   # security
   security = {
     rtkit.enable = true; # sound
