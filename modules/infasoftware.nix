@@ -64,27 +64,25 @@
     wlsunset
   ];
 
-  # system overlay program
-  programs.niri = {
-    enable = true;
-    package = pkgs.niri-unstable;
+  # system programs
+  programs = {
+    niri.enable = true;
+    niri.package = pkgs.niri-unstable; # using overlay poackage
+    seahorse.enable = true; # password manager
+    # thunar
+    thunar.enable = true;
+    thunar.plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+    ];
+    lazygit.enable = true;
+    wlogout.enable = true;
   };
 
   # home manager programs
   home-manager.users.goat = {
+    fuzzel.enable = true;
     programs = {
-      lazygit.enable = true;
-      fuzzel.enable = true;
-      wlogout.enable = true;
-      seahorse.enable = true; # password manager
-
-      # thunar
-      thunar.enable = true;
-      thunar.plugins = with pkgs.xfce; [
-        thunar-archive-plugin
-        thunar-volman
-      ];
-
       kitty = {
         enable = true;
         settings = {
