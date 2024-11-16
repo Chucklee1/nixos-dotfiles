@@ -27,41 +27,6 @@
     file-roller
     tree
     isoimagewriter
-
-    # Wayland & Display Utilities
-    wayland
-    wayland-protocols
-    wayland-utils
-    wayland-scanner
-    egl-wayland
-    qt5.qtwayland
-    qt6.qtwayland
-
-    # Clipboard & Clipboard Management
-    wl-clipboard
-    cliphist
-    xclip
-
-    # Security & Authentication
-    libsecret
-    lxqt.lxqt-policykit
-
-    # Media Tools
-    mpv
-    imv
-    ffmpeg
-    v4l-utils
-
-    # Keyboard & Input Tools
-    wev
-    ydotool
-    wtype
-
-    # System Controls
-    playerctl
-    pavucontrol
-    brightnessctl
-    wlsunset
   ];
 
   # home-manager packages
@@ -70,20 +35,10 @@
     vscode-fhs
     musescore
     wineWowPackages.waylandFull
-    # wm stuff
-    libnotify
-    dunst
-    swaylock-effects
-    swayidle
-    swww
   ];
 
-  # system programs
+  # thunar
   programs = {
-    niri.enable = true;
-    niri.package = pkgs.niri-unstable; # make niri use overlay poackage
-    seahorse.enable = true; # password manager
-    # thunar
     thunar.enable = true;
     thunar.plugins = with pkgs.xfce; [
       thunar-archive-plugin
@@ -93,9 +48,6 @@
 
   # home manager programs
   home-manager.users.goat.programs = {
-    lazygit.enable = true;
-    wlogout.enable = true;
-    fuzzel.enable = true;
     kitty = {
       enable = true;
       settings = {

@@ -39,6 +39,5 @@
     # user theming
     gtk.iconTheme.name = "Papirus-Dark";
     gtk.iconTheme.package = pkgs.papirus-icon-theme;
-    stylix.targets.niri.enable = true;
   };
 }

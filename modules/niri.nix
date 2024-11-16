@@ -4,103 +4,128 @@
   config,
   ...
 }: {
-  programs.niri.settings = {
-    # general
-    prefer-no-csd = true;
-    hotkey-overlay.skip-at-startup = false;
-    screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
-    # startup
-    spawn-at-startup = [
-      # Waybar
-      {command = ["${lib.getExe pkgs.waybar}"];}
-      # swww
-      {command = ["exec-swww"];}
-      # LXQt PolicyKit Agent
-      {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
-      # Dunst
-      {command = ["${lib.getExe pkgs.dunst}"];}
+  imports = [niri-settings.nix];
+  # system packages
+  enviorment.systemPackages = with pkgs; [
+    # Wayland & Display Utilities
+    wayland
+    wayland-protocols
+    wayland-utils
+    wayland-scanner
+    egl-wayland
+    qt5.qtwayland
+    qt6.qtwayland
+
+    # Clipboard & Clipboard Management
+    wl-clipboard
+    cliphist
+    xclip
+
+    # Media Tools
+    mpv
+    imv
+    ffmpeg
+    v4l-utils
+
+    # Keyboard & Input Tools
+    wev
+    ydotool
+    wtype
+
+    # System Controls
+    playerctl
+    pavucontrol
+    brightnessctl
+  ];
+  # home wm specific packages
+  home-manager.users.goat.home.packages = with pkgs; [
+    libnotify
+    libsecret
+    lxqt.lxqt-policykit
+    swaylock-effects
+    swayidle
+  ];
+  # system programs
+  programs = {
+    niri.enable = true;
+    niri.package = pkgs.niri-unstable; # make niri use overlay poackage
+    seahorse.enable = true; # password manager
+  };
+  # home programs
+  home-manager.users.goat.programs = {
+    # startup daemons
+    swww.enable = true;
+    wlsunset.enable = true;
+    dunst.enable = true;
+    # the rest
+    lazygit.enable = true;
+    wlogout.enable = true;
+    fuzzel.enable = true;
+  };
+  # home manager specific stuff
+  home-manager.users.goat = {
+    # specify stylix targets
+    stylix.targets.niri.enable = true;
+    # niri variables
+    home.sessionVariables = {
+      DISPLAY = ":0"; # cool display thing for Xwayland satelite, idk what it rlly does
+      XDG_CURRENT_DESKTOP = "niri";
+      XDG_SESSION_DESKTOP = "niri";
+      XDG_SESSION_TYPE = "wayland";
+      GDK_BACKEND = "wayland";
+      GTK_CSD = "0";
+      CLUTTER_BACKEND = "wayland";
+      QT_QPA_PLATFORM = "wayland";
+      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+      SDL_VIDEODRIVER = "wayland";
+      MOZ_ENABLE_WAYLAND = "1";
+      NIXOS_OZONE_WL = "1";
+    };
+  };
+  # security section #
+  security = {
+    rtkit.enable = true; # sound
+    polkit.enable = true; # polkit
+    polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (
+          subject.isInGroup("users")
+            && (
+              action.id == "org.freedesktop.login1.reboot" ||
+              action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+              action.id == "org.freedesktop.login1.power-off" ||
+              action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+            )
+          )
+        {
+          return polkit.Result.YES;
+        }
+      })
+    '';
+    pam.services.swaylock = {
+      # locking
+      text = ''
+        auth include login
+      '';
+    };
+  };
+
+  # xdg portal
+  xdg.portal = {
+    enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
     ];
-    # inputs
-    input.keyboard.xkb.layout = "us";
-    input.mouse.accel-speed = 1.0;
-    input.touchpad = {
-      tap = true;
-      dwt = true;
-      natural-scroll = true;
-      click-method = "clickfinger";
-    };
-
-    input.tablet.map-to-output = "eDP-1";
-    input.touch.map-to-output = "eDP-1";
-
-    # input.warp-mouse-to-focus = true;
-
-    layout = {
-      gaps = 8;
-      border.width = 2;
-      always-center-single-column = false;
-    };
-    window-rules = [
-      {
-        matches = [];
-        draw-border-with-background = false;
-        geometry-corner-radius = {
-          top-left = 12.0;
-          top-right = 12.0;
-          bottom-left = 12.0;
-          bottom-right = 12.0;
-        };
-        clip-to-geometry = true;
-      }
+    configPackages = [
+      pkgs.xdg-desktop-portal
+      pkgs.xdg-desktop-portal-gtk
     ];
-    # monitors
-    outputs."DP-1" = {
-      enable = true;
-      mode.width = 1920;
-      mode.height = 1080;
-      position.x = 0;
-      position.y = 0;
-      mode.refresh = 165.001;
-    };
-    # keybinds
-    binds = with config.lib.niri.actions; {
-      "Mod+Return".action.spawn = ["kitty" "--working-directory" "~/nixos-dotfiles"];
-      "Mod+Space".action.spawn = "fuzzel";
-      "Mod+E".action.spawn = "thunar";
-
-      "XF86AudioRaiseVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"];
-      "XF86AudioLowerVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"];
-      "XF86AudioMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
-
-      "XF86LaunchA".action.spawn = "firefox";
-      "XF86LaunchB".action.spawn = "code";
-
-      "Mod+Q".action = close-window;
-
-      "Mod+Left".action = focus-column-left;
-      "Mod+Right".action = focus-column-right;
-      "Mod+Up".action = focus-workspace-up;
-      "Mod+Down".action = focus-workspace-down;
-
-      "Mod+Shift+Left".action = move-column-left;
-      "Mod+Shift+Right".action = move-column-right;
-      "Mod+Shift+Up".action = move-window-to-workspace-up;
-      "Mod+Shift+Down".action = move-window-to-workspace-down;
-
-      "Mod+Comma".action = consume-window-into-column;
-      "Mod+Period".action = expel-window-from-column;
-
-      "Mod+R".action = switch-preset-column-width;
-      "Mod+M".action = maximize-column;
-      "Mod+Shift+M".action = fullscreen-window;
-
-      "Mod+Minus".action = set-column-width "-10%";
-      "Mod+Plus".action = set-column-width "+10%";
-      "Mod+Shift+Minus".action = set-window-height "-10%";
-      "Mod+Shift+Plus".action = set-window-height "+10%";
-
-      "Mod+Shift+E".action = quit;
-      "Mod+Shift+P".action.spawn = "wlogout";
-    };
+  };
+  # lxqt-policykit-agent
+  systemd.user.services.lxqt-policykit-agent = {
+    description = "LXQt PolicyKit Agent";
+    serviceConfig.ExecStart = "${pkgs.lxqtPolicykitAgent}/bin/lxqt-policykit-agent";
+    wantedBy = ["default.target"];
   };
 }
