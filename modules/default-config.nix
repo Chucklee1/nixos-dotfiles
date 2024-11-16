@@ -7,7 +7,7 @@
 }: {
   imports = [
     ./GPU/nvidia.nix # toggle module
-    ./infsasoftware.nix
+    ./infasoftware.nix
     ./theming.nix
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
@@ -35,16 +35,18 @@
     config.allowUnfree = true;
     overlays = [inputs.niri.overlays.niri];
   };
-  nix.settings.auto-optimise-store = true;
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = ["nix-command" "flakes"];
+  };
 
-  # idk
+  # specifics
+  networking.hostName = "goat";
   networking.networkmanager.enable = true;
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
   # user
-  networking.hostName = "goat";
   users.users.goat = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
@@ -60,7 +62,7 @@
     };
   };
 
-  # overlay packages
+  # overlay packages ( I wanted to clearly see packages from overlays which is why niri is not in infasoftware.nix)
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
