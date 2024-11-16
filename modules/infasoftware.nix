@@ -90,7 +90,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
   # display-manager
   services.displayManager = {
     enable = true;
