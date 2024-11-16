@@ -4,6 +4,10 @@
   ...
 }: {
   programs.niri.settings = {
+    prefer-no-csd = true;
+    hotkey-overlay.skip-at-startup = false;
+    screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+
     binds = with config.lib.niri.actions; let
       sh = spawn "sh" "-c";
     in {
@@ -12,8 +16,8 @@
       "Mod+E".action = spawn "thunar";
 
       "Mod+Q".action = close-window;
-      "Mod+Down".action = focus-column-left;
-      "Mod+Up".action = focus-column-right;
+      "Mod+Left".action = focus-column-left;
+      "Mod+Right".action = focus-column-right;
     };
   };
 }
