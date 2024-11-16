@@ -23,39 +23,14 @@
       only-on-session = wrapper "only-on-session" "=";
       only-without-session = wrapper "only-without-session" "!=";
     in [
+      {command = ["wl-sunset"];}
+      {command = ["swww-daemon"];}
       # Waybar
-      {
-        command = ["${lib.getExe pkgs.waybar}"];
-      }
-
+      {command = ["${lib.getExe pkgs.waybar}"];}
       # LXQt PolicyKit Agent
-      {
-        command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];
-      }
-
+      {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
       # Dunst
-      {
-        command = ["${lib.getExe pkgs.dunst}"];
-      }
-
-      # swww-daemon
-      {
-        command = ["${lib.getExe pkgs.swww}" "swww-daemon"];
-      }
-      # wlsunset
-      {
-        command = [
-          "${lib.getExe pkgs.wlsunset}"
-          "-l"
-          "59.0"
-          "-L"
-          "11.0"
-          "-t"
-          "6500"
-          "-T"
-          "3500"
-        ];
-      }
+      {command = ["${lib.getExe pkgs.dunst}"];}
     ];
     # inputs
     input.keyboard.xkb.layout = "us";
@@ -108,6 +83,15 @@
 
       "XF86AudioRaiseVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"];
       "XF86AudioLowerVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"];
+      "XF86AudioMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
+
+      "XF86BrightnessMonUp".action.spawn = ["brightnessctl" "--device='intel_backlight'" "s" "5%-"];
+      "XF86BrightnessMonDown".action.spawn = ["brightnessctl" "--device='intel_backlight'" "s" "5%+"];
+      "XF86BrightnessKbdUp".action.spawn = ["brightnessctl" "--device='smc::kbd_backlight'" "s" "10%-"];
+      "XF86BrightnessKbdDown".action.spawn = ["brightnessctl" "--device='smc::kbd_backlight'" "s" "10%+"];
+
+      "XF86LaunchA".action.spawn = "firefox";
+      "XF86LaunchB".action.spawn = "code";
 
       "Mod+Q".action = close-window;
 
