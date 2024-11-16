@@ -5,9 +5,8 @@
   ...
 }: {
   # -----------------------------------------------------------
-  # theming
+  # system theming
   # -----------------------------------------------------------
-  fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})]; # needed for waybar and misc icons
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
@@ -38,9 +37,17 @@
       };
     };
   };
+  # -----------------------------------------------------------
+  # user theming
+  # -----------------------------------------------------------
   home-manager.users.goat = {
-    # user theming
-    gtk.iconTheme.name = "Papirus-Dark";
-    gtk.iconTheme.package = pkgs.papirus-icon-theme;
+    gtk = {
+      iconTheme.name = "Papirus-Dark";
+      iconTheme.package = pkgs.papirus-icon-theme;
+    };
+    home.fonts.packages = [
+      # needed for waybar and misc icons
+      (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+    ];
   };
 }
