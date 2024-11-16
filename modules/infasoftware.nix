@@ -1,27 +1,29 @@
 {pkgs, ...}: {
-  # system env packages
+  # -----------------------------------------------------------
+  # system packages
+  # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # Development Tools
+    # dev tools
     ripgrep
     alejandra
     nixd
     libgccjit
     rustc
 
-    # Command-Line Utilities
+    # cli utils
     killall
     pciutils
     sl
     cowsay
     neofetch
 
-    # Web & Networking Utilities
+    # web/net utils
     wget
     git
     curl
     networkmanagerapplet
 
-    # Compression & Archiving
+    # compresssion/archiving
     unrar
     unzip
     file-roller
@@ -29,7 +31,9 @@
     isoimagewriter
   ];
 
-  # home-manager packages
+  # -----------------------------------------------------------
+  # home packages
+  # -----------------------------------------------------------
   home-manager.users.goat.home.packages = with pkgs; [
     firefox
     vscode-fhs
@@ -37,8 +41,11 @@
     wineWowPackages.waylandFull
   ];
 
+  # -----------------------------------------------------------
   # system programs
+  # -----------------------------------------------------------
   programs = {
+    # File Manager
     thunar.enable = true;
     thunar.plugins = with pkgs.xfce; [
       thunar-archive-plugin
@@ -46,7 +53,9 @@
     ];
   };
 
-  # home manager programs
+  # -----------------------------------------------------------
+  # home programs
+  # -----------------------------------------------------------
   home-manager.users.goat.programs = {
     kitty = {
       enable = true;
@@ -59,7 +68,7 @@
       extraConfig = ''
         tab_bar_style fade
         tab_fade 1
-        active_tab_font_style   bold
+        active_tab_font_style bold
         inactive_tab_font_style bold
       '';
     };
@@ -88,28 +97,36 @@
     };
   };
 
-  # opengl option, renamed to graphics as of 24.11
-  hardware.graphics.enable = true;
+  # -----------------------------------------------------------
+  # hardware
+  # -----------------------------------------------------------
+  hardware = {
+    graphics.enable = true;
+    bluetooth.enable = true;
+    bluetooth.powerOnBoot = true;
+  };
 
-  # bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  services.blueman.enable = true;
-
+  # -----------------------------------------------------------
   # sound
-  hardware.pulseaudio.enable = false;
+  # -----------------------------------------------------------
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  # display-manager
+
+  # -----------------------------------------------------------
+  # display manager
+  # -----------------------------------------------------------
   services.displayManager = {
     enable = true;
     ly.enable = true;
   };
+
+  # -----------------------------------------------------------
   # misc services
+  # -----------------------------------------------------------
   services = {
     printing.enable = true;
     gvfs.enable = true;

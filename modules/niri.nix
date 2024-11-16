@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   # niri wont enable in home manager for me, idk why
   programs.niri = {
     enable = true;
