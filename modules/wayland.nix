@@ -39,36 +39,42 @@
     brightnessctl
   ];
 
-  # -----------------------------------------------------------
-  # home packages
-  # -----------------------------------------------------------
   home-manager.users.goat = {
+    # -----------------------------------------------------------
+    # home packages
+    # -----------------------------------------------------------
     home.packages = with pkgs; [
-      # dunst and related
+      # dependencies
       libnotify
-      # security tools
       libsecret
+      # passsword app
       seahorse
-      # swaylock and idle
-      swaylock-effects
+      # wallpaper tool
       swayidle
     ];
+    # -----------------------------------------------------------
+    # home programs
+    # -----------------------------------------------------------
+    programs = {
+      lazygit.enable = true;
+      wlogout.enable = true;
+      fuzzel.enable = true;
+      swaylock.enable = true;
+      swaylock.package = pkgs.swaylock-effects;
+    };
+    # -----------------------------------------------------------
+    # home services
+    # -----------------------------------------------------------
+    services = {
+      wlsunset = {
+        enable = true;
+        latitude = "47.9522539697603"; # vertically relative
+        longitude = "-122.2732338601"; # horizontally relative
+      };
+      dunst.enable = true;
+      swayidle.enable = true;
+    };
   };
-  # -----------------------------------------------------------
-  # home programs
-  # -----------------------------------------------------------
-  programs = {
-    # startup daemons
-    swww.enable = true;
-    wlsunset.enable = true;
-    dunst.enable = true;
-
-    # additional programs
-    lazygit.enable = true;
-    wlogout.enable = true;
-    fuzzel.enable = true;
-  };
-
   # -----------------------------------------------------------
   # security & policy
   # -----------------------------------------------------------
@@ -102,7 +108,7 @@
   # -----------------------------------------------------------
   systemd.user.services.lxqt-policykit-agent = {
     description = "LXQt PolicyKit Agent";
-    serviceConfig.ExecStart = "${pkgs.lxqtPolicykitAgent}/bin/lxqt-policykit-agent";
+    serviceConfig.ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
     wantedBy = ["default.target"];
   };
 

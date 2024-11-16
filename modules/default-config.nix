@@ -1,7 +1,7 @@
 {
+  pkgs,
   lib,
   config,
-  pkgs,
   inputs,
   ...
 }: {
@@ -10,7 +10,7 @@
     ./infasoftware.nix
     ./theming.nix
     ./wayland.nix
-    ./niri.nix
+    #./niri.nix
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
     inputs.niri.nixosModules.niri
@@ -37,10 +37,7 @@
   i18n.defaultLocale = "en_CA.UTF-8";
 
   # nix
-  nixpkgs = {
-    config.allowUnfree = true;
-    overlays = [inputs.niri.overlays.niri];
-  };
+  nixpkgs.config.allowUnfree = true;
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];

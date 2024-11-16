@@ -37,19 +37,23 @@
       };
     };
   };
+  # for waybar icons
+  fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})];
   # -----------------------------------------------------------
   # user theming
   # -----------------------------------------------------------
   home-manager.users.goat = {
+    # stylix targets
+    stylix.targets = {
+      niri.enable = true;
+      neovim.enable = true;
+    };
     # gtk specifics
     gtk = {
       iconTheme.name = "Papirus-Dark";
       iconTheme.package = pkgs.papirus-icon-theme;
     };
     # needed for waybar and misc icons
-    home.fonts.packages = [
-      (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-    ];
     # fancy terminal
     programs.oh-my-posh = {
       enable = true;
