@@ -40,7 +40,7 @@
 
       # swww-daemon
       {
-        command = ["${lib.getExe pkgs.swww}" "daemon"];
+        command = ["${lib.getExe pkgs.swww}" "swww-daemon"];
       }
       # wlsunset
       {

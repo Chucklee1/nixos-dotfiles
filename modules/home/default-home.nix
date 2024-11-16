@@ -64,6 +64,11 @@
         inactive_tab_font_style bold
       '';
     };
+    oh-my-posh = {
+      enable = true;
+      enableBoshIntigration = true;
+      useTheme = "pure";
+    };
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -82,12 +87,11 @@
       shellAliases = {
         sv = "sudo nvim";
         v = "nvim";
-        exec-waybar = "pkill waybar && waybar &";
-        exec-swww = "pkill swww && swww init && swww img ~/nixos-dotfiles/wallpapers/mono-forest.PNG";
+        exec-swww = "swww init && swww img ~/nixos-dotfiles/wallpapers/mono-forest.PNG";
         ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
-        update-desktop = "sudo nixos-rebuild switch --flake ./nixos-dotfiles#desktop --show-trace";
-        update-macbook = "sudo nixos-rebuild switch --flake ./nixos-dotfiles#macbook --show-trace";
+        update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
+        update-macbook = "sudo nixos-rebuild switch --flake .#macbook --show-trace";
       };
     };
   };
