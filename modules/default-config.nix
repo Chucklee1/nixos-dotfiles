@@ -75,6 +75,18 @@
           NIXOS_OZONE_WL = "1";
         };
       };
+      programs.bash = {
+        enable = true;
+        shellAliases = {
+          sv = "sudo nvim";
+          v = "nvim";
+          exec-swww = "swww init && swww img ~/nixos-dotfiles/wallpapers/mono-forest.PNG";
+          ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
+          cg = "sudo nix-collect-garbage";
+          update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
+          update-macbook = "sudo nixos-rebuild switch --flake .#macbook --show-trace";
+        };
+      };
     };
   };
 

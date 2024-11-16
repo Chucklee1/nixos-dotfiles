@@ -81,7 +81,7 @@
   # system programs
   programs = {
     niri.enable = true;
-    niri.package = pkgs.niri-unstable; # using overlay poackage
+    niri.package = pkgs.niri-unstable; # make niri use overlay poackage
     seahorse.enable = true; # password manager
     # thunar
     thunar.enable = true;
@@ -133,18 +133,6 @@
       enable = true;
       userEmail = "cooperkang4@gamil.com";
       userName = "Chucklee1";
-    };
-    bash = {
-      enable = true;
-      shellAliases = {
-        sv = "sudo nvim";
-        v = "nvim";
-        exec-swww = "swww init && swww img ~/nixos-dotfiles/wallpapers/mono-forest.PNG";
-        ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
-        cg = "sudo nix-collect-garbage";
-        update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
-        update-macbook = "sudo nixos-rebuild switch --flake .#macbook --show-trace";
-      };
     };
   };
 
