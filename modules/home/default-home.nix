@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    ./waybar.nix
     ./niri.nix
   ];
   home.sessionVariables = {
