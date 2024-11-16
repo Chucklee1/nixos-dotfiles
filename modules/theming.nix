@@ -4,6 +4,9 @@
   config,
   ...
 }: {
+  # -----------------------------------------------------------
+  # theming
+  # -----------------------------------------------------------
   fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})]; # needed for waybar and misc icons
   stylix = {
     enable = true;

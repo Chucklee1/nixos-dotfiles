@@ -9,8 +9,6 @@
     ./GPU/nvidia.nix # toggle module
     ./infasoftware.nix
     ./theming.nix
-    # for my own sanity, niri will have its own nix file
-    # related to niri stuff will go in wayland.nix
     ./wayland.nix
     ./niri.nix
     inputs.home-manager.nixosModules.home-manager
@@ -18,9 +16,9 @@
     inputs.niri.nixosModules.niri
   ];
 
-  system.stateVersion = "24.05"; # DO NOT CHANGE
-
-  # boot loader
+  # -----------------------------------------------------------
+  # boot loader & boot options
+  # -----------------------------------------------------------
   boot.loader = {
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
@@ -29,9 +27,14 @@
     grub.device = "nodev";
   };
 
-  # tty settings
-  console.font = "Lat2-Terminus16";
-  console.useXkbConfig = true;
+  # -----------------------------------------------------------
+  # system specifics
+  # -----------------------------------------------------------
+  system.stateVersion = "24.05"; # DO NOT CHANGE
+  networking.hostName = "goat";
+  networking.networkmanager.enable = true;
+  time.timeZone = "America/Vancouver";
+  i18n.defaultLocale = "en_CA.UTF-8";
 
   # nix
   nixpkgs = {
@@ -43,13 +46,13 @@
     experimental-features = ["nix-command" "flakes"];
   };
 
-  # specifics
-  networking.hostName = "goat";
-  networking.networkmanager.enable = true;
-  time.timeZone = "America/Vancouver";
-  i18n.defaultLocale = "en_CA.UTF-8";
+  # tty settings
+  console.font = "Lat2-Terminus16";
+  console.useXkbConfig = true;
 
+  # -----------------------------------------------------------
   # user
+  # -----------------------------------------------------------
   users.users.goat = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];

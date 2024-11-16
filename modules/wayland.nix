@@ -5,10 +5,10 @@
   ...
 }: {
   # -----------------------------------------------------------
-  # System Packages & Programs Section
+  # system packages & programs
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # Wayland & Display Utilities
+    # wayland & display utilities
     wayland
     wayland-protocols
     wayland-utils
@@ -17,30 +17,30 @@
     qt5.qtwayland
     qt6.qtwayland
 
-    # Clipboard & Clipboard Management
+    # clipboard & clipboard management
     wl-clipboard
     cliphist
     xclip
 
-    # Media Tools
+    # media tools
     mpv
     imv
     ffmpeg
     v4l-utils
 
-    # Keyboard & Input Tools
+    # keyboard & input tools
     wev
     ydotool
     wtype
 
-    # System Controls
+    # system controls
     playerctl
     pavucontrol
     brightnessctl
   ];
 
   # -----------------------------------------------------------
-  # Home Packages Section
+  # home packages
   # -----------------------------------------------------------
   home-manager.users.goat = {
     home.packages = with pkgs; [
@@ -53,48 +53,28 @@
       swaylock-effects
       swayidle
     ];
+  };
+  # -----------------------------------------------------------
+  # home programs
+  # -----------------------------------------------------------
+  programs = {
+    # startup daemons
+    swww.enable = true;
+    wlsunset.enable = true;
+    dunst.enable = true;
 
-    # -----------------------------------------------------------
-    # Home Programs Section (Startup Daemons)
-    # -----------------------------------------------------------
-    programs = {
-      # Startup Daemons
-      swww.enable = true;
-      wlsunset.enable = true;
-      dunst.enable = true;
-
-      # Additional programs
-      lazygit.enable = true;
-      wlogout.enable = true;
-      fuzzel.enable = true;
-    };
-
-    # -----------------------------------------------------------
-    # Session Variables Section (Niri Configuration)
-    # -----------------------------------------------------------
-    sessionVariables = {
-      DISPLAY = ":0"; # for Xwayland satellite
-      XDG_CURRENT_DESKTOP = "niri";
-      XDG_SESSION_DESKTOP = "niri";
-      XDG_SESSION_TYPE = "wayland";
-      GDK_BACKEND = "wayland";
-      GTK_CSD = "0";
-      CLUTTER_BACKEND = "wayland";
-      QT_QPA_PLATFORM = "wayland";
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-      QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-      SDL_VIDEODRIVER = "wayland";
-      MOZ_ENABLE_WAYLAND = "1";
-      NIXOS_OZONE_WL = "1";
-    };
+    # additional programs
+    lazygit.enable = true;
+    wlogout.enable = true;
+    fuzzel.enable = true;
   };
 
   # -----------------------------------------------------------
-  # Security & Policy Section
+  # security & policy
   # -----------------------------------------------------------
   security = {
-    rtkit.enable = true; # Enable RTKit for sound
-    polkit.enable = true; # Enable PolicyKit
+    rtkit.enable = true; # enable rtkit for sound
+    polkit.enable = true; # enable policykit
     polkit.extraConfig = ''
       polkit.addRule(function(action, subject) {
         if (
@@ -118,7 +98,7 @@
   };
 
   # -----------------------------------------------------------
-  # LXQt PolicyKit Agent Systemd Service Section
+  # lxqt policykit agent
   # -----------------------------------------------------------
   systemd.user.services.lxqt-policykit-agent = {
     description = "LXQt PolicyKit Agent";
@@ -127,7 +107,7 @@
   };
 
   # -----------------------------------------------------------
-  # XDG Desktop Portal Section
+  # xdg desktop portal
   # -----------------------------------------------------------
   xdg.portal = {
     enable = true;

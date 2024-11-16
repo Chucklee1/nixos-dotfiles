@@ -17,13 +17,13 @@
     cowsay
     neofetch
 
-    # web/net utils
+    # web & net utils
     wget
     git
     curl
     networkmanagerapplet
 
-    # compresssion/archiving
+    # compresssion & archiving
     unrar
     unzip
     file-roller
@@ -45,7 +45,6 @@
   # system programs
   # -----------------------------------------------------------
   programs = {
-    # File Manager
     thunar.enable = true;
     thunar.plugins = with pkgs.xfce; [
       thunar-archive-plugin
