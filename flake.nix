@@ -19,7 +19,7 @@
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules = [
-        ./hardware/desktop.nix
+        ./modules/hardware/desktop.nix
         ./modules/default-config.nix
         {nvidia.enable = true;}
       ];
@@ -29,7 +29,7 @@
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules = [
-        ./hardware/macbook.nix
+        ./modules/hardware/macbook.nix
         ./modules/default-config.nix
         {nvidia.enable = false;}
       ];
