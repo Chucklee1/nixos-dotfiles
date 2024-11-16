@@ -9,6 +9,9 @@
     ./GPU/nvidia.nix # toggle module
     ./infasoftware.nix
     ./theming.nix
+    # for my own sanity, niri will have its own nix file
+    # related to niri stuff will go in wayland.nix
+    ./wayland.nix
     ./niri.nix
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
