@@ -41,13 +41,20 @@
   # user theming
   # -----------------------------------------------------------
   home-manager.users.goat = {
+    # gtk specifics
     gtk = {
       iconTheme.name = "Papirus-Dark";
       iconTheme.package = pkgs.papirus-icon-theme;
     };
+    # needed for waybar and misc icons
     home.fonts.packages = [
-      # needed for waybar and misc icons
       (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     ];
+    # fancy terminal
+    programs.oh-my-posh = {
+      enable = true;
+      enableBashIntegration = true;
+      useTheme = "pure";
+    };
   };
 }

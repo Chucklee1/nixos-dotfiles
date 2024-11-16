@@ -71,11 +71,6 @@
         inactive_tab_font_style bold
       '';
     };
-    oh-my-posh = {
-      enable = true;
-      enableBashIntegration = true;
-      useTheme = "pure";
-    };
     neovim = {
       enable = true;
       defaultEditor = true;

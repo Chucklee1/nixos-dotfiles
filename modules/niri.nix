@@ -4,6 +4,13 @@
   ...
 }: {
   # -----------------------------------------------------------
+  # niri program ( wont work in home manager idk why )
+  # -----------------------------------------------------------
+  programs.niri = {
+    enable = true;
+    package = pkgs.niri-unstable; # make niri use overlay poackage
+  };
+  # -----------------------------------------------------------
   # home manager specifics
   # -----------------------------------------------------------
   home-manager.users.goat.home = {
@@ -23,13 +30,6 @@
       NIXOS_OZONE_WL = "1";
     };
     stylix.targets.niri.enable = true;
-  };
-  # -----------------------------------------------------------
-  # niri program ( wont work in home manager idk why )
-  # -----------------------------------------------------------
-  programs.niri = {
-    enable = true;
-    package = pkgs.niri-unstable; # make niri use overlay poackage
   };
   # -----------------------------------------------------------
   # niri settings
