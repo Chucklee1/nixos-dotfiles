@@ -75,12 +75,12 @@
       thunar-archive-plugin
       thunar-volman
     ];
-    lazygit.enable = true;
-    wlogout.enable = true;
   };
 
   # home manager programs
   home-manager.users.goat = {
+    lazygit.enable = true;
+    wlogout.enable = true;
     fuzzel.enable = true;
     programs = {
       kitty = {
