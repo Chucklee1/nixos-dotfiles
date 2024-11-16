@@ -14,8 +14,7 @@
     inputs.niri.nixosModules.niri
   ];
 
-  # D O  N O T  C H A N G E
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.05"; # DO NOT CHANGE
 
   # boot loader
   boot.loader = {
@@ -56,9 +55,26 @@
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
     users.goat = {
-      imports = [./home/default-home.nix];
-      home.username = "goat";
-      home.homeDirectory = "/home/goat";
+      imports = [./niri.nix];
+      home = {
+        stateVersion = "24.05"; # DO NOT CHANGE
+        username = "goat";
+        homeDirectory = "/home/goat";
+        sessionVariables = {
+          XDG_CURRENT_DESKTOP = "niri";
+          XDG_SESSION_DESKTOP = "niri";
+          XDG_SESSION_TYPE = "wayland";
+          GDK_BACKEND = "wayland";
+          GTK_CSD = "0";
+          CLUTTER_BACKEND = "wayland";
+          QT_QPA_PLATFORM = "wayland";
+          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+          QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+          SDL_VIDEODRIVER = "wayland";
+          MOZ_ENABLE_WAYLAND = "1";
+          NIXOS_OZONE_WL = "1";
+        };
+      };
     };
   };
 

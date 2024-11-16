@@ -38,7 +38,6 @@
     layout = {
       gaps = 8;
       border.width = 2;
-      border.active.color = "#7AA2F7";
       always-center-single-column = false;
     };
     window-rules = [

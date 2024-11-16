@@ -1,5 +1,9 @@
-{pkgs, lib, config, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
   fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})]; # needed for waybar and misc icons
   stylix = {
     enable = true;
@@ -30,5 +34,11 @@
         popups = 12;
       };
     };
+  };
+  home-manager.users.goat = {
+    # user theming
+    gtk.iconTheme.name = "Papirus-Dark";
+    gtk.iconTheme.package = pkgs.papirus-icon-theme;
+    stylix.targets.niri.enable = true;
   };
 }
