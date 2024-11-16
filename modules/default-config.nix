@@ -2,29 +2,54 @@
   lib,
   config,
   pkgs,
-  imports,
+  inputs,
   ...
 }: {
   imports = [
     ./GPU/nvidia.nix # toggle module
     ./theming.nix
+    inputs.home-manager.nixosModules.home-manager
+    inputs.stylix.nixosModules.stylix
+    inputs.niri.nixosModules.niri
   ];
+
+  # user
+  networking.hostName = "goat";
+  users.users.goat = { 
+    isNormalUser = true; 
+    extraGroups = ["wheel" "networkmanager"];
+    };
+  home-manager = { 
+    useUserPackages = true; 
+    useGlobalPkgs = true;
+    extraSpecialArgs = {inherit inputs;};
+    users.goat = { 
+      imports = [./home/default-home.nix];
+      home.username = "goat";
+      home.homeDirectory = "/home/goat";
+    }; 
+  };
+  
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+    efi.efiSysMountPoint = "/boot";
+    grub.enable = true;
+    grub.efiSupport = true;
+    grub.device = "nodev";
+  };
   # D O  N O T  C H A N G E
   system.stateVersion = "24.05";
 
-  # boot loader
-  boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-    plymouth.enable = true;
-  };
-
+  # boot load
   # tty settings
   console.font = "Lat2-Terminus16";
   console.useXkbConfig = true;
 
   # nix
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [inputs.niri.overlays.niri];
+  };
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
@@ -107,8 +132,9 @@
       thunar-archive-plugin
       thunar-volman
     ];
-    niri.enable = true;
     seahorse.enable = true; # password app
+    niri.enable = true;
+    niri.package = pkgs.niri-unstable;
   };
 
   # opengl option, renamed to graphics as of 24.11

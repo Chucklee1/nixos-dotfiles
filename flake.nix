@@ -12,45 +12,29 @@
   outputs = {
     self,
     nixpkgs,
+    home-manager,
     ...
-  } @ inputs: {
-    # goat - desktop profile
-    nixosConfigurations.goat = nixpkgs.lib.nixosSystem {
+  } @ inputs: let 
+    shared-modules = [
+      ./modules/default-config.nix
+    ];
+  in  {
+    # desktop profile
+    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
-      modules = [
-        ./hardware/goat-hardware-configuration.nix
-        ./modules/default-config.nix
-        inputs.home-manager.nixosModules.home-manager
-        inputs.stylix.nixosModules.stylix
-        inputs.niri.homeManagerModules.niri
-        {
-          # modules
-          nvidia.enable = true;
-          # user hostname
-          networking.hostName = "goat";
-          # system user config
-          users.users.goat = {
-            isNormalUser = true;
-            extraGroups = ["wheel" "networkmanager"];
-          };
-          # home manager user config
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            users = {
-              goat = {
-                imports = [
-                  ./home/default-home.nix
-                ];
-                home.username = "goat";
-                home.homeDirectory = "/home/goat";
-                programs.niri.enable = true;
-              };
-            };
-          };
-        }
+      modules = shared-modules ++ [
+        ./hardware/desktop.nix
+        { nvidia.enable = true; }
+      ];
+    };
+    # macbook profile
+    nixosConfigurations.macbook = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
+      modules = shared-modules ++ [
+        ./hardware/macbook.nix
+        { nvidia.enable = false; }
       ];
     };
   };
