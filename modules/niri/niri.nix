@@ -5,6 +5,8 @@
   config,
   ...
 }: {
+  imports = [inputs.niri.nixosModules.niri];
+
   options = {
     niri.enable = lib.mkEnableOption "enable niri window manager module";
   };
@@ -13,7 +15,6 @@
     # -----------------------------------------------------------
     # niri - general settings
     # -----------------------------------------------------------
-    imports = [inputs.niri.nixosModules.niri];
     nixpkgs.overlays = [inputs.niri.overlays.niri];
     programs.niri = {
       enable = true;
