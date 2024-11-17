@@ -4,9 +4,16 @@
   ...
 }: {
   # -----------------------------------------------------------
-  # niri settings
+  # niri specific settings
   # -----------------------------------------------------------
+  home.sessionVariables = {
+    XDG_CURRENT_DESKTOP = "niri";
+    XDG_SESSION_DESKTOP = "niri";
+  };
   stylix.targets.niri.enable = true;
+  # -----------------------------------------------------------
+  # niri program settings
+  # -----------------------------------------------------------
   programs.niri.settings = {
     # general
     prefer-no-csd = true;

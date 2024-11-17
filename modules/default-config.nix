@@ -58,7 +58,8 @@
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
     users.goat = {
-      imports = [./niri.nix];
+      # home manager module so with config.lib.niri.actions will work
+      imports = [./niri-settings.nix];
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE
         username = "goat";

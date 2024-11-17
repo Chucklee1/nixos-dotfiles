@@ -3,9 +3,7 @@
   # home - variables
   # -----------------------------------------------------------
   home-manager.users.goat.home.sessionVariables = {
-    DISPLAY = ":0"; # for xwayland satellite
-    XDG_CURRENT_DESKTOP = "niri";
-    XDG_SESSION_DESKTOP = "niri";
+    DISPLAY = ":0";
     XDG_SESSION_TYPE = "wayland";
     GDK_BACKEND = "wayland";
     GTK_CSD = "0";
