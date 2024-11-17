@@ -31,19 +31,30 @@
       };
       spawn-at-startup = [
         {
-          command = "swww-daemon";
+          command = ["swww-daemon"];
         }
         {
-          command = "swww img set ./nixos-dotfiles/wallpapers/mono-forest.PNG";
+          command = ["swww" "img" "set" "./nixos-dotfiles/wallpapers/mono-forest.PNG"];
         }
         {
-          command = "dunst";
+          command = ["dunst"];
         }
         {
-          command = "slsunset -t 5000 -T 6500";
+          command = ["slsunset" "-t" "5000" "-T" "6500"];
         }
         {
-          command = "swayidle -w timeout 600 'swaylock -f -c 000000' timeout 1200 'systemctl suspend' resume 'systemctl resume'"; #
+          command = [
+            "swayidle"
+            "-w"
+            "timeout"
+            "600"
+            "'swaylock -f -c 000000'"
+            "timeout"
+            "1200"
+            "'systemctl suspend'"
+            "resume"
+            "'systemctl resume'"
+          ];
         }
       ];
       # inputs
