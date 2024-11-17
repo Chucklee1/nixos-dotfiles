@@ -28,10 +28,7 @@
     # desktop profile
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {
-        device-resolution = "1920x1080";
-        inherit inputs;
-      };
+      specialArgs = {inherit inputs;};
       modules =
         shared-modules
         ++ [
@@ -45,10 +42,7 @@
     # macbook profile
     nixosConfigurations.macbook = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {
-        device-resolution = "2560x1600";
-        inherit inputs;
-      };
+      specialArgs = {inherit inputs;};
       modules =
         shared-modules
         ++ [

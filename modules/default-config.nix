@@ -3,7 +3,6 @@
   inputs,
   lib,
   config,
-  device-resolution,
   ...
 }: {
   imports = [
@@ -33,7 +32,6 @@
         enable = true;
         theme = "stylish";
         footer = true;
-        customResolution = device-resolution; # Optional: Set a custom resolution
       };
     };
   };
