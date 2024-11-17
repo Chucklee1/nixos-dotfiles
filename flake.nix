@@ -48,7 +48,7 @@
       };
       modules =
         shared-modules
-        + [
+        ++ [
           ./modules/hardware/macbook.nix
           {nvidia.enable = false;}
         ];
