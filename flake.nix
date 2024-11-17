@@ -36,7 +36,10 @@
         shared-modules
         ++ [
           ./modules/hardware/desktop.nix
-          {nvidia.enable = true;}
+          {
+            nvidia.enable = true;
+            steam.enable = true;
+          }
         ];
     };
     # macbook profile
@@ -50,7 +53,10 @@
         shared-modules
         ++ [
           ./modules/hardware/macbook.nix
-          {nvidia.enable = false;}
+          {
+            nvidia.enable = false;
+            steam.enable = false;
+          }
         ];
     };
   };

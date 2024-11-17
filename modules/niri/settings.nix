@@ -43,6 +43,9 @@
           command = ["wlsunset" "-t" "5000" "-T" "6500"];
         }
         {
+          command = [" xwayland-satellite"];
+        }
+        {
           command = [
             "swayidle"
             "-w"

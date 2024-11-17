@@ -10,6 +10,7 @@
     # toggle modules
     ./GPU/nvidia.nix
     ./niri/niri.nix
+    ./gamse.nix
     # the rest
     ./infasoftware.nix
     ./theming.nix
@@ -18,19 +19,22 @@
   # -----------------------------------------------------------
   # boot loader & boot options
   # -----------------------------------------------------------
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    efi.efiSysMountPoint = "/boot";
-    grub = {
-      enable = true;
-      efiSupport = true;
-      device = "nodev";
-    };
-    grub2-theme = {
-      enable = true;
-      theme = "stylish";
-      footer = true;
-      customResolution = device-resolution; # Optional: Set a custom resolution
+  boot = {
+    supportedFilesystems = ["ntfs"];
+    loader = {
+      efi.canTouchEfiVariables = true;
+      efi.efiSysMountPoint = "/boot";
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+      };
+      grub2-theme = {
+        enable = true;
+        theme = "stylish";
+        footer = true;
+        customResolution = device-resolution; # Optional: Set a custom resolution
+      };
     };
   };
 
