@@ -31,16 +31,19 @@
       };
       spawn-at-startup = [
         {
+          command = ["dunst"];
+        }
+        {
+          command = ["waybar"];
+        }
+        {
           command = ["swww-daemon"];
         }
         {
           command = ["swww" "img" "set" "./nixos-dotfiles/wallpapers/mono-forest.PNG"];
         }
         {
-          command = ["dunst"];
-        }
-        {
-          command = ["slsunset" "-t" "5000" "-T" "6500"];
+          command = ["wlsunset" "-t" "5000" "-T" "6500"];
         }
         {
           command = [
