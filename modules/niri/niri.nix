@@ -23,7 +23,7 @@
     };
     home-manager.users.goat = {
       # nested niri.settings so config.lib.niri.actions will work
-      imports = [./settings.nix];
+      imports = [./settings.nix ./waybar.nix];
       # so I dont have to color borders, its nice
       stylix.targets.niri.enable = true;
     };
@@ -69,7 +69,10 @@
       libnotify
       libsecret
       seahorse
-      swayidle
+      # in settings.nix startup
+      swww
+      dunst
+      wlsunset
     ];
 
     # -----------------------------------------------------------

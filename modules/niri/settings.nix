@@ -29,6 +29,23 @@
         MOZ_ENABLE_WAYLAND = "1";
         NIXOS_OZONE_WL = "1";
       };
+      spawn-at-startup = [
+        {
+          command = "swww-daemon";
+        }
+        {
+          command = "swww img set ./nixos-dotfiles/wallpapers/mono-forest.PNG";
+        }
+        {
+          command = "dunst";
+        }
+        {
+          command = "slsunset -t 5000 -T 6500";
+        }
+        {
+          command = "swayidle -w timeout 600 'swaylock -f -c 000000' timeout 1200 'systemctl suspend' resume 'systemctl resume'"; #
+        }
+      ];
       # inputs
       input.keyboard.xkb.layout = "us";
       input.mouse.accel-speed = 1.0;
