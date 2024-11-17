@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  device-wallpaper,
   ...
 }: {
   # -----------------------------------------------------------
@@ -10,7 +11,7 @@
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
-    image = ../pictures/mountain-sunset.jpg;
+    image = ../pictures/${device-wallpaper};
     base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-terminal-dark.yaml";
     opacity.terminal = 0.6;
     cursor.package = pkgs.bibata-cursors;

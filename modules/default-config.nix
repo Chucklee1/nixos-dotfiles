@@ -4,7 +4,6 @@
   lib,
   config,
   device-resolution,
-  device-wallpaper,
   ...
 }: {
   imports = [
@@ -26,7 +25,12 @@
       enable = true;
       efiSupport = true;
       device = "nodev";
-      gfxmodeEfi = device-resolution;
+    };
+    grub2-theme = {
+      enable = true;
+      theme = "stylish";
+      footer = true;
+      customResolution = device-resolution; # Optional: Set a custom resolution
     };
   };
 
