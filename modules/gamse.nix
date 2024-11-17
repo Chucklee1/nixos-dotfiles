@@ -19,11 +19,12 @@
         localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
       };
     };
-    enviorment.systemPackages = [pkgs.grapejuice];
     home-manager.users.goat = {
       home.packages = with pkgs; [
         protonup
         mangohud
+        wine
+        winetricks
       ];
 
       home.sessionVariables = {

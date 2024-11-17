@@ -39,7 +39,6 @@
     firefox
     vscode-fhs
     musescore
-    wineWowPackages.waylandFull
   ];
 
   # -----------------------------------------------------------
