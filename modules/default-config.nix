@@ -65,10 +65,7 @@
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = {
-      device-wallpaper = device-wallpaper;
-      inherit inputs;
-    };
+    extraSpecialArgs = {inherit inputs;};
   };
   home-manager.users.goat = {
     home = {
