@@ -3,6 +3,8 @@
   inputs,
   lib,
   config,
+  device-resolution,
+  device-wallpaper,
   ...
 }: {
   imports = [
@@ -24,6 +26,8 @@
       enable = true;
       efiSupport = true;
       device = "nodev";
+      gfxmodeEfi = device-resolution;
+      splashImage = "../pictures/${device-wallpaper}";
     };
     grub2-theme = {
       enable = true;
