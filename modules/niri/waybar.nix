@@ -8,79 +8,206 @@
     enable = true;
     systemd.enable = true;
     style = ''
-      ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar/style.css"}
+        ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar/style.css"}
+      * {
+        font-size: 14px;
+      }
 
       window#waybar {
-        background: transparent;
-        border-bottom: none;
+        background: #292b2e;
+        color: #fdf6e3;
+      }
+
+      #custom-right-arrow-dark,
+      #custom-left-arrow-dark {
+        color: #1a1a1a;
+      }
+      #custom-right-arrow-light,
+      #custom-left-arrow-light {
+        color: #292b2e;
+        background: #1a1a1a;
+      }
+
+      #workspaces,
+      #clock.1,
+      #clock.2,
+      #clock.3,
+      #pulseaudio,
+      #memory,
+      #cpu,
+      #battery,
+      #disk,
+      #tray {
+        background: #1a1a1a;
+      }
+
+      #workspaces button {
+        padding: 0 2px;
+        color: #fdf6e3;
+      }
+      #workspaces button.focused {
+        color: #268bd2;
+      }
+      #workspaces button:hover {
+        box-shadow: inherit;
+        text-shadow: inherit;
+      }
+      #workspaces button:hover {
+        background: #1a1a1a;
+        border: #1a1a1a;
+        padding: 0 3px;
+      }
+
+      #pulseaudio {
+        color: #268bd2;
+      }
+      #memory {
+        color: #2aa198;
+      }
+      #cpu {
+        color: #6c71c4;
+      }
+      #battery {
+        color: #859900;
+      }
+      #disk {
+        color: #b58900;
+      }
+
+      #clock,
+      #pulseaudio,
+      #memory,
+      #cpu,
+      #battery,
+      #disk {
+        padding: 0 10px;
       }
     '';
     settings = [
       {
-        height = 30;
         layer = "top";
-        position = "top";
-        tray = {spacing = 10;};
-        modules-left = [];
-        modules-center = [];
-        "niri/workspaces" = {
-          format = "{icon}";
-          format-icons = {
-            active = "";
-            default = "";
-          };
-        };
-        modules-right = [
-          "pulseaudio"
-          "network"
-          "cpu"
-          "memory"
-          "temperature"
+        position = "bottom";
+
+        modules-left = [
+          "sway/workspaces"
+          "custom/right-arrow-dark"
         ];
-        battery = {
-          format = "{capacity}% {icon}";
-          format-alt = "{time} {icon}";
-          format-charging = "{capacity}% ";
-          format-icons = ["" "" "" "" ""];
-          format-plugged = "{capacity}% ";
-          states = {
-            critical = 15;
-            warning = 30;
-          };
-        };
-        clock = {
-          format-alt = "{:%Y-%m-%d}";
-          tooltip-format = "{:%Y-%m-%d | %H:%M}";
-        };
-        cpu = {
-          format = "{usage}% ";
+        modules-center = [
+          "custom/left-arrow-dark"
+          "clock#1"
+          "custom/left-arrow-light"
+          "custom/left-arrow-dark"
+          "clock#2"
+          "custom/right-arrow-dark"
+          "custom/right-arrow-light"
+          "clock#3"
+          "custom/right-arrow-dark"
+        ];
+        modules-right = [
+          "custom/left-arrow-dark"
+          "pulseaudio"
+          "custom/left-arrow-light"
+          "custom/left-arrow-dark"
+          "memory"
+          "custom/left-arrow-light"
+          "custom/left-arrow-dark"
+          "cpu"
+          "custom/left-arrow-light"
+          "custom/left-arrow-dark"
+          "battery"
+          "custom/left-arrow-light"
+          "custom/left-arrow-dark"
+          "disk"
+          "custom/left-arrow-light"
+          "custom/left-arrow-dark"
+          "tray"
+        ];
+
+        custom."left-arrow-dark" = {
+          format = "";
           tooltip = false;
         };
-        memory = {format = "{}% ";};
-        network = {
-          interval = 1;
-          format-alt = "{ifname}: {ipaddr}/{cidr}";
-          format-disconnected = "Disconnected ⚠";
-          format-ethernet = "{ifname}: {ipaddr}/{cidr}   up: {bandwidthUpBits} down: {bandwidthDownBits}";
-          format-linked = "{ifname} (No IP) ";
-          format-wifi = "{essid} ({signalStrength}%) ";
+        custom."left-arrow-light" = {
+          format = "";
+          tooltip = false;
         };
+        custom."right-arrow-dark" = {
+          format = "";
+          tooltip = false;
+        };
+        custom."right-arrow-light" = {
+          format = "";
+          tooltip = false;
+        };
+
+        sway.workspaces = {
+          disable-scroll = true;
+          format = "{name}";
+        };
+
+        "clock#1" = {
+          format = "{:%a}";
+          tooltip = false;
+        };
+        "clock#2" = {
+          format = "{:%H:%M}";
+          tooltip = false;
+        };
+        "clock#3" = {
+          format = "{:%m-%d}";
+          tooltip = false;
+        };
+
         pulseaudio = {
-          format = "{volume}% {icon} {format_source}";
-          format-bluetooth = "{volume}% {icon} {format_source}";
-          format-bluetooth-muted = " {icon} {format_source}";
+          format = "{icon} {volume:2}%";
+          format-bluetooth = "{icon}  {volume}%";
+          format-muted = "MUTE";
           format-icons = {
-            default = ["" "" ""];
+            headphones = "";
+            default = [
+              ""
+              ""
+            ];
           };
-          format-muted = " {format_source}";
-          format-source = "{volume}% ";
-          format-source-muted = "";
-          on-click = "pavucontrol";
+          scroll-step = 5;
+          "on-click" = "pamixer -t";
+          "on-click-right" = "pavucontrol";
         };
-        temperature = {
-          critical-threshold = 80;
-          format = "{temperatureC}°C {icon}";
-          format-icons = ["" "" ""];
+
+        memory = {
+          interval = 5;
+          format = "Mem {}%";
+        };
+
+        cpu = {
+          interval = 5;
+          format = "CPU {usage:2}%";
+        };
+
+        battery = {
+          states = {
+            good = 95;
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon} {capacity}%";
+          "format-icons" = [
+            ""
+            ""
+            ""
+            ""
+            ""
+          ];
+        };
+
+        disk = {
+          interval = 5;
+          format = "Disk {percentage_used:2}%";
+          path = "/";
+        };
+
+        tray = {
+          "icon-size" = 20;
         };
       }
     ];

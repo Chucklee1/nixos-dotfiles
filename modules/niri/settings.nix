@@ -111,6 +111,11 @@
         "XF86AudioLowerVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"];
         "XF86AudioMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
 
+        "XF86MonBrightnessUp".action.spawn = ["brightnessctl" "--device=intel_backlight" "s" "5%+"];
+        "XF86MonBrightNessDown".action.spawn = ["brightnessctl" "--device=intel_backlight" "s" "5%-"];
+        "XF86KbdBrightNessUp".action.spawn = ["brightnessctl" "s" "10%+" "-d" "smc::kbd_backlight"];
+        "XF86KbdBrightNessDown".action.spawn = ["brightnessctl" "s" "10%-" "-d" "smc::kbd_backlight"];
+
         "XF86LaunchA".action.spawn = "firefox";
         "XF86LaunchB".action.spawn = "code";
 
