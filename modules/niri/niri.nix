@@ -115,6 +115,20 @@
       };
       dunst.enable = true;
       swayidle.enable = true;
+      # custom startup script
+      niri-startup = {
+        enable = true;
+        description = "the startup programs not built into nixos";
+        execStart = ''
+          #!/bin/bash
+          swww-daemon &
+          swww img $HOME/nixos-dotfiles/wallpapers/mono-forest.PNG
+          dunst &
+          kitty working-directory $HOME/nixos-dotfiles
+        '';
+        restart = "always";
+        wantedBy = ["default.target"];
+      };
     };
 
     # -----------------------------------------------------------

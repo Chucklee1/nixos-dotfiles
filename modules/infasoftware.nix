@@ -13,6 +13,7 @@
     # cli utils
     killall
     pciutils
+    btop
     sl
     cowsay
     neofetch
