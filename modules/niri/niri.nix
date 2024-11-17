@@ -11,7 +11,7 @@
 
   config = lib.mkIf config.niri.enable {
     # -----------------------------------------------------------
-    # niri - general settings
+    # niri - general settings 
     # -----------------------------------------------------------
     nixpkgs.overlays = [inputs.niri.overlays.niri];
     programs.niri = {
