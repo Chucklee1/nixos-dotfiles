@@ -40,9 +40,6 @@
           command = ["swww-daemon"];
         }
         {
-          command = ["swww" "img" "set" "./nixos-dotfiles/pictures/night-ridgeline.jpg"];
-        }
-        {
           command = ["wlsunset" "-t" "5000" "-T" "6500"];
         }
         {
