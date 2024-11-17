@@ -79,7 +79,7 @@
         sv = "sudo nvim";
         v = "nvim";
         kittty = "kitty working-directory $HOME/nixos-dotfiles";
-        exec-swww = "swww init && swww img ./pictures/landscapes/night-ridgeline.jpg";
+        exec-swww = "swww img ./pictures/landscapes/night-ridgeline.jpg";
         ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
