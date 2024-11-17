@@ -7,9 +7,10 @@
 }: {
   imports = [
     # flake inputs
-    inputs.home-manager.nixosModules.default
-    inputs.stylix.nixosModules.default
-    inputs.niri.nixosModules.default
+    inputs.home-manager.nixosModules.home-manager
+    inputs.stylix.nixosModules.stylix
+    inputs.niri.nixosModules.niri
+    inputs.grub2-themes.nixosModules.grub2-themes
     # toggle modules
     ./GPU/nvidia.nix
     ./niri/niri.nix
@@ -27,6 +28,12 @@
     grub.enable = true;
     grub.efiSupport = true;
     grub.device = "nodev";
+    grub2-theme = {
+      enable = true;
+      theme = "whitesur";
+      footer = true;
+      customResolution = "1920x1080"; # Optional: Set a custom resolution
+    };
   };
 
   # -----------------------------------------------------------
