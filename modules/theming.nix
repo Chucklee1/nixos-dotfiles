@@ -37,16 +37,20 @@
       };
     };
   };
+  # stylix targets
+  stylix.targets = {
+    grub.enable = false;
+  };
+  home-manager.users.goat.stylix.targets = {
+    neovim.enable = true;
+    waybar.enable = false;
+  };
   # for waybar icons
   fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})];
   # -----------------------------------------------------------
   # user theming
   # -----------------------------------------------------------
   home-manager.users.goat = {
-    # stylix targets
-    stylix.targets = {
-      neovim.enable = true;
-    };
     # gtk specifics
     gtk = {
       iconTheme.name = "Papirus-Dark";
