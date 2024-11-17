@@ -18,29 +18,12 @@
   # boot loader & boot options
   # -----------------------------------------------------------
   boot.loader = {
-    copyKernels = true;
-    extraFiles = {
-      "/desktop.png" = ../pictures/desktop.png;
-      "/macbook.png" = ../pictures/macbook.png;
-    };
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
     grub = {
       enable = true;
       efiSupport = true;
       device = "nodev";
-      extraConfig =
-        if builtins.getEnv "MY_PROFILE" == "macbook"
-        then ''
-          set gfxmode=2560x1600
-          set gfxpayload=keep
-          set background_image=/boot/macbook-boot.png
-        ''
-        else ''
-          set gfxmode=1920x1080
-          set gfxpayload=keep
-          set background_image=/boot/default-boot.png
-        '';
     };
     grub2-theme = {
       enable = true;
