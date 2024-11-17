@@ -5,6 +5,7 @@
   config,
   ...
 }: {
+  # cannot be within config scope
   imports = [inputs.niri.nixosModules.niri];
 
   options = {
