@@ -127,7 +127,6 @@
     gvfs.enable = true;
     tumbler.enable = true;
     fstrim.enable = true;
-    gnome.gnome-keyring.enable = true;
     openssh.enable = true;
   };
 }

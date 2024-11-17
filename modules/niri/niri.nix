@@ -27,26 +27,6 @@
       # so I dont have to color borders, its nice
       stylix.targets.niri.enable = true;
     };
-
-    # -----------------------------------------------------------
-    # home - variables
-    # -----------------------------------------------------------
-    home-manager.users.goat.home.sessionVariables = {
-      DISPLAY = ":0";
-      XDG_CURRENT_DESKTOP = "niri";
-      XDG_SESSION_DESKTOP = "niri";
-      XDG_SESSION_TYPE = "wayland";
-      GDK_BACKEND = "wayland";
-      GTK_CSD = "0";
-      CLUTTER_BACKEND = "wayland";
-      QT_QPA_PLATFORM = "wayland";
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-      QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-      SDL_VIDEODRIVER = "wayland";
-      MOZ_ENABLE_WAYLAND = "1";
-      NIXOS_OZONE_WL = "1";
-    };
-
     # -----------------------------------------------------------
     # system - packaes
     # -----------------------------------------------------------
@@ -90,7 +70,6 @@
       libsecret
       seahorse
       swayidle
-      swww
     ];
 
     # -----------------------------------------------------------
@@ -105,35 +84,9 @@
     };
 
     # -----------------------------------------------------------
-    # home - services
-    # -----------------------------------------------------------
-    home-manager.users.goat.services = {
-      wlsunset = {
-        enable = true;
-        latitude = "47.9522539697603"; # vertically relative
-        longitude = "-122.2732338601"; # horizontally relative
-      };
-      dunst.enable = true;
-      swayidle.enable = true;
-      # custom startup script
-      niri-startup = {
-        enable = true;
-        description = "the startup programs not built into nixos";
-        execStart = ''
-          #!/bin/bash
-          swww-daemon &
-          swww img $HOME/nixos-dotfiles/wallpapers/mono-forest.PNG
-          dunst &
-          kitty working-directory $HOME/nixos-dotfiles
-        '';
-        restart = "always";
-        wantedBy = ["default.target"];
-      };
-    };
-
-    # -----------------------------------------------------------
     # system - security & policy
     # -----------------------------------------------------------
+    services.gnome.gnome-keyring.enable = true;
     security = {
       rtkit.enable = true; # enable rtkit for sound
       polkit.enable = true; # enable policykit
