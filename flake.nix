@@ -30,8 +30,8 @@
       system = "x86_64-linux";
       specialArgs = {
         device-resolution = "1920x1080";
-        device-wallpaper = "awesome-boot.jpg";
         inherit inputs;
+        device-wallpaper = "mountain-sunset.jpg";
       };
       modules =
         shared-modules
@@ -45,7 +45,7 @@
       system = "x86_64-linux";
       specialArgs = {
         device-resolution = "2560x1600";
-        device-wallpaper = "chill-boot.jpg";
+        device-wallpaper = "cool-moon.jpg";
         inherit inputs;
       };
       modules =

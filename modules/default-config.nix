@@ -4,6 +4,7 @@
   lib,
   config,
   device-resolution,
+  device-wallpaper,
   ...
 }: {
   imports = [
@@ -79,7 +80,7 @@
         sv = "sudo nvim";
         v = "nvim";
         kittty = "kitty working-directory $HOME/nixos-dotfiles";
-        exec-swww = "swww init && swww img ./pictures/mono-forest.PNG";
+        exec-swww = "swww init && swww img ./pictures/${device-wallpaper}";
         ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";

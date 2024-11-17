@@ -5,6 +5,7 @@
   pkgs,
   lib,
   config,
+  device-wallpaper,
   ...
 }: {
   programs.niri = {
@@ -40,7 +41,7 @@
           command = ["swww-daemon"];
         }
         {
-          command = ["swww" "img" "set" "./nixos-dotfiles/pictures/mono-forest.PNG"];
+          command = ["swww" "img" "set" "./nixos-dotfiles/pictures/{device-wallpaper}"];
         }
         {
           command = ["wlsunset" "-t" "5000" "-T" "6500"];
