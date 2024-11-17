@@ -9,7 +9,7 @@
   };
 
   config = lib.mkIf config.bspwm.enable {
-    xserver.enable = true;
+    services.xserver.enable = true;
     environment.systemPackages = with pkgs; [
       feh
       xorg.xrandr

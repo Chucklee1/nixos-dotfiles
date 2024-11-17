@@ -23,23 +23,13 @@
         tray = {spacing = 10;};
         modules-left = [];
         modules-center = [];
-        modules-right =
-          [
-            "pulseaudio"
-            "network"
-            "cpu"
-            "memory"
-            "temperature"
-          ]
-          ++ (
-            if config.hostId == "caprine"
-            then ["battery"]
-            else []
-          )
-          ++ [
-            "clock"
-            "tray"
-          ];
+        modules-right = [
+          "pulseaudio"
+          "network"
+          "cpu"
+          "memory"
+          "temperature"
+        ];
         battery = {
           format = "{capacity}% {icon}";
           format-alt = "{time} {icon}";
