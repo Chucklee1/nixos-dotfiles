@@ -27,12 +27,6 @@
       efiSupport = true;
       device = "nodev";
       gfxmodeEfi = device-resolution;
-      splashImage = "../pictures/${device-wallpaper}";
-    };
-    grub2-theme = {
-      enable = true;
-      theme = "stylish";
-      footer = true;
     };
   };
 
