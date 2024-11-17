@@ -6,13 +6,15 @@
   ...
 }: {
   imports = [
+    # flake inputs
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
-    ./GPU/nvidia.nix # toggle module
+    # toggle modules
+    ./GPU/nvidia.nix
+    ./niri/niri.nix
+    # the rest
     ./infasoftware.nix
     ./theming.nix
-    ./wayland.nix
-    ./niri.nix
   ];
 
   # -----------------------------------------------------------
