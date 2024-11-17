@@ -13,7 +13,6 @@
     ./infasoftware.nix
     ./theming.nix
     ./wayland.nix
-    ./home.nix
   ];
 
   # -----------------------------------------------------------
@@ -53,5 +52,31 @@
   users.users.goat = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
+  };
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    extraSpecialArgs = {inherit inputs;};
+    users.goat = {
+      imports = [./niri.nix];
+      home = {
+        stateVersion = "24.05"; # DO NOT CHANGE
+        username = "goat";
+        homeDirectory = "/home/goat";
+      };
+      programs.bash = {
+        enable = true;
+        shellAliases = {
+          sv = "sudo nvim";
+          v = "nvim";
+          kittty = "kitty working-directory $HOME/nixos-dotfiles";
+          exec-swww = "swww init && swww img ~/nixos-dotfiles/wallpapers/mono-forest.PNG";
+          ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
+          cg = "sudo nix-collect-garbage";
+          update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
+          update-macbook = "sudo nixos-rebuild switch --flake .#macbook --show-trace";
+        };
+      };
+    };
   };
 }

@@ -1,11 +1,25 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   # -----------------------------------------------------------
-  # system packages & programs
+  # home - variables
+  # -----------------------------------------------------------
+  home-manager.users.goat.home.sessionVariables = {
+    DISPLAY = ":0"; # for xwayland satellite
+    XDG_CURRENT_DESKTOP = "niri";
+    XDG_SESSION_DESKTOP = "niri";
+    XDG_SESSION_TYPE = "wayland";
+    GDK_BACKEND = "wayland";
+    GTK_CSD = "0";
+    CLUTTER_BACKEND = "wayland";
+    QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    SDL_VIDEODRIVER = "wayland";
+    MOZ_ENABLE_WAYLAND = "1";
+    NIXOS_OZONE_WL = "1";
+  };
+
+  # -----------------------------------------------------------
+  # system - packaes
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # wayland & display utilities
@@ -39,44 +53,45 @@
     brightnessctl
   ];
 
-  home-manager.users.goat = {
-    # -----------------------------------------------------------
-    # home packages
-    # -----------------------------------------------------------
-    home.packages = with pkgs; [
-      # dependencies
-      libnotify
-      libsecret
-      # passsword app
-      seahorse
-      # wallpaper tool
-      swayidle
-    ];
-    # -----------------------------------------------------------
-    # home programs
-    # -----------------------------------------------------------
-    programs = {
-      lazygit.enable = true;
-      wlogout.enable = true;
-      fuzzel.enable = true;
-      swaylock.enable = true;
-      swaylock.package = pkgs.swaylock-effects;
-    };
-    # -----------------------------------------------------------
-    # home services
-    # -----------------------------------------------------------
-    services = {
-      wlsunset = {
-        enable = true;
-        latitude = "47.9522539697603"; # vertically relative
-        longitude = "-122.2732338601"; # horizontally relative
-      };
-      dunst.enable = true;
-      swayidle.enable = true;
-    };
-  };
   # -----------------------------------------------------------
-  # security & policy
+  # home - packages
+  # -----------------------------------------------------------
+  home-manager.users.goat.home.packages = with pkgs; [
+    # dependencies
+    libnotify
+    libsecret
+    # passsword app
+    seahorse
+    # wallpaper tool
+    swayidle
+  ];
+
+  # -----------------------------------------------------------
+  # home - programs
+  # -----------------------------------------------------------
+  home-manager.users.goat.programs = {
+    lazygit.enable = true;
+    wlogout.enable = true;
+    fuzzel.enable = true;
+    swaylock.enable = true;
+    swaylock.package = pkgs.swaylock-effects;
+  };
+
+  # -----------------------------------------------------------
+  # home - services
+  # -----------------------------------------------------------
+  home-manager.users.goat.services = {
+    wlsunset = {
+      enable = true;
+      latitude = "47.9522539697603"; # vertically relative
+      longitude = "-122.2732338601"; # horizontally relative
+    };
+    dunst.enable = true;
+    swayidle.enable = true;
+  };
+
+  # -----------------------------------------------------------
+  # system - security & policy
   # -----------------------------------------------------------
   security = {
     rtkit.enable = true; # enable rtkit for sound
@@ -104,7 +119,7 @@
   };
 
   # -----------------------------------------------------------
-  # lxqt policykit agent
+  # ssytem - lxqt policykit agent
   # -----------------------------------------------------------
   systemd.user.services.lxqt-policykit-agent = {
     description = "LXQt PolicyKit Agent";
@@ -113,7 +128,7 @@
   };
 
   # -----------------------------------------------------------
-  # xdg desktop portal
+  # system - xdg desktop portal
   # -----------------------------------------------------------
   xdg.portal = {
     enable = true;

@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   # -----------------------------------------------------------
-  # system packages
+  # enviorment packages
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # dev tools

@@ -6,7 +6,8 @@
   # -----------------------------------------------------------
   # niri settings
   # -----------------------------------------------------------
-  rograms.niri.settings = {
+  stylix.targets.niri.enable = true;
+  programs.niri.settings = {
     # general
     prefer-no-csd = true;
     hotkey-overlay.skip-at-startup = false;
