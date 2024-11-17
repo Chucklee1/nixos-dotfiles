@@ -9,7 +9,7 @@
     # toggle modules
     ./GPU/nvidia.nix
     ./niri/niri.nix
-    ./bspwn.nix
+    ./bspwm.nix
     ./gamse.nix
     # the rest
     ./infasoftware.nix
