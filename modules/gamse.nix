@@ -21,9 +21,10 @@
     };
     home-manager.users.goat = {
       home.packages = with pkgs; [
+        vulkan-tools
         protonup
         mangohud
-        wine
+        wineWowPackages.waylandFull
         winetricks
       ];
 
