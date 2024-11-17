@@ -39,7 +39,6 @@
             nvidia.enable = true;
             steam.enable = true;
             niri.enable = true;
-            bspwm.enable = false;
           }
         ];
     };
@@ -57,7 +56,6 @@
             nvidia.enable = false;
             steam.enable = false;
             niri.enable = false;
-            bspwm.enable = true;
           }
         ];
     };
