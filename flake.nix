@@ -36,3 +36,6 @@
     };
   };
 }
+# small notes:
+# default order parameters: pkgs, inputs, lib, config, ...
+

@@ -1,18 +1,18 @@
 {
   pkgs,
+  inputs,
   lib,
   config,
-  inputs,
   ...
 }: {
   imports = [
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
-    inputs.niri.nixosModules.niri
     ./GPU/nvidia.nix # toggle module
     ./infasoftware.nix
     ./theming.nix
     ./wayland.nix
+    ./niri.nix
   ];
 
   # -----------------------------------------------------------
@@ -53,30 +53,29 @@
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
   };
+  # shared-home-manager-settings
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
-    users.goat = {
-      # home manager module so with config.lib.niri.actions will work
-      imports = [./niri-settings.nix];
-      home = {
-        stateVersion = "24.05"; # DO NOT CHANGE
-        username = "goat";
-        homeDirectory = "/home/goat";
-      };
-      programs.bash = {
-        enable = true;
-        shellAliases = {
-          sv = "sudo nvim";
-          v = "nvim";
-          kittty = "kitty working-directory $HOME/nixos-dotfiles";
-          exec-swww = "swww init && swww img ~/nixos-dotfiles/wallpapers/mono-forest.PNG";
-          ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
-          cg = "sudo nix-collect-garbage";
-          update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
-          update-macbook = "sudo nixos-rebuild switch --flake .#macbook --show-trace";
-        };
+  };
+  home-manager.users.goat = {
+    home = {
+      stateVersion = "24.05"; # DO NOT CHANGE
+      username = "goat";
+      homeDirectory = "/home/goat";
+    };
+    programs.bash = {
+      enable = true;
+      shellAliases = {
+        sv = "sudo nvim";
+        v = "nvim";
+        kittty = "kitty working-directory $HOME/nixos-dotfiles";
+        exec-swww = "swww init && swww img ./wallpapers/mono-forest.PNG";
+        ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
+        cg = "sudo nix-collect-garbage";
+        update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
+        update-macbook = "sudo nixos-rebuild switch --flake .#macbook --show-trace";
       };
     };
   };

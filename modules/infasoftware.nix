@@ -95,7 +95,7 @@
   # hardware
   # -----------------------------------------------------------
   hardware = {
-    graphics.enable = true;
+    graphics.enable = true; # renamed opengl to graphics as of 24.11
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
   };
