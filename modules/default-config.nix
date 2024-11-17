@@ -4,7 +4,6 @@
   lib,
   config,
   device-resolution,
-  device-wallpaper,
   ...
 }: {
   imports = [
@@ -66,7 +65,10 @@
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {
+      device-wallpaper = device-wallpaper;
+      inherit inputs;
+    };
   };
   home-manager.users.goat = {
     home = {
@@ -80,7 +82,7 @@
         sv = "sudo nvim";
         v = "nvim";
         kittty = "kitty working-directory $HOME/nixos-dotfiles";
-        exec-swww = "swww init && swww img ./pictures/${device-wallpaper}";
+        exec-swww = "swww init && swww img ./pictures/landscapes/night-ridgeline.jpg";
         ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
