@@ -13,34 +13,40 @@
   outputs = {
     self,
     nixpkgs,
+    grub2-themes,
     ...
-  } @ inputs: {
+  } @ inputs: let
+    shared-modules = [
+      ./modules/default-config.nix
+      inputs.home-manager.nixosModules.home-manager
+      inputs.stylix.nixosModules.stylix
+      inputs.niri.nixosModules.niri
+      # needs to be under default group :(
+      grub2-themes.nixosModules.default
+      {niri.enable = true;}
+    ];
+  in {
     # desktop profile
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
-      modules = [
-        ./modules/hardware/desktop.nix
-        ./modules/default-config.nix
-        {
-          # toggle module options
-          nvidia.enable = true;
-          niri.enable = true;
-        }
-      ];
+      modules =
+        shared-modules
+        ++ [
+          ./modules/hardware/desktop.nix
+          {nvidia.enable = true;}
+        ];
     };
     # macbook profile
     nixosConfigurations.macbook = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
-      modules = [
-        ./modules/hardware/macbook.nix
-        ./modules/default-config.nix
-        {
-          nvidia.enable = false;
-          niri.enable = true;
-        }
-      ];
+      modules =
+        shared-modules
+        + [
+          ./modules/hardware/macbook.nix
+          {nvidia.enable = false;}
+        ];
     };
   };
 }
