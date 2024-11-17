@@ -22,13 +22,15 @@
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
       grub2-themes.nixosModules.default
-      {niri.enable = true;}
     ];
   in {
     # desktop profile
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
+      specialArgs = {
+        inherit inputs;
+        niri.enable = true;
+      };
       modules =
         shared-modules
         ++ [
@@ -36,13 +38,17 @@
           {
             nvidia.enable = true;
             steam.enable = true;
+            niri.enable = true;
+            bspwm.enable = false;
           }
         ];
     };
     # macbook profile
     nixosConfigurations.macbook = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
+      specialArgs = {
+        inherit inputs;
+      };
       modules =
         shared-modules
         ++ [
@@ -50,6 +56,8 @@
           {
             nvidia.enable = false;
             steam.enable = false;
+            niri.enable = false;
+            bspwm.enable = true;
           }
         ];
     };
