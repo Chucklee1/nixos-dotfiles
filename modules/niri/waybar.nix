@@ -19,10 +19,17 @@
       {
         height = 30;
         layer = "top";
-        position = "bottom";
+        position = "top";
         tray = {spacing = 10;};
         modules-left = [];
         modules-center = [];
+        "niri/workspaces" = {
+          format = "{icon}";
+          format-icons = {
+            active = "";
+            default = "";
+          };
+        };
         modules-right = [
           "pulseaudio"
           "network"
