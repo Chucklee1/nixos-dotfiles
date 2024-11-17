@@ -5,9 +5,6 @@
   config,
   ...
 }: {
-  # cannot be within config scope
-  imports = [inputs.niri.nixosModules.niri];
-
   options = {
     niri.enable = lib.mkEnableOption "enable niri window manager module";
   };

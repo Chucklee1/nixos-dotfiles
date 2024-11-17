@@ -7,8 +7,9 @@
 }: {
   imports = [
     # flake inputs
-    inputs.home-manager.nixosModules.home-manager
-    inputs.stylix.nixosModules.stylix
+    inputs.home-manager.nixosModules.default
+    inputs.stylix.nixosModules.default
+    inputs.niri.nixosModules.default
     # toggle modules
     ./GPU/nvidia.nix
     ./niri/niri.nix
