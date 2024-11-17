@@ -10,7 +10,7 @@
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
-    image = ../wallpapers/clouds-sunset.jpg;
+    image = ../pictures/mountain-sunset.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-terminal-dark.yaml";
     opacity.terminal = 0.6;
     cursor.package = pkgs.bibata-cursors;

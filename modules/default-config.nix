@@ -18,19 +18,34 @@
   # boot loader & boot options
   # -----------------------------------------------------------
   boot.loader = {
+    copyKernels = true;
+    extraFiles = {
+      "/desktop.png" = ../pictures/desktop.png;
+      "/macbook.png" = ../pictures/macbook.png;
+    };
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
     grub = {
       enable = true;
       efiSupport = true;
       device = "nodev";
-      splashImage = null;
+      extraConfig =
+        if builtins.getEnv "MY_PROFILE" == "macbook"
+        then ''
+          set gfxmode=2560x1600
+          set gfxpayload=keep
+          set background_image=/boot/macbook-boot.png
+        ''
+        else ''
+          set gfxmode=1920x1080
+          set gfxpayload=keep
+          set background_image=/boot/default-boot.png
+        '';
     };
     grub2-theme = {
       enable = true;
       theme = "stylish";
       footer = true;
-      customResolution = "1920x1080";
     };
   };
 
@@ -79,7 +94,7 @@
         sv = "sudo nvim";
         v = "nvim";
         kittty = "kitty working-directory $HOME/nixos-dotfiles";
-        exec-swww = "swww init && swww img ./wallpapers/mono-forest.PNG";
+        exec-swww = "swww init && swww img ./pictures/mono-forest.PNG";
         ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
