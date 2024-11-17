@@ -21,7 +21,10 @@
       modules = [
         ./modules/hardware/desktop.nix
         ./modules/default-config.nix
-        {nvidia.enable = true;}
+        {
+          nvidia.enable = true;
+          niri.enable = true;
+        }
       ];
     };
     # macbook profile
@@ -31,11 +34,15 @@
       modules = [
         ./modules/hardware/macbook.nix
         ./modules/default-config.nix
-        {nvidia.enable = false;}
+        {
+          nvidia.enable = false;
+          niri.enable = true;
+        }
       ];
     };
   };
 }
 # small notes:
-# default order parameters: pkgs, inputs, lib, config, ...
+#   - default order parameters:
+#     - { pkgs, inputs, lib, config, ... }:
 
