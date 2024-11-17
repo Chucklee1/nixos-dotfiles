@@ -22,8 +22,14 @@
         ./modules/hardware/desktop.nix
         ./modules/default-config.nix
         {
+          # toggle module options
           nvidia.enable = true;
           niri.enable = true;
+          # boot resolution - MAKE SURE GRUB IS ENABLED
+          boot.loader.grub.extraConfig = ''
+            set gfxmode=1920x1080
+            set gfxpayload=keep
+          '';
         }
       ];
     };
@@ -43,6 +49,5 @@
   };
 }
 # small notes:
-#   - default order parameters:
-#     - { pkgs, inputs, lib, config, ... }:
+# - default order parameters - { pkgs, inputs, lib, config, ... }
 
