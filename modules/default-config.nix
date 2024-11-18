@@ -44,6 +44,7 @@
   networking.networkmanager.enable = true;
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
+  console.useXkbConfig = true;
 
   # nix
   nixpkgs.config.allowUnfree = true;
@@ -51,10 +52,6 @@
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
   };
-
-  # tty settings
-  console.font = "Lat2-Terminus16";
-  console.useXkbConfig = true;
 
   # -----------------------------------------------------------
   # user

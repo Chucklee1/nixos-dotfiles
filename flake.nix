@@ -36,6 +36,7 @@
             nvidia.enable = true;
             steam.enable = true;
             niri.enable = true;
+            console.font = "Lat2-Terminus16";
           }
         ];
     };
@@ -51,6 +52,7 @@
             nvidia.enable = false;
             steam.enable = false;
             niri.enable = true;
+            console.font = "Lat2-Terminus32";
           }
         ];
     };

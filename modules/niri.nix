@@ -72,6 +72,7 @@
       libsecret
       seahorse
       # in settings.nix startup
+      waybar
       swww
       dunst
       wlsunset
