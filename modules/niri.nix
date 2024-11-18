@@ -11,9 +11,26 @@
 
   config = lib.mkIf config.niri.enable {
     # -----------------------------------------------------------
+    # niri - general settings
+    # -----------------------------------------------------------
+    nixpkgs.overlays = [inputs.niri.overlays.niri];
+    programs.niri = {
+      enable = true;
+      package = pkgs.niri-unstable;
+    };
+    home-manager.users.goat = {
+      # nested niri.settings so config.lib.niri.actions will work
+      imports = [./settings.nix];
+      home.file = {
+        "user/.config/program/file_1".source = ./waybar/config.jsonc;
+        "user/.config/program/file_2".source = ./waybar/style.csss;
+      };
+      # so I dont have to color borders, its nice
+      stylix.targets.niri.enable = true;
+    };
+    # -----------------------------------------------------------
     # system - packaes
     # -----------------------------------------------------------
-    programs.niri.enable = true;
     environment.systemPackages = with pkgs; [
       # wayland & display utilities
       wayland
@@ -58,7 +75,6 @@
       swww
       dunst
       wlsunset
-      swayidle
     ];
 
     # -----------------------------------------------------------
@@ -105,7 +121,7 @@
     # system - lxqt policykit agent
     # -----------------------------------------------------------
     systemd.user.services.lxqt-policykit-agent = {
-      description = "LXQT PolicyKit Agent";
+      description = "LXQt PolicyKit Agent";
       serviceConfig.ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
       wantedBy = ["default.target"];
     };
