@@ -74,6 +74,12 @@
       stateVersion = "24.05"; # DO NOT CHANGE
       username = "goat";
       homeDirectory = "/home/goat";
+      #symlinking
+      file = {
+        "./config/niri/config.kdl".source = ../dotconfig/niri/config.kdl;
+        ".config/waybar/config.jsonc".source = ../dotconfig/waybar/config.jsonc;
+        ".config/waybar/style.css".source = ../dotconfig/waybar/style.csss;
+      };
     };
     programs.bash = {
       enable = true;
@@ -81,7 +87,7 @@
         sv = "sudo nvim";
         v = "nvim";
         kittty = "kitty working-directory $HOME/nixos-dotfiles";
-        exec-swww = "swww img ./pictures/landscapes/night-ridgeline.jpg";
+        exec-swww = "swww img ./pictures/night-ridgeline.jpg";
         ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";

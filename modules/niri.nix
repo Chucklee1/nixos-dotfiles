@@ -18,15 +18,9 @@
       enable = true;
       package = pkgs.niri-unstable;
     };
-    home-manager.users.goat = {
-      home.file = {
-        "./config/niri/config.kdl".source = ./niri/config.kdl;
-        ".config/waybar/config.jsonc".source = ./waybar/config.jsonc;
-        ".config/waybar/style.css".source = ./waybar/style.csss;
-      };
-      # so I dont have to color borders, its nice
-      stylix.targets.niri.enable = true;
-    };
+    # so I dont have to color borders, its nice
+    home-manager.users.goat.stylix.targets.niri.enable = true;
+
     # -----------------------------------------------------------
     # system - packaes
     # -----------------------------------------------------------
@@ -121,7 +115,7 @@
     # system - lxqt policykit agent
     # -----------------------------------------------------------
     systemd.user.services.lxqt-policykit-agent = {
-      description = "LXQt PolicyKit Agent";
+      description = "LXQT PolicyKit Agent";
       serviceConfig.ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
       wantedBy = ["default.target"];
     };
