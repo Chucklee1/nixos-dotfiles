@@ -44,13 +44,8 @@
   # -----------------------------------------------------------
   # system programs
   # -----------------------------------------------------------
-  programs = {
-    thunar.enable = true;
-    thunar.plugins = with pkgs.xfce; [
-      thunar-archive-plugin
-      thunar-volman
-    ];
-  };
+
+  # none rn :\
 
   # -----------------------------------------------------------
   # home programs

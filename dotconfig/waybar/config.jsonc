@@ -6,7 +6,7 @@
 	"height": 30,
 
 	"modules-left": [
-		"sway/workspaces",
+		"niri/workspaces",
 		"custom/right-arrow-dark"
 	],
 	"modules-center": [
@@ -57,9 +57,12 @@
 		"tooltip": false
 	},
 
-	"sway/workspaces": {
-		"disable-scroll": true,
-		"format": "{name}"
+	"niri/workspaces": {
+		"format": "{icon}",
+		"format-icons": {
+			"focused": "󰻀",
+			"default": ""
+		}
 	},
 
 	"clock#1": {

@@ -78,8 +78,6 @@
       stateVersion = "24.05"; # DO NOT CHANGE
       username = "goat";
       homeDirectory = "/home/goat";
-      # symlinking
-      file.".config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".source = ../dotconfig/thunar/thunar.xml;
     };
     programs.bash = {
       enable = true;

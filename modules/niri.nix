@@ -27,8 +27,7 @@
       stylix.targets.waybar.enable = false;
       programs.waybar.enable = true;
       home.file = {
-        ".config/waybar/config.jsonc".source = ../dotconfig/waybar/config.jsonc;
-        ".config/waybar/style.css".source = ../dotconfig/waybar/style.css;
+        ".config/waybar/".source = ../dotconfig/waybar/;
       };
     };
     # -----------------------------------------------------------
@@ -43,7 +42,6 @@
       egl-wayland
       qt5.qtwayland
       qt6.qtwayland
-      xwayland-satellite
 
       # clipboard & clipboard management
       wl-clipboard

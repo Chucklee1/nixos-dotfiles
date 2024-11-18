@@ -26,6 +26,7 @@
         mangohud
         wineWowPackages.waylandFull
         winetricks
+        xwayland-satellite
       ];
 
       home.sessionVariables = {
