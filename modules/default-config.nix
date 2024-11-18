@@ -70,6 +70,7 @@
     extraSpecialArgs = {inherit inputs;};
   };
   home-manager.users.goat = {
+    stylix.targets.waybar.enable = false;
     home = {
       stateVersion = "24.05"; # DO NOT CHANGE
       username = "goat";

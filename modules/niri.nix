@@ -11,19 +11,9 @@
 
   config = lib.mkIf config.niri.enable {
     # -----------------------------------------------------------
-    # niri - general settings
-    # -----------------------------------------------------------
-    nixpkgs.overlays = [inputs.niri.overlays.niri];
-    programs.niri = {
-      enable = true;
-      package = pkgs.niri-unstable;
-    };
-    # so I dont have to color borders, its nice
-    home-manager.users.goat.stylix.targets.niri.enable = true;
-
-    # -----------------------------------------------------------
     # system - packaes
     # -----------------------------------------------------------
+    programs.niri.enable = true;
     environment.systemPackages = with pkgs; [
       # wayland & display utilities
       wayland
