@@ -8,24 +8,42 @@
     enable = true;
     systemd.enable = true;
     style = ''
-        ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar/style.css"}
+      ${builtins.readFile "${pkgs.waybar}/etc/xdg/waybar/style.css"}
+      @define-color base00 #171D23;
+      @define-color base01 #1D252C;
+      @define-color base02 #28323A;
+      @define-color base03 #526270;
+      @define-color base04 #B7C5D3;
+      @define-color base05 #D8E2EC;
+      @define-color base06 #F6F6F8;
+      @define-color base07 #FBFBFD;
+      @define-color base08 #D95468;
+      @define-color base09 #FF9E64;
+      @define-color base0A #EBBF83;
+      @define-color base0B #8BD49C;
+      @define-color base0C #70E1E8;
+      @define-color base0D #539AFC;
+      @define-color base0E #B62D65;
+      @define-color base0F #DD9D82;
+
       * {
         font-size: 14px;
+        font-family: "Noto Nerd Font";
       }
 
       window#waybar {
-        background: #292b2e;
-        color: #fdf6e3;
+        background: @base02;
+        color: @base05;
       }
 
       #custom-right-arrow-dark,
       #custom-left-arrow-dark {
-        color: #1a1a1a;
+        color: @base00;
       }
       #custom-right-arrow-light,
       #custom-left-arrow-light {
-        color: #292b2e;
-        background: #1a1a1a;
+        color: @base02;
+        background: @base00;
       }
 
       #workspaces,
@@ -38,40 +56,40 @@
       #battery,
       #disk,
       #tray {
-        background: #1a1a1a;
+        background: @base00;
       }
 
       #workspaces button {
         padding: 0 2px;
-        color: #fdf6e3;
+        color: @base05;
       }
       #workspaces button.focused {
-        color: #268bd2;
+        color: @base0D;
       }
       #workspaces button:hover {
         box-shadow: inherit;
         text-shadow: inherit;
       }
       #workspaces button:hover {
-        background: #1a1a1a;
-        border: #1a1a1a;
+        background: @base00;
+        border: @base00;
         padding: 0 3px;
       }
 
       #pulseaudio {
-        color: #268bd2;
+        color: @base0D;
       }
       #memory {
-        color: #2aa198;
+        color: @base0C;
       }
       #cpu {
-        color: #6c71c4;
+        color: @base0E;
       }
       #battery {
-        color: #859900;
+        color: @base0B;
       }
       #disk {
-        color: #b58900;
+        color: @base0A;
       }
 
       #clock,
@@ -85,11 +103,12 @@
     '';
     settings = [
       {
+        height = 30;
         layer = "top";
-        position = "bottom";
+        position = "top";
 
         modules-left = [
-          "sway/workspaces"
+          "niri/workspaces"
           "custom/right-arrow-dark"
         ];
         modules-center = [
@@ -123,26 +142,31 @@
           "tray"
         ];
 
-        custom."left-arrow-dark" = {
-          format = "";
-          tooltip = false;
-        };
-        custom."left-arrow-light" = {
-          format = "";
-          tooltip = false;
-        };
-        custom."right-arrow-dark" = {
-          format = "";
-          tooltip = false;
-        };
-        custom."right-arrow-light" = {
-          format = "";
-          tooltip = false;
+        custom = {
+          "left-arrow-dark" = {
+            format = "";
+            tooltip = false;
+          };
+          "left-arrow-light" = {
+            format = "";
+            tooltip = false;
+          };
+          "right-arrow-dark" = {
+            format = "";
+            tooltip = false;
+          };
+          "right-arrow-light" = {
+            format = "";
+            tooltip = false;
+          };
         };
 
-        sway.workspaces = {
-          disable-scroll = true;
-          format = "{name}";
+        "niri/workspaces" = {
+          format = "{icon}";
+          format-icons = {
+            active = "󰻀";
+            default = "";
+          };
         };
 
         "clock#1" = {
@@ -164,14 +188,11 @@
           format-muted = "MUTE";
           format-icons = {
             headphones = "";
-            default = [
-              ""
-              ""
-            ];
+            default = ["" ""];
           };
           scroll-step = 5;
-          "on-click" = "pamixer -t";
-          "on-click-right" = "pavucontrol";
+          on-click = "pamixer -t";
+          on-click-right = "pavucontrol";
         };
 
         memory = {
@@ -191,13 +212,7 @@
             critical = 15;
           };
           format = "{icon} {capacity}%";
-          "format-icons" = [
-            ""
-            ""
-            ""
-            ""
-            ""
-          ];
+          format-icons = ["" "" "" "" ""];
         };
 
         disk = {
