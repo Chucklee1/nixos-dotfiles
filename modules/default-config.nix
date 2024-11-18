@@ -44,7 +44,13 @@
   networking.networkmanager.enable = true;
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
-  console.useXkbConfig = true;
+  # font for weird 16:10 resolution sacaling
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    packages = with pkgs; [terminus_font];
+    keyMap = "us";
+  };
 
   # nix
   nixpkgs.config.allowUnfree = true;

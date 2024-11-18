@@ -40,7 +40,6 @@
   # stylix targets
   stylix.targets = {
     grub.enable = false;
-    waybar.enable = false;
   };
   home-manager.users.goat.stylix.targets = {
     neovim.enable = true;

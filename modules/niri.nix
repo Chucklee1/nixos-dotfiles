@@ -21,12 +21,15 @@
     home-manager.users.goat = {
       # nested niri.settings so config.lib.niri.actions will work
       imports = [./settings.nix];
+      # so I dont have to color borders, its nice
+      stylix.targets.niri.enable = true;
+      # waybar
+      stylix.targets.waybar.enable = false;
+      programs.waybar.enable = false;
       home.file = {
         ".config/program/file_1".source = ../dotconfig/waybar/config.jsonc;
         ".config/program/file_2".source = ../dotconfig/waybar/style.css;
       };
-      # so I dont have to color borders, its nice
-      stylix.targets.niri.enable = true;
     };
     # -----------------------------------------------------------
     # system - packaes
@@ -72,7 +75,6 @@
       libsecret
       seahorse
       # in settings.nix startup
-      waybar
       swww
       dunst
       wlsunset
