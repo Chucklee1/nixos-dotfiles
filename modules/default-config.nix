@@ -76,7 +76,7 @@
       homeDirectory = "/home/goat";
       #symlinking
       file = {
-        "./config/niri/config.kdl".source = ../dotconfig/niri/config.kdl;
+        ".config/niri/config.kdl".source = ../dotconfig/niri/config.kdl;
         ".config/waybar/config.jsonc".source = ../dotconfig/waybar/config.jsonc;
         ".config/waybar/style.css".source = ../dotconfig/waybar/style.csss;
       };
