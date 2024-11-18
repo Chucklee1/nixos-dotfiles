@@ -20,15 +20,8 @@
     };
     home-manager.users.goat = {
       # nested niri.settings so config.lib.niri.actions will work
-      imports = [./settings.nix];
-      # so I dont have to color borders, its nice
+      imports = [./settings.nix ./waybar.nix];
       stylix.targets.niri.enable = true;
-      # waybar
-      stylix.targets.waybar.enable = false;
-      programs.waybar.enable = true;
-      home.file = {
-        ".config/waybar/".source = ../dotconfig/waybar/;
-      };
     };
     # -----------------------------------------------------------
     # system - packaes
