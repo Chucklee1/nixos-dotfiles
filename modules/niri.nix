@@ -25,10 +25,10 @@
       stylix.targets.niri.enable = true;
       # waybar
       stylix.targets.waybar.enable = false;
-      programs.waybar.enable = false;
+      programs.waybar.enable = true;
       home.file = {
-        ".config/program/file_1".source = ../dotconfig/waybar/config.jsonc;
-        ".config/program/file_2".source = ../dotconfig/waybar/style.css;
+        ".config/waybar/config.jsonc".source = ../dotconfig/waybar/config.jsonc;
+        ".config/waybar/style.css".source = ../dotconfig/waybar/style.css;
       };
     };
     # -----------------------------------------------------------
