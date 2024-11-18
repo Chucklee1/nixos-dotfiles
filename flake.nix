@@ -50,7 +50,7 @@
           {
             nvidia.enable = false;
             steam.enable = false;
-            niri.enable = true;
+            niri.enable = false;
           }
         ];
     };
