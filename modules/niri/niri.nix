@@ -11,7 +11,7 @@
 
   config = lib.mkIf config.niri.enable {
     # -----------------------------------------------------------
-    # niri - general settings 
+    # niri - general settings
     # -----------------------------------------------------------
     nixpkgs.overlays = [inputs.niri.overlays.niri];
     programs.niri = {
@@ -19,8 +19,11 @@
       package = pkgs.niri-unstable;
     };
     home-manager.users.goat = {
-      # nested niri.settings so config.lib.niri.actions will work
-      imports = [./settings.nix ./waybar.nix];
+      home.file = {
+        "./config/niri/config.kdl".source = ./niri/config.kdl;
+        ".config/waybar/config.jsonc".source = ./waybar/config.jsonc;
+        ".config/waybar/style.css".source = ./waybar/style.csss;
+      };
       # so I dont have to color borders, its nice
       stylix.targets.niri.enable = true;
     };
@@ -71,6 +74,7 @@
       swww
       dunst
       wlsunset
+      swayidle
     ];
 
     # -----------------------------------------------------------
