@@ -8,7 +8,7 @@
   imports = [
     # toggle modules
     ./GPU/nvidia.nix
-    ./niri/niri.nix
+    ./niri.nix
     ./gamse.nix
     # the rest
     ./infasoftware.nix
