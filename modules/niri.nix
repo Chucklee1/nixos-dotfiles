@@ -22,8 +22,8 @@
       # nested niri.settings so config.lib.niri.actions will work
       imports = [./settings.nix];
       home.file = {
-        ".config/program/file_1".source = ./waybar/config.jsonc;
-        ".config/program/file_2".source = ./waybar/style.csss;
+        ".config/program/file_1".source = ../dotconfig/waybar/config.jsonc;
+        ".config/program/file_2".source = ../dotconfig/waybar/style.css;
       };
       # so I dont have to color borders, its nice
       stylix.targets.niri.enable = true;

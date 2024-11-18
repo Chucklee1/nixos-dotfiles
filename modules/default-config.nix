@@ -75,12 +75,8 @@
       stateVersion = "24.05"; # DO NOT CHANGE
       username = "goat";
       homeDirectory = "/home/goat";
-      #symlinking
-      file = {
-        ".config/niri/config.kdl".source = ../dotconfig/niri/config.kdl;
-        ".config/waybar/config.jsonc".source = ../dotconfig/waybar/config.jsonc;
-        ".config/waybar/style.css".source = ../dotconfig/waybar/style.csss;
-      };
+      # symlinking
+      file.".config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".source = ../dotconfig/thunar/thunar.xml;
     };
     programs.bash = {
       enable = true;
