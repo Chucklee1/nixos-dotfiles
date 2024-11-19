@@ -3,121 +3,123 @@
   stylix.targets.waybar.enable = false;
   programs.waybar = {
     enable = true;
-    settings = {
-      layer = "top";
-      position = "top";
-      height = 30;
+    settings = [
+      {
+        layer = "top";
+        position = "top";
+        height = 30;
 
-      # Object Modules
-      custom = {
-        "up-right-arrow" = {
-          format = "";
+        # Object Modules
+        custom = {
+          "up-right-arrow" = {
+            format = "";
+            tooltip = false;
+          };
+          "down-left-arrow" = {
+            format = "";
+            tooltip = false;
+          };
+          "up-left-arrow" = {
+            format = "";
+            tooltip = false;
+          };
+          "down-right-arrow" = {
+            format = "";
+            tooltip = false;
+          };
+        };
+
+        # ----- left modules ----- #
+        modules-left = [
+          "niri/workspaces"
+          "custom/down-right-arrow"
+        ];
+
+        "niri/workspaces" = {
+          format = "{icon}";
+          "format-icons" = {
+            focused = "󰻀";
+            default = "";
+          };
+        };
+
+        # ----- center modules ----- #
+        modules-center = [
+          "custom/up-left-arrow"
+          "clock"
+          "custom/down-right-arrow"
+        ];
+
+        clock = {
+          format = "{:%a:%H:%M:%m-%d}";
           tooltip = false;
         };
-        "down-left-arrow" = {
-          format = "";
-          tooltip = false;
+
+        # ----- right modules ----- #
+        modules-right = [
+          "custom/up-left-arrow"
+          "pulseaudio"
+          "memory"
+          "cpu"
+          "battery"
+          "disk"
+          "tray"
+        ];
+
+        # Pulseaudio settings
+        pulseaudio = {
+          format = "{icon} {volume:2}%";
+          "format-bluetooth" = "{icon}  {volume}%";
+          "format-muted" = "MUTE";
+          "format-icons" = {
+            headphones = "";
+            default = [
+              ""
+              ""
+            ];
+          };
+          "scroll-step" = 5;
+          "on-click" = "pamixer -t";
+          "on-click-right" = "pavucontrol";
         };
-        "up-left-arrow" = {
-          format = "";
-          tooltip = false;
+
+        memory = {
+          interval = 5;
+          format = "Mem {}%";
         };
-        "down-right-arrow" = {
-          format = "";
-          tooltip = false;
+
+        cpu = {
+          interval = 5;
+          format = "CPU {usage:2}%";
         };
-      };
 
-      # ----- left modules ----- #
-      modules-left = [
-        "niri/workspaces"
-        "custom/down-right-arrow"
-      ];
-
-      "niri/workspaces" = {
-        format = "{icon}";
-        "format-icons" = {
-          focused = "󰻀";
-          default = "";
-        };
-      };
-
-      # ----- center modules ----- #
-      modules-center = [
-        "custom/up-left-arrow"
-        "clock"
-        "custom/down-right-arrow"
-      ];
-
-      clock = {
-        format = "{:%a:%H:%M:%m-%d}";
-        tooltip = false;
-      };
-
-      # ----- right modules ----- #
-      modules-right = [
-        "custom/up-left-arrow"
-        "pulseaudio"
-        "memory"
-        "cpu"
-        "battery"
-        "disk"
-        "tray"
-      ];
-
-      # Pulseaudio settings
-      pulseaudio = {
-        format = "{icon} {volume:2}%";
-        "format-bluetooth" = "{icon}  {volume}%";
-        "format-muted" = "MUTE";
-        "format-icons" = {
-          headphones = "";
-          default = [
-            ""
-            ""
+        battery = {
+          states = {
+            good = 95;
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon} {capacity}%";
+          "format-icons" = [
+            ""
+            ""
+            ""
+            ""
+            ""
           ];
         };
-        "scroll-step" = 5;
-        "on-click" = "pamixer -t";
-        "on-click-right" = "pavucontrol";
-      };
 
-      memory = {
-        interval = 5;
-        format = "Mem {}%";
-      };
-
-      cpu = {
-        interval = 5;
-        format = "CPU {usage:2}%";
-      };
-
-      battery = {
-        states = {
-          good = 95;
-          warning = 30;
-          critical = 15;
+        disk = {
+          interval = 5;
+          format = "Disk {percentage_used:2}%";
+          path = "/";
         };
-        format = "{icon} {capacity}%";
-        "format-icons" = [
-          ""
-          ""
-          ""
-          ""
-          ""
-        ];
-      };
 
-      disk = {
-        interval = 5;
-        format = "Disk {percentage_used:2}%";
-        path = "/";
-      };
-
-      tray = {
-        "icon-size" = 20;
-      };
-    };
+        tray = {
+          "icon-size" = 20;
+        };
+      }
+    ];
     style = ''
       * {
           	font-size: 12px;
