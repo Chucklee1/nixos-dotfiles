@@ -179,7 +179,7 @@
     padding: 0 3px;
     }
 
-    #custom/power,
+    #custom-power,
     #pulseaudio {
     color: #268bd2;
     }
@@ -189,11 +189,11 @@
     #cpu {
     color: #6c71c4;
     }
-    #battery {
-    color: #859900;
-    }
     #disk {
     color: #b58900;
+    }
+    #battery {
+    color: #859900;
     }
 
     #idle_inhibitor,
