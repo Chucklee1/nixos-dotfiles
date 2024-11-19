@@ -2,126 +2,119 @@
   # waybar
   home.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})];
   stylix.targets.waybar.enable = false;
-  programs.waybar = {
-    enable = true;
-    settings = [
-      {
-        layer = "top";
-        position = "top";
-        height = 30;
+  programs.waybar.enable = true;
+  home.file.".config/waybar/config.jsonc".text = ''
+{
+	"layer": "top",
+	"position": "bottom",
 
-        # ----- left modules ----- #
-        modules-left = [
-          "niri/workspaces"
-          "custom/down-right-arrow"
-        ];
+	"modules-left": [
+		"niri/workspaces",
+		"custom/up-right-arrow"
+	],
+	"modules-center": [
+		"custom/down-left-arrow",
+		"clock#1",
+		"clock#2",
+		"clock#3",
+		"custom/down-right-arrow"
+	],
+	"modules-right": [
+		"custom/up-left-arrow",
+		"pulseaudio",
+		"memory",
+		"cpu",
+		"battery",
+		"disk",
+		"tray"
+	],
 
-        "niri/workspaces" = {
-          format = "{icon}";
-          "format-icons" = {
-            focused = "󰻀";
-            default = "";
-          };
-        };
+	"custom/up-left-arrow": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/up-right-arrow": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/down-left-arrow": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/down-right-arrow": {
+		"format": "",
+		"tooltip": false
+  },
 
-        # ----- center modules ----- #
-        modules-center = [
-          "custom/up-left-arrow"
-          "clock"
-          "custom/down-right-arrow"
-        ];
+	"niri/workspaces": {
+		"format": "{icon}"
+    "format-icons": {
+      "focused": "󰻀",
+      "default": ""
+    }
+	},
 
-        clock = {
-          format = "{ %H %M %m-%d}";
-          tooltip = false;
-        };
+	"clock#1": {
+		"format": "{:%a}",
+		"tooltip": false
+	},
+	"clock#2": {
+		"format": "{:%H:%M}",
+		"tooltip": false
+	},
+	"clock#3": {
+		"format": "{:%m-%d}",
+		"tooltip": false
+	},
 
-        # ----- right modules ----- #
-        modules-right = [
-          "custom/up-left-arrow"
-          "pulseaudio"
-          "memory"
-          "cpu"
-          "battery"
-          "disk"
-          "tray"
-        ];
-
-        # Pulseaudio settings
-        pulseaudio = {
-          format = "{icon} {volume:2}%";
-          "format-bluetooth" = "{icon}  {volume}%";
-          "format-muted" = "MUTE";
-          "format-icons" = {
-            headphones = "";
-            default = [
-              ""
-              ""
-            ];
-          };
-          "scroll-step" = 5;
-          "on-click" = "pamixer -t";
-          "on-click-right" = "pavucontrol";
-        };
-
-        memory = {
-          interval = 5;
-          format = "Mem {}%";
-        };
-
-        cpu = {
-          interval = 5;
-          format = "CPU {usage:2}%";
-        };
-
-        battery = {
-          states = {
-            good = 95;
-            warning = 30;
-            critical = 15;
-          };
-          format = "{icon} {capacity}%";
-          "format-icons" = [
-            ""
-            ""
-            ""
-            ""
-            ""
-          ];
-        };
-
-        disk = {
-          interval = 5;
-          format = "Disk {percentage_used:2}%";
-          path = "/";
-        };
-
-        tray = {
-          "icon-size" = 20;
-        };
-
-        # Object Modules
-        custom = {
-          "up-right-arrow" = {
-            format = "";
-            tooltip = false;
-          };
-          "down-left-arrow" = {
-            format = "";
-            tooltip = false;
-          };
-          "up-left-arrow" = {
-            format = "";
-            tooltip = false;
-          };
-          "down-right-arrow" = {
-            format = "";
-            tooltip = false;
-          };
-        };
-      }
-    ];
-  };
+	"pulseaudio": {
+		"format": "{icon} {volume:2}%",
+		"format-bluetooth": "{icon}  {volume}%",
+		"format-muted": "MUTE",
+		"format-icons": {
+			"headphones": "",
+			"default": [
+				"",
+				""
+			]
+		},
+		"scroll-step": 5,
+		"on-click": "pamixer -t",
+		"on-click-right": "pavucontrol"
+	},
+	"memory": {
+		"interval": 5,
+		"format": "Mem {}%"
+	},
+	"cpu": {
+		"interval": 5,
+		"format": "CPU {usage:2}%"
+	},
+	"battery": {
+		"states": {
+			"good": 95,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"disk": {
+		"interval": 5,
+		"format": "Disk {percentage_used:2}%",
+		"path": "/"
+	},
+	"tray": {
+		"icon-size": 20
+	}
+}
+  '';
   home.file.".config/waybar/style.css".text = ''
     * {
     font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
