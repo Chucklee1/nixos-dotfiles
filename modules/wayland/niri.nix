@@ -21,8 +21,6 @@
       imports = [./settings.nix ./waybar.nix];
       stylix.targets.niri.enable = true;
     };
-    # for waybar icons
-    fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})];
 
     # -----------------------------------------------------------
     # system - packaes

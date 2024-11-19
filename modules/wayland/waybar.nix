@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   # waybar
+  home.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})];
   stylix.targets.waybar.enable = false;
   programs.waybar = {
     enable = true;
@@ -31,7 +32,7 @@
         ];
 
         clock = {
-          format = "{:%a:%H:%M:%m-%d}";
+          format = "{ %H %M %m-%d}";
           tooltip = false;
         };
 
@@ -120,76 +121,77 @@
         };
       }
     ];
-    style = ''
-      * {
-          	font-size: 12px;
-          }
-
-          window#waybar {
-          	background: #292b2e;
-          	color: #fdf6e3;
-          }
-
-          #custom-up-left-arrow,
-          #custom-up-right-arrow,
-          #custom-down-left-arrow,
-          #custom-down-right-arrow {
-          	color: #1a1a1a;
-          	font-size: 27px;
-          }
-
-          #workspaces,
-          #clock,
-          #pulseaudio,
-          #memory,
-          #cpu,
-          #battery,
-          #disk,
-          #tray {
-          	background: #1a1a1a;
-          }
-
-          #workspaces button {
-          	padding: 0 2px;
-          	color: #fdf6e3;
-          }
-          #workspaces button.focused {
-          	color: #268bd2;
-          }
-          #workspaces button:hover {
-          	box-shadow: inherit;
-          	text-shadow: inherit;
-          }
-          #workspaces button:hover {
-          	background: #1a1a1a;
-          	border: #1a1a1a;
-          	padding: 0 3px;
-          }
-
-          #pulseaudio {
-          	color: #268bd2;
-          }
-          #memory {
-          	color: #2aa198;
-          }
-          #cpu {
-          	color: #6c71c4;
-          }
-          #battery {
-          	color: #859900;
-          }
-          #disk {
-          	color: #b58900;
-          }
-
-          #clock,
-          #pulseaudio,
-          #memory,
-          #cpu,
-          #battery,
-          #disk {
-          	padding: 0 10px;
-      	}
-    '';
   };
+  home.file.".config/waybar/style.css".text = ''
+    * {
+    font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
+    font-size: 12px;
+    }
+
+    window#waybar {
+    background: #292b2e;
+    color: #fdf6e3;
+    }
+
+    #custom-up-left-arrow,
+    #custom-up-right-arrow,
+    #custom-down-left-arrow,
+    #custom-down-right-arrow {
+    color: #1a1a1a;
+    font-size: 27px;
+    }
+
+    #workspaces,
+    #clock,
+    #pulseaudio,
+    #memory,
+    #cpu,
+    #battery,
+    #disk,
+    #tray {
+    background: #1a1a1a;
+    }
+
+    #workspaces button {
+    padding: 0 2px;
+    color: #fdf6e3;
+    }
+    #workspaces button.focused {
+    color: #268bd2;
+    }
+    #workspaces button:hover {
+    box-shadow: inherit;
+    text-shadow: inherit;
+    }
+    #workspaces button:hover {
+    background: #1a1a1a;
+    border: #1a1a1a;
+    padding: 0 3px;
+    }
+
+    #pulseaudio {
+    color: #268bd2;
+    }
+    #memory {
+    color: #2aa198;
+    }
+    #cpu {
+    color: #6c71c4;
+    }
+    #battery {
+    color: #859900;
+    }
+    #disk {
+    color: #b58900;
+    }
+
+    #clock,
+    #pulseaudio,
+    #memory,
+    #cpu,
+    #battery,
+    #disk {
+    padding: 0 10px;
+    }
+  '';
 }
