@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   # -----------------------------------------------------------
   # enviorment packages
   # -----------------------------------------------------------
@@ -32,6 +36,8 @@
   # -----------------------------------------------------------
   home-manager.users.goat.home.packages = with pkgs; [
     firefox
+    discord
+    spotify
     vscode-fhs
     musescore
   ];
@@ -160,6 +166,7 @@
       enable = true;
       ly.enable = true;
     };
+    blueman.enable = true;
     printing.enable = true;
     gvfs.enable = true;
     tumbler.enable = true;

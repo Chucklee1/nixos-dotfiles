@@ -21,6 +21,11 @@
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules = [
+        # flake inputs
+        inputs.home-manager.nixosModules.home-manager
+        inputs.stylix.nixosModules.stylix
+        inputs.niri.nixosModules.niri
+        grub2-themes.nixosModules.default
         ./modules/default-config.nix
         ./modules/hardware/desktop.nix
         {
@@ -35,6 +40,11 @@
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules = [
+        # flake inputs
+        inputs.home-manager.nixosModules.home-manager
+        inputs.stylix.nixosModules.stylix
+        inputs.niri.nixosModules.niri
+        grub2-themes.nixosModules.default
         ./modules/default-config.nix
         ./modules/hardware/macbook.nix
         {
