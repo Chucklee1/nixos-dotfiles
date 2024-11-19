@@ -15,44 +15,34 @@
     nixpkgs,
     grub2-themes,
     ...
-  } @ inputs: let
-    shared-modules = [
-      ./modules/default-config.nix
-      inputs.home-manager.nixosModules.home-manager
-      inputs.stylix.nixosModules.stylix
-      inputs.niri.nixosModules.niri
-      grub2-themes.nixosModules.default
-    ];
-  in {
+  } @ inputs: {
     # desktop profile
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
-      modules =
-        shared-modules
-        ++ [
-          ./modules/hardware/desktop.nix
-          {
-            nvidia.enable = true;
-            steam.enable = true;
-            niri.enable = true;
-          }
-        ];
+      modules = [
+        ./modules/default-config.nix
+        ./modules/hardware/desktop.nix
+        {
+          nvidia.enable = true;
+          steam.enable = true;
+          niri.enable = true;
+        }
+      ];
     };
     # macbook profile
     nixosConfigurations.macbook = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
-      modules =
-        shared-modules
-        ++ [
-          ./modules/hardware/macbook.nix
-          {
-            nvidia.enable = false;
-            steam.enable = false;
-            niri.enable = true;
-          }
-        ];
+      modules = [
+        ./modules/default-config.nix
+        ./modules/hardware/macbook.nix
+        {
+          nvidia.enable = false;
+          steam.enable = false;
+          niri.enable = true;
+        }
+      ];
     };
   };
 }

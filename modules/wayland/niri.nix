@@ -5,9 +5,7 @@
   config,
   ...
 }: {
-  options = {
-    niri.enable = lib.mkEnableOption "enable niri window manager module";
-  };
+  options = {niri.enable = lib.mkEnableOption "enable niri window manager module";};
 
   config = lib.mkIf config.niri.enable {
     # -----------------------------------------------------------
@@ -23,6 +21,9 @@
       imports = [./settings.nix ./waybar.nix];
       stylix.targets.niri.enable = true;
     };
+    # for waybar icons
+    fonts.packages = [(pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})];
+
     # -----------------------------------------------------------
     # system - packaes
     # -----------------------------------------------------------
@@ -75,7 +76,6 @@
     # home - programs
     # -----------------------------------------------------------
     home-manager.users.goat.programs = {
-      lazygit.enable = true;
       wlogout.enable = true;
       fuzzel.enable = true;
       swaylock.enable = true;
@@ -111,18 +111,12 @@
       };
     };
 
-    # -----------------------------------------------------------
-    # system - lxqt policykit agent
-    # -----------------------------------------------------------
     systemd.user.services.lxqt-policykit-agent = {
       description = "LXQt PolicyKit Agent";
       serviceConfig.ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
       wantedBy = ["default.target"];
     };
 
-    # -----------------------------------------------------------
-    # system - xdg desktop portal
-    # -----------------------------------------------------------
     xdg.portal = {
       enable = true;
       extraPortals = [
