@@ -6,27 +6,29 @@
   home.file.".config/waybar/config.jsonc".text = ''
 {
 	"layer": "top",
-	"position": "bottom",
+	"position": "top",
 
 	"modules-left": [
 		"niri/workspaces",
-		"custom/up-right-arrow"
+    "idle_inhibitor",
+		"custom/down-right-arrow"
 	],
 	"modules-center": [
-		"custom/down-left-arrow",
+		"custom/up-left-arrow",
 		"clock#1",
 		"clock#2",
 		"clock#3",
-		"custom/down-right-arrow"
+    "custom/up-right-arrow"
 	],
 	"modules-right": [
-		"custom/up-left-arrow",
+    "custom/down-left-arrow",
 		"pulseaudio",
 		"memory",
 		"cpu",
+    "disk",
+    "backlight",
 		"battery",
-		"disk",
-		"tray"
+		"custom/power",
 	],
 
 	"custom/up-left-arrow": {
@@ -47,12 +49,19 @@
   },
 
 	"niri/workspaces": {
-		"format": "{icon}"
+		"format": "{icon}",
     "format-icons": {
       "focused": "󰻀",
       "default": ""
     }
 	},
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
 
 	"clock#1": {
 		"format": "{:%a}",
@@ -68,8 +77,8 @@
 	},
 
 	"pulseaudio": {
-		"format": "{icon} {volume:2}%",
-		"format-bluetooth": "{icon}  {volume}%",
+		"format": "{volume:2}% {icon} ",
+		"format-bluetooth": "{volume}% {icon}",
 		"format-muted": "MUTE",
 		"format-icons": {
 			"headphones": "",
@@ -84,19 +93,29 @@
 	},
 	"memory": {
 		"interval": 5,
-		"format": "Mem {}%"
+		"format": "Mem {}% "
 	},
 	"cpu": {
 		"interval": 5,
-		"format": "CPU {usage:2}%"
+		"format": "{usage:2}% "
 	},
+	"disk": {
+		"interval": 5,
+		"format": "{percentage_used:2}% ",
+		"path": "/"
+	},
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{percent}% {icon}",
+    "format-icons": ["", "", "", "", "", "", "", "", ""]
+  },
 	"battery": {
 		"states": {
 			"good": 95,
 			"warning": 30,
 			"critical": 15
 		},
-		"format": "{icon} {capacity}%",
+		"format": "{capacity}% {icon}",
 		"format-icons": [
 			"",
 			"",
@@ -105,14 +124,10 @@
 			""
 		]
 	},
-	"disk": {
-		"interval": 5,
-		"format": "Disk {percentage_used:2}%",
-		"path": "/"
-	},
-	"tray": {
-		"icon-size": 20
-	}
+  "custom/power": {
+    "format": "⏻",
+    "on-click": "wlogout"
+  }
 }
   '';
   home.file.".config/waybar/style.css".text = ''
@@ -135,13 +150,15 @@
     }
 
     #workspaces,
+    #idle_inhibitor,
     #clock,
     #pulseaudio,
     #memory,
     #cpu,
-    #battery,
     #disk,
-    #tray {
+    #backlight,
+    #battery,
+    #custom-power {
     background: #1a1a1a;
     }
 
@@ -162,6 +179,7 @@
     padding: 0 3px;
     }
 
+    #custom/power,
     #pulseaudio {
     color: #268bd2;
     }
@@ -178,12 +196,15 @@
     color: #b58900;
     }
 
+    #idle_inhibitor,
     #clock,
     #pulseaudio,
     #memory,
     #cpu,
+    #disk,
     #battery,
-    #disk {
+    #backlight,
+    #custom-power {
     padding: 0 10px;
     }
   '';
