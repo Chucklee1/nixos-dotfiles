@@ -8,7 +8,6 @@
   # boot loader & boot options
   # -----------------------------------------------------------
   boot = {
-    supportedFilesystems = ["ntfs"];
     loader = {
       efi.canTouchEfiVariables = true;
       efi.efiSysMountPoint = "/boot";
