@@ -14,10 +14,6 @@
     # cli utils
     killall
     pciutils
-    btop
-    sl
-    cowsay
-    neofetch
     # web & net utils
     wget
     git
@@ -35,11 +31,17 @@
   # home packages
   # -----------------------------------------------------------
   home-manager.users.goat.home.packages = with pkgs; [
+    # apps
     firefox
     discord
     spotify
     vscode-fhs
     musescore
+    # cli
+    btop
+    sl
+    cowsay
+    neofetch
   ];
 
   # -----------------------------------------------------------
