@@ -9,26 +9,6 @@
         position = "top";
         height = 30;
 
-        # Object Modules
-        custom = {
-          "up-right-arrow" = {
-            format = "";
-            tooltip = false;
-          };
-          "down-left-arrow" = {
-            format = "";
-            tooltip = false;
-          };
-          "up-left-arrow" = {
-            format = "";
-            tooltip = false;
-          };
-          "down-right-arrow" = {
-            format = "";
-            tooltip = false;
-          };
-        };
-
         # ----- left modules ----- #
         modules-left = [
           "niri/workspaces"
@@ -117,6 +97,26 @@
 
         tray = {
           "icon-size" = 20;
+        };
+
+        # Object Modules
+        custom = {
+          "up-right-arrow" = {
+            format = "";
+            tooltip = false;
+          };
+          "down-left-arrow" = {
+            format = "";
+            tooltip = false;
+          };
+          "up-left-arrow" = {
+            format = "";
+            tooltip = false;
+          };
+          "down-right-arrow" = {
+            format = "";
+            tooltip = false;
+          };
         };
       }
     ];
