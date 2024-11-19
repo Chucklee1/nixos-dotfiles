@@ -37,6 +37,7 @@
     spotify
     vscode-fhs
     musescore
+    zoom-us
     # cli
     btop
     sl
