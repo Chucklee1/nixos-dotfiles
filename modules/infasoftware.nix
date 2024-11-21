@@ -10,6 +10,7 @@
     # dev tools
     ripgrep
     nixd
+    alejandra
     # building utils
     cmake
     meson 
@@ -31,6 +32,17 @@
   ];
 
   # -----------------------------------------------------------
+  # thunar
+  # -----------------------------------------------------------
+  services = {    
+    gvfs.enable = true; 
+    tumbler.enable = true; 
+  };
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [ thunar-archive-plugin thunar-volman ];
+  };
+  # -----------------------------------------------------------
   # home packages
   # -----------------------------------------------------------
   home-manager.users.goat.home.packages = with pkgs; [
@@ -39,7 +51,6 @@
     musescore
     zoom-us
     vscode-fhs
-    xfce.thunar
     # cli
     btop
     ncdu
@@ -141,6 +152,11 @@
         popups = 12;
       };
     };
+  };
+  home-manager.users.goat.gtk = {
+    enable = true;
+    iconTheme.name = "Papirus Dark";
+    iconTheme.package = pkgs.papirus-icon-theme;
   };
 
   # -----------------------------------------------------------
