@@ -11,6 +11,10 @@
     ripgrep
     alejandra
     nixd
+    # building utils
+    cmake
+    meson 
+    cpio
     # cli utils
     killall
     pciutils
