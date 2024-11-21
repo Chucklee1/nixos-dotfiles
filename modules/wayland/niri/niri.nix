@@ -19,7 +19,7 @@
       stylix.targets.niri.enable = true;
     };
     # gtk portal
-    xdg.portal.extraPortals = pkgs.xdg-desktop-portal-gtk;
-    xdg.portal.configPackages = pkgs.xdg-desktop-portal-gtk;
+    xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    xdg.portal.configPackages = [pkgs.xdg-desktop-portal-gtk];
   };
 }

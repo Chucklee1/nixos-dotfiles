@@ -32,12 +32,11 @@
           nvidia.enable = true;
           steam.enable = true;
           niri.enable = true;
-          hyprland.enable = false;
         }
       ];
     };
-    # macbook profile
-    nixosConfigurations.macbook = nixpkgs.lib.nixosSystem {
+    # laptop profile
+    nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules = [
@@ -47,12 +46,10 @@
         inputs.niri.nixosModules.niri
         grub2-themes.nixosModules.default
         ./modules/default-config.nix
-        ./modules/hardware/macbook.nix
         {
           nvidia.enable = false;
-          steam.enable = false;
+          steam.enable = true;
           niri.enable = true;
-          hyprland.enable = false;
         }
       ];
     };

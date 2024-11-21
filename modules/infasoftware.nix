@@ -9,7 +9,6 @@
   environment.systemPackages = with pkgs; [
     # dev tools
     ripgrep
-    alejandra
     nixd
     # building utils
     cmake
@@ -37,16 +36,16 @@
   home-manager.users.goat.home.packages = with pkgs; [
     # apps
     firefox
-    discord
-    spotify
-    vscode-fhs
     musescore
     zoom-us
+    vscode-fhs
+    xfce.thunar
     # cli
     btop
+    ncdu
+    neofetch
     sl
     cowsay
-    neofetch
   ];
 
   # -----------------------------------------------------------
@@ -144,11 +143,6 @@
     };
   };
 
-  home-manager.users.goat.gtk = {
-    iconTheme.name = "Papirus-Dark";
-    iconTheme.package = pkgs.papirus-icon-theme;
-  };
-
   # -----------------------------------------------------------
   # hardware
   # -----------------------------------------------------------
@@ -175,8 +169,6 @@
     };
     blueman.enable = true;
     printing.enable = true;
-    gvfs.enable = true;
-    tumbler.enable = true;
     fstrim.enable = true;
     openssh.enable = true;
   };

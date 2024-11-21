@@ -24,8 +24,6 @@
         vulkan-tools
         protonup
         mangohud
-        wineWowPackages.waylandFull
-        winetricks
         xwayland-satellite
       ];
 

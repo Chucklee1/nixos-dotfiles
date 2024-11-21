@@ -60,12 +60,15 @@
   # -----------------------------------------------------------
   # home - programs
   # -----------------------------------------------------------
-  home-manager.users.goat.programs = {
-    waybar.enable = true; 
+  home-manager.users.goat.programs = { 
     wlogout.enable = true;
     fuzzel.enable = true;
     swaylock.enable = true;
-    swaylock.package = pkgs.swaylock-effects;
+    swaylock.package = pkgs.swaylock-effects; 
+    waybar = {
+      enable = true;
+      systemd.enable = true;
+    };
   };
 
   # -----------------------------------------------------------
@@ -90,6 +93,6 @@
 
   xdg.portal = {
     enable = true;
-    configPackages = pkgs.xdg-desktop-portal;
+    configPackages = [pkgs.xdg-desktop-portal];
   };
 }
