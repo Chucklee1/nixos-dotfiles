@@ -1,12 +1,24 @@
 {
   pkgs,
+  inputs,
   lib,
   config,
   ...
 }: {
+  # -----------------------------------------------------------
+  # niri
+  # -----------------------------------------------------------
+  nixpkgs.overlays = [inputs.niri.overlays.niri];
+  programs.niri.enable = true;
+  programs.niri.package = pkgs.niri-unstable;
 
-  # waybar 
-  home-manager.users.goat.stylix.targets.waybar.enable = false;
+  home-manager.users.goat = {
+    # nested niri.settings so config.lib.niri.actions will work
+    imports = [./settings.nix];
+    # stylix targets
+    stylix.targets.niri.enable = true;
+    stylix.targets.waybar.enable = false;
+  };
 
   # -----------------------------------------------------------
   # system - packaes
@@ -60,11 +72,11 @@
   # -----------------------------------------------------------
   # home - programs
   # -----------------------------------------------------------
-  home-manager.users.goat.programs = { 
+  home-manager.users.goat.programs = {
     wlogout.enable = true;
     fuzzel.enable = true;
     swaylock.enable = true;
-    swaylock.package = pkgs.swaylock-effects; 
+    swaylock.package = pkgs.swaylock-effects;
     waybar = {
       enable = true;
       systemd.enable = true;
@@ -93,6 +105,10 @@
 
   xdg.portal = {
     enable = true;
-    configPackages = [pkgs.xdg-desktop-portal];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    configPackages = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal
+    ];
   };
 }
