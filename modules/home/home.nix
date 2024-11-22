@@ -102,7 +102,7 @@
   # -----------------------------------------------------------
   gtk = {
     enable = true;
-    iconTheme.name = "Papirus-Dark";
+    iconTheme.name = "Papirus nvm iDark";
   };
   stylix.targets = {
     neovim.enable = true;
