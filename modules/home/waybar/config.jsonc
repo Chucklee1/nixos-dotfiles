@@ -93,7 +93,7 @@
         "path": "/"
     },
     "backlight": {
-        "device": "amdgpu_bl1",
+        "device": "amdgpu_bl1e",
         "format": "{percent}% {icon}",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },

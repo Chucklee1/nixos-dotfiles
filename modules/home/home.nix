@@ -24,6 +24,7 @@
     libnotify
     libsecret
     seahorse
+    papirus-icon-theme
     (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     # in settings.nix startup
     swww
@@ -102,7 +103,6 @@
   gtk = {
     enable = true;
     iconTheme.name = "Papirus Dark";
-    iconTheme.package = pkgs.papirus-icon-theme;
   };
   stylix.targets = {
     neovim.enable = true;
