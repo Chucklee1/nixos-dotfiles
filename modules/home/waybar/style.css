@@ -30,6 +30,7 @@
     #disk,
     #backlight,
     #battery,
+    #tray,
     #custom-power {
         background: @foreground;
     }
@@ -75,6 +76,7 @@
     #cpu,
     #disk,
     #battery,
+    #tray,
     #backlight,
     #custom-power {
         padding: 0 10px;
