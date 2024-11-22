@@ -91,7 +91,7 @@
         ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";
-        update-macbook = "sudo nixos-rebuild switch --flake .#macbook --show-trace";
+        update-laptop = "sudo nixos-rebuild switch --flake .#laptop --show-trace";
       };
     };
   };
