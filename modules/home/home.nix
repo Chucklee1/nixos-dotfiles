@@ -3,7 +3,7 @@
   home = {
     stateVersion = "24.05"; # DO NOT CHANGE
     username = "goat";
-    homeDirectory = "/home/goat"; 
+    homeDirectory = "/home/goat";
   };
   # -----------------------------------------------------------
   # packages
@@ -88,7 +88,6 @@
         sv = "sudo nvim";
         v = "nvim";
         kittty = "kitty working-directory $HOME/nixos-dotfiles";
-        exec-swww = "swww img ./pictures/night-ridgeline.jpg";
         ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
         cg = "sudo nix-collect-garbage";
         update-desktop = "sudo nixos-rebuild switch --flake .#desktop --show-trace";

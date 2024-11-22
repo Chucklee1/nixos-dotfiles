@@ -81,8 +81,6 @@
     binds = with config.lib.niri.actions; {
       "Mod+Return".action.spawn = ["kitty" "--working-directory" "~/nixos-dotfiles"];
       "Mod+Space".action.spawn = "fuzzel";
-      "XF86LaunchA".action.spawn = "firefox";
-      "XF86LaunchB".action.spawn = "code";
       "Super+Alt+L".action.spawn = "swaylock";
       "Super+Alt+P".action.spawn = "wlogout";
 
@@ -91,10 +89,8 @@
       "XF86AudioMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
       "XF86AudioMicMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"];
 
-      "XF86MonBrightnessUp" .action.spawn = ["brightnessctl" "--device=intel_backlight" "s" "5%+"];
-      "XF86MonBrightNessDown".action.spawn = ["brightnessctl" "--device=intel_backlight" "s" "5%-"];
-      "XF86KbdBrightNessUp".action.spawn = ["brightnessctl" "s" "10%+" "-d" "smc::kbd_backlight"];
-      "XF86KbdBrightNessDown".action.spawn = ["brightnessctl" "s" "10%-" "-d" "smc::kbd_backlight"];
+      "XF86MonBrightnessUp" .action.spawn = ["brightnessctl" "--device=amdgpu_bl1" "s" "5%+"];
+      "XF86MonBrightNessDown".action.spawn = ["brightnessctl" "--device=amdgpu_bl1" "s" "5%-"];
 
       "Print".action = screenshot;
       "Ctrl+Print".action = screenshot-screen;
