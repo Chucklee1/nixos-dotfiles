@@ -1,8 +1,13 @@
 {pkgs, ...}: {
+  imports = [./config.kdl.nix];
+  home = {
+    stateVersion = "24.05"; # DO NOT CHANGE
+    username = "goat";
+    homeDirectory = "/home/goat"; 
+  };
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
-
   home.packages = with pkgs; [
     # apps
     firefox
@@ -15,6 +20,15 @@
     neofetch
     sl
     cowsay
+    # wm stuff
+    libnotify
+    libsecret
+    seahorse
+    (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+    # in settings.nix startup
+    swww
+    dunst
+    wlsunset
   ];
 
   # -----------------------------------------------------------
@@ -22,6 +36,14 @@
   # -----------------------------------------------------------
   programs = {
     lazygit.enable = true;
+    wlogout.enable = true;
+    fuzzel.enable = true;
+    swaylock.enable = true;
+    swaylock.package = pkgs.swaylock-effects;
+    waybar = {
+      enable = true;
+      systemd.enable = true;
+    };
     kitty = {
       enable = true;
       settings = {
@@ -83,5 +105,9 @@
     iconTheme.name = "Papirus Dark";
     iconTheme.package = pkgs.papirus-icon-theme;
   };
-  stylix.targets.neovim.enable = true;
+  stylix.targets = {
+    neovim.enable = true;
+    niri.enable = true;
+    waybar.enable = false;
+  };
 }

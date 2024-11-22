@@ -26,12 +26,10 @@
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
         grub2-themes.nixosModules.default
-        ./modules/default-config.nix
+        ./modules/default.nix
         ./modules/hardware/desktop.nix
         {
           nvidia.enable = true;
-          steam.enable = true;
-          niri.enable = true;
         }
       ];
     };
@@ -45,11 +43,10 @@
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
         grub2-themes.nixosModules.default
-        ./modules/default-config.nix
+        ./modules/default.nix
+        ./modules/hardware/laptop.nix
         {
           nvidia.enable = false;
-          steam.enable = true;
-          niri.enable = true;
         }
       ];
     };
