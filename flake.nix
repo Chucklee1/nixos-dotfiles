@@ -46,6 +46,7 @@
         ./modules/default.nix
         ./modules/hardware/laptop.nix
         {
+          services.xserver.videoDrivers = ["amd"];
           nvidia.enable = false;
         }
       ];
