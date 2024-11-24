@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   services.hypridle = {
     settings = {
       general = {
@@ -28,7 +33,7 @@
         hide_cursor = true;
         no_fade_in = false;
       };
-      background = [
+      background = lib.mkForce [
         {
           path = "../../pictures/night-ridgeline.jpg";
           blur_passes = 3;
@@ -47,7 +52,7 @@
           valign = "center";
         }
       ];
-      input-field = [
+      input-field = lib.mkForce [
         {
           size = "200, 50";
           position = "0, -80";

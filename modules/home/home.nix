@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./config.kdl.nix
-    ./wlogout.nix
+    ./wlogout/wlogout.nix
     ./locking.nix
   ];
   home = {

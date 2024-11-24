@@ -78,7 +78,6 @@
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
-    homeManagerIntegration.extraPackages = [pkgs.stylix];
     image = ../../pictures/night-ridgeline.jpg;
     #tokyo-city-terminal-dark.yaml
     base16Scheme = {

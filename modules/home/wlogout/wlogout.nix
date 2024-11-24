@@ -28,7 +28,7 @@
       }
       {
         "label" = "lock";
-        "action" = "sleep 1; swaylock";
+        "action" = "sleep 1; hyprlock";
         "text" = "Lock";
         "keybind" = "l";
       }
@@ -39,6 +39,7 @@
         "keybind" = "h";
       }
     ];
+
     style = ''
       * {
         font-family: "JetBrainsMono NF", FontAwesome, sans-serif;
@@ -69,26 +70,32 @@
       #logout {
       	margin: 10px;
       	border-radius: 20px;
+      	background-image: image(url("icons/logout.png"));
       }
       #suspend {
       	margin: 10px;
       	border-radius: 20px;
+      	background-image: image(url("icons/suspend.png"));
       }
       #shutdown {
       	margin: 10px;
       	border-radius: 20px;
+      	background-image: image(url("icons/shutdown.png"));
       }
       #reboot {
       	margin: 10px;
       	border-radius: 20px;
+      	background-image: image(url("icons/reboot.png"));
       }
       #lock {
       	margin: 10px;
       	border-radius: 20px;
+      	background-image: image(url("icons/lock.png"));
       }
       #hibernate {
       	margin: 10px;
       	border-radius: 20px;
+      	background-image: image(url("icons/hibernate.png"));
       }
     '';
   };
