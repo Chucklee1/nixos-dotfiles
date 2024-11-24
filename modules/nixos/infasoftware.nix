@@ -150,10 +150,12 @@
     };
   };
 
-  systemd.user.services.lxqt-policykit-agent = {
-    description = "LXQt PolicyKit Agent";
-    serviceConfig.ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
-    wantedBy = ["default.target"];
+  systemd = {
+    user.services.lxqt-policykit-agent = {
+      description = "LXQt PolicyKit Agent";
+      serviceConfig.ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
+      wantedBy = ["default.target"];
+    };
   };
 
   xdg.portal = {
