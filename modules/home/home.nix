@@ -1,5 +1,9 @@
 {pkgs, ...}: {
-  imports = [./config.kdl.nix ./wlogout.nix];
+  imports = [
+    ./config.kdl.nix
+    ./wlogout.nix
+    ./locking.nix
+  ];
   home = {
     stateVersion = "24.05"; # DO NOT CHANGE
     username = "goat";
@@ -38,8 +42,6 @@
   programs = {
     lazygit.enable = true;
     fuzzel.enable = true;
-    swaylock.enable = true;
-    swaylock.package = pkgs.swaylock-effects;
     waybar = {
       enable = true;
       systemd.enable = true;
