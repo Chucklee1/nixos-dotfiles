@@ -10,13 +10,14 @@
   boot = {
     loader = {
       efi.canTouchEfiVariables = true;
-      efi.efiSysMountPoint = "/boot";
+      efi.efiSysMountPoint = "/boot/efi";
       grub = {
         enable = true;
         efiSupport = true;
         device = "nodev";
       };
       grub2-theme = {
+        #efiInstallAsRemovable = true;
         enable = true;
         theme = "stylish";
         footer = true;
@@ -38,9 +39,10 @@
   system.stateVersion = "24.05"; # DO NOT CHANGE
   networking.hostName = "goat";
   networking.networkmanager.enable = true;
-  time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
-  # font for weird 16:10 resolution sacaling
+  services.automatic-timezoned.enable = true;
+  # timedatectl list-timezones
+  # sudo timedatectl set-timezone <timezone> (no "")
   console = {
     earlySetup = true;
     keyMap = "us";
