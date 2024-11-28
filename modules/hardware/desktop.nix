@@ -9,12 +9,14 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot = { 
+  boot = {
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
     initrd.kernelModules = [];
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
-    supportedFilesystems = ["ntfs"]; 
+    supportedFilesystems = ["ntfs"];
+    loader.efi.canTouchEfiVariables = true;
+    loader.efi.efiSysMountPoint = "/boot";
   };
 
   fileSystems = {
@@ -29,7 +31,7 @@
       options = ["fmask=0077" "dmask=0077"];
     };
 
-      # other drives
+    # other drives
     "/run/media/goat/BLUE-SATA" = {
       device = "/dev/disk/by-uuid/C814039D14038D9E";
       fsType = "ntfs";
@@ -37,7 +39,7 @@
     "/run/media/goat/SATA-DRIVE-1" = {
       device = "/dev/disk/by-uuid/2CB23BB6B23B837E   ";
       fsType = "ntfs";
-    }; 
+    };
   };
 
   swapDevices = [];

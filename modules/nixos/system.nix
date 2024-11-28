@@ -9,15 +9,12 @@
   # -----------------------------------------------------------
   boot = {
     loader = {
-      efi.canTouchEfiVariables = true;
-      efi.efiSysMountPoint = "/boot/efi";
       grub = {
         enable = true;
         efiSupport = true;
         device = "nodev";
       };
       grub2-theme = {
-        #efiInstallAsRemovable = true;
         enable = true;
         theme = "stylish";
         footer = true;
