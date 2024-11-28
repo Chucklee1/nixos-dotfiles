@@ -7,18 +7,16 @@
   # -----------------------------------------------------------
   # boot loader & boot options
   # -----------------------------------------------------------
-  boot = {
-    loader = {
-      grub = {
-        enable = true;
-        efiSupport = true;
-        device = "nodev";
-      };
-      grub2-theme = {
-        enable = true;
-        theme = "stylish";
-        footer = true;
-      };
+  boot.loader = {
+    grub = {
+      enable = true;
+      efiSupport = true;
+      device = "nodev";
+    };
+    grub2-theme = {
+      enable = true;
+      theme = "stylish";
+      footer = true;
     };
   };
   stylix.targets.grub.enable = false;
