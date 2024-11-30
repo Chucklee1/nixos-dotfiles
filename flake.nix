@@ -57,7 +57,6 @@
       modules =
         shared-module
         ++ [
-          impermanence.homeManagerModules.impermanence
           ./modules/hardware/laptop.nix
           {
             services.xserver.videoDrivers = ["amd"];
