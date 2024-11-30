@@ -10,7 +10,6 @@
     # dev tools
     ripgrep
     nixd
-    alejandra
     # building utils
     cmake
     meson

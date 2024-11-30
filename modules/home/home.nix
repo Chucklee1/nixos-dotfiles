@@ -22,6 +22,7 @@
     neofetch
     sl
     cowsay
+    alejandra
     # wm stuff
     libnotify
     libsecret
@@ -45,9 +46,14 @@
       extensions = with pkgs.vscode-extensions; [
         jnoortheen.nix-ide
         eamodio.gitlens
+        kamadorueda.alejandra
       ];
-      settings = {
+      userSettings = {
+        "files.autoSave" = "off";
+        "files.confirmDelete" = false;
+        "[nix]"."editor.tabSize" = 2;
         "editor.minimap.enabled" = false;
+        "git.confirmSync" = false; 
       };
     };
     waybar = {
