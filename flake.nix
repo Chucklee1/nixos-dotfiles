@@ -26,8 +26,6 @@
       grub2-themes.nixosModules.default
       {
         nixpkgs.overlays = [inputs.niri.overlays.niri];
-        programs.niri.enable = true;
-        programs.niri.package = pkgs.niri-unstable;
         home-manager = {
           useUserPackages = true;
           useGlobalPkgs = true;
@@ -42,7 +40,7 @@
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules =
-        shared-module
+        shared-modules
         ++ [
           ./modules/hardware/desktop.nix
           {
@@ -55,7 +53,7 @@
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules =
-        shared-module
+        shared-modules
         ++ [
           ./modules/hardware/laptop.nix
           {

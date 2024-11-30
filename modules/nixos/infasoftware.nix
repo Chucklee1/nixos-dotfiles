@@ -71,7 +71,8 @@
     gvfs.enable = true;
     tumbler.enable = true;
   };
-
+          programs.niri.enable = true;
+        programs.niri.package = pkgs.niri-unstable;
   # -----------------------------------------------------------
   # theming
   # -----------------------------------------------------------
