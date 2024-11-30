@@ -2,7 +2,6 @@
   imports = [
     ./config.kdl.nix
     ./wlogout/wlogout.nix
-    ./locking.nix
   ];
   home = {
     stateVersion = "24.05"; # DO NOT CHANGE
@@ -17,7 +16,6 @@
     firefox
     musescore
     zoom-us
-    vscode-fhs
     # cli
     btop
     ncdu
@@ -42,6 +40,13 @@
   programs = {
     lazygit.enable = true;
     fuzzel.enable = true;
+    vscode = {
+      enable = true;
+      extensions = with pkgs.vscode-extensions; [
+        jnoortheen.nix-ide
+        eamodio.gitlens
+      ];
+    };
     waybar = {
       enable = true;
       systemd.enable = true;
