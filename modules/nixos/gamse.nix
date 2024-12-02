@@ -16,6 +16,7 @@
   };
   home-manager.users.goat = {
     home.packages = with pkgs; [
+      prismlauncher
       vulkan-tools
       protonup
       mangohud
