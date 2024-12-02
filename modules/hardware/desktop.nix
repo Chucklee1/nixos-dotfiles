@@ -15,8 +15,6 @@
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
     supportedFilesystems = ["ntfs"];
-    loader.efi.canTouchEfiVariables = true;
-    loader.efi.efiSysMountPoint = "/boot";
   };
 
   fileSystems = {
@@ -25,7 +23,7 @@
       fsType = "ext4";
     };
 
-    "/boot" = {
+    "/boot/efi" = {
       device = "/dev/disk/by-uuid/1C7A-AD30";
       fsType = "vfat";
       options = ["fmask=0077" "dmask=0077"];

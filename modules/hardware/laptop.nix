@@ -17,8 +17,6 @@
     initrd.kernelModules = [];
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
-    loader.grub.efiInstallAsRemovable = true;
-    loader.efi.efiSysMountPoint = "/boot/efi";
   };
 
   fileSystems."/" = {

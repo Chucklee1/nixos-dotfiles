@@ -8,9 +8,11 @@
   # boot loader & boot options
   # -----------------------------------------------------------
   boot.loader = {
+    efi.efiSysMountPoint = "/boot/efi";
     grub = {
       enable = true;
       efiSupport = true;
+      efiInstallAsRemovable = true;
       device = "nodev";
     };
     grub2-theme = {
