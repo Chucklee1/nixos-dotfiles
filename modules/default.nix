@@ -4,13 +4,13 @@
   ...
 }: {
   imports = [
+    ./software.nix
+    ./infastructure.nix
     ./theming.nix
-    ./nixos/gamse.nix
-    ./nixos/system.nix
-    ./nixos/infasoftware.nix
+    ./gamse.nix
+    ./nvidia.nix
   ];
   home-manager.users.goat.imports = [
-    ./home/software.nix
     ./home/niri/config.kdl.nix
     ./home/wlogout/wlogout.nix
   ];

@@ -34,9 +34,7 @@
         shared-modules
         ++ [
           ./modules/hardware/desktop.nix
-          {
-            nvidia.enable = true;
-          }
+          {nvidia.enable = true;}
         ];
     };
     # laptop profile
