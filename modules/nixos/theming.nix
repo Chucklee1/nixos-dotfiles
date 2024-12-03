@@ -14,7 +14,7 @@
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
-    image = ../pictures/night-ridgeline.jpg;
+    image = ../../pictures/mono-forest.PNG;
     #tokyo-city-terminal-dark.yaml
     base16Scheme = {
       base00 = "171D23";
