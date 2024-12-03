@@ -17,7 +17,7 @@
       XDG_CURRENT_DESKTOP = "niri";
       XDG_SESSION_DESKTOP = "niri";
       DISPLAY = ":0";
-      GDK_BACKEND = "wayland" "x11";
+      GDK_BACKEND = "wayland";
       GTK_CSD = "0";
       CLUTTER_BACKEND = "wayland";
       QT_QPA_PLATFORM = "wayland;xcb";
