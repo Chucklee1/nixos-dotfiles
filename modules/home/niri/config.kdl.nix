@@ -11,21 +11,20 @@
     prefer-no-csd = true;
     hotkey-overlay.skip-at-startup = false;
     screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
-
     environment = {
-      DISPLAY = ":0";
+      NIXOS_OZONE_WL = "1";
+      XDG_SESSION_TYPE = "wayland";
       XDG_CURRENT_DESKTOP = "niri";
       XDG_SESSION_DESKTOP = "niri";
-      XDG_SESSION_TYPE = "wayland";
-      GDK_BACKEND = "wayland";
+      DISPLAY = ":0";
+      GDK_BACKEND = "wayland" "x11";
       GTK_CSD = "0";
       CLUTTER_BACKEND = "wayland";
-      QT_QPA_PLATFORM = "wayland";
+      QT_QPA_PLATFORM = "wayland;xcb";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       QT_AUTO_SCREEN_SCALE_FACTOR = "1";
       SDL_VIDEODRIVER = "x11";
       MOZ_ENABLE_WAYLAND = "1";
-      NIXOS_OZONE_WL = "1";
     };
 
     spawn-at-startup = [

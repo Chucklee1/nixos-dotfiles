@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   imports = [
-    ./config.kdl.nix
+    ./niri/config.kdl.nix
     ./wlogout/wlogout.nix
   ];
   home = {
@@ -53,7 +53,7 @@
         "files.confirmDelete" = false;
         "[nix]"."editor.tabSize" = 2;
         "editor.minimap.enabled" = false;
-        "git.confirmSync" = false; 
+        "git.confirmSync" = false;
       };
     };
     waybar = {
