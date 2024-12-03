@@ -21,10 +21,4 @@
       package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
   };
-  home-manager.users.goat.home.sessionVariables = {
-    WLR_NO_HARDWARE_CURSORS = "1";
-    GBM_BACKEND = "nvidia_drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    LIBVA_DRIVER_NAME = "nvidia";
-  };
 }
