@@ -16,7 +16,4 @@
     style.name = "adwaita-dark";
     platformTheme.name = "gtk3";
   };
-  stylix.targets = {
-    neovim.enable = true;
-  };
 }

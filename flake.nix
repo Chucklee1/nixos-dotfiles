@@ -22,6 +22,19 @@
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
       grub2-themes.nixosModules.default
+      {
+        home-manager = {
+          useUserPackages = true;
+          useGlobalPkgs = true;
+          extraSpecialArgs = {inherit inputs;};
+          users.goat = {
+            imports = [./modules/home/default.nix];
+            home.stateVersion = "24.05"; # DO NOT CHANGE
+            home.username = "goat";
+            home.homeDirectory = "/home/goat";
+          };
+        };
+      }
     ];
   in {
     # desktop profile
@@ -34,12 +47,6 @@
           ./modules/hardware/desktop.nix
           {
             nvidia.enable = true;
-            home-manager.users.goat.home.sessionVariables = {
-              WLR_NO_HARDWARE_CURSORS = "1";
-              GBM_BACKEND = "nvidia_drm";
-              __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-              LIBVA_DRIVER_NAME = "nvidia";
-            };
           }
         ];
     };
@@ -53,6 +60,9 @@
           ./modules/hardware/laptop.nix
           {
             services.xserver.videoDrivers = ["amd"];
+            kitty.enable = true;
+            vscode.enable = true;
+            niri.enable = true;
             nvidia.enable = false;
           }
         ];
