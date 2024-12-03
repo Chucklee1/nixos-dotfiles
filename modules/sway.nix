@@ -10,5 +10,6 @@
 
   config = lib.mkIf config.sway.enable {
     programs.sway.enable = true;
+    programs.sway.package = pkgs.swayfx;
   };
 }
