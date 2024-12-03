@@ -9,6 +9,7 @@
     ./theming.nix
     ./gamse.nix
     ./nvidia.nix
+    ./i3.nix
   ];
   # -----------------------------------------------------------
   # boot loader
