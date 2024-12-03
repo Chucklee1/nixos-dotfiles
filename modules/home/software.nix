@@ -32,6 +32,7 @@
   programs = {
     lazygit.enable = true;
     fuzzel.enable = true;
+    wlogout.enable = true;
     vscode = {
       enable = true;
       extensions = with pkgs.vscode-extensions; [
