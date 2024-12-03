@@ -10,10 +10,6 @@
     ./gamse.nix
     ./nvidia.nix
   ];
-  home-manager.users.goat.imports = [
-    ./home/niri/config.kdl.nix
-    ./home/wlogout/wlogout.nix
-  ];
   # -----------------------------------------------------------
   # boot loader
   # -----------------------------------------------------------
@@ -68,6 +64,10 @@
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
     users.goat = {
+      imports = [
+        ./home/niri/config.kdl.nix
+        ./home/wlogout/wlogout.nix
+      ];
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE
         username = "goat";
