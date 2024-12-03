@@ -36,6 +36,8 @@
           ./modules/hardware/desktop.nix
           {
             nvidia.enable = true;
+            services.xserver.enable = true;
+            services.xserver.desktopManager.budgie.enable = true;
             home-manager.users.goat.home.sessionVariables = {
               WLR_NO_HARDWARE_CURSORS = "1";
               GBM_BACKEND = "nvidia_drm";
