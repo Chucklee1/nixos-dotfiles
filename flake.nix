@@ -24,15 +24,6 @@
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
       grub2-themes.nixosModules.default
-      {
-        nixpkgs.overlays = [inputs.niri.overlays.niri];
-        home-manager = {
-          useUserPackages = true;
-          useGlobalPkgs = true;
-          extraSpecialArgs = {inherit inputs;};
-          users.goat.imports = [./modules/home/home.nix];
-        };
-      }
     ];
   in {
     # desktop profile

@@ -1,13 +1,4 @@
 {pkgs, ...}: {
-  imports = [
-    ./niri/config.kdl.nix
-    ./wlogout/wlogout.nix
-  ];
-  home = {
-    stateVersion = "24.05"; # DO NOT CHANGE
-    username = "goat";
-    homeDirectory = "/home/goat";
-  };
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
@@ -111,31 +102,5 @@
         update-laptop = "sudo nixos-rebuild switch --flake .#laptop --show-trace";
       };
     };
-  };
-
-  # -----------------------------------------------------------
-  # theming
-  # -----------------------------------------------------------
-  gtk = {
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-  };
-  qt = {
-    enable = true;
-    style.name = "adwaita-dark";
-    platformTheme.name = "gtk3";
-  };
-  stylix.targets = {
-    neovim.enable = true;
-    niri.enable = true;
-    waybar.enable = false;
   };
 }
