@@ -18,7 +18,7 @@
     home.packages = with pkgs; [
       prismlauncher
       vulkan-tools
-      lutris
+      protonup-qt
       mangohud
       xwayland-satellite
     ];

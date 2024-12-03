@@ -19,7 +19,7 @@
     base16Scheme = {
       base00 = "171D23";
       base01 = "1D252C";
-      base02 = "28323sA";
+      base02 = "28323A";
       base03 = "526270";
       base04 = "B7C5D3";
       base05 = "D8E2EC";
