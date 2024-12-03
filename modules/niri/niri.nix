@@ -1,10 +1,16 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  lib,
+  config,
+  ...
+}: {
   nixpkgs.overlays = [inputs.niri.overlays.niri];
   programs = {
     niri.enable = true;
     niri.package = pkgs.niri-unstable;
   };
-  enviorment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     # wayland & display utilities
     wayland
     wayland-protocols
@@ -34,7 +40,7 @@
   ];
   home-manager.users.goat = {
     imports = [
-      ./home/niri/config.kdl.nix
+      ./config.kdl.nix
     ];
     stylix.targets = {
       niri.enable = true;

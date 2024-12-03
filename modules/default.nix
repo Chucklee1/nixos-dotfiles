@@ -10,6 +10,7 @@
     ./gamse.nix
     ./nvidia.nix
     ./niri/niri.nix
+    ./other/kde.nix
   ];
   # -----------------------------------------------------------
   # boot loader
