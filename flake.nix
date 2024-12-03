@@ -36,7 +36,6 @@
           ./modules/hardware/desktop.nix
           {
             nvidia.enable = true;
-            sway.enable = true;
             home-manager.users.goat.home.sessionVariables = {
               WLR_NO_HARDWARE_CURSORS = "1";
               GBM_BACKEND = "nvidia_drm";
@@ -57,7 +56,6 @@
           {
             services.xserver.videoDrivers = ["amd"];
             nvidia.enable = false;
-            sway.enable = false;
           }
         ];
     };
