@@ -67,7 +67,6 @@
     users.goat = {
       imports = [
         ./home/niri/config.kdl.nix
-        ./home/wlogout/wlogout.nix
       ];
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE
