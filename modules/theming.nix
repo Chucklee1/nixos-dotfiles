@@ -83,8 +83,6 @@
     };
     stylix.targets = {
       neovim.enable = true;
-      niri.enable = true;
-      waybar.enable = false;
     };
   };
 }

@@ -9,6 +9,7 @@
     ./theming.nix
     ./gamse.nix
     ./nvidia.nix
+    ./niri/niri.nix
   ];
   # -----------------------------------------------------------
   # boot loader
@@ -31,7 +32,6 @@
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
   };
-  nixpkgs.overlays = [inputs.niri.overlays.niri];
 
   # -----------------------------------------------------------
   # system specifics
@@ -64,9 +64,6 @@
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
     users.goat = {
-      imports = [
-        ./home/niri/config.kdl.nix
-      ];
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE
         username = "goat";

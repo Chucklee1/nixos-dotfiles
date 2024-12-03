@@ -5,7 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    impermanence.url = "github:nix-community/impermanence";
     stylix.url = "github:danth/stylix";
     niri.url = "github:sodiboo/niri-flake";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
@@ -14,7 +13,6 @@
   outputs = {
     self,
     nixpkgs,
-    impermanence,
     grub2-themes,
     ...
   } @ inputs: let
@@ -36,8 +34,6 @@
           ./modules/hardware/desktop.nix
           {
             nvidia.enable = true;
-            services.xserver.enable = true;
-            services.xserver.desktopManager.budgie.enable = true;
             home-manager.users.goat.home.sessionVariables = {
               WLR_NO_HARDWARE_CURSORS = "1";
               GBM_BACKEND = "nvidia_drm";

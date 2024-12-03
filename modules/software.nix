@@ -21,38 +21,12 @@
     wget
     git
     curl
-    networkmanagerapplet
     # compresssion & archiving
     unrar
     unzip
     file-roller
     tree
     isoimagewriter
-    # wayland & display utilities
-    wayland
-    wayland-protocols
-    wayland-utils
-    wayland-scanner
-    egl-wayland
-    qt5.qtwayland
-    qt6.qtwayland
-    # clipboard & clipboard management
-    wl-clipboard
-    cliphist
-    xclip
-    # media tools
-    mpv
-    imv
-    ffmpeg
-    v4l-utils
-    # keyboard & input tools
-    wev
-    ydotool
-    wtype
-    # system controls
-    playerctl
-    pavucontrol
-    brightnessctl
   ];
 
   # -----------------------------------------------------------
@@ -61,17 +35,12 @@
   programs = {
     thunar.enable = true;
     thunar.plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
-    niri.enable = true;
-    niri.package = pkgs.niri-unstable;
   };
 
   # -----------------------------------------------------------
   # home manager
   # -----------------------------------------------------------
   home-manager.users.goat = {
-    # -----------------------------------------------------------
-    # packages
-    # -----------------------------------------------------------
     home.packages = with pkgs; [
       # apps
       firefox
@@ -84,25 +53,10 @@
       sl
       cowsay
       alejandra
-      # wm stuff
-      libnotify
-      libsecret
-      seahorse
-      papirus-icon-theme
-      (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-      # in settings.nix startup
-      swww
-      dunst
-      wlsunset
     ];
 
-    # -----------------------------------------------------------
-    # programs
-    # -----------------------------------------------------------
     programs = {
       lazygit.enable = true;
-      fuzzel.enable = true;
-      wlogout.enable = true;
       vscode = {
         enable = true;
         extensions = with pkgs.vscode-extensions; [
@@ -118,10 +72,6 @@
           "editor.minimap.enabled" = false;
           "git.confirmSync" = false;
         };
-      };
-      waybar = {
-        enable = true;
-        systemd.enable = true;
       };
       kitty = {
         enable = true;
