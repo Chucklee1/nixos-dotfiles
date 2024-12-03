@@ -5,11 +5,16 @@
   config,
   ...
 }: {
+  # -----------------------------------------------------------
+  # system - software
+  # -----------------------------------------------------------
+
   nixpkgs.overlays = [inputs.niri.overlays.niri];
   programs = {
     niri.enable = true;
     niri.package = pkgs.niri-unstable;
   };
+
   environment.systemPackages = with pkgs; [
     # wayland & display utilities
     wayland
@@ -38,6 +43,10 @@
     brightnessctl
     networkmanagerapplet
   ];
+
+  # -----------------------------------------------------------
+  # home manager
+  # -----------------------------------------------------------
   home-manager.users.goat = {
     imports = [
       ./config.kdl.nix
@@ -58,6 +67,7 @@
       dunst
       wlsunset
     ];
+
     programs = {
       fuzzel.enable = true;
       wlogout.enable = true;
