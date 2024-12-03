@@ -4,13 +4,12 @@
   ...
 }: {
   imports = [
-    ./software.nix
-    ./infastructure.nix
-    ./theming.nix
-    ./gamse.nix
-    ./nvidia.nix
-    #./niri/niri.nix
-    ./other/kde.nix
+    ./nixos/software.nix
+    ./nixos/infastructure.nix
+    ./nixos/theming.nix
+    ./nixos/gamse.nix
+    ./nixos/nvidia.nix
+    ./niri/niri.nix
   ];
   # -----------------------------------------------------------
   # boot loader
@@ -65,6 +64,10 @@
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
     users.goat = {
+      imports = [
+        ./home/software.nix
+        ./home/theming.nix
+      ];
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE
         username = "goat";
