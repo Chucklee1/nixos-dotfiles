@@ -9,7 +9,7 @@
     ./theming.nix
     ./gamse.nix
     ./nvidia.nix
-    ./niri/niri.nix
+    #./niri/niri.nix
     ./other/kde.nix
   ];
   # -----------------------------------------------------------

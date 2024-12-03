@@ -19,7 +19,7 @@
     base16Scheme = {
       base00 = "171D23";
       base01 = "1D252C";
-      base02 = "28323A";
+      base02 = "28323sA";
       base03 = "526270";
       base04 = "B7C5D3";
       base05 = "D8E2EC";
@@ -34,7 +34,7 @@
       base0E = "B62D65";
       base0F = "DD9D82";
     };
-    opacity.terminal = 0.6;
+    opacity.terminal = 0.9;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
     cursor.size = 24;
