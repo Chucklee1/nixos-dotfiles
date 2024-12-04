@@ -4,14 +4,13 @@
   ...
 }: {
   imports = [
-    ./infastructure.nix
-    ./packages.nix
-    ./theming.nix
-
     ./system/bootloader.nix
     ./system/nix.nix
     ./system/specifics.nix
     ./system/user.nix
+    ./system/infastructure.nix
+    ./system/packages.nix
+    ./system/theming.nix
 
     ./programs.gamse.nix
     ./programs/thunar.nix
