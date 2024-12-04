@@ -5,10 +5,10 @@
   ...
 }: {
   options = {
-    nvidia.enable = lib.mkEnableOption "enable nvidia drivers";
+    radeon.enable = lib.mkEnableOption "enable radeon gpu drivers";
   };
 
-  config = lib.mkIf config.nvidia.enable {
+  config = lib.mkIf config.radeon.enable {
     services.xserver.videoDrivers = ["amd"];
   };
 }
