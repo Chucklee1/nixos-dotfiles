@@ -12,7 +12,7 @@
     ./system/packages.nix
     ./system/theming.nix
 
-    ./programs.gamse.nix
+    ./programs.games.nix
     ./programs/thunar.nix
     ./programs/bash.nix
     ./programs/git.nix
