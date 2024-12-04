@@ -20,7 +20,6 @@
       vulkan-tools
       protonup-qt
       mangohud
-      xwayland-satellite
     ];
 
     home.sessionVariables = {

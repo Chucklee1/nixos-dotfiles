@@ -7,13 +7,13 @@
     ./infastructure.nix
     ./packages.nix
     ./theming.nix
-    ./gamse.nix
 
     ./system/bootloader.nix
     ./system/nix.nix
     ./system/specifics.nix
     ./system/user.nix
 
+    ./programs.gamse.nix
     ./programs/thunar.nix
     ./programs/bash.nix
     ./programs/git.nix
