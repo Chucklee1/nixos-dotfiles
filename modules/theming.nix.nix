@@ -1,6 +1,6 @@
 {
   pkgs,
-  imports,
+  inputs,
   ...
 }: {
   # base16 theme: tokyo-city-terminal-dark.yaml
