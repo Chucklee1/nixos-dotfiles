@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CONFIG_DIR="$HOME/.config"
-MODULE_DIR="$HOME/nixos-dotfiles/modules/home/config"
+MODULE_DIR="$HOME/nixos-dotfiles/modules/config"
 IMAGE="$HOME/nixos-dotfiles/pictures/mono-forest.PNG"
 
 TASK_ARR=("waybar" "swww")
