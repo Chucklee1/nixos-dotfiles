@@ -5,7 +5,7 @@
 }: {
   imports = [
     ./system/bootloader.nix
-    ./syste/home-manager.nix
+    ./system/home-manager.nix
     ./system/specifics.nix
     ./system/user.nix
     ./system/infastructure.nix
