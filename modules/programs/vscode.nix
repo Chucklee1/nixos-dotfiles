@@ -23,7 +23,7 @@
         "files.confirmDelete" = false;
         "git.confirmSync" = false;
         "git.enableSmartCommit" = true;
-        "workbench.colorTheme" = "Stylix"
+        "workbench.colorTheme" = "Stylix";
         "[nix]"."editor.tabSize" = 2;
       };
     };
