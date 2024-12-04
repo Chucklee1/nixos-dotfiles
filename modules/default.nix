@@ -5,7 +5,7 @@
 }: {
   imports = [
     ./system/bootloader.nix
-    ./home-manager.nix
+    ./syste/home-manager.nix
     ./system/specifics.nix
     ./system/user.nix
     ./system/infastructure.nix
@@ -20,10 +20,10 @@
     ./programs/neovim.nix
 
     # toggle modules #
+    ./system/wayland.nix
     ./drivers/nvidia.nix
     ./drivers/nvidia-wayland.nix
     ./drivers/radeon.nix
-    ./wayland.nix
     ./programs/niri.nix
     ./programs/vscode.nix
   ];

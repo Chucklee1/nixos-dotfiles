@@ -29,17 +29,11 @@
 
     spawn-at-startup = [
       {command = ["dunst"];}
+      {command = ["xwayland-satellite"];}
+      {command = ["swww-daemon"];}
+      {command = ["waybar"];}
       {command = ["nm-applet"];}
       {command = ["wlsunset" "-t" "5000" "-T" "6500"];}
-      {command = ["xwayland-satellite"];}
-      # wallpaper
-      {command = ["swww-daemon"];}
-      {command = ["swww" "img" "~/nixos-dotfiles/pictures/mono-forest.PNG"];}
-      # bar
-      {command = ["rm" "-rf" "~/.config/waybar/*"];}
-      {command = ["ln" "-s" "~/nixos-dotfiles/modules/niri/waybar/config.jsonc" "~/.config/waybar/"];}
-      {command = ["ln" "-s" "~/nixos-dotfiles/modules/niri/waybar/style.css" "~/.config/waybar/"];}
-      {command = ["waybar"];}
     ];
 
     # inputs
@@ -123,8 +117,8 @@
 
       "Mod+Minus".action = set-column-width "-10%";
       "Mod+Plus".action = set-column-width "+10%";
-      "Mod+Shift+Minus".action = set-window-height "-10%";
-      "Mod+Shift+Plus".action = set-window-height "+10%";
+      "Mod+Shift+Minus".action = set-window-height "-1%";
+      "Mod+Shift+Plus".action = set-window-height "+1%";
 
       "Mod+Shift+E".action = quit;
       "Mod+Shift+P".action.spawn = "wlogout";
