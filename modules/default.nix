@@ -1,4 +1,8 @@
-{...}: {
+{
+  lib,
+  config,
+  ...
+}: {
   imports = [
     ./system/bootloader.nix
     ./system/nix.nix
@@ -13,6 +17,5 @@
     ./programs/thunar.nix
     # toggle modules #
     ./drivers/nvidia.nix
-    ./programs/niri.nix
   ];
 }

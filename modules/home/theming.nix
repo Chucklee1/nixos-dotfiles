@@ -16,4 +16,9 @@
     style.name = "adwaita-dark";
     platformTheme.name = "gtk3";
   };
+  programs.oh-my-posh = {
+    enable = true;
+    enableBashIntegration = true;
+    useTheme = "pure";
+  };
 }
