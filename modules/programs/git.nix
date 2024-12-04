@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  home-manager.users.goat.  programs = {
+  home-manager.users.goat.programs = {
     lazygit.enable = true;
     git = {
       enable = true;
