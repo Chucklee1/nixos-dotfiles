@@ -4,7 +4,7 @@
   ...
 }: {
   # base16 theme: tokyo-city-terminal-dark.yaml
-  base16Scheme = {
+  stylix.base16Scheme = {
     base00 = "171D23";
     base01 = "1D252C";
     base02 = "28323A";
