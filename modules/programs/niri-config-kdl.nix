@@ -100,7 +100,7 @@
 
       # window actions
       "Mod+Q".action = close-window;
-      "Ctrl+Alt+Del".action = quit;
+      "Ctrl+Alt+Delete".action = quit;
 
       "Mod+Left".action = focus-column-left;
       "Mod+Right".action = focus-column-right;
