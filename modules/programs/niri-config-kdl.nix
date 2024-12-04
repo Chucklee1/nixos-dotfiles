@@ -7,10 +7,10 @@
   # niri settings
   # -----------------------------------------------------------
   programs.niri.settings = {
-    # general
     prefer-no-csd = true;
     hotkey-overlay.skip-at-startup = true;
     screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+
     environment = {
       NIXOS_OZONE_WL = "1";
       XDG_SESSION_TYPE = "wayland";
@@ -36,7 +36,6 @@
       {command = ["wlsunset" "-t" "5000" "-T" "6500"];}
     ];
 
-    # inputs
     input.keyboard.xkb.layout = "us";
     input.mouse.accel-speed = 1.0;
     input.touchpad = {
@@ -67,7 +66,7 @@
         clip-to-geometry = true;
       }
     ];
-    # monitors
+
     outputs."DP-1" = {
       enable = true;
       mode.width = 1920;
@@ -77,7 +76,6 @@
       mode.refresh = 165.001;
     };
 
-    # keybinds
     binds = with config.lib.niri.actions; {
       # programs
       "Mod+Return".action.spawn = ["kitty" "--working-directory" "~/nixos-dotfiles"];
