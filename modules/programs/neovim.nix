@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  home-manager.users.goat.programs.neovim = {
+  home-manager.sharedModules.programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;

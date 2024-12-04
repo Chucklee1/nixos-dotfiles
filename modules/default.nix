@@ -5,8 +5,8 @@
 }: {
   imports = [
     ./system/bootloader.nix
-    ./system/home-manager.nix
-    ./system/specifics.nix
+    ./system/hm-settings.nix
+    ./system/system-settings.nix
     ./system/user.nix
 
     ./bundles/infastructure.nix
@@ -16,11 +16,11 @@
     ./bundles/wayland.nix #
 
     ./programs/thunar.nix
+    ./programs/niri.nix #
     ./programs/bash.nix
     ./programs/git.nix
     ./programs/kitty.nix
     ./programs/neovim.nix
-    ./programs/niri.nix #
     ./programs/vscode.nix #
 
     ./drivers/nvidia.nix #

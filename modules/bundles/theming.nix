@@ -88,7 +88,7 @@
   # -----------------------------------------------------------
   # home manager
   # -----------------------------------------------------------
-  home-manager.users.goat = {
+  home-manager.sharedModules = {
     gtk = {
       iconTheme = {
         name = "Papirus-Dark";

@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  home-manager.users.goat.programs.bash = {
+  home-manager.sharedModules.programs.bash = {
     enable = true;
     shellAliases = {
       sv = "sudo nvim";

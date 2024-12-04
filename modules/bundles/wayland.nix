@@ -45,7 +45,7 @@
     # -----------------------------------------------------------
     # home manager
     # -----------------------------------------------------------
-    home-manager.users.goat = {
+    home-manager.sharedModules = {
       home.packages = with pkgs; [
         # wm stuff
         libnotify

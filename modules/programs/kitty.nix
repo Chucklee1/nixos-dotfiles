@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  home-manager.users.goat.programs.kitty = {
+  home-manager.sharedModules.programs.kitty = {
     enable = true;
     settings = {
       scrollback_lines = 2000;

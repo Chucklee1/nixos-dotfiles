@@ -16,6 +16,6 @@
       niri.package = pkgs.niri-unstable;
     };
     environment.systemPackages = [pkgs.xwayland-satellite];
-    home-manager.users.goat.imports = [./niri-config-kdl.nix];
+    #home-manager.sharedModules.imports = [./niri-config-kdl.nix];
   };
 }

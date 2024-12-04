@@ -28,7 +28,7 @@
   # -----------------------------------------------------------
   # home manager
   # -----------------------------------------------------------
-  home-manager.users.goat.home.packages = with pkgs; [
+  home-manager.sharedModules.home.packages = with pkgs; [
     # apps
     firefox
     musescore
