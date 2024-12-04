@@ -8,7 +8,7 @@
   };
 
   config = lib.mkIf config.vscode.enable {
-    programs.vscode = {
+    home-manager.users.goat.programs.vscode = {
       enable = true;
       extensions = with pkgs.vscode-extensions; [
         jnoortheen.nix-ide
