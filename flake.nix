@@ -22,18 +22,6 @@
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
       grub2-themes.nixosModules.default
-      {
-        home-manager = {
-          useUserPackages = true;
-          useGlobalPkgs = true;
-          extraSpecialArgs = {inherit inputs;};
-          users.goat = {
-            home.stateVersion = "24.05"; # DO NOT CHANGE
-            home.username = "goat";
-            home.homeDirectory = "/home/goat";
-          };
-        };
-      }
     ];
   in {
     # desktop profile
@@ -50,6 +38,7 @@
             niri.enable = true;
             nvidia.enable = true;
             nvidia-wayland.enable = true;
+            radeon.enable = false;
           }
         ];
     };
@@ -62,12 +51,12 @@
         ++ [
           ./modules/hardware/laptop.nix
           {
-            services.xserver.videoDrivers = ["amd"];
             vscode.enable = true;
             wayland.enable = true;
             niri.enable = true;
             nvidia.enable = false;
             nvidia-wayland.enable = false;
+            radeon.enable = true;
           }
         ];
     };
