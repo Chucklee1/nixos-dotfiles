@@ -79,24 +79,28 @@
 
     # keybinds
     binds = with config.lib.niri.actions; {
+      # programs
       "Mod+Return".action.spawn = ["kitty" "--working-directory" "~/nixos-dotfiles"];
       "Mod+Space".action.spawn = "fuzzel";
       "Super+Alt+L".action.spawn = "swaylock";
       "Super+Alt+P".action.spawn = "wlogout";
 
+      # media keys
       "XF86AudioRaiseVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"];
       "XF86AudioLowerVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"];
       "XF86AudioMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
       "XF86AudioMicMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"];
-
       "XF86MonBrightnessUp" .action.spawn = ["brightnessctl" "--device=amdgpu_bl1" "s" "5%+"];
       "XF86MonBrightNessDown".action.spawn = ["brightnessctl" "--device=amdgpu_bl1" "s" "5%-"];
 
+      # screenshot
       "Print".action = screenshot;
       "Ctrl+Print".action = screenshot-screen;
       "Alt+Print".action = screenshot-window;
 
+      # window actions
       "Mod+Q".action = close-window;
+      "Ctrl+Alt+Del".action = quit;
 
       "Mod+Left".action = focus-column-left;
       "Mod+Right".action = focus-column-right;
@@ -119,9 +123,6 @@
       "Mod+Plus".action = set-column-width "+10%";
       "Mod+Shift+Minus".action = set-window-height "-1%";
       "Mod+Shift+Plus".action = set-window-height "+1%";
-
-      "Mod+Shift+E".action = quit;
-      "Mod+Shift+P".action.spawn = "wlogout";
     };
   };
 }
