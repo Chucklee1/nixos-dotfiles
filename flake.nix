@@ -49,6 +49,7 @@
             wayland.enable = true;
             niri.enable = true;
             nvidia.enable = true;
+            nvidia-wayland.enable = true;
           }
         ];
     };
@@ -66,6 +67,7 @@
             wayland.enable = true;
             niri.enable = true;
             nvidia.enable = false;
+            nvidia-wayland.enable = false;
           }
         ];
     };

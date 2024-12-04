@@ -22,6 +22,7 @@
 
     # toggle modules #
     ./drivers/nvidia.nix
+    ./drivers/nvidia-wayland.nix
     ./wayland.nix
     ./programs/niri.nix
     ./programs/vscode.nix
