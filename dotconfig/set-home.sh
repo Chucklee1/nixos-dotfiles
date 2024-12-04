@@ -21,8 +21,7 @@ ln -s $MODULE_DIR/waybar/config.jsonc $CONFIG_DIR/waybar/
 ln -s $MODULE_DIR/waybar/style.css $CONFIG_DIR/waybar/
 
 # pictures directory
-rm -rf $HOME/pictures 
-ln -s $HOME/nixos-dotfiles/Pictures $HOME/
+ln -s $HOME/nixos-dotfiles/Pictures/* $HOME/Pictures/
 
 waybar &
 swww-daemon

@@ -16,7 +16,7 @@
     grub2-themes,
     ...
   } @ inputs: let
-    wallpaper = /Home/goat/Pictures/mono-forest.PNG;
+    wallpaper = /home/goat/Pictures/mono-forest.PNG;
     specialArgs = {inherit wallpaper inputs;};
     shared-modules = [
       ./modules/default.nix
