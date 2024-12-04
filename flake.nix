@@ -17,7 +17,7 @@
     ...
   } @ inputs: let
     shared-modules = [
-      ./modules/nixos/default.nix
+      ./modules/default.nix
       inputs.home-manager.nixosModules.home-manager
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
@@ -28,7 +28,6 @@
           useGlobalPkgs = true;
           extraSpecialArgs = {inherit inputs;};
           users.goat = {
-            imports = [./modules/home/default.nix];
             home.stateVersion = "24.05"; # DO NOT CHANGE
             home.username = "goat";
             home.homeDirectory = "/home/goat";
