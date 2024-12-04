@@ -17,7 +17,7 @@
     ...
   } @ inputs: let
     shared-modules = [
-      ./modules/default.nix
+      ./modules/nixos/default.nix
       inputs.home-manager.nixosModules.home-manager
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
@@ -46,6 +46,9 @@
         ++ [
           ./modules/hardware/desktop.nix
           {
+            vscode.enable = true;
+            wayland.enable = true;
+            niri.enable = true;
             nvidia.enable = true;
           }
         ];
@@ -60,8 +63,8 @@
           ./modules/hardware/laptop.nix
           {
             services.xserver.videoDrivers = ["amd"];
-            kitty.enable = true;
             vscode.enable = true;
+            wayland.enable = true;
             niri.enable = true;
             nvidia.enable = false;
           }
