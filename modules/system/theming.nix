@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  wallpaper,
   ...
 }: {
   # -----------------------------------------------------------
@@ -44,7 +45,7 @@
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
-    image = ../../../Pictures/mono-forest.PNG;
+    image = wallpaper;
     opacity.terminal = 0.7;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";

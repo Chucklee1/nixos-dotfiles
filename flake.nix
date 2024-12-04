@@ -16,6 +16,8 @@
     grub2-themes,
     ...
   } @ inputs: let
+    wallpaper = /Home/goat/Pictures/mono-forest.PNG;
+    specialArgs = {inherit wallpaper inputs;};
     shared-modules = [
       ./modules/default.nix
       inputs.home-manager.nixosModules.home-manager
@@ -29,7 +31,7 @@
     # -----------------------------------------------------------
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
+      specialArgs = specialArgs;
       modules =
         shared-modules
         ++ [
@@ -49,7 +51,7 @@
     # -----------------------------------------------------------
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
+      specialArgs = specialArgs;
       modules =
         shared-modules
         ++ [
