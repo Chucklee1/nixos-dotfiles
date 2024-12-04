@@ -37,7 +37,7 @@
   stylix = {
     enable = true;
     homeManagerIntegration.autoImport = true;
-    image = ../../../pictures/mono-forest.PNG;
+    image = ../pictures/mono-forest.PNG;
     opacity.terminal = 0.7;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
