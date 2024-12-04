@@ -1,8 +1,7 @@
 #!/bin/bash
 
 CONFIG_DIR="$HOME/.config"
-MODULE_DIR="$HOME/nixos-dotfiles/dotconfig"
-IMAGE="$HOME/Pictures/mono-forest.PNG"
+FLAKE_DIR="$HOME/nixos-dotfiles"
 
 TASK_ARR=("waybar" "swww")
 # kill task
@@ -16,13 +15,12 @@ done
 # waybar
 mkdir $CONFIG_DIR/waybar
 rm -rf $CONFIG_DIR/waybar/*
+ln -s $FLAKE_DIR/dotconfig/waybar/* $CONFIG_DIR/waybar/
 
-ln -s $MODULE_DIR/waybar/config.jsonc $CONFIG_DIR/waybar/
-ln -s $MODULE_DIR/waybar/style.css $CONFIG_DIR/waybar/
-
-# pictures directory
-ln -s $HOME/nixos-dotfiles/Pictures/* $HOME/Pictures/
+# pictures 
+rm -rf $HOME/Pictures/*
+ln -s $FLAKE_DIR/Pictures/* $HOME/Pictures/
 
 waybar &
 swww-daemon
-swww img $IMAGE
+swww img $HOME/Pictures/mono-forest.PNG
