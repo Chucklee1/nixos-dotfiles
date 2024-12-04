@@ -28,17 +28,21 @@
   # -----------------------------------------------------------
   # home manager
   # -----------------------------------------------------------
-  home-manager.sharedModules.home.packages = with pkgs; [
-    # apps
-    firefox
-    musescore
-    zoom-us
-    # cli
-    btop
-    ncdu
-    neofetch
-    sl
-    cowsay
-    alejandra
+  home-manager.sharedModules = [
+    {
+      home.packages = with pkgs; [
+        # apps
+        firefox
+        musescore
+        zoom-us
+        # cli
+        btop
+        ncdu
+        neofetch
+        sl
+        cowsay
+        alejandra
+      ];
+    }
   ];
 }

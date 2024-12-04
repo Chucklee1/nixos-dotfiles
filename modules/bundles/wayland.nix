@@ -45,29 +45,31 @@
     # -----------------------------------------------------------
     # home manager
     # -----------------------------------------------------------
-    home-manager.sharedModules = {
-      home.packages = with pkgs; [
-        # wm stuff
-        libnotify
-        libsecret
-        seahorse
-        papirus-icon-theme
-        (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-        # in settings.nix startup
-        swww
-        dunst
-        wlsunset
-      ];
+    home-manager.sharedModules = [
+      {
+        home.packages = with pkgs; [
+          # wm stuff
+          libnotify
+          libsecret
+          seahorse
+          papirus-icon-theme
+          (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+          # in settings.nix startup
+          swww
+          dunst
+          wlsunset
+        ];
 
-      programs = {
-        fuzzel.enable = true;
-        wlogout.enable = true;
-        waybar = {
-          enable = true;
-          systemd.enable = true;
+        programs = {
+          fuzzel.enable = true;
+          wlogout.enable = true;
+          waybar = {
+            enable = true;
+            systemd.enable = true;
+          };
         };
-      };
-    };
+      }
+    ];
 
     # -----------------------------------------------------------
     # portals and security
