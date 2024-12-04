@@ -4,7 +4,7 @@
     shellAliases = {
       sv = "sudo nvim";
       v = "nvim";
-      start-pls = ". $HOME/nixos-dotfiles/modules/home/set-home.sh";
+      start-pls = ". $HOME/nixos-dotfiles/dotconfig/set-home.sh";
       kittty = "kitty working-directory $HOME/nixos-dotfiles";
       ozonify = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
       cg = "sudo nix-collect-garbage";
