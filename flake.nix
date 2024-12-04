@@ -24,7 +24,9 @@
       grub2-themes.nixosModules.default
     ];
   in {
+    # -----------------------------------------------------------
     # desktop profile
+    # -----------------------------------------------------------
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
@@ -42,7 +44,9 @@
           }
         ];
     };
+    # -----------------------------------------------------------
     # laptop profile
+    # -----------------------------------------------------------
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};

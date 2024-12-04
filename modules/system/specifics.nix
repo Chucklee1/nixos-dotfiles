@@ -1,4 +1,7 @@
 {...}: {
+  # -----------------------------------------------------------
+  # system options
+  # -----------------------------------------------------------
   system.stateVersion = "24.05"; # DO NOT CHANGE
   networking.hostName = "goat";
   networking.networkmanager.enable = true;
@@ -11,7 +14,9 @@
     keyMap = "us";
   };
 
+  # -----------------------------------------------------------
   # nix options
+  # -----------------------------------------------------------
   nixpkgs.config.allowUnfree = true;
   nix.settings = {
     auto-optimise-store = true;

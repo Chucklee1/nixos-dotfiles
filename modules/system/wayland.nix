@@ -10,7 +10,9 @@
   };
 
   config = lib.mkIf config.wayland.enable {
+    # -----------------------------------------------------------
     # system
+    # -----------------------------------------------------------
     environment.systemPackages = with pkgs; [
       # wayland & display utilities
       wayland
@@ -40,7 +42,9 @@
       networkmanagerapplet
     ];
 
+    # -----------------------------------------------------------
     # home manager
+    # -----------------------------------------------------------
     home-manager.users.goat = {
       home.packages = with pkgs; [
         # wm stuff
@@ -65,6 +69,9 @@
       };
     };
 
+    # -----------------------------------------------------------
+    # portals and security
+    # -----------------------------------------------------------
     services.gnome.gnome-keyring.enable = true;
     security = {
       rtkit.enable = true; # enable rtkit for sound

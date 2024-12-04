@@ -1,5 +1,7 @@
 {pkgs, ...}: {
+  # -----------------------------------------------------------
   # system
+  # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # dev tools
     ripgrep
@@ -23,7 +25,9 @@
     isoimagewriter
   ];
 
+  # -----------------------------------------------------------
   # home manager
+  # -----------------------------------------------------------
   home-manager.users.goat.home.packages = with pkgs; [
     # apps
     firefox
