@@ -28,7 +28,7 @@
     grub.enable = false;
   };
   home-manager.users.goat.stylix.targets = {
-    nvim.enable = true;
+    neovim.enable = true;
     waybar.enable = false;
     niri.enable = true;
   };
