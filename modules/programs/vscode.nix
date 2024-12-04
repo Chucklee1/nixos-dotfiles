@@ -17,12 +17,14 @@
         kamadorueda.alejandra
       ];
       userSettings = {
+        "editor.minimap.enabled" = false;
+        "explorer.confirmDragAndDrop" = false;
         "files.autoSave" = "off";
         "files.confirmDelete" = false;
-        "explorer.confirmDragAndDrop" = false;
-        "[nix]"."editor.tabSize" = 2;
-        "editor.minimap.enabled" = false;
         "git.confirmSync" = false;
+        "git.enableSmartCommit" = true;
+        "workbench.colorTheme" = "Stylix"
+        "[nix]"."editor.tabSize" = 2;
       };
     };
   };
