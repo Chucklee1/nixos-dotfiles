@@ -17,6 +17,7 @@
     ./gamse.nix
 
     ./programs/thunar.nix
+    ./programs/niri.nix
 
     # toggle modules #
     ./drivers/nvidia.nix
