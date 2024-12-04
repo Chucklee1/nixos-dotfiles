@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  # system
   environment.systemPackages = with pkgs; [
     # dev tools
     ripgrep
@@ -20,5 +21,20 @@
     file-roller
     tree
     isoimagewriter
+  ];
+
+  # home manager
+  home-manager.users.goat.home.packages = with pkgs; [
+    # apps
+    firefox
+    musescore
+    zoom-us
+    # cli
+    btop
+    ncdu
+    neofetch
+    sl
+    cowsay
+    alejandra
   ];
 }

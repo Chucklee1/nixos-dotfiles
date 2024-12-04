@@ -15,5 +15,6 @@
       niri.enable = true;
       niri.package = pkgs.niri-unstable;
     };
+    home-manager.users.goat.imports = [../../home/config/config.kdl.nix];
   };
 }
