@@ -31,10 +31,6 @@
   home-manager.sharedModules = [
     {
       home.packages = with pkgs; [
-        # apps
-        firefox
-        musescore
-        zoom-us
         # cli
         btop
         ncdu

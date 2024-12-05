@@ -18,6 +18,7 @@
     ./programs/niri.nix #
     ./programs/waybar.nix #
     ./programs/bash.nix
+    ./programs/flatpak.nix
     ./programs/git.nix
     ./programs/kitty.nix
     ./programs/neovim.nix
