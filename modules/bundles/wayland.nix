@@ -39,7 +39,6 @@
       playerctl
       pavucontrol
       brightnessctl
-      networkmanagerapplet
     ];
 
     # -----------------------------------------------------------
@@ -54,10 +53,6 @@
           seahorse
           papirus-icon-theme
           (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-          # in settings.nix startup
-          swww
-          dunst
-          wlsunset
         ];
 
         programs = {
@@ -85,13 +80,19 @@
       };
     };
 
-    systemd = {
-      user.services.lxqt-policykit-agent = {
-        description = "LXQt PolicyKit Agent";
-        serviceConfig.ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
-        wantedBy = ["default.target"];
-      };
+    systemd.user.services.wayland-startup = {
+      description = "startup applications and daemons";
+      serviceConfig.ExecStart = ''
+        ${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent
+        ${pkgs.dunst}/bin/dunst
+        ${pkgs.networkmanagerapplet}/bin/nm-applet
+        ${pkgs.xwayland-satellite}/bin/xwayland-satellite
+        ${pkgs.swww}/bin/swww-daemon && swww img $HOME/nixos-dotfiles/Pictures/mono-forest.PNG
+        ${pkgs.wlsunset}/bin/wlsunset -t 5000 -T 6500
+      '';
+      wantedBy = ["default.target"];
     };
+
     xdg.portal = {
       enable = true;
       extraPortals = [pkgs.xdg-desktop-portal-gtk];

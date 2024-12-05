@@ -28,15 +28,6 @@
       MOZ_ENABLE_WAYLAND = "1";
     };
 
-    spawn-at-startup = [
-      {command = ["dunst"];}
-      {command = ["xwayland-satellite"];}
-      {command = ["swww-daemon"];}
-      {command = ["waybar"];}
-      {command = ["nm-applet"];}
-      {command = ["wlsunset" "-t" "5000" "-T" "6500"];}
-    ];
-
     input.keyboard.xkb.layout = "us";
     input.mouse.accel-speed = 1.0;
     input.touchpad = {
