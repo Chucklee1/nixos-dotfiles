@@ -22,4 +22,12 @@
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
   };
+  # -----------------------------------------------------------
+  # home manager
+  # -----------------------------------------------------------
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    extraSpecialArgs = {inherit inputs;};
+  };
 }
