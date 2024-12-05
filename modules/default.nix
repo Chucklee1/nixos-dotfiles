@@ -16,7 +16,7 @@
 
     ./programs/thunar.nix
     ./programs/niri.nix #
-    ./programs.waybar.nix #
+    ./programs/waybar.nix #
     ./programs/bash.nix
     ./programs/git.nix
     ./programs/kitty.nix
