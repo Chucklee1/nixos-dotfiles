@@ -14,25 +14,27 @@
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/639a16aa-ad25-47e1-98b4-825dd563c53d";
-    fsType = "ext4";
-  };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/639a16aa-ad25-47e1-98b4-825dd563c53d";
+      fsType = "ext4";
+    };
 
-  fileSystems."/boot/efi" = {
-    device = "/dev/disk/by-uuid/0587-E8FD";
-    fsType = "vfat";
-    options = ["fmask=0022" "dmask=0022"];
-  };
+    "/boot/efi" = {
+      device = "/dev/disk/by-uuid/0587-E8FD";
+      fsType = "vfat";
+      options = ["fmask=0022" "dmask=0022"];
+    };
 
-  # other drives
-  "/run/media/goat/BLUE-SATA" = {
-    device = "/dev/disk/by-uuid/C814039D14038D9E";
-    fsType = "ntfs";
-  };
-  "/run/media/goat/SATA-DRIVE-1" = {
-    device = "/dev/disk/by-uuid/2CB23BB6B23B837E   ";
-    fsType = "ntfs";
+    # other drives
+    "/run/media/goat/BLUE-SATA" = {
+      device = "/dev/disk/by-uuid/C814039D14038D9E";
+      fsType = "ntfs";
+    };
+    "/run/media/goat/SATA-DRIVE-1" = {
+      device = "/dev/disk/by-uuid/2CB23BB6B23B837E   ";
+      fsType = "ntfs";
+    };
   };
 
   swapDevices = [];
