@@ -5,7 +5,6 @@
 }: {
   imports = [
     ./system/bootloader.nix
-    ./system/hm-settings.nix
     ./system/system-settings.nix
     ./system/user.nix
 
@@ -17,6 +16,7 @@
 
     ./programs/thunar.nix
     ./programs/niri.nix #
+    ./programs.waybar.nix #
     ./programs/bash.nix
     ./programs/git.nix
     ./programs/kitty.nix

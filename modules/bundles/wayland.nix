@@ -58,10 +58,6 @@
         programs = {
           fuzzel.enable = true;
           wlogout.enable = true;
-          waybar = {
-            enable = true;
-            systemd.enable = true;
-          };
         };
       }
     ];

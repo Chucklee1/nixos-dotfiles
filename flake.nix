@@ -39,6 +39,7 @@
           {
             vscode.enable = true;
             wayland.enable = true;
+            waybar.enable = true;
             niri.enable = true;
             nvidia.enable = true;
             nvidia-wayland.enable = true;
@@ -59,6 +60,7 @@
           {
             vscode.enable = true;
             wayland.enable = true;
+            waybar.enable = true;
             niri.enable = true;
             nvidia.enable = false;
             nvidia-wayland.enable = false;
