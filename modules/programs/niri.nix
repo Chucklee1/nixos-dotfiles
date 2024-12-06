@@ -4,12 +4,11 @@
   lib,
   config,
   ...
-}: {
-  options = {
-    niri.enable = lib.mkEnableOption "enable nvidia progam";
-  };
-
-  config = lib.mkIf config.niri.enable {
+}: let
+  # -----------------------------------------------------------
+  # niri config module
+  # -----------------------------------------------------------
+  niri-config = lib.mkIf config.niri.enable {
     # -----------------------------------------------------------
     # niri flake package
     # -----------------------------------------------------------
@@ -95,4 +94,27 @@
       }
     ];
   };
+
+  # -----------------------------------------------------------
+  # niri nvidia config module
+  # -----------------------------------------------------------
+  niri-nvidia = lib.mkIf config.niri-nvidia.enable {
+    hardware.nvidia.modesetting.enable = true;
+    environment.variables = {
+      WLR_NO_HARDWARE_CURSORS = "1";
+      GBM_BACKEND = "nvidia_drm";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      LIBVA_DRIVER_NAME = "nvidia";
+    };
+  };
+  # -----------------------------------------------------------
+  # actual code plugging modules into this
+  # -----------------------------------------------------------
+in {
+  options = {
+    niri.enable = lib.mkEnableOption "Enable nvidia program";
+    nvidia-wayland.enable = lib.mkEnableOption "Enable nvidia wayland compatibility patch";
+  };
+
+  config = niriConfig // nvidiaWaylandConfig;
 }

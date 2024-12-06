@@ -16,7 +16,6 @@
     ./programs/vscode.nix #
 
     ./drivers/nvidia.nix #
-    ./drivers/nvidia-wayland.nix #
     ./drivers/radeon.nix #
   ];
 }
