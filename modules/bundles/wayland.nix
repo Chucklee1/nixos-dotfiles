@@ -4,20 +4,7 @@
   lib,
   config,
   ...
-}: let
-  wayland-startup = pkgs.writeShellApplication {
-    name = "startup applications and daemons";
-    text = ''
-      lxqt-policykit-agent
-      dunst
-      nm-applet
-      xwayland-satellite
-      swww-daemon
-      swww img $HOME/nixos-dotfiles/Pictures/mono-forest.PNG
-      wlsunset -t 5000 -T 6500
-    '';
-  };
-in {
+}: {
   options = {
     wayland.enable = lib.mkEnableOption "enable wayland base";
   };
@@ -66,14 +53,6 @@ in {
           seahorse
           papirus-icon-theme
           (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-          #startup
-          lxqt.lxqt-policykit
-          dunst
-          networkmanagerapplet
-          swww
-          xwayland-satellite
-          wlsunset
-          wayland-startup
         ];
 
         programs = {
@@ -90,11 +69,6 @@ in {
     security = {
       rtkit.enable = true; # enable rtkit for sound
       polkit.enable = true; # enable policykit
-      pam.services.swaylock = {
-        text = ''
-          auth include login
-        '';
-      };
     };
 
     xdg.portal = {

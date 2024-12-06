@@ -1,6 +1,8 @@
 {
+  pkgs,
   lib,
   config,
+  wallpaper,
   ...
 }: {
   # -----------------------------------------------------------
@@ -28,7 +30,15 @@
       MOZ_ENABLE_WAYLAND = "1";
     };
 
-    spawn-at-startup = [{command = ["wayland-startup"];}];
+    spawn-at-startup = [
+      {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
+      {command = ["${lib.getExe pkgs.dunst}"];}
+      {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
+      {command = ["${lib.getExe pkgs.waybar}"];}
+      {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
+      {command = ["${lib.getExe pkgs.wlsunset}" "-t" "5000" "-T" "6500"];}
+      {command = ["${lib.getExe pkgs.swaybg}" "-m" "fill" "-i" "${wallpaper}"];}
+    ];
 
     input.keyboard.xkb.layout = "us";
     input.mouse.accel-speed = 1.0;
