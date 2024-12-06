@@ -38,6 +38,8 @@
         sl
         cowsay
         alejandra
+        # apps
+        firefox
       ];
     }
   ];
