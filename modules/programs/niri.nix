@@ -116,5 +116,5 @@ in {
     nvidia-wayland.enable = lib.mkEnableOption "Enable nvidia wayland compatibility patch";
   };
 
-  config = niriConfig // nvidiaWaylandConfig;
+  config = niri-config // niri-nvidia;
 }
