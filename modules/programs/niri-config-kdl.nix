@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   ...
@@ -7,7 +6,6 @@
   # -----------------------------------------------------------
   # niri settings
   # -----------------------------------------------------------
-
   programs.niri.settings = {
     prefer-no-csd = true;
     hotkey-overlay.skip-at-startup = true;
@@ -30,11 +28,11 @@
     };
 
     spawn-at-startup = [
-      {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
-      {command = ["${lib.getExe pkgs.dunst}"];}
-      {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
-      {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
-      {command = ["${lib.getExe pkgs.wlsunset}" "-t" "5000" "-T" "6500"];}
+      {command = ["lxqt-policykit"];}
+      {command = ["dunst"];}
+      {command = ["xwayland-satellite"];}
+      {command = ["nm-applet"];}
+      {command = ["wlsunset" "-t" "5000" "-T" "6500"];}
       {command = ["swww-daemon"];}
       {command = ["swww" "img" "/home/goat/nixos-dotfiles/Pictures/mono-forest.PNG"];}
       {command = ["waybar"];}

@@ -12,7 +12,6 @@
     ./bundles/packages.nix
     ./bundles/theming.nix
     ./bundles/games.nix
-    ./bundles/wayland.nix #
 
     ./programs/thunar.nix
     ./programs/niri.nix #
