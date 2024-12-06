@@ -112,8 +112,8 @@
   # -----------------------------------------------------------
 in {
   options = {
-    niri.enable = lib.mkEnableOption "Enable nvidia program";
-    nvidia-wayland.enable = lib.mkEnableOption "Enable nvidia wayland compatibility patch";
+    niri.enable = lib.mkEnableOption "Enable niri window manager";
+    niri-nvidia.enable = lib.mkEnableOption "Enable nvidia fixes for wayland";
   };
 
   config = niri-config // niri-nvidia;

@@ -41,7 +41,7 @@
             waybar.enable = true;
             niri.enable = true;
             nvidia.enable = true;
-            nvidia-niri.enable = true;
+            niri-nvidia.enable = true;
             radeon.enable = false;
           }
         ];
