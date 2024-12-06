@@ -8,7 +8,7 @@
   # -----------------------------------------------------------
   # niri config module
   # -----------------------------------------------------------
-  niri-config = lib.mkIf config.niri.enable {
+  niri = lib.mkIf config.niri.enable {
     # -----------------------------------------------------------
     # niri flake package
     # -----------------------------------------------------------
@@ -116,5 +116,5 @@ in {
     niri-nvidia.enable = lib.mkEnableOption "Enable nvidia fixes for wayland";
   };
 
-  config = niri-config // niri-nvidia;
+  config = niri // niri-nvidia;
 }
