@@ -53,6 +53,13 @@
           seahorse
           papirus-icon-theme
           (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+          #startup
+          lxqt.lxqt-policykit
+          dunst
+          networkmanagerapplet
+          swww
+          xwayland-satellite
+          wlsunset
         ];
 
         programs = {
@@ -79,12 +86,13 @@
     systemd.user.services.wayland-startup = {
       description = "startup applications and daemons";
       serviceConfig.ExecStart = ''
-        ${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent
-        ${pkgs.dunst}/bin/dunst
-        ${pkgs.networkmanagerapplet}/bin/nm-applet
-        ${pkgs.xwayland-satellite}/bin/xwayland-satellite
-        ${pkgs.swww}/bin/swww-daemon && swww img $HOME/nixos-dotfiles/Pictures/mono-forest.PNG
-        ${pkgs.wlsunset}/bin/wlsunset -t 5000 -T 6500
+        lxqt-policykit-agent
+        dunst
+        nm-applet
+        xwayland-satellite
+        swww-daemon
+        swww img $HOME/nixos-dotfiles/Pictures/mono-forest.PNG
+        wlsunset -t 5000 -T 6500
       '';
       wantedBy = ["default.target"];
     };
