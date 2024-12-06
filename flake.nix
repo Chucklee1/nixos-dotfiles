@@ -38,7 +38,6 @@
           ./modules/hardware/desktop.nix
           {
             vscode.enable = true;
-            wayland.enable = true;
             waybar.enable = true;
             niri.enable = true;
             nvidia.enable = true;
@@ -59,7 +58,6 @@
           ./modules/hardware/laptop.nix
           {
             vscode.enable = true;
-            wayland.enable = true;
             waybar.enable = true;
             niri.enable = true;
             nvidia.enable = false;
