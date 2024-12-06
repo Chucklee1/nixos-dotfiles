@@ -26,17 +26,6 @@
       options = ["fmask=0022" "dmask=0022"];
     };
 
-    # other drives
-    "/home/goat/games" = {
-      device = "/dev/disk/by-uuid/C814039D14038D9E";
-      fsType = "ntfs";
-    };
-    "/run/media/goat/SATA-DRIVE-1" = {
-      device = "/dev/disk/by-uuid/2CB23BB6B23B837E   ";
-      fsType = "ntfs";
-    };
-  };
-
   swapDevices = [];
 
   networking.useDHCP = lib.mkDefault true;

@@ -11,7 +11,6 @@
     ./bundles/infastructure.nix
     ./bundles/packages.nix
     ./bundles/theming.nix
-    ./bundles/games.nix
 
     ./programs/thunar.nix
     ./programs/niri.nix #
