@@ -33,10 +33,11 @@
       {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
       {command = ["${lib.getExe pkgs.dunst}"];}
       {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
-      {command = ["${lib.getExe pkgs.waybar}"];}
       {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
       {command = ["${lib.getExe pkgs.wlsunset}" "-t" "5000" "-T" "6500"];}
-      {command = ["${lib.getExe pkgs.swaybg}" "-m" "fill" "-i" "/home/goat/nixos-dotfiles/Pictures/mono-forest.PNG"];}
+      {command = ["swww-daemon"];}
+      {command = ["swww" "img" "/home/goat/nixos-dotfiles/Pictures/mono-forest.PNG"];}
+      {command = ["waybar"];}
     ];
 
     input.keyboard.xkb.layout = "us";

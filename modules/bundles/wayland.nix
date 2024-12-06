@@ -53,6 +53,7 @@
           seahorse
           papirus-icon-theme
           (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+          swww
         ];
 
         programs = {

@@ -27,7 +27,7 @@
     };
 
     # other drives
-    "/run/media/goat/BLUE-SATA" = {
+    "/home/goat/games" = {
       device = "/dev/disk/by-uuid/C814039D14038D9E";
       fsType = "ntfs";
     };
