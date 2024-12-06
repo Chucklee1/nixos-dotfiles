@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  wallpaper,
   ...
 }: {
   # -----------------------------------------------------------
@@ -37,7 +36,7 @@
       {command = ["${lib.getExe pkgs.waybar}"];}
       {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
       {command = ["${lib.getExe pkgs.wlsunset}" "-t" "5000" "-T" "6500"];}
-      {command = ["${lib.getExe pkgs.swaybg}" "-m" "fill" "-i" "${wallpaper}"];}
+      {command = ["${lib.getExe pkgs.swaybg}" "-m" "fill" "-i" "/home/goat/nixos-dotfiles/Pictures/mono-forest.PNG"];}
     ];
 
     input.keyboard.xkb.layout = "us";
