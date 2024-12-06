@@ -1,16 +1,10 @@
-{
-  lib,
-  config,
-  ...
-}: {
+{...}: {
   imports = [
-    ./system/bootloader.nix
-    ./system/system-settings.nix
-    ./system/user.nix
-
-    ./bundles/infastructure.nix
-    ./bundles/packages.nix
-    ./bundles/theming.nix
+    # = togglable module
+    ./general/os-settings.nix
+    ./general/infastructure.nix
+    ./general/packages.nix
+    ./general/theming.nix
 
     ./programs/thunar.nix
     ./programs/niri.nix #
