@@ -4,7 +4,20 @@
   lib,
   config,
   ...
-}: {
+}: let
+  wayland-startup = pkgs.writeShellApplication {
+    name = "startup applications and daemons";
+    text = ''
+      lxqt-policykit-agent
+      dunst
+      nm-applet
+      xwayland-satellite
+      swww-daemon
+      swww img $HOME/nixos-dotfiles/Pictures/mono-forest.PNG
+      wlsunset -t 5000 -T 6500
+    '';
+  };
+in {
   options = {
     wayland.enable = lib.mkEnableOption "enable wayland base";
   };
@@ -60,6 +73,7 @@
           swww
           xwayland-satellite
           wlsunset
+          wayland-startup
         ];
 
         programs = {
@@ -81,20 +95,6 @@
           auth include login
         '';
       };
-    };
-
-    systemd.user.services.wayland-startup = {
-      description = "startup applications and daemons";
-      serviceConfig.ExecStart = ''
-        lxqt-policykit-agent
-        dunst
-        nm-applet
-        xwayland-satellite
-        swww-daemon
-        swww img $HOME/nixos-dotfiles/Pictures/mono-forest.PNG
-        wlsunset -t 5000 -T 6500
-      '';
-      wantedBy = ["default.target"];
     };
 
     xdg.portal = {

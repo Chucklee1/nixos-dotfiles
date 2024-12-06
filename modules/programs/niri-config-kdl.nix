@@ -28,6 +28,8 @@
       MOZ_ENABLE_WAYLAND = "1";
     };
 
+    spawn-at-startup = [{command = ["wayland-startup"];}];
+
     input.keyboard.xkb.layout = "us";
     input.mouse.accel-speed = 1.0;
     input.touchpad = {
