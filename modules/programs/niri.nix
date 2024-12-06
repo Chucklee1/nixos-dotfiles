@@ -73,27 +73,26 @@
         pkgs.xdg-desktop-portal
       ];
     };
+    # -----------------------------------------------------------
+    # home manager
+    # -----------------------------------------------------------
+    home-manager.sharedModules = [
+      {
+        imports = [./niri-config-kdl.nix];
+        # niri config packages and programs
+        home.packages = with pkgs; [
+          lxqt.lxqt-policykit
+          dunst
+          xwayland-satellite
+          networkmanagerapplet
+          swww
+          wlsunset
+        ];
+        programs = {
+          fuzzel.enable = true;
+          wlogout.enable = true;
+        };
+      }
+    ];
   };
-
-  # -----------------------------------------------------------
-  # home manager
-  # -----------------------------------------------------------
-  home-manager.sharedModules = [
-    {
-      imports = [./niri-config-kdl.nix];
-      # niri config packages and programs
-      home.packages = with pkgs; [
-        lxqt.lxqt-policykit
-        dunst
-        xwayland-satellite
-        networkmanagerapplet
-        swww
-        wlsunset
-      ];
-      programs = {
-        fuzzel.enable = true;
-        wlogout.enable = true;
-      };
-    }
-  ];
 }
