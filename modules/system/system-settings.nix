@@ -1,5 +1,18 @@
 {inputs, ...}: {
   # -----------------------------------------------------------
+  # boot loader
+  # -----------------------------------------------------------
+  boot.loader = {
+    efi.efiSysMountPoint = "/boot/efi";
+    grub = {
+      enable = true;
+      efiSupport = true;
+      efiInstallAsRemovable = true;
+      device = "nodev";
+    };
+  };
+
+  # -----------------------------------------------------------
   # system options
   # -----------------------------------------------------------
   system.stateVersion = "24.05"; # DO NOT CHANGE
