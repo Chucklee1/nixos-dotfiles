@@ -104,26 +104,32 @@
           };
 
           spawn-at-startup = [
-            {command = ["lxqt-policykit"];}
-            {command = ["dunst"];}
-            {command = ["xwayland-satellite"];}
-            {command = ["nm-applet"];}
-            {command = ["wlsunset" "-t" "5000" "-T" "6500"];}
-            {command = ["swww-daemon"];}
-            {command = ["swww" "img" "/home/goat/nixos-dotfiles/Pictures/mono-forest.PNG"];}
-            {command = ["waybar"];}
+            "sh"
+            "-c"
+            ''
+              lxqt-policykit
+              dunst
+              xwayland-satellite
+              nm-applet
+              waybar
+              wlsunset -t 5000 -T 6500
+              swww-daemon
+              swww img /home/goat/nixos-dotfiles/Pictures/mono-forest.PNG
+            ''
           ];
 
-          input.keyboard.xkb.layout = "us";
-          input.mouse.accel-speed = 1.0;
-          input.touchpad = {
-            tap = true;
-            dwt = true;
-            natural-scroll = true;
-            click-method = "clickfinger";
+          input = {
+            keyboard.xkb.layout = "us";
+            mouse.accel-speed = 1.0;
+            touchpad = {
+              tap = true;
+              dwt = true;
+              natural-scroll = true;
+              click-method = "clickfinger";
+            };
+            tablet.map-to-output = "eDP-1";
+            touch.map-to-output = "eDP-1";
           };
-          input.tablet.map-to-output = "eDP-1";
-          input.touch.map-to-output = "eDP-1";
           # borders n gaps
           layout = {
             gaps = 8;
