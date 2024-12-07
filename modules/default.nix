@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     # = togglable module
-    #/ = lib.mkIf depenant module
     ./general/os-settings.nix
     ./general/infastructure.nix
     ./general/user.nix
@@ -17,8 +16,9 @@
     ./programs/vscode.nix #
 
     ./programs/niri/program.nix #
-    ./programs/niri/deps.nix #/
-    ./programs/niri/waybar.nix #/
-    ./programs/niri/nvidia.nix #/
+    #all modules bellow depend on niri/program.nix's niri.enable option
+    ./programs/niri/deps.nix #
+    ./programs/niri/waybar.nix #
+    ./programs/niri/nvidia.nix #
   ];
 }
