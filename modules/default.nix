@@ -7,8 +7,7 @@
     ./general/theming.nix
 
     ./programs/thunar.nix
-    ./programs/niri.nix # temp
-    ./programs/wayland.nix # temp
+    ./programs/niri.nix #
     ./programs/waybar.nix #
     ./programs/bash.nix
     ./programs/git.nix
