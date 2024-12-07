@@ -113,8 +113,8 @@
             # programs
             "Mod+Return" = spawn "kitty --working-directory ~/nixos-dotfiles";
             "Mod+Space" = spawn "fuzzel";
-            "Super+Alt+L" = spawn "swaylock";
-            "Super+Alt+P" = spawn "wlogout";
+            "Super+Shift+L" = spawn "swaylock";
+            "Super+Shift+P" = spawn "wlogout";
 
             # media keys
             "XF86AudioRaiseVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
