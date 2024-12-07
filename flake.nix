@@ -39,9 +39,9 @@
           {
             vscode.enable = true;
             waybar.enable = true;
-            niri.enable = true;
+            #niri.enable = true;
             nvidia.enable = true;
-            niri-nvidia.enable = true;
+            #niri-nvidia.enable = true;
             radeon.enable = false;
           }
         ];
@@ -59,9 +59,9 @@
           {
             vscode.enable = true;
             waybar.enable = true;
-            niri.enable = true;
+            #niri.enable = true;
             nvidia.enable = false;
-            niri-nvidia.enable = false;
+            #niri-nvidia.enable = false;
             radeon.enable = true;
           }
         ];
