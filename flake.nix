@@ -65,6 +65,6 @@
   };
 }
 # small notes:
-# - default order parameters - { pkgs, inputs, lib, config, ... }
+# - default order parameters - { lib, config, pkgs, inputs, specialArgs, ... }
 # # next to imports path = toggle module
 

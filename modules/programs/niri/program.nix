@@ -1,8 +1,9 @@
 {
-  inputs,
-  pkgs,
   lib,
   config,
+  pkgs,
+  inputs,
+  wallpaper,
   ...
 }: {
   options = {
@@ -48,7 +49,7 @@
               waybar
               wlsunset -t 5000 -T 6500
               swww-daemon
-              swww img /home/goat/nixos-dotfiles/Pictures/mono-forest.PNG
+              swww img ${wallpaper}
             ''
           ];
 
