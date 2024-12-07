@@ -20,7 +20,7 @@
     # compresssion & archiving
     unrar
     unzip
-    file-roller
+    xarchiver
     tree
     isoimagewriter
   ];
