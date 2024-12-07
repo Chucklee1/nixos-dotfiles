@@ -3,7 +3,6 @@
   config,
   pkgs,
   inputs,
-  wallpaper,
   ...
 }: {
   options = {
@@ -39,18 +38,26 @@
           };
 
           spawn-at-startup = [
-            "sh"
-            "-c"
-            ''
-              lxqt-policykit
-              dunst
-              xwayland-satellite
-              nm-applet
-              waybar
-              wlsunset -t 5000 -T 6500
-              swww-daemon
-              swww img ${wallpaper}
-            ''
+            {
+              command = [
+                ''
+                  lxqt-policykit
+                  dunst
+                  xwayland-satellite
+                  nm-applet
+                  waybar
+                  swww-daemon
+                  swww img /home/goat/nixos-dotfiles/Pictures/mono-forest.PNG
+                ''
+              ];
+            }
+            {
+              command = [
+                "${lib.getExe pkgs.gammastep}"
+                "-l"
+                "48:-121" # lol, doxxed
+              ];
+            }
           ];
 
           input = {
@@ -96,57 +103,53 @@
           };
 
           binds = let
-            spawn = args: {"${args [0]}".action.spawn = ["sh" "-c" ''${args [1]}''];};
-            action = args: {"${args [0]}".action.spawn = ["sh" "-c" ''niri msg action ${args [1]}''];};
+            spawn = command: {action.spawn = ["sh" "-c" ''${command}''];};
+            action = command: {action.spawn = ["sh" "-c" ''niri msg action ${command}''];};
           in {
-            spawn = [
-              # programs
-              ["Mod+Return" "kitty --working-directory ~/nixos-dotfiles"]
-              ["Mod+Space" "fuzzel"]
-              ["Super+Alt+L" "swaylock"]
-              ["Super+Alt+P" "wlogout"]
+            # programs
+            "Mod+Return" = spawn "kitty --working-directory ~/nixos-dotfiles";
+            "Mod+Space" = spawn "fuzzel";
+            "Super+Alt+L" = spawn "swaylock";
+            "Super+Alt+P" = spawn "wlogout";
 
-              # media keys
-              ["XF86AudioRaiseVolume" "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"]
-              ["XF86AudioLowerVolume" "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"]
-              ["XF86AudioMute" "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"]
-              ["XF86AudioMicMute" "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"]
-              ["XF86MonBrightnessUp" "brightnessctl --device=amdgpu_bl1 s 5%+"]
-              ["XF86MonBrightNessDown" "brightnessctl --device=amdgpu_bl1 s 5%-"]
-            ];
+            # media keys
+            "XF86AudioRaiseVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
+            "XF86AudioLowerVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
+            "XF86AudioMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            "XF86AudioMicMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+            "XF86MonBrightnessUp" = spawn "brightnessctl --device=amdgpu_bl1 s 5%+";
+            "XF86MonBrightNessDown" = spawn "brightnessctl --device=amdgpu_bl1 s 5%-";
 
-            action = [
-              # screenshot
-              ["Print" "screenshot"]
-              ["Ctrl+Print" "screenshot-screen"]
-              ["Alt+Print" "screenshot-window"]
+            # screenshot
+            "Print" = action "screenshot";
+            "Ctrl+Print" = action "screenshot-screen";
+            "Alt+Print" = action "screenshot-window";
 
-              # window actions - closure
-              ["Mod+Q" "close-window"]
-              ["Ctrl+Alt+Delete" "quit"]
-              # window actions - focus
-              ["Mod+Left" "focus-column-left"]
-              ["Mod+Right" "focus-column-right"]
-              ["Mod+Up" "focus-workspace-up"]
-              ["Mod+Down" "focus-workspace-down"]
-              # window actions - movement
-              ["Mod+Shift+Left" "move-column-left"]
-              ["Mod+Shift+Right" "move-column-right"]
-              ["Mod+Shift+Up" "move-window-to-workspace-up"]
-              ["]Mod+Shift+Down" "move-window-to-workspace-down"]
-              # window actions - colume merging
-              ["Mod+Comma" "consume-window-into-column"]
-              ["Mod+Period" "expel-window-from-column"]
-              # window actions - window presets
-              ["Mod+R" "switch-preset-column-width"]
-              ["Mod+M" "maximize-column"]
-              ["Mod+Shift+M" "fullscreen-window"]
-              # window actions - precise column widths
-              ["Mod+Minus" "set-column-width -10%"]
-              ["Mod+Plus" "set-column-width +10%"]
-              ["Mod+Shift+Minus" "set-window-width -1%"]
-              ["Mod+Shift+Plus" "set-window-width +1%"]
-            ];
+            # window actions
+            "Mod+Q" = action "close-window";
+            "Ctrl+Alt+Delete" = action "quit";
+
+            "Mod+Left" = action "focus-column-left";
+            "Mod+Right" = action "focus-column-right";
+            "Mod+Up" = action "focus-workspace-up";
+            "Mod+Down" = action "focus-workspace-down";
+
+            "Mod+Shift+Left" = action "move-column-left";
+            "Mod+Shift+Right" = action "move-column-right";
+            "Mod+Shift+Up" = action "move-window-to-workspace-up";
+            "Mod+Shift+Down" = action "move-window-to-workspace-down";
+
+            "Mod+Comma" = action "consume-window-into-column";
+            "Mod+Period" = action "expel-window-from-column";
+
+            "Mod+R" = action "switch-preset-column-width";
+            "Mod+M" = action "maximize-column";
+            "Mod+Shift+M" = action "fullscreen-window";
+
+            "Mod+Minus" = action "set-column-width -10%";
+            "Mod+Plus" = action "set-column-width +10%";
+            "Mod+Shift+Minus" = action "set-window-height -1%";
+            "Mod+Shift+Plus" = action "set-window-height +1%";
           };
         };
       }
