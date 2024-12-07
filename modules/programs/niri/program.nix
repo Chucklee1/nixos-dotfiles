@@ -21,7 +21,7 @@
           prefer-no-csd = true;
           hotkey-overlay.skip-at-startup = true;
           screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
-
+          # setting env vars in niri settings ensures variables only start when niri starts
           environment = {
             NIXOS_OZONE_WL = "1";
             XDG_SESSION_TYPE = "wayland";
@@ -52,48 +52,6 @@
             {command = exec-pkg ["wlsunset" "-T 5500"];}
             {command = exec-pkg ["swaybg" "-m fill -i ${wallpaper}"];}
           ];
-
-          input = {
-            keyboard.xkb.layout = "us";
-            mouse.accel-speed = 1.0;
-            touchpad = {
-              tap = true;
-              dwt = true;
-              natural-scroll = true;
-              click-method = "clickfinger";
-            };
-            tablet.map-to-output = "eDP-1";
-            touch.map-to-output = "eDP-1";
-          };
-          # borders n gaps
-          layout = {
-            gaps = 8;
-            border.width = 2;
-            always-center-single-column = false;
-          };
-          # corner rounding
-          window-rules = [
-            {
-              matches = [];
-              draw-border-with-background = false;
-              geometry-corner-radius = {
-                top-left = 12.0;
-                top-right = 12.0;
-                bottom-left = 12.0;
-                bottom-right = 12.0;
-              };
-              clip-to-geometry = true;
-            }
-          ];
-
-          outputs."DP-1" = {
-            enable = true;
-            mode.width = 1920;
-            mode.height = 1080;
-            position.x = 0;
-            position.y = 0;
-            mode.refresh = 165.001;
-          };
 
           binds = let
             spawn = command: {action.spawn = ["sh" "-c" ''${command}''];};
@@ -144,6 +102,47 @@
             "Mod+Shift+Minus" = action "set-window-height -1%";
             "Mod+Shift+Plus" = action "set-window-height +1%";
           };
+
+          input = {
+            keyboard.xkb.layout = "us";
+            mouse.accel-speed = 1.0;
+            touchpad = {
+              tap = true;
+              dwt = true;
+              natural-scroll = true;
+              click-method = "clickfinger";
+            };
+            tablet.map-to-output = "eDP-1";
+            touch.map-to-output = "eDP-1";
+          };
+          outputs."DP-1" = {
+            enable = true;
+            mode.width = 1920;
+            mode.height = 1080;
+            position.x = 0;
+            position.y = 0;
+            mode.refresh = 165.001;
+          };
+          # borders n gaps
+          layout = {
+            gaps = 8;
+            border.width = 2;
+            always-center-single-column = false;
+          };
+          # corner rounding
+          window-rules = [
+            {
+              matches = [];
+              draw-border-with-background = false;
+              geometry-corner-radius = {
+                top-left = 12.0;
+                top-right = 12.0;
+                bottom-left = 12.0;
+                bottom-right = 12.0;
+              };
+              clip-to-geometry = true;
+            }
+          ];
         };
       }
     ];
