@@ -4,6 +4,8 @@
     #/ = lib.mkIf depenant module
     ./general/os-settings.nix
     ./general/infastructure.nix
+    ./general/user.nix
+    ./general/gpu.nix
     ./general/packages.nix
     ./general/theming.nix
 
