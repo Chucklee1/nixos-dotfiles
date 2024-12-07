@@ -21,6 +21,9 @@
           userSettings = {
             "editor.minimap.enabled" = false;
             "explorer.confirmDragAndDrop" = false;
+            "editor.autoClosingBrackets" = "never";
+            "editor.autoClosingQuotes" = "never";
+            "editor.autoClosingParentheses" = "never";
             "files.autoSave" = "off";
             "files.confirmDelete" = false;
             "git.confirmSync" = false;

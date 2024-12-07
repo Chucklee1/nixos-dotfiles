@@ -154,20 +154,23 @@
             mode.refresh = 165.001;
           };
 
-          binds = {
+          binds = let
+            sh = ["sh" "-c"];
+            msg = ["niri" "msg" "action"];
+          in {
             # programs
-            "Mod+Return".action.spawn = ["kitty" "--working-directory" "~/nixos-dotfiles"];
+            "Mod+Return".action.spawn = sh ++ [''kitty --working-directory ~/nixos-dotfiles''];
             "Mod+Space".action.spawn = "fuzzel";
             "Super+Alt+L".action.spawn = "swaylock";
             "Super+Alt+P".action.spawn = "wlogout";
 
             # media keys
-            "XF86AudioRaiseVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"];
-            "XF86AudioLowerVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"];
-            "XF86AudioMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
-            "XF86AudioMicMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"];
-            "XF86MonBrightnessUp".action.spawn = ["brightnessctl" "--device=amdgpu_bl1" "s" "5%+"];
-            "XF86MonBrightNessDown".action.spawn = ["brightnessctl" "--device=amdgpu_bl1" "s" "5%-"];
+            "XF86AudioRaiseVolume".action.spawn = sh ++ [''wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+''];
+            "XF86AudioLowerVolume".action.spawn = sh ++ [''wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-''];
+            "XF86AudioMute".action.spawn = sh ++ [''wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle''];
+            "XF86AudioMicMute".action.spawn = sh ++ [''wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle''];
+            "XF86MonBrightnessUp".action.spawn = sh ++ [''brightnessctl --device=amdgpu_bl1 s 5%+''];
+            "XF86MonBrightNessDown".action.spawn = sh ++ [''brightnessctl --device=amdgpu_bl1 s 5%-''];
 
             # screenshot
             "Print".action.spawn = ["niri" "msg" "action" "screenshot"];
