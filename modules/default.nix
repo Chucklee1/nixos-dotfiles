@@ -17,12 +17,8 @@
     ./programs/vscode.nix #
 
     ./programs/niri/program.nix #
-    ./programs/niri/config.nix #/
     ./programs/niri/deps.nix #/
     ./programs/niri/waybar.nix #/
     ./programs/niri/nvidia.nix #/
-
-    ./drivers/nvidia.nix #
-    ./drivers/radeon.nix #
   ];
 }
