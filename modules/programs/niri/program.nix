@@ -58,8 +58,8 @@
             {
               command = [
                 "${lib.getExe pkgs.gammastep}"
-                "-l"
-                "48:-121"
+                "-T"
+                "5000"
               ];
             }
           ];
