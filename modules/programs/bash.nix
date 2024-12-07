@@ -6,9 +6,8 @@
         shellAliases = {
           sv = "sudo nvim";
           cg = "sudo nix-collect-garbage";
-          update = "sudo nixos-rebuild switch --impure --show-trace --flake";
-          laptop = ".#laptop";
-          desktop = ".#desktop";
+          update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake.#laptop";
+          update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake..#desktop";
         };
       };
     }

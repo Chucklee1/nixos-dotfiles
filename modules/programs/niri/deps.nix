@@ -8,8 +8,6 @@
   config = lib.mkIf config.niri.enable {
     environment.systemPackages = with pkgs; [
       # wayland & display utilities
-      wayland
-      wayland-protocols
       wayland-utils
       wayland-scanner
       egl-wayland
@@ -26,8 +24,6 @@
       v4l-utils
       # keyboard & input tools
       wev
-      ydotool
-      wtype
       # system controls
       playerctl
       pavucontrol
@@ -35,7 +31,6 @@
       # wm stuff
       libnotify
       libsecret
-      seahorse
       papirus-icon-theme
       (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     ];
@@ -57,15 +52,6 @@
 
     home-manager.sharedModules = [
       {
-        # niri config packages and programs
-        home.packages = with pkgs; [
-          lxqt.lxqt-policykit
-          dunst
-          xwayland-satellite
-          networkmanagerapplet
-          swww
-          wlsunset
-        ];
         programs = {
           fuzzel.enable = true;
           wlogout.enable = true;
