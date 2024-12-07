@@ -13,19 +13,17 @@
   outputs = {
     self,
     nixpkgs,
-    grub2-themes,
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    specialArgs = {inherit wallpaper inputs;};
     wallpaper = /home/goat/Pictures/mono-forest.PNG;
-
+    specialArgs = {inherit wallpaper inputs;};
     shared-modules = [
       ./modules/default.nix
-      inputs.home-manager.nixosModules.home-manager
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
-      grub2-themes.nixosModules.default
+      inputs.home-manager.nixosModules.home-manager
+      inputs.grub2-themes.nixosModules.default
     ];
   in {
     # -----------------------------------------------------------
