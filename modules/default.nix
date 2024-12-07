@@ -1,19 +1,24 @@
 {...}: {
   imports = [
     # = togglable module
+    #/ = lib.mkIf depenant module
     ./general/os-settings.nix
     ./general/infastructure.nix
     ./general/packages.nix
     ./general/theming.nix
 
     ./programs/thunar.nix
-    ./programs/niri.nix #
-    ./programs/waybar.nix #
     ./programs/bash.nix
     ./programs/git.nix
     ./programs/kitty.nix
     ./programs/neovim.nix
     ./programs/vscode.nix #
+
+    ./programs/niri/program.nix #
+    ./programs/niri/config.nix #/
+    ./programs/niri/deps.nix #/
+    ./programs/niri/waybar.nix #/
+    ./programs/niri/nvidia.nix #/
 
     ./drivers/nvidia.nix #
     ./drivers/radeon.nix #

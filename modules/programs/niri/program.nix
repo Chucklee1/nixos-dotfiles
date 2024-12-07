@@ -4,90 +4,18 @@
   lib,
   config,
   ...
-}: let
-  niri-config = lib.mkIf config.niri-nvidia.enable {
-    hardware.nvidia.modesetting.enable = true;
-    environment.variables = {
-      WLR_NO_HARDWARE_CURSORS = "1";
-      GBM_BACKEND = "nvidia_drm";
-      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      LIBVA_DRIVER_NAME = "nvidia";
-    };
+}: {
+  options = {
+    niri.enable = lib.mkEnableOption "enable niri window manager";
   };
-
-  niri-nvidia-config = lib.mkIf config.niri.enable {
-    # niri package
+  config = lib.mkIf config.niri.enable {
     nixpkgs.overlays = [inputs.niri.overlays.niri];
     programs.niri = {
       enable = true;
       package = pkgs.niri-unstable;
     };
-
-    environment.systemPackages = with pkgs; [
-      # wayland & display utilities
-      wayland
-      wayland-protocols
-      wayland-utils
-      wayland-scanner
-      egl-wayland
-      qt5.qtwayland
-      qt6.qtwayland
-      # clipboard & clipboard management
-      wl-clipboard
-      cliphist
-      xclip
-      # media tools
-      mpv
-      imv
-      ffmpeg
-      v4l-utils
-      # keyboard & input tools
-      wev
-      ydotool
-      wtype
-      # system controls
-      playerctl
-      pavucontrol
-      brightnessctl
-      # wm stuff
-      libnotify
-      libsecret
-      seahorse
-      papirus-icon-theme
-      (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-    ];
-
-    services.gnome.gnome-keyring.enable = true;
-    security = {
-      rtkit.enable = true; # enable rtkit for sound
-      polkit.enable = true; # enable policykit
-    };
-
-    xdg.portal = {
-      enable = true;
-      extraPortals = [pkgs.xdg-desktop-portal-gtk];
-      configPackages = [
-        pkgs.xdg-desktop-portal-gtk
-        pkgs.xdg-desktop-portal
-      ];
-    };
-
     home-manager.sharedModules = [
       {
-        # niri config packages and programs
-        home.packages = with pkgs; [
-          lxqt.lxqt-policykit
-          dunst
-          xwayland-satellite
-          networkmanagerapplet
-          swww
-          wlsunset
-        ];
-        programs = {
-          fuzzel.enable = true;
-          wlogout.enable = true;
-        };
-        # niri config
         programs.niri.settings = {
           prefer-no-csd = true;
           hotkey-overlay.skip-at-startup = true;
@@ -223,10 +151,4 @@
       }
     ];
   };
-in {
-  options = {
-    niri.enable = lib.mkEnableOption "enable niri window manager";
-    niri-nvidia.enable = lib.mkEnableOption "enable niri nvidia compatability changes";
-  };
-  config = niri-config ++ niri-nvidia-config;
 }

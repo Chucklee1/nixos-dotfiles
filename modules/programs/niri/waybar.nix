@@ -3,11 +3,7 @@
   config,
   ...
 }: {
-  options = {
-    waybar.enable = lib.mkEnableOption "enable waybar";
-  };
-
-  config = lib.mkIf config.waybar.enable {
+  config = lib.mkIf config.niri.enable {
     home-manager.sharedModules = [
       {
         programs.waybar = {
