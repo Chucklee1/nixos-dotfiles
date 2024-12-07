@@ -38,32 +38,19 @@
             MOZ_ENABLE_WAYLAND = "1";
           };
 
-          spawn-at-startup = [
-            {
-              command = [
-                "${lib.getExe pkgs.xdg-desktop-portal-gtk}"
-                "${lib.getExe pkgs.xdg-desktop-portal}"
-                "${lib.getExe pkgs.dunst}"
-                "${lib.getExe pkgs.lxqt.lxqt-policykit}"
-                "${lib.getExe pkgs.networkmanagerapplet}"
-              ];
-            }
-            {
-              command = [
-                "${lib.getExe pkgs.swaybg}"
-                "-m"
-                "fill"
-                "-i"
-                "${wallpaper}"
-              ];
-            }
-            {
-              command = [
-                "${lib.getExe pkgs.wlsunset}"
-                "-T"
-                "5500"
-              ];
-            }
+          spawn-at-startup = let
+            exec-pkg = args:
+              if args [1] != ""
+              then ["${lib.getExe pkgs.${args [0]}}" "sh" "-c" "${args [1]}"]
+              else "${lib.getExe pkgs.${args [0]}}";
+          in [
+            {command = exec-pkg ["dunst"];}
+            {command = exec-pkg ["networkmanagerapplet"];}
+            {command = exec-pkg ["xdg-desktop-portal"];}
+            {command = exec-pkg ["xdg-desktop-portal-gtk"];}
+            {command = exec-pkg ["lxqt.lxqt-policy-kit"];}
+            {command = exec-pkg ["wlsunset" "-T 5500"];}
+            {command = exec-pkg ["swaybg" "-m fill -i ${wallpaper}"];}
           ];
 
           input = {
