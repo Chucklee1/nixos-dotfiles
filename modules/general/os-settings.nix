@@ -3,12 +3,11 @@
   # boot loader
   # -----------------------------------------------------------
   boot.loader = {
-    efi.efiSysMountPoint = "/boot/EFI";
+    efi.efiSysMountPoint = "/boot";
     grub = {
       enable = true;
       efiSupport = true;
-      efiInstallAsRemovable = true;
-      bootloaderId = "NixOS";
+      efiCanTouchVariables = true;
       device = "nodev";
     };
   };
