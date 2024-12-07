@@ -42,13 +42,13 @@
             exec-pkg = arg: "${lib.getExe pkgs.${arg}}";
             extra-args = arg: ["sh" "-c" "${arg}"];
           in [
-            {command = exec-pkg ["dunst"];}
-            {command = exec-pkg ["networkmanagerapplet"];}
-            {command = exec-pkg ["xdg-desktop-portal"];}
-            {command = exec-pkg ["xdg-desktop-portal-gtk"];}
-            {command = exec-pkg ["lxqt.lxqt-policy-kit"];}
-            {command = exec-pkg ["wlsunset" extra-args ["-T 5500"]];}
-            {command = exec-pkg ["swaybg" extra-args ["-m fill -i ${wallpaper}"]];}
+            {command = [exec-pkg "dunst"];}
+            {command = [exec-pkg "networkmanagerapplet"];}
+            {command = [exec-pkg "xdg-desktop-portal"];}
+            {command = [exec-pkg "xdg-desktop-portal-gtk"];}
+            {command = [exec-pkg "lxqt.lxqt-policy-kit"];}
+            {command = [exec-pkg ["wlsunset" extra-args ["-T 5500"]]];}
+            {command = [exec-pkg ["swaybg" extra-args ["-m fill -i ${wallpaper}"]]];}
           ];
 
           binds = let
