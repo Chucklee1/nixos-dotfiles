@@ -8,6 +8,7 @@
       {
         programs.waybar = {
           enable = true;
+          systemd.enable = true;
         };
         home.file.".config/waybar/config.jsonc".text = ''
           {

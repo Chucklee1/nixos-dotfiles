@@ -41,7 +41,6 @@
           spawn-at-startup = [
             {
               command = [
-                "${lib.getExe pkgs.waybar}"
                 "${lib.getExe pkgs.lxqt.lxqt-policykit}"
                 "${lib.getExe pkgs.dunst}"
                 "${lib.getExe pkgs.networkmanagerapplet}"
