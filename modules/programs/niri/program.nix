@@ -59,7 +59,7 @@
             }
             {
               command = [
-                "${lib.getExe pkgs.wl-sunset}"
+                "${lib.getExe pkgs.wlsunset}"
                 "-T"
                 "5500"
               ];
