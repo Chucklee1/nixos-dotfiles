@@ -41,8 +41,10 @@
           spawn-at-startup = [
             {
               command = [
-                "${lib.getExe pkgs.lxqt.lxqt-policykit}"
+                "${lib.getExe pkgs.xdg-desktop-portal-gtk}"
+                "${lib.getExe pkgs.xdg-desktop-portal}"
                 "${lib.getExe pkgs.dunst}"
+                "${lib.getExe pkgs.lxqt.lxqt-policykit}"
                 "${lib.getExe pkgs.networkmanagerapplet}"
               ];
             }
@@ -57,9 +59,9 @@
             }
             {
               command = [
-                "${lib.getExe pkgs.gammastep}"
+                "${lib.getExe pkgs.wl-sunset}"
                 "-T"
-                "5000"
+                "5500"
               ];
             }
           ];
@@ -121,11 +123,11 @@
             "XF86AudioLowerVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
             "XF86AudioMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
             "XF86AudioMicMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-            "XF86MonBrightnessUp" = spawn "brightnessctl --device=amdgpu_bl1 s 5%+";
-            "XF86MonBrightNessDown" = spawn "brightnessctl --device=amdgpu_bl1 s 5%-";
+            "XF86MonBrightnessUp" = spawn "${lib.getExe pkgs.brightnessctl}l --device=amdgpu_bl1 s 5%+";
+            "XF86MonBrightNessDown" = spawn "${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%-";
 
             # screenshot
-            "Print" = action "screenshot";
+            "Print" = spawn "screenshot";
             "Ctrl+Print" = action "screenshot-screen";
             "Alt+Print" = action "screenshot-window";
 

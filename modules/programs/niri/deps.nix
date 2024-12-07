@@ -15,7 +15,6 @@
       # clipboard & clipboard management
       wl-clipboard
       cliphist
-      xclip
       # media tools
       mpv
       imv
@@ -24,9 +23,7 @@
       # keyboard & input tools
       wev
       # system controls
-      playerctl
       pavucontrol
-      brightnessctl
       # wm stuff
       libnotify
       libsecret
@@ -38,15 +35,6 @@
     security = {
       rtkit.enable = true; # enable rtkit for sound
       polkit.enable = true; # enable policykit
-    };
-
-    xdg.portal = {
-      enable = true;
-      extraPortals = [pkgs.xdg-desktop-portal-gtk];
-      configPackages = [
-        pkgs.xdg-desktop-portal-gtk
-        pkgs.xdg-desktop-portal
-      ];
     };
 
     home-manager.sharedModules = [
