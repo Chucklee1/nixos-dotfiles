@@ -155,53 +155,53 @@
           };
 
           binds = let
-            sh = ["sh" "-c"];
-            msg = ["niri" "msg" "action"];
+            spawn = command: {action.spawn = ["sh" "-c" ''${command}''];};
+            action = command: {action.spawn = ["sh" "-c" ''niri msg action ${command}''];};
           in {
             # programs
-            "Mod+Return".action.spawn = sh ++ [''kitty --working-directory ~/nixos-dotfiles''];
-            "Mod+Space".action.spawn = "fuzzel";
-            "Super+Alt+L".action.spawn = "swaylock";
-            "Super+Alt+P".action.spawn = "wlogout";
+            "Mod+Return" = spawn "kitty --working-directory ~/nixos-dotfiles";
+            "Mod+Space" = spawn "fuzzel";
+            "Super+Alt+L" = spawn "swaylock";
+            "Super+Alt+P" = spawn "wlogout";
 
             # media keys
-            "XF86AudioRaiseVolume".action.spawn = sh ++ [''wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+''];
-            "XF86AudioLowerVolume".action.spawn = sh ++ [''wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-''];
-            "XF86AudioMute".action.spawn = sh ++ [''wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle''];
-            "XF86AudioMicMute".action.spawn = sh ++ [''wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle''];
-            "XF86MonBrightnessUp".action.spawn = sh ++ [''brightnessctl --device=amdgpu_bl1 s 5%+''];
-            "XF86MonBrightNessDown".action.spawn = sh ++ [''brightnessctl --device=amdgpu_bl1 s 5%-''];
+            "XF86AudioRaiseVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
+            "XF86AudioLowerVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
+            "XF86AudioMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            "XF86AudioMicMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+            "XF86MonBrightnessUp" = spawn "brightnessctl --device=amdgpu_bl1 s 5%+";
+            "XF86MonBrightNessDown" = spawn "brightnessctl --device=amdgpu_bl1 s 5%-";
 
             # screenshot
-            "Print".action.spawn = msg ++ ["screenshot"];
-            "Ctrl+Print".action.spawn = msg ++ ["screenshot-screen"];
-            "Alt+Print".action.spawn = msg ++ ["screenshot-window"];
+            "Print" = action "screenshot";
+            "Ctrl+Print" = action "screenshot-screen";
+            "Alt+Print" = action "screenshot-window";
 
             # window actions
-            "Mod+Q".action.spawn = msg ++ ["close-window"];
-            "Ctrl+Alt+Delete".action.spawn = msg ++ ["quit"];
+            "Mod+Q" = action "close-window";
+            "Ctrl+Alt+Delete" = action "quit";
 
-            "Mod+Left".action.spawn = msg ++ ["focus-column-left"];
-            "Mod+Right".action.spawn = msg ++ ["focus-column-right"];
-            "Mod+Up".action.spawn = msg ++ ["focus-workspace-up"];
-            "Mod+Down".action.spawn = msg ++ ["focus-workspace-down"];
+            "Mod+Left" = action "focus-column-left";
+            "Mod+Right" = action "focus-column-right";
+            "Mod+Up" = action "focus-workspace-up";
+            "Mod+Down" = action "focus-workspace-down";
 
-            "Mod+Shift+Left".action.spawn = msg ++ ["move-column-left"];
-            "Mod+Shift+Right".action.spawn = msg ++ ["move-column-right"];
-            "Mod+Shift+Up".action.spawn = msg ++ ["move-window-to-workspace-up"];
-            "Mod+Shift+Down".action.spawn = msg ++ ["move-window-to-workspace-down"];
+            "Mod+Shift+Left" = action "move-column-left";
+            "Mod+Shift+Right" = action "move-column-right";
+            "Mod+Shift+Up" = action "move-window-to-workspace-up";
+            "Mod+Shift+Down" = action "move-window-to-workspace-down";
 
-            "Mod+Comma".action.spawn = msg ++ ["consume-window-into-column"];
-            "Mod+Period".action.spawn = msg ++ ["expel-window-from-column"];
+            "Mod+Comma" = action "consume-window-into-column";
+            "Mod+Period" = action "expel-window-from-column";
 
-            "Mod+R".action.spawn = msg ++ ["switch-preset-column-width"];
-            "Mod+M".action.spawn = msg ++ ["maximize-column"];
-            "Mod+Shift+M".action.spawn = msg ++ ["fullscreen-window"];
+            "Mod+R" = action "switch-preset-column-width";
+            "Mod+M" = action "maximize-column";
+            "Mod+Shift+M" = action "fullscreen-window";
 
-            "Mod+Minus".action.spawn = msg ++ ["set-column-width" "-10%"];
-            "Mod+Plus".action.spawn = msg ++ ["set-column-width" "+10%"];
-            "Mod+Shift+Minus".action.spawn = msg ++ ["set-window-height" "-1%"];
-            "Mod+Shift+Plus".action.spawn = msg ++ ["set-window-height" "+1%"];
+            "Mod+Minus" = action "set-column-width -10%";
+            "Mod+Plus" = action "set-column-width +10%";
+            "Mod+Shift+Minus" = action "set-window-height -1%";
+            "Mod+Shift+Plus" = action "set-window-height +1%";
           };
         };
       }
