@@ -4,10 +4,10 @@
   # -----------------------------------------------------------
   boot.loader = {
     efi.efiSysMountPoint = "/boot";
+    efi.efiTouchEfiVariables = true;
     grub = {
       enable = true;
       efiSupport = true;
-      efiCanTouchVariables = true;
       device = "nodev";
     };
   };
