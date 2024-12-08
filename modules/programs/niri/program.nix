@@ -17,10 +17,9 @@
     };
     home-manager.sharedModules = [
       {
-        programs = {
-          fuzzel.enable = true;
-          wlogout.enable = true;
-        };
+        programs.fuzzel.enable = true;
+        programs.wlogout.enable = true;
+
         programs.niri.settings = {
           prefer-no-csd = true;
           hotkey-overlay.skip-at-startup = true;
@@ -42,18 +41,15 @@
             MOZ_ENABLE_WAYLAND = "1";
           };
 
-          spawn-at-startup = let
-            exec-pkg = arg: "${lib.getExe pkgs.${arg}}";
-            extra-args = arg: ["sh" "-c" "${arg}"];
-          in [
-            {command = [exec-pkg "dunst"];}
-            {command = [exec-pkg "waybar"];}
-            {command = [exec-pkg "networkmanagerapplet"];}
-            {command = [exec-pkg "xdg-desktop-portal"];}
-            {command = [exec-pkg "xdg-desktop-portal-gtk"];}
-            {command = [exec-pkg "lxqt.lxqt-policy-kit"];}
-            {command = [exec-pkg ["wlsunset" extra-args ["-T 5500"]]];}
-            {command = [exec-pkg ["swaybg" extra-args ["-m fill -i ${wallpaper}"]]];}
+          spawn-at-startup = [
+            {command = ["${lib.getExe pkgs.dunst}"];}
+            {command = ["${lib.getExe pkgs.waybar}"];}
+            {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
+            {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
+            {command = ["${lib.getExe pkgs.xdg-desktop-portal}"];}
+            {command = ["${lib.getExe pkgs.xdg-desktop-portal-gtk}"];}
+            {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" "-T 5500"];}
+            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" "-m fill -i ${wallpaper}"];}
           ];
 
           binds = let
