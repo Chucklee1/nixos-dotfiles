@@ -4,6 +4,20 @@
   ...
 }: {
   # -----------------------------------------------------------
+  # stylix - main
+  # -----------------------------------------------------------
+  stylix = {
+    enable = true;
+    autoEnable = true;
+    homeManagerIntegration.autoImport = true;
+    image = wallpaper;
+    opacity.terminal = 0.7;
+    cursor.package = pkgs.bibata-cursors;
+    cursor.name = "Bibata-Modern-Classic";
+    cursor.size = 24;
+  };
+
+  # -----------------------------------------------------------
   # base16
   # -----------------------------------------------------------
   # base16 theme: tokyo-city-terminal-dark.yaml
@@ -26,6 +40,7 @@
     base0F = "DD9D82";
   };
 
+
   # -----------------------------------------------------------
   # stylix - targets
   # -----------------------------------------------------------
@@ -33,22 +48,7 @@
     grub.enable = false;
   };
   home-manager.users.goat.stylix.targets = {
-    neovim.enable = true;
     waybar.enable = false;
-    niri.enable = true;
-  };
-
-  # -----------------------------------------------------------
-  # stylix - main
-  # -----------------------------------------------------------
-  stylix = {
-    enable = true;
-    homeManagerIntegration.autoImport = true;
-    image = wallpaper;
-    opacity.terminal = 0.7;
-    cursor.package = pkgs.bibata-cursors;
-    cursor.name = "Bibata-Modern-Classic";
-    cursor.size = 24;
   };
 
   # -----------------------------------------------------------
@@ -87,34 +87,32 @@
   # -----------------------------------------------------------
   # home manager
   # -----------------------------------------------------------
-  home-manager.sharedModules = [
-    {
-      home.packages = [
-        pkgs.papirus-icon-theme
-        (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-      ];
-      gtk = {
-        iconTheme = {
-          name = "Papirus-Dark";
-          package = pkgs.papirus-icon-theme;
-        };
-        gtk3.extraConfig = {
-          gtk-application-prefer-dark-theme = 1;
-        };
-        gtk4.extraConfig = {
-          gtk-application-prefer-dark-theme = 1;
-        };
+  home-manager.sharedModules = [{
+    home.packages = [
+      pkgs.papirus-icon-theme
+      (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+    ];
+    gtk = {
+      iconTheme = {
+        name = "Papirus-Dark";
+        package = pkgs.papirus-icon-theme;
       };
-      qt = {
-        enable = true;
-        style.name = "adwaita-dark";
-        platformTheme.name = "gtk3";
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
       };
-      programs.oh-my-posh = {
-        enable = true;
-        enableBashIntegration = true;
-        useTheme = "pure";
+      gtk4.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
       };
-    }
-  ];
+    };
+    qt = {
+      enable = true;
+      style.name = "adwaita-dark";
+      platformTheme.name = "gtk3";
+    };
+    programs.oh-my-posh = {
+      enable = true;
+      enableBashIntegration = true;
+      useTheme = "pure";
+    };
+  }];
 }

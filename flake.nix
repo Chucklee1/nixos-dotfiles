@@ -13,7 +13,7 @@
   outputs = { self, nixpkgs, ... } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
-    nixpkg.wallpaper = pkgs.fetchurl {
+    wallpaper = pkgs.fetchurl {
       url = https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/Pictures/mono-forest.PNG;
       sha256 = "0clzh6jwi2ph7mjabzkh7aq1q9jzlhmzr6nr9q97jlf5a39js80s";
     };

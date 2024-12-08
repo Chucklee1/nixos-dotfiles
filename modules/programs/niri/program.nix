@@ -3,7 +3,6 @@
   config,
   pkgs,
   inputs,
-  wallpaper,
   ...
 }: {
   options = {
@@ -49,7 +48,6 @@
             {command = ["${lib.getExe pkgs.xdg-desktop-portal}"];}
             {command = ["${lib.getExe pkgs.xdg-desktop-portal-gtk}"];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" "-T 5500"];}
-            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" "-m fill -i ${wallpaper}"];}
           ];
 
           binds = let
