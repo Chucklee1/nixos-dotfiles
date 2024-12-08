@@ -1,12 +1,12 @@
 {...}: {
   imports = [
-    # = togglable module
     ./general/os-settings.nix
     ./general/infastructure.nix
     ./general/user.nix
-    ./general/gpu.nix
     ./general/packages.nix
+    ./general/security.nix
     ./general/theming.nix
+    ./general/gpu.nix
 
     ./programs/thunar.nix
     ./programs/bash.nix
@@ -16,8 +16,6 @@
     ./programs/vscode.nix #
 
     ./programs/niri/program.nix #
-    #all modules bellow depend on niri/program.nix's niri.enable option
-    ./programs/niri/deps.nix #
     ./programs/niri/waybar.nix #
     ./programs/niri/nvidia.nix #
   ];
