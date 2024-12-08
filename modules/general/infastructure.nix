@@ -25,8 +25,6 @@
       pulse.enable = true;
     };
     displayManager.ly.enable = true;
-    gvfs.enable = true;
-    tumbler.enable = true;
     blueman.enable = true;
     printing.enable = true;
     fstrim.enable = true;
