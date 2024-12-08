@@ -43,6 +43,7 @@
             extra-args = arg: ["sh" "-c" "${arg}"];
           in [
             {command = [exec-pkg "dunst"];}
+            {command = [exec-pkg "waybar"];}
             {command = [exec-pkg "networkmanagerapplet"];}
             {command = [exec-pkg "xdg-desktop-portal"];}
             {command = [exec-pkg "xdg-desktop-portal-gtk"];}

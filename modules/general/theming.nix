@@ -89,6 +89,10 @@
   # -----------------------------------------------------------
   home-manager.sharedModules = [
     {
+      home.packages = [
+        pkgs.papirus-icon-theme
+        (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+      ];
       gtk = {
         iconTheme = {
           name = "Papirus-Dark";

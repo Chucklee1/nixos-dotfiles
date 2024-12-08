@@ -6,13 +6,13 @@
 }: {
   config = lib.mkIf config.niri.enable {
     environment.systemPackages = with pkgs; [
-      # wayland & display utilities
+      # wayland utilities
       wayland-utils
       wayland-scanner
       egl-wayland
       qt5.qtwayland
       qt6.qtwayland
-      # clipboard & clipboard management
+      # clipboard management
       wl-clipboard
       cliphist
       # media tools
@@ -20,15 +20,12 @@
       imv
       ffmpeg
       v4l-utils
-      # keyboard & input tools
+      # I/O tools
       wev
-      # system controls
       pavucontrol
-      # wm stuff
+      # libs
       libnotify
       libsecret
-      papirus-icon-theme
-      (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     ];
 
     services.gnome.gnome-keyring.enable = true;
