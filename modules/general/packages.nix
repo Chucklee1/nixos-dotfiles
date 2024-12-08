@@ -3,44 +3,54 @@
   # system
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # dev tools
+    # dev stuff
     ripgrep
+    alejandra
     nixd
-    # building utils
+    # buildiers/compilers
     cmake
     meson
     cpio
-    # cli utils
+    # cli
     killall
     pciutils
-    # web & net utils
+    btop
+    ncdu
+    # web/net
     wget
     git
     curl
-    # compresssion & archiving
+    # compresssion, archiving, & filed
     unrar
     unzip
     xarchiver
     tree
     isoimagewriter
-  ];
-
-  # -----------------------------------------------------------
-  # home manager
-  # -----------------------------------------------------------
-  home-manager.sharedModules = [
-    {
-      home.packages = with pkgs; [
-        # cli
-        btop
-        ncdu
-        neofetch
-        sl
-        cowsay
-        alejandra
-        # apps
-        firefox
-      ];
-    }
+    # wayland
+    wayland-utils
+    wayland-scanner
+    egl-wayland
+    qt5.qtwayland
+    qt6.qtwayland
+    # clipboard
+    wl-clipboard
+    cliphist
+    # media
+    mpv
+    imv
+    ffmpeg
+    v4l-utils
+    # hardware I/O tools
+    wev
+    pavucontrol
+    # libs
+    libnotify
+    libsecret
+    # cli fun
+    neofetch
+    sl
+    cowsay
+    # apps
+    firefox
   ];
 }

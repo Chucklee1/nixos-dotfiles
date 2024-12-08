@@ -17,6 +17,10 @@
     };
     home-manager.sharedModules = [
       {
+        programs = {
+          fuzzel.enable = true;
+          wlogout.enable = true;
+        };
         programs.niri.settings = {
           prefer-no-csd = true;
           hotkey-overlay.skip-at-startup = true;
