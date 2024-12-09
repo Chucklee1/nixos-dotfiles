@@ -17,26 +17,24 @@
     initrd.kernelModules = [];
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
-    supportedFilesystems = ["ntfs"]; # ntfs drives
+    supportedFilesystems = ["ntfs"]; 
   };
 
   # -----------------------------------------------------------
   # partitions
   # -----------------------------------------------------------
   disko.devices.disk.main = {
-    device = "/dev/nvme0n1";
     type = "disk";
     content = {
       type = "gpt";
       partitions = {
-        MBR = {
-          type = "EF02"; # for grub MBR
+        boot = {
           size = "1M";
-          priority = 1; # Needs to be first partition
+          type = "EF02"; # for grub MBR
         };
         ESP = {
+          size = "1G";
           type = "EF00";
-          size = "1000M";
           content = {
             type = "filesystem";
             format = "vfat";
@@ -49,17 +47,16 @@
           content = {
             type = "filesystem";
             format = "ext4";
-            mountpoint = "/";
-          };
+            mountpoint = "/"; 
+          }; 
         };
-      };
-    };
+      }; 
+    }; 
   };
 
   # -----------------------------------------------------------
   # network
   # -----------------------------------------------------------
-  time.timeZone = "America/Vancouver"; # static timezone
   networking.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
