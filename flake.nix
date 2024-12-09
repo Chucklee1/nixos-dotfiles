@@ -22,8 +22,9 @@
     specialArgs = {inherit inputs wallpaper;};
     shared-modules = [
       ./modules/default.nix
+      (import ./disko.nix { device = "/dev/main"; })
       inputs.home-manager.nixosModules.home-manager
-      disko.nixosModules.disko
+      inputs.disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
       inputs.grub2-themes.nixosModules.default
