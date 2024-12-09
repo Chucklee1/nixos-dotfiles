@@ -32,7 +32,7 @@
     # -----------------------------------------------------------
     # desktop profile
     # -----------------------------------------------------------
-    nixosConfigurations.desktop = nixpkgs.legacyPackages.x86_64-linux.nixos {
+    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = system;
       specialArgs = specialArgs;
       modules = shared-modules ++ [
