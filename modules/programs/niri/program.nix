@@ -3,7 +3,6 @@
   config,
   pkgs,
   inputs,
-  wallpaper,
   ...
 }: {
   options = {
@@ -17,7 +16,7 @@
     };
     xdg.portal = {
       enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; 
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
       config.common.default = ["gtk"];
     };
     home-manager.sharedModules = [
@@ -50,7 +49,7 @@
             {command = ["${lib.getExe pkgs.dunst}"];}
             {command = ["${lib.getExe pkgs.waybar}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
-            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-i "${wallpaper}" -m fill''];}
+            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-i ../../../Pictures/mono-forest.PNG -m fill''];}
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
           ];
