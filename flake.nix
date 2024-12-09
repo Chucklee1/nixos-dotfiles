@@ -42,7 +42,7 @@
       modules = [
         disko.nixosModules.disko
         inputs.home-manager.nixosModules.home-manager
-        ./modules/hardware/desktop.nix
+        ./modules/hardware/minimal.nix
         {
           vscode.enable = false;
           niri.enable = false;
