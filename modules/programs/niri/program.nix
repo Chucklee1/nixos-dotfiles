@@ -14,6 +14,11 @@
       enable = true;
       package = pkgs.niri-unstable;
     };
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; 
+      config.common.default = ["gtk"];
+    };
     home-manager.sharedModules = [
       {
         programs.fuzzel.enable = true;
@@ -45,8 +50,6 @@
             {command = ["${lib.getExe pkgs.waybar}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
-            {command = ["${lib.getExe pkgs.xdg-desktop-portal}"];}
-            {command = ["${lib.getExe pkgs.xdg-desktop-portal-gtk}"];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" "-T 5500"];}
           ];
 

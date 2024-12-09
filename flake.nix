@@ -22,10 +22,10 @@
     specialArgs = {inherit inputs wallpaper;};
     shared-modules = [
       ./modules/default.nix
-      inputs.disko.nixosModules.default
+      inputs.home-manager.nixosModules.home-manager
+      inputs.disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
-      inputs.home-manager.nixosModules.home-manager
       inputs.grub2-themes.nixosModules.default
     ];
   in {
@@ -36,44 +36,13 @@
       system = system;
       specialArgs = specialArgs;
       modules = shared-modules ++ [
-        disko.nixosModules.disko
+        ./modules/hardware/desktop.nix
         {
           vscode.enable = false;
           niri.enable = true;
           nvidia.enable = true;
           radeon.enable = false;
-          disko.devices.disk.main = {
-            device = "/dev/disk/by-id/some-disk-id";
-            type = "disk";
-            content = {
-              type = "gpt";
-              partitions = {
-                boot = {
-                  name = "boot";
-                  size = "1M";
-                  type = "EF02";
-                };
-                esp = {
-                  name = "ESP";
-                  size = "1000M";
-                  type = "EF00";
-                  content = {
-                    type = "filesystem";
-                    format = "vfat";
-                    mountpoint = "/boot";
-                  };
-                };
-                root = {
-                  size = "100%";
-                  content = {
-                    type = "filesystem";
-                    format = "ext4";
-                    mountpoint = "/";
-                  };
-                };
-              };
-            };
-          };}
+        }
         ];
     };
     # -----------------------------------------------------------
