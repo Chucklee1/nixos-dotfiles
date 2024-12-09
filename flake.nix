@@ -23,7 +23,7 @@
     shared-modules = [
       ./modules/default.nix
       inputs.home-manager.nixosModules.home-manager
-      inputs.disko.nixosModules.disko
+      disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
       inputs.grub2-themes.nixosModules.default
