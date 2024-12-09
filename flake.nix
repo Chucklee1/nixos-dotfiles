@@ -54,7 +54,7 @@
       modules = shared-modules ++ [
           ./modules/hardware/laptop.nix
           {
-            vscode.enable = false;
+            vscode.enable = true;
             niri.enable = true;
             nvidia.enable = false;
             radeon.enable = true;
