@@ -24,7 +24,7 @@
       url = https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/Pictures/mono-forest.PNG;
       sha256 = "0clzh6jwi2ph7mjabzkh7aq1q9jzlhmzr6nr9q97jlf5a39js80s";
     };
-    specialArgs = {inherit inputs wallpaper;};
+    specialArgs = {inherit inputs disko wallpaper;};
     shared-modules = [
       ./modules/default.nix
       inputs.home-manager.nixosModules.home-manager

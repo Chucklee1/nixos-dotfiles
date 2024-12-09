@@ -3,6 +3,7 @@
   lib,
   pkgs,
   modulesPath,
+  disko,
   ...
 }: {
   imports = [
@@ -17,7 +18,7 @@
     initrd.kernelModules = [];
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
-    supportedFilesystems = ["ntfs"]; 
+    supportedFilesystems = ["ntfs"];
   };
 
   # -----------------------------------------------------------
