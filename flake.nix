@@ -12,7 +12,7 @@
     grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
-  outputs = { self, nixpkgs, ... } @ inputs: let
+  outputs = { self, disko, nixpkgs, ... } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
     wallpaper = pkgs.fetchurl {
@@ -32,17 +32,48 @@
     # -----------------------------------------------------------
     # desktop profile
     # -----------------------------------------------------------
-    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.desktop = nixpkgs.legacyPackages.x86_64-linux.nixos {
       system = system;
       specialArgs = specialArgs;
       modules = shared-modules ++ [
-        ./modules/hardware/desktop.nix
+        disko.nixosModules.disko
         {
           vscode.enable = false;
           niri.enable = true;
           nvidia.enable = true;
           radeon.enable = false;
-        }
+          disko.devices.disk.main = {
+            device = "/dev/disk/by-id/some-disk-id";
+            type = "disk";
+            content = {
+              type = "gpt";
+              partitions = {
+                boot = {
+                  name = "boot";
+                  size = "1M";
+                  type = "EF02";
+                };
+                esp = {
+                  name = "ESP";
+                  size = "1000M";
+                  type = "EF00";
+                  content = {
+                    type = "filesystem";
+                    format = "vfat";
+                    mountpoint = "/boot";
+                  };
+                };
+                root = {
+                  size = "100%";
+                  content = {
+                    type = "filesystem";
+                    format = "ext4";
+                    mountpoint = "/";
+                  };
+                };
+              };
+            };
+          };}
         ];
     };
     # -----------------------------------------------------------
@@ -67,6 +98,8 @@
 # - default order parameters - { lib, config, pkgs, inputs, specialArgs, ... }
 # # next to imports path = toggle module
 # install commands
-#curl https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/modules/hardware/desktop.nix -O /tmp/disko.nix
-#sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix --arg device '"/dev/main"'
+#sudo nix --experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --write-efi-boot-entries --flake '/tmp/config/etc/nixos#mymachine' --disk main /dev/sda
+#sudo nix --experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --write-efi-boot-entries --flake 'github:Chucklee1/nixos-dotfiles#desktop' --disk main /dev/nvme0n1
+
+
 
