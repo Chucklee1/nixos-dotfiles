@@ -3,16 +3,14 @@
   # system
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # dev stuff
-    ripgrep
+    # dev tools
     alejandra
     nixd
-    # buildiers/compilers
-    cmake
-    meson
-    cpio
+    asm-lsp
+    nasm
     # cli
     killall
+    ripgrep
     pciutils
     btop
     ncdu
