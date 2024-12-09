@@ -45,10 +45,12 @@
             MOZ_ENABLE_WAYLAND = "1";
           };
 
-          spawn-at-startup = [
+          spawn-at-startup = let
+            wallpaper = "/home/goat/nixos-dotfiles/Pictures/mono-forest.PNG";
+          in [
             {command = ["${lib.getExe pkgs.dunst}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
-            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-i ~/nixos-tofiles/Pictures/mono-forest.PNG -m fill''];}
+            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-i "${wallpaper}" ''];}
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
           ];
