@@ -34,25 +34,6 @@
     ];
   in {
     # -----------------------------------------------------------
-    # minimal profile
-    # -----------------------------------------------------------
-    nixosConfigurations.minimal = nixpkgs.lib.nixosSystem {
-      system = system;
-      specialArgs = {inherit inputs;};
-      modules = [
-        disko.nixosModules.disko
-        inputs.home-manager.nixosModules.home-manager
-        ./modules/hardware/minimal.nix
-        {
-          vscode.enable = false;
-          niri.enable = false;
-          nvidia.enable = false;
-          radeon.enable = false;
-        }
-      ];
-    };
-
-    # -----------------------------------------------------------
     # desktop profile
     # -----------------------------------------------------------
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
@@ -91,16 +72,15 @@
     };
   };
 }
-# small notes:
-# - default order parameters - { lib, config, pkgs, inputs, specialArgs, ... }
-# - # next to imports path = toggle module
-# - install command
-# FLAKE="github:Chucklee1/nixos-dotfiles#desktop"
-# DISK_DEVICE=/dev/nvme0n1
-# sudo nix \
-#     --extra-experimental-features 'flakes nix-command' \
-#     run github:nix-community/disko#disko-install -- \
-#     --flake "$FLAKE" \
-#     --write-efi-boot-entries \
-#     --disk main "$DISK_DEVICE"
+/*
+ notes:
+- default order parameters - { lib, config, pkgs, inputs, specialArgs, ... }
+- # next to imports path = toggle module
+- install command:
+  sudo nix /
+  --extra-experimental-features 'flakes nix-command' /
+  run github:nix-community/disko#disko-install -- --write-efi-boot-entries /
+  --disk main "/dev/disk-name" /
+  --flake "flake-name#profile-name" --show-trace
+*/
 
