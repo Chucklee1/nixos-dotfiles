@@ -5,8 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    disko.url = "github:nix-community/disko/latest";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
     niri.url = "github:sodiboo/niri-flake";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
@@ -22,9 +20,7 @@
     specialArgs = {inherit inputs wallpaper;};
     shared-modules = [
       ./modules/default.nix
-      (import ./disko.nix { device = "/dev/main"; })
       inputs.home-manager.nixosModules.home-manager
-      inputs.disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
       inputs.grub2-themes.nixosModules.default
