@@ -3,6 +3,7 @@
   lib,
   pkgs,
   modulesPath,
+  device ? throw "Set this to your disk device, e.g. /dev/sda",
   ...
 }: {
   imports = [
@@ -24,6 +25,7 @@
   # partitions
   # -----------------------------------------------------------
   disko.devices.disk.main = {
+    inherit device;
     type = "disk";
     content = {
       type = "gpt";
