@@ -7,7 +7,7 @@
       name=$1
       nasm -f elf64 "$name.asm" -o "$name.o"
       ld -o "$name" "$name.o"
-      rm "$name.o
+      rm "$name.o"
     '';
   };
 in {
