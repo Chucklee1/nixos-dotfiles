@@ -6,7 +6,7 @@
       #!/bin/bash
       name=$1
       nasm -f elf64 "$name.asm" -o "$name.o"
-      ld -m elf_x86_64 -s -o "$name" "$name.o"
+      ld -o "$name" "$name.o"
     '';
   };
 in {
