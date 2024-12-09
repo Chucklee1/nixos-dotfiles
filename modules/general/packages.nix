@@ -1,4 +1,15 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  nasm-64 = pkgs.writeShellApplication {
+    name = "nasm script for assembeling asm 64 files";
+    runtimeInputs = [pkgs.nasm pkgs.gcc];
+    text = ''
+      #!/bin/bash
+      name=$1
+      nasm -f elf64 "$name.asm" -o "$name.o"
+      ld -m elf_x86_64 -s -o "$name" "$name.o"
+    '';
+  };
+in {
   # -----------------------------------------------------------
   # system
   # -----------------------------------------------------------
@@ -7,7 +18,6 @@
     alejandra
     nixd
     asm-lsp
-    nasm
     # cli
     killall
     ripgrep
@@ -50,5 +60,7 @@
     cowsay
     # apps
     firefox
+    # scripts
+    nasm-64
   ];
 }
