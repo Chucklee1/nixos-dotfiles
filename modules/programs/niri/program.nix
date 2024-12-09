@@ -47,7 +47,7 @@
           };
 
           spawn-at-startup = let
-            sh = ["sh" "-c"]; [
+            sh = ["sh" "-c"]; in [
             {command = ["${lib.getExe pkgs.dunst}"];}
             {command = ["${lib.getExe pkgs.waybar}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
