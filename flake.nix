@@ -12,7 +12,7 @@
     grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
-  outputs = { self, nixpkgs, disko. ... } @ inputs: let
+  outputs = { self, nixpkgs, disko, ... } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
     wallpaper = pkgs.fetchurl {
