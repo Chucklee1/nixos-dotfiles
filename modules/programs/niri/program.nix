@@ -3,7 +3,7 @@
   config,
   pkgs,
   inputs,
-  wallpaper.
+  wallpaper,
   ...
 }: {
   options = {
