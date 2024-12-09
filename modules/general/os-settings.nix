@@ -18,6 +18,7 @@
   system.stateVersion = "24.05"; # DO NOT CHANGE
   networking.hostName = "goat";
   networking.networkmanager.enable = true;
+  time.timeZone = "America/Vancouver"; # static timezone
   i18n.defaultLocale = "en_CA.UTF-8";
   console = {
     earlySetup = true;
