@@ -46,14 +46,13 @@
             MOZ_ENABLE_WAYLAND = "1";
           };
 
-          spawn-at-startup = let
-            sh = ["sh" "-c"]; in [
+          spawn-at-startup = [
             {command = ["${lib.getExe pkgs.dunst}"];}
             {command = ["${lib.getExe pkgs.waybar}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
-            {command = ["${lib.getExe pkgs.swaybg}" sh ''-i "${wallpaper}" -m fill''];}
+            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-i "${wallpaper}" -m fill''];}
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
-            {command = ["${lib.getExe pkgs.wlsunset}" sh "-T 5500"];}
+            {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
           ];
 
           binds = let
