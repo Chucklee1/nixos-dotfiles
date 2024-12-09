@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
@@ -10,7 +12,7 @@
     grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
-  outputs = { self, disko, nixpkgs, ... } @ inputs: let
+  outputs = { self, nixpkgs, disko. ... } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
     wallpaper = pkgs.fetchurl {
@@ -33,6 +35,7 @@
       system = system;
       specialArgs = specialArgs;
       modules = shared-modules ++ [
+        disko.nixosModules.disko
         ./modules/hardware/desktop.nix
         {
           vscode.enable = false;
