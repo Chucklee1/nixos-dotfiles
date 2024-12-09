@@ -1,12 +1,13 @@
 {pkgs, ...}: let
   nasm-64 = pkgs.writeShellApplication {
-    name = "nasm script for assembeling asm 64 files";
+    name = "nasm-64";
     runtimeInputs = [pkgs.nasm pkgs.gcc];
     text = ''
       #!/bin/bash
       name=$1
       nasm -f elf64 "$name.asm" -o "$name.o"
       ld -o "$name" "$name.o"
+      rm "$name.o
     '';
   };
 in {
