@@ -3,7 +3,7 @@
   # system
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # dev tools
+    # language tools
     alejandra
     nixd
     asm-lsp
