@@ -12,7 +12,12 @@
     grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
-  outputs = { self, nixpkgs, disko, ... } @ inputs: let
+  outputs = {
+    self,
+    nixpkgs,
+    disko,
+    ...
+  } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
     wallpaper = pkgs.fetchurl {
@@ -29,20 +34,41 @@
     ];
   in {
     # -----------------------------------------------------------
+    # minimal profile
+    # -----------------------------------------------------------
+    nixosConfigurations.minimal = nixpkgs.lib.nixosSystem {
+      system = system;
+      specialArgs = {inherit inputs;};
+      modules = [
+        disko.nixosModules.disko
+        inputs.home-manager.nixosModules.home-manager
+        ./modules/hardware/desktop.nix
+        {
+          vscode.enable = false;
+          niri.enable = false;
+          nvidia.enable = false;
+          radeon.enable = false;
+        }
+      ];
+    };
+
+    # -----------------------------------------------------------
     # desktop profile
     # -----------------------------------------------------------
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = system;
       specialArgs = specialArgs;
-      modules = shared-modules ++ [
-        disko.nixosModules.disko
-        ./modules/hardware/desktop.nix
-        {
-          vscode.enable = false;
-          niri.enable = true;
-          nvidia.enable = true;
-          radeon.enable = false;
-        }
+      modules =
+        shared-modules
+        ++ [
+          disko.nixosModules.disko
+          ./modules/hardware/desktop.nix
+          {
+            vscode.enable = false;
+            niri.enable = true;
+            nvidia.enable = true;
+            radeon.enable = false;
+          }
         ];
     };
     # -----------------------------------------------------------
@@ -51,7 +77,9 @@
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = system;
       specialArgs = specialArgs;
-      modules = shared-modules ++ [
+      modules =
+        shared-modules
+        ++ [
           ./modules/hardware/laptop.nix
           {
             vscode.enable = true;
@@ -75,5 +103,4 @@
 #     --flake "$FLAKE" \
 #     --write-efi-boot-entries \
 #     --disk main "$DISK_DEVICE"
-
 
