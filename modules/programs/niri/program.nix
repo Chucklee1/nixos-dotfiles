@@ -61,7 +61,7 @@
             action = command: {action.spawn = ["sh" "-c" ''niri msg action ${command}''];};
           in {
             # programs
-            "Mod+Return" = spawn "kitty --working-directory ~/nixos-dotfiles";
+            "Mod+Return" = spawn "kitty";
             "Mod+Space" = spawn "fuzzel";
             "Super+Shift+L" = spawn "swaylock";
             "Super+Shift+P" = spawn "wlogout";
