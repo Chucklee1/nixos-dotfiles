@@ -67,7 +67,13 @@
 # - default order parameters - { lib, config, pkgs, inputs, specialArgs, ... }
 # - # next to imports path = toggle module
 # - install command
-# - sudo nix --experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --write-efi-boot-entries --flake 'github:Chucklee1/nixos-dotfiles#<profile>' --disk main /dev/<disk>
-
+# FLAKE="github:Chucklee1/nixos-dotfiles#desktop"
+# DISK_DEVICE=/dev/nvme0n1
+# sudo nix \
+#     --extra-experimental-features 'flakes nix-command' \
+#     run github:nix-community/disko#disko-install -- \
+#     --flake "$FLAKE" \
+#     --write-efi-boot-entries \
+#     --disk main "$DISK_DEVICE"
 
 
