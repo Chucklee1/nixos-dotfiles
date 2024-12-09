@@ -4,6 +4,7 @@
   pkgs,
   modulesPath,
   inputs,
+  disko,
   ...
 }: {
   imports = [

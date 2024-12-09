@@ -14,13 +14,15 @@
     nixpkgs,
     disko,
     ...
-  } @ inputs: {
+  } @ inputs: let
+    specialArgs = {inherit disko inputs;};
+  in {
     # -----------------------------------------------------------
     # minimal profile
     # -----------------------------------------------------------
     nixosConfigurations.sigma = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
+      specialArgs = specialArgs;
       modules = [
         disko.nixosModules.disko
         inputs.home-manager.nixosModules.home-manager
