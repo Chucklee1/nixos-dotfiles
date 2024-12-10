@@ -50,7 +50,7 @@
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.xdg-desktop-portal}"];}
             {command = ["${lib.getExe pkgs.xdg-desktop-portal-gtk}"];}
-            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-i ${wallpaper}''];}
+            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-m fill -i ${wallpaper}''];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
           ];
 
@@ -69,7 +69,7 @@
             "XF86AudioLowerVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
             "XF86AudioMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
             "XF86AudioMicMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-            "XF86MonBrightnessUp" = spawn "${lib.getExe pkgs.brightnessctl}l --device=amdgpu_bl1 s 5%+";
+            "XF86MonBrightNessUp" = spawn "${lib.getExe pkgs.brightnessctl}l --device=amdgpu_bl1 s 5%+";
             "XF86MonBrightNessDown" = spawn "${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%-";
 
             # screenshot
