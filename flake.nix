@@ -7,7 +7,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
     niri.url = "github:sodiboo/niri-flake";
-    grub2-themes = "github:vinceliuice/grub2-themes";
+    grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
   outputs = {
