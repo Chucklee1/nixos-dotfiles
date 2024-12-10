@@ -116,21 +116,21 @@
             tablet.map-to-output = "eDP-1";
             touch.map-to-output = "eDP-1";
           };
-          outputs."DP-5" = {
+          outputs."HKC OVERSEAS LIMITED 24E4 0000000000001" = {
             enable = true;
             mode.width = 1920;
             mode.height = 1080;
-            position.x = 0;
+            position.x = 1920;
             position.y = 0;
             mode.refresh = 165.001;
           };
-          outputs."DP-1" = {
+          outputs."eDP-1" = {
             enable = true;
             mode.width = 1920;
             mode.height = 1080;
             position.x = 0;
             position.y = 0;
-            mode.refresh = 165.001;
+            mode.refresh = 60.008;
           };
           # borders n gaps
           layout = {
