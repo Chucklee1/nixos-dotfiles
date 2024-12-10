@@ -135,13 +135,15 @@
             {
               matches = [];
               draw-border-with-background = false;
-              geometry-corner-radius = {
-                top-left = 12.0;
-                top-right = 12.0;
-                bottom-left = 12.0;
-                bottom-right = 12.0;
-              };
               clip-to-geometry = true;
+              geometry-corner-radius = let
+                r = 12;
+              in {
+                top-left = r;
+                top-right = r;
+                bottom-left = r;
+                bottom-right = r;
+              };
             }
           ];
         };
