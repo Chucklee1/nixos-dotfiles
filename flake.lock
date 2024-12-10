@@ -66,26 +66,6 @@
         "type": "github"
       }
     },
-    "disko": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1733168902,
-        "narHash": "sha256-8dupm9GfK+BowGdQd7EHK5V61nneLfr9xR6sc5vtDi0=",
-        "owner": "nix-community",
-        "repo": "disko",
-        "rev": "785c1e02c7e465375df971949b8dcbde9ec362e5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "disko",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -353,7 +333,6 @@
     },
     "root": {
       "inputs": {
-        "disko": "disko",
         "grub2-themes": "grub2-themes",
         "home-manager": "home-manager",
         "niri": "niri",
