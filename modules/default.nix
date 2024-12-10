@@ -6,7 +6,7 @@
     ./general/packages.nix
     ./general/security.nix
     ./general/theming.nix
-    ./general/gpu.nix
+    ./general/hardware.nix
 
     ./programs/thunar.nix
     ./programs/bash.nix

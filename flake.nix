@@ -39,7 +39,7 @@
       modules =
         shared-modules
         ++ [
-          ./modules/hardware/desktop.nix
+          ./modules/machines/desktop.nix
           {
             vscode.enable = false;
             niri.enable = true;
@@ -58,7 +58,7 @@
       modules =
         shared-modules
         ++ [
-          ./modules/hardware/laptop.nix
+          ./modules/machines/laptop.nix
           {
             vscode.enable = true;
             niri.enable = true;
