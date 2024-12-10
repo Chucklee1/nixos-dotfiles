@@ -116,7 +116,7 @@
             tablet.map-to-output = "eDP-1";
             touch.map-to-output = "eDP-1";
           };
-          outputs."DP-1" = {
+          outputs."DP-5" = {
             enable = true;
             mode.width = 1920;
             mode.height = 1080;
@@ -124,7 +124,7 @@
             position.y = 0;
             mode.refresh = 165.001;
           };
-          outputs."DP-5" = {
+          outputs."DP-1" = {
             enable = true;
             mode.width = 1920;
             mode.height = 1080;
