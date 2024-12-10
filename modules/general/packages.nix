@@ -5,8 +5,6 @@ in {
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # dev tools
-    gcc
-    nasm
     wine-wayland
     # language tools
     alejandra
