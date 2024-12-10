@@ -124,6 +124,14 @@
             position.y = 0;
             mode.refresh = 165.001;
           };
+          outputs."DP-5" = {
+            enable = true;
+            mode.width = 1920;
+            mode.height = 1080;
+            position.x = 0;
+            position.y = 0;
+            mode.refresh = 165.001;
+          };
           # borders n gaps
           layout = {
             gaps = 8;

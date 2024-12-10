@@ -18,6 +18,7 @@ in {
     # dev tools
     gcc
     nasm
+    wine-wayland
     # language tools
     alejandra
     nixd
