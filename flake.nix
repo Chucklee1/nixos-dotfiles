@@ -19,8 +19,8 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
     wallpaper = pkgs.fetchurl {
-      url = https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/Pictures/mono-forest.PNG;
-      sha256 = "0clzh6jwi2ph7mjabzkh7aq1q9jzlhmzr6nr9q97jlf5a39js80s";
+      url = "https://raw.githubusercontent.com/Chucklee1/assets/refs/heads/main/elqlyrb492u71.PNG";
+      sha256 = "0c16zcn5sfq704hi6s0ia200fjdnn2q5yra9hccpqxzrkf4l1lsi";
     };
     specialArgs = {inherit inputs wallpaper;};
     shared-modules = with inputs;

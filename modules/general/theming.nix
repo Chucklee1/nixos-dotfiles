@@ -40,7 +40,6 @@
     base0F = "DD9D82";
   };
 
-
   # -----------------------------------------------------------
   # stylix - targets
   # -----------------------------------------------------------
@@ -87,32 +86,34 @@
   # -----------------------------------------------------------
   # home manager
   # -----------------------------------------------------------
-  home-manager.sharedModules = [{
-    home.packages = [
-      pkgs.papirus-icon-theme
-      (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-    ];
-    gtk = {
-      iconTheme = {
-        name = "Papirus-Dark";
-        package = pkgs.papirus-icon-theme;
+  home-manager.sharedModules = [
+    {
+      home.packages = [
+        pkgs.papirus-icon-theme
+        (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+      ];
+      gtk = {
+        iconTheme = {
+          name = "Papirus-Dark";
+          package = pkgs.papirus-icon-theme;
+        };
+        gtk3.extraConfig = {
+          gtk-application-prefer-dark-theme = 1;
+        };
+        gtk4.extraConfig = {
+          gtk-application-prefer-dark-theme = 1;
+        };
       };
-      gtk3.extraConfig = {
-        gtk-application-prefer-dark-theme = 1;
+      qt = {
+        enable = true;
+        style.name = "adwaita-dark";
+        platformTheme.name = "gtk3";
       };
-      gtk4.extraConfig = {
-        gtk-application-prefer-dark-theme = 1;
+      programs.oh-my-posh = {
+        enable = true;
+        enableBashIntegration = true;
+        useTheme = "pure";
       };
-    };
-    qt = {
-      enable = true;
-      style.name = "adwaita-dark";
-      platformTheme.name = "gtk3";
-    };
-    programs.oh-my-posh = {
-      enable = true;
-      enableBashIntegration = true;
-      useTheme = "pure";
-    };
-  }];
+    }
+  ];
 }
