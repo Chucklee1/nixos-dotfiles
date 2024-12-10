@@ -43,6 +43,7 @@
           {
             vscode.enable = false;
             niri.enable = true;
+            AMD.enable = true;
             nvidia.enable = true;
             radeon.enable = false;
           }
@@ -61,6 +62,7 @@
           {
             vscode.enable = true;
             niri.enable = true;
+            AMD.enable = true;
             nvidia.enable = false;
             radeon.enable = true;
           }
@@ -68,15 +70,3 @@
     };
   };
 }
-/*
- notes:
-- default order parameters - { lib, config, pkgs, inputs, specialArgs, ... }
-- # next to imports path = toggle module
-- install command:
-  sudo nix /
-  --extra-experimental-features 'flakes nix-command' /
-  run github:nix-community/disko#disko-install -- --write-efi-boot-entries /
-  --disk main "/dev/disk-name" /
-  --flake "flake-name#profile-name" --show-trace
-*/
-
