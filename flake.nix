@@ -12,7 +12,7 @@
   outputs = {
     self,
     nixpkgs,
-    disko,
+    grub2-themes,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -27,7 +27,7 @@
       inputs.home-manager.nixosModules.home-manager
       inputs.stylix.nixosModules.stylix
       inputs.niri.nixosModules.niri
-      inputs.grub2-themes.nixosModules.default
+      grub2-themes.nixosModules.default
     ];
   in {
     # -----------------------------------------------------------
