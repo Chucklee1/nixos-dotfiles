@@ -50,8 +50,8 @@
           in [
             {command = ["${lib.getExe pkgs.dunst}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
-            {command = ["${lib.getExe pkgs.swaybg}" "-i" "${wallpaper}"];}
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
+            {command = ["${lib.getExe pkgs.swaybg}" "-i" "${wallpaper}"];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
           ];
 
