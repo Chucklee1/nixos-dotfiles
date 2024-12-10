@@ -15,6 +15,9 @@ in {
   # system
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
+    # dev tools
+    gcc
+    nasm
     # language tools
     alejandra
     nixd
