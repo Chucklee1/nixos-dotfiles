@@ -20,7 +20,6 @@
     hostName = "goat";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
-    interfaces.wlp6s0.useDHCP = lib.mkDefault true;
   };
   system.stateVersion = "24.05"; # DO NOT CHANGE
 
