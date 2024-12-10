@@ -50,7 +50,7 @@
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.xdg-desktop-portal}"];}
             {command = ["${lib.getExe pkgs.xdg-desktop-portal-gtk}"];}
-            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-m fill -i ${wallpaper}''];}
+            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-m fill -i /home/goat/Pictures/elqlyrb492u71.PNG''];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
           ];
 
