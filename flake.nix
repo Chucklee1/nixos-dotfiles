@@ -23,13 +23,14 @@
       sha256 = "0clzh6jwi2ph7mjabzkh7aq1q9jzlhmzr6nr9q97jlf5a39js80s";
     };
     specialArgs = {inherit inputs wallpaper;};
-    shared-modules = [
-      ./modules/default.nix
-      inputs.home-manager.nixosModules.home-manager
-      inputs.stylix.nixosModules.stylix
-      inputs.niri.nixosModules.niri
-      inputs.grub2-themes.nixosModules.default
-    ];
+    shared-modules = with inputs;
+      [
+        home-manager.nixosModules.home-manager
+        stylix.nixosModules.stylix
+        niri.nixosModules.niri
+        grub2-themes.nixosModules.default
+      ]
+      ++ [./modules/default.nix];
   in {
     # -----------------------------------------------------------
     # desktop profile

@@ -10,12 +10,9 @@
   };
 
   config = {
-    # radeon
-    services.xserver.videoDrivers =
-      lib.optionals config.nvidia.enable ["amd"]
-      # nvidia
-      ++ config.radeon.enable ["nvidia"];
-    hardware.nvidia = lib.optionals config.nvidia.enable {
+    # GPU
+    services.xserver.videoDrivers = lib.optionals config.nvidia.enable ["nvidia"] ++ lib.optionals config.radeon.enable ["radeon"];
+    hardware.nvidia = lib.mkIf config.nvidia.enable {
       powerManagement.enable = false;
       powerManagement.finegrained = false;
       open = false;
@@ -23,8 +20,8 @@
       package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
 
-    # AMD
-    hardware.cpu.amd.updateMicrocode = lib.optionals config.AMD.enable;
-    kernelModules = lib.optionals config.AMD.enable ["kvm-amd"];
+    # CPU
+    hardware.cpu.amd.updateMicrocode = lib.mkIf config.AMD.enable true;
+    boot.kernelModules = lib.mkIf config.AMD.enable ["kvm-amd"];
   };
 }
