@@ -32,24 +32,9 @@
       ++ [./modules/default.nix];
   in {
     # -----------------------------------------------------------
-    # desktop profile
+    # desktop profile - WIP
     # -----------------------------------------------------------
-    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-      system = system;
-      specialArgs = specialArgs;
-      modules =
-        shared-modules
-        ++ [
-          ./modules/machines/desktop.nix
-          {
-            vscode.enable = false;
-            niri.enable = true;
-            AMD.enable = true;
-            nvidia.enable = true;
-            radeon.enable = false;
-          }
-        ];
-    };
+
     # -----------------------------------------------------------
     # laptop profile
     # -----------------------------------------------------------
