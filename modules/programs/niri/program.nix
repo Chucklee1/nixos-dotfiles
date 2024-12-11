@@ -3,7 +3,6 @@
   config,
   pkgs,
   inputs,
-  wallpaper,
   ...
 }: {
   options = {
@@ -15,10 +14,15 @@
       enable = true;
       package = pkgs.niri-unstable;
     };
-    xdg.portal.config.common.default = ["gtk"];
+    xdg.portal = {
+      enable = true;
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
+      config.common.default = ["gtk"];
+    };
 
     home-manager.sharedModules = [
       {
+        home.packages = [pkgs.swww];
         programs.fuzzel.enable = true;
         programs.wlogout.enable = true;
 
@@ -44,13 +48,11 @@
           };
 
           spawn-at-startup = [
+            {command = ["sh" "-c" "swww-daemon && swww img /home/goat/Pictures/elqlyrb492u71.PNG"];}
             {command = ["${lib.getExe pkgs.dunst}"];}
             {command = ["${lib.getExe pkgs.waybar}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
-            {command = ["${lib.getExe pkgs.xdg-desktop-portal}"];}
-            {command = ["${lib.getExe pkgs.xdg-desktop-portal-gtk}"];}
-            {command = ["${lib.getExe pkgs.swaybg}" "sh" "-c" ''-m fill -i /home/goat/Pictures/elqlyrb492u71.PNG''];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
           ];
 

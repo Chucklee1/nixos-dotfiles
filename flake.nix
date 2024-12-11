@@ -13,7 +13,6 @@
   outputs = {
     self,
     nixpkgs,
-    grub2-themes,
     ...
   } @ inputs: let
     system = "x86_64-linux";
