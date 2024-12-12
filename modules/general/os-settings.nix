@@ -1,9 +1,8 @@
-{lib, ...}: {
+{system, ...}: {
   # -----------------------------------------------------------
   # boot loader
   # -----------------------------------------------------------
   boot.loader = {
-    efi.efiSysMountPoint = "/boot";
     efi.canTouchEfiVariables = true;
     grub = {
       enable = true;
@@ -19,7 +18,7 @@
   networking = {
     hostName = "goat";
     networkmanager.enable = true;
-    useDHCP = lib.mkDefault true;
+    useDHCP = true;
   };
   system.stateVersion = "24.05"; # DO NOT CHANGE
 
@@ -34,7 +33,7 @@
   # nix options
   # -----------------------------------------------------------
   nixpkgs = {
-    hostPlatform = lib.mkDefault "x86_64-linux";
+    hostPlatform = "${system}";
     config.allowUnfree = true;
   };
   nix.settings = {

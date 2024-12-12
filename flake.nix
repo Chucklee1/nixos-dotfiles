@@ -21,7 +21,7 @@
       url = "https://raw.githubusercontent.com/Chucklee1/assets/refs/heads/main/elqlyrb492u71.PNG";
       sha256 = "0c16zcn5sfq704hi6s0ia200fjdnn2q5yra9hccpqxzrkf4l1lsi";
     };
-    specialArgs = {inherit inputs wallpaper;};
+    specialArgs = {inherit inputs system wallpaper;};
     shared-modules = with inputs;
       [
         home-manager.nixosModules.home-manager
@@ -47,12 +47,13 @@
           ./modules/machines/laptop.nix
           {
             vscode.enable = true;
+            thunar.enable = false;
             niri.enable = true;
+            theme-minimal.enable = true;
+            theme-fancy.enable = false;
             AMD.enable = true;
             nvidia.enable = false;
             radeon.enable = true;
-            theme-minimal.enable = true;
-            theme-fancy.enable = false;
           }
         ];
     };
