@@ -11,7 +11,7 @@
     ./programs/thunar.nix
     ./programs/bash.nix
     ./programs/git.nix
-    ./programs.tmux.nix
+    ./programs/tmux.nix
     ./programs/kitty.nix
     ./programs/neovim.nix
     ./programs/vscode.nix #
