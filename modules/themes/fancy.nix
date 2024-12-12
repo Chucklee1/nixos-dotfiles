@@ -4,10 +4,10 @@
   ...
 }: {
   options = {
-    theme-fancy.enable = lib.mkEnableOption "enable vscode";
+    theme-fancy.enable = lib.mkEnableOption "enable fancy theme";
   };
 
-  config = lib.mkIf config.theme-minimal.enable {
+  config = lib.mkIf config.theme-fancy.enable {
     stylix = {
       opacity.terminal = 0.7;
       base16Scheme = {

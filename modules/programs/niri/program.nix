@@ -129,14 +129,19 @@
             position.y = 0;
             mode.refresh = 60.008;
           };
-          # borders n gaps
-          layout = {
-            gaps = 8;
-            border.width = 2;
-            always-center-single-column = false;
-          };
-          # corner rounding
-          window-rules = [
+
+          layout =
+            lib.mkIf config.theme-fancy.enable {
+              gaps = 8;
+              border.width = 2;
+              always-center-single-column = false;
+            }
+            // lib.mkIf config.theme-minimal.enable {
+              gaps = 0;
+              border.width = 2;
+              always-center-single-column = false;
+            };
+          window-rules = lib.mkIf config.theme-fancy.enable [
             {
               matches = [];
               draw-border-with-background = false;

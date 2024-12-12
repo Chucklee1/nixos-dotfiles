@@ -51,6 +51,8 @@
             AMD.enable = true;
             nvidia.enable = false;
             radeon.enable = true;
+            minimal.enable = true;
+            fancy.enable = true;
           }
         ];
     };
