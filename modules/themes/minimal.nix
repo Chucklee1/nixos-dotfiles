@@ -2,7 +2,25 @@
   config,
   lib,
   ...
-}: {
+}: let
+  # classic dark
+  base00 = "#151515";
+  base01 = "#202020";
+  base02 = "#303030";
+  base03 = "#505050";
+  base04 = "#B0B0B0";
+  base05 = "#D0D0D0";
+  base06 = "#E0E0E0";
+  base07 = "#F5F5F5";
+  base08 = "#AC4142";
+  base09 = "#D28445";
+  base0A = "#F4BF75";
+  base0B = "#90A959";
+  base0C = "#75B5AA";
+  base0D = "#6A9FB5";
+  base0E = "#AA759F";
+  base0F = "#8F5536";
+in {
   options = {
     theme-minimal.enable = lib.mkEnableOption "enable minimal theme";
   };
@@ -11,23 +29,22 @@
     stylix = {
       opacity.terminal = 1.0;
       base16Scheme = {
-        # classic dark
-        base00 = "#151515";
-        base01 = "#202020";
-        base02 = "#303030";
-        base03 = "#505050";
-        base04 = "#B0B0B0";
-        base05 = "#D0D0D0";
-        base06 = "#E0E0E0";
-        base07 = "#F5F5F5";
-        base08 = "#AC4142";
-        base09 = "#D28445";
-        base0A = "#F4BF75";
-        base0B = "#90A959";
-        base0C = "#75B5AA";
-        base0D = "#6A9FB5";
-        base0E = "#AA759F";
-        base0F = "#8F5536";
+        base00 = base00;
+        base01 = base01;
+        base02 = base02;
+        base03 = base03;
+        base04 = base04;
+        base05 = base05;
+        base06 = base06;
+        base07 = base07;
+        base08 = base08;
+        base09 = base09;
+        base0A = base0A;
+        base0B = base0B;
+        base0C = base0C;
+        base0D = base0D;
+        base0E = base0E;
+        base0F = base0F;
       };
     };
     home-manager.sharedModules = [
@@ -63,19 +80,25 @@
 
               modules-center = [
                 "clock#1"
+                "custom/divider"
                 "clock#2"
               ];
 
               "clock#1" = {
                 format = "{:%H:%M:%S}";
                 tooltip = false;
+                interval = 1;
+              };
+
+              "custom/divider" = {
+                format = "|";
+                tooltip = false;
               };
 
               "clock#2" = {
-                format = "{:%m-%d-%y}";
+                format = "{:%m.%d.%y}";
                 tooltip = "true";
-                interval = 1;
-                "tooltip-format" = "cal";
+                interval = 60;
               };
 
               modules-right = [
@@ -159,8 +182,8 @@
             }
           ];
           style = ''
-            @define-color background #292b2e;
-            @define-color text #fdf6e3;
+            @define-color background ${base02};
+            @define-color text ${base06};
 
             * {
                 font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
@@ -190,6 +213,12 @@
             #workspaces button:hover {
                 background: @background;
                 padding: 0 3px;
+            }
+
+            #custom-divider {
+              background: @background;
+              color: @text;
+              padding: 0 0;
             }
 
             #idle_inhibitor,

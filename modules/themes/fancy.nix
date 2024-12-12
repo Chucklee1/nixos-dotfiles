@@ -2,7 +2,25 @@
   config,
   lib,
   ...
-}: {
+}: let
+  # tokyo-city-terminal-dark
+  base00 = "171D23";
+  base01 = "1D252C";
+  base02 = "28323A";
+  base03 = "526270";
+  base04 = "B7C5D3";
+  base05 = "D8E2EC";
+  base06 = "F6F6F8";
+  base07 = "FBFBFD";
+  base08 = "D95468";
+  base09 = "FF9E64";
+  base0A = "EBBF83";
+  base0B = "8BD49C";
+  base0C = "70E1E8";
+  base0D = "539AFC";
+  base0E = "B62D65";
+  base0F = "DD9D82";
+in {
   options = {
     theme-fancy.enable = lib.mkEnableOption "enable fancy theme";
   };
@@ -11,23 +29,22 @@
     stylix = {
       opacity.terminal = 0.7;
       base16Scheme = {
-        # base16 tokyo-city-terminal-dark
-        base00 = "171D23";
-        base01 = "1D252C";
-        base02 = "28323A";
-        base03 = "526270";
-        base04 = "B7C5D3";
-        base05 = "D8E2EC";
-        base06 = "F6F6F8";
-        base07 = "FBFBFD";
-        base08 = "D95468";
-        base09 = "FF9E64";
-        base0A = "EBBF83";
-        base0B = "8BD49C";
-        base0C = "70E1E8";
-        base0D = "539AFC";
-        base0E = "B62D65";
-        base0F = "DD9D82";
+        base00 = base00;
+        base01 = base01;
+        base02 = base02;
+        base03 = base03;
+        base04 = base04;
+        base05 = base05;
+        base06 = base06;
+        base07 = base07;
+        base08 = base08;
+        base09 = base09;
+        base0A = base0A;
+        base0B = base0B;
+        base0C = base0C;
+        base0D = base0D;
+        base0E = base0E;
+        base0F = base0F;
       };
     };
     # waybar
@@ -158,10 +175,10 @@
         '';
 
         home.file.".config/waybar/style.css".text = ''
-          @define-color background #292b2e;
-          @define-color foreground #1a1a1a;
-          @define-color text #fdf6e3;
-          @define-color text-blue #268bd2;
+          @define-color background ${base02};
+          @define-color foreground ${base04};
+          @define-color text ${base06};
+          @define-color text-blue ${base0D};
 
           * {
               font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
