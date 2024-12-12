@@ -2,8 +2,7 @@
   config,
   lib,
   ...
-}:
-{
+}: {
   options = {
     theme-fancy.enable = lib.mkEnableOption "enable fancy theme";
   };
@@ -247,4 +246,3 @@
     ];
   };
 }
-s
