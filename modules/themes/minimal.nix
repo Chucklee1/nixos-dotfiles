@@ -74,7 +74,7 @@
               "clock#2" = {
                 format = "{:%m-%d-%y}";
                 tooltip = "true";
-                interval = 60;
+                interval = 1;
                 "tooltip-format" = "cal";
               };
 

@@ -22,7 +22,9 @@
   stylix.targets = {
     grub.enable = false;
   };
-  home-manager.sharedModules = [{stylix.targets.waybar = false;}];
+  home-manager.users.goat.stylix.targets = {
+    waybar.enable = false;
+  };
 
   # -----------------------------------------------------------
   # stylix - font
