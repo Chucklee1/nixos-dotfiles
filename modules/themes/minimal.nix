@@ -44,7 +44,6 @@
               "modules-center": [
                   "clock#1",
                   "clock#2",
-                  "clock#3",
               ],
               "modules-right": [
                   "pulseaudio",
@@ -70,22 +69,20 @@
               },
 
               "clock#1": {
-                  "format": "{:%a}",
+                  "format": "{:%H:%M:%S}",
                   "tooltip": false
               },
               "clock#2": {
-                  "format": "{:%H:%M}",
-                  "tooltip": false
-              },
-              "clock#3": {
-                  "format": "{:%m-%d}",
-                  "tooltip": false
+                  "format": "{{:%m-%d-%y}}",
+                  "tooltip": "true",
+                  "interval": 60,
+                  "tooltip-format": "cal"
               },
 
               "pulseaudio": {
                   "format": "{volume:2}% {icon} ",
                   "format-bluetooth": "{volume}% {icon}",
-                  "format-muted": "󰝟",
+                  "format-muted": "{volume}% 󰝟",
                   "format-icons": {
                       "headphones": "",
                       "default": [ "", ""]
@@ -126,65 +123,6 @@
                   "format": "⏻",
                   "on-click": "wlogout"
               }
-          }
-        '';
-
-        home.file.".config/waybar/style.css".text = ''
-          @define-color background #1a1a1a;
-          @define-color text #fdf6e3;
-
-          * {
-              font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
-              font-size: 11px;
-          }
-
-          window#waybar {
-              background: @background;
-              color: @text;
-          }
-
-          #workspaces,
-          #idle_inhibitor,
-          #clock,
-          #pulseaudio,
-          #memory,
-          #cpu,
-          #disk,
-          #backlight,
-          #battery,
-          #tray,
-          #custom-power {
-              background: @background;
-          }
-
-          #workspaces button {
-              padding: 0 2px;
-              color: @text;
-          }
-          #workspaces button.focused {
-              color: @text;
-          }
-          #workspaces button:hover {
-              box-shadow: inherit;
-              text-shadow: inherit;
-          }
-          #workspaces button:hover {
-              background: @background;
-              padding: 0 3px;
-          }
-
-          #idle_inhibitor,
-          #clock,
-          #pulseaudio,
-          #memory,
-          #cpu,
-          #disk,
-          #battery,
-          #tray,
-          #backlight,
-          #custom-power {
-              color: @text;
-              padding: 0 10px;
           }
         '';
       }

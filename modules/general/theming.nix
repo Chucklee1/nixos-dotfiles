@@ -22,9 +22,6 @@
   stylix.targets = {
     grub.enable = false;
   };
-  home-manager.users.goat.stylix.targets = {
-    waybar.enable = false;
-  };
 
   # -----------------------------------------------------------
   # stylix - font
