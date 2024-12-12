@@ -34,114 +34,143 @@
       {
         home.file.".config/waybar/config.jsonc".text = ''
           {
-            "layer": "top",
-            "position": "bottom",
+              "layer": "top",
+              "position": "bottom",
 
-            "modules-left": ["niri/workspaces", "idle_inhibitor"],
-            "modules-center": ["clock"],
-            "modules-right": [
-              "pulseaudio",
-              "memory",
-              "cpu",
-              "disk",
-              "backlight",
-              "battery",
-              "tray",
-              "custom/power"
-            ],
+              "modules-left": [
+                  "niri/workspaces",
+                  "idle_inhibitor",
+              ],
+              "modules-center": [
+                  "clock#1",
+                  "clock#2",
+                  "clock#3",
+              ],
+              "modules-right": [
+                  "pulseaudio",
+                  "memory",
+                  "cpu",
+                  "disk",
+                  "backlight",
+                  "battery",
+                  "tray",
+                  "custom/power"
+              ],
 
-            "niri/workspaces": {
-              "format": "{icon}",
-              "format-icons": { "focused": "󰻀", "default": "" }
-            },
-            "idle_inhibitor": {
-              "format": "{icon}",
-              "format-icons": {
-              "activated": "",
-              "deactivated": ""
-            }
-            },
-
-            "clock": {
-              "format": "{:%H:%M:%S}",
-              "tooltip": false
-            },
-
-            "pulseaudio": {
-              "format": "{volume:2}% {icon} ",
-              "format-bluetooth": "{volume}% {icon}",
-              "format-icons": {
-                "headphones": "",
-                "default": [ "󰝟", "", ""]
+              "niri/workspaces": {
+                  "format": "{icon}",
+                  "format-icons": { "focused": "󰻀", "default": "" }
               },
-              "scroll-step": 5,
-              "on-click": "pamixer -t",
-              "on-click-right": "pavucontrol"
-            },
-            "memory": {
-              "interval": 5,
-              "format": "{}% "
-            },
-            "cpu": {
-              "interval": 5,
-              "format": "{usage:2}% "
-            },
-            "disk": {
-              "interval": 5,
-              "format": "{percentage_used:2}% ",
-              "path": "/"
-            },
-            "backlight": {
-              "device": "amdgpu_bl1e",
-              "format": "{percent}% {icon}",
-              "format-icons": ["", "", "", "", "", "", "", "", ""]
-            },
-            "battery": {
-              "states": {
-                "full": 99,
-                "good": 98,
-                "normal": 98,
-                "warning": 20,
-                "critical": 20
+              "idle_inhibitor": {
+                  "format": "{icon}",
+                  "format-icons": {
+                  "activated": "",
+                  "deactivated": ""
+              }
               },
-              "format": "{capacity}% {icon}",
-              "format-good": "{icon} {capacity}%",
-              "format-full": "   {capacity}%",
-              "format-icons": ["", "", "", "", ""],
-              "interval": 30
-            },
-            "tray": {},
-            "custom/power": {
-              "format": "⏻",
-              "on-click": "wlogout"
-            }
+
+              "clock#1": {
+                  "format": "{:%a}",
+                  "tooltip": false
+              },
+              "clock#2": {
+                  "format": "{:%H:%M:%S}",
+                  "tooltip": false
+              },
+              "clock#3": {
+                  "format": "{:%m-%d}",
+                  "tooltip": false
+              },
+
+              "pulseaudio": {
+                  "format": "{volume:2}% {icon} ",
+                  "format-bluetooth": "{volume}% {icon}",
+                  "format-muted": "󰝟",
+                  "format-icons": {
+                      "headphones": "",
+                      "default": [ "", ""]
+                  },
+                  "scroll-step": 5,
+                  "on-click": "pamixer -t",
+                  "on-click-right": "pavucontrol"
+              },
+              "memory": {
+                  "interval": 5,
+                  "format": "{}% "
+              },
+              "cpu": {
+                  "interval": 5,
+                  "format": "{usage:2}% "
+              },
+              "disk": {
+                  "interval": 5,
+                  "format": "{percentage_used:2}% ",
+                  "path": "/"
+              },
+              "backlight": {
+                  "device": "amdgpu_bl1e",
+                  "format": "{percent}% {icon}",
+                  "format-icons": ["", "", "", "", "", "", "", "", ""]
+              },
+              "battery": {
+                  "states": {
+                      "good": 95,
+                      "warning": 30,
+                      "critical": 15
+                  },
+                  "format": "{capacity}% {icon}",
+                  "format-icons": [ "", "", "", "", "" ]
+              },
+              "tray": {},
+              "custom/power": {
+                  "format": "⏻",
+                  "on-click": "wlogout"
+              }
           }
         '';
-        home.file.".config/waybar/style.css".text = let
-          background = "#292b2e";
-          text = "#fdf6e3";
-        in ''
+
+        home.file.".config/waybar/style.css".text = ''
+          @define-color background #1a1a1a;
+          @define-color text #fdf6e3;
+
           * {
-            font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
-            font-size: 10px;
+              font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
+              font-size: 11px;
           }
 
           window#waybar {
-            background: ${background};
-            color: ${text};
+              background: @background;
+              color: @text;
           }
 
-          #workspaces
+          #workspaces,
+          #idle_inhibitor,
+          #clock,
+          #pulseaudio,
+          #memory,
+          #cpu,
+          #disk,
+          #backlight,
+          #battery,
+          #tray,
+          #custom-power {
+              background: @background;
+          }
+
           #workspaces button {
-            color: ${text};
-            padding: 0 2px;
+              padding: 0 2px;
+              color: @text;
+          }
+          #workspaces button.focused {
+              color: @text;
           }
           #workspaces button:hover {
-            box-shadow: inherit;
-            text-shadow: inherit;
+              box-shadow: inherit;
+              text-shadow: inherit;
           }
           #workspaces button:hover {
-            padding: 0 3px;
+              background: @background;
+              padding: 0 3px;
           }
 
           #idle_inhibitor,
@@ -154,8 +183,8 @@
           #tray,
           #backlight,
           #custom-power {
-            color: ${text};
-            padding: 0 10px;
+              color: @text;
+              padding: 0 10px;
           }
         '';
       }
