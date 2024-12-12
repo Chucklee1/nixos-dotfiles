@@ -15,9 +15,7 @@
     ./programs/kitty.nix
     ./programs/neovim.nix
     ./programs/vscode.nix #
-
-    ./programs/niri/program.nix #
-    ./programs/niri/nvidia.nix #
+    ./programs/niri.nix #
 
     ./themes/fancy.nix #
     ./themes/minimal.nix #
