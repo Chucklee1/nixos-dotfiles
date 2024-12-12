@@ -34,6 +34,7 @@
       {
         programs.waybar = {
           enable = true;
+          systemd.enable = true;
           settings = [
             {
               layer = "top";
@@ -71,7 +72,7 @@
               };
 
               "clock#2" = {
-                format = "{{:%m-%d-%y}}";
+                format = "{:%m-%d-%y}";
                 tooltip = "true";
                 interval = 60;
                 "tooltip-format" = "cal";
