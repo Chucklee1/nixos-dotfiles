@@ -17,7 +17,6 @@
     ./programs/vscode.nix #
 
     ./programs/niri/program.nix #
-    ./programs/niri/waybar.nix #
     ./programs/niri/nvidia.nix #
 
     ./themes/fancy.nix #
