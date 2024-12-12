@@ -52,9 +52,17 @@
           };
 
           spawn-at-startup = [
-            {command = ["sh" "-c" "swww-daemon && swww img /home/goat/Pictures/elqlyrb492u71.PNG"];}
-            {command = ["${lib.getExe pkgs.dunst}"];}
+            {
+              command = [
+                "sh"
+                "-c"
+                ''
+                  ${lib.getExe pkgs.swww}/swww-daemon &&
+                  ${lib.getExe pkgs.swww}/swww img /home/goat/Pictures/elqlyrb492u71.PNG ''
+              ];
+            }
             {command = ["${lib.getExe pkgs.waybar}"];}
+            {command = ["${lib.getExe pkgs.dunst}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
