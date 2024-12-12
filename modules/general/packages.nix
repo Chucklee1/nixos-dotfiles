@@ -23,7 +23,7 @@ in {
     # compresssion, archiving, & filed
     unrar
     unzip
-    xarchiver
+    file-roller
     tree
     isoimagewriter
     # wayland
@@ -52,5 +52,6 @@ in {
     cowsay
     # apps
     firefox
+    discordo
   ];
 }
