@@ -52,6 +52,5 @@ in {
     cowsay
     # apps
     firefox
-    discordo
   ];
 }
