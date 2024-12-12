@@ -17,6 +17,12 @@
 
     # nvidia support
     hardware.nvidia.modesetting.enable = lib.mkIf (config.niri.enable && config.nvidia.enable);
+    environment.variables = lib.mkIf (config.niri.enable && config.nvidia.enable) {
+      WLR_NO_HARDWARE_CURSORS = "1";
+      GBM_BACKEND = "nvidia_drm";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      LIBVA_DRIVER_NAME = "nvidia";
+    };
 
     home-manager.sharedModules = [
       {
@@ -29,29 +35,21 @@
           hotkey-overlay.skip-at-startup = true;
           screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
           # setting env vars in niri settings ensures variables only start when niri starts
-          environment =
-            {
-              NIXOS_OZONE_WL = "1";
-              XDG_SESSION_TYPE = "wayland";
-              XDG_CURRENT_DESKTOP = "niri";
-              XDG_SESSION_DESKTOP = "niri";
-              DISPLAY = ":0";
-              GDK_BACKEND = "wayland";
-              GTK_CSD = "0";
-              CLUTTER_BACKEND = "wayland";
-              QT_QPA_PLATFORM = "wayland;xcb";
-              QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-              QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-              SDL_VIDEODRIVER = "x11";
-              MOZ_ENABLE_WAYLAND = "1";
-            } # additional nvidia variables
-            ++ lib.mkIf (config.niri.enable && config.nvidia.enable)
-            {
-              WLR_NO_HARDWARE_CURSORS = "1";
-              GBM_BACKEND = "nvidia_drm";
-              __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-              LIBVA_DRIVER_NAME = "nvidia";
-            };
+          environment = {
+            NIXOS_OZONE_WL = "1";
+            XDG_SESSION_TYPE = "wayland";
+            XDG_CURRENT_DESKTOP = "niri";
+            XDG_SESSION_DESKTOP = "niri";
+            DISPLAY = ":0";
+            GDK_BACKEND = "wayland";
+            GTK_CSD = "0";
+            CLUTTER_BACKEND = "wayland";
+            QT_QPA_PLATFORM = "wayland;xcb";
+            QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+            QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+            SDL_VIDEODRIVER = "x11";
+            MOZ_ENABLE_WAYLAND = "1";
+          };
 
           spawn-at-startup = [
             {command = ["sh" "-c" "swww-daemon && swww img /home/goat/Pictures/elqlyrb492u71.PNG"];}
