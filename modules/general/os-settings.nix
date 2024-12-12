@@ -1,4 +1,8 @@
-{system, ...}: {
+{
+  lib,
+  system,
+  ...
+}: {
   # -----------------------------------------------------------
   # boot loader
   # -----------------------------------------------------------
@@ -18,7 +22,7 @@
   networking = {
     hostName = "goat";
     networkmanager.enable = true;
-    useDHCP = true;
+    useDHCP = lib.mkDefault true;
   };
   system.stateVersion = "24.05"; # DO NOT CHANGE
 
@@ -33,7 +37,7 @@
   # nix options
   # -----------------------------------------------------------
   nixpkgs = {
-    hostPlatform = "${system}";
+    hostPlatform = lib.mkDefault "${system}";
     config.allowUnfree = true;
   };
   nix.settings = {
