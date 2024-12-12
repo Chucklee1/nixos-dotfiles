@@ -28,6 +28,7 @@
             "files.confirmDelete" = false;
             "git.confirmSync" = false;
             "git.enableSmartCommit" = true;
+            "workbench.statusBar.visible" = false;
             "workbench.colorTheme" = "Stylix";
             "[nix]"."editor.tabSize" = 2;
           };
