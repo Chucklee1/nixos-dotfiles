@@ -60,7 +60,7 @@
     # -----------------------------------------------------------
     # lazy-insaller script
     # -----------------------------------------------------------
-    install = pkgs.writeShellApplication {
+    package."x86_64-linux".install = pkgs.writeShellApplication {
       name = "lazy-installer";
       runtimeInputs = [];
       text = ''${./scripts/lazy-insaller.sh} "$@"'';
