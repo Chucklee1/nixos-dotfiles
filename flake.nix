@@ -57,5 +57,15 @@
           }
         ];
     };
+    # -----------------------------------------------------------
+    # lazy-insaller script
+    # -----------------------------------------------------------
+    package.${system} = {
+      install = pkgs.writeShellApplication {
+        name = "lazy-installer";
+        runtimeInputs = [];
+        text = ''${./scripts/lazy-insaller.sh} "$@"'';
+      };
+    };
   };
 }
