@@ -8,6 +8,10 @@
     stylix.url = "github:danth/stylix";
     niri.url = "github:sodiboo/niri-flake";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
+    among-us = {
+      url = "github:Chucklee1/nixos-dotfiles";
+      rev = "main"; # Or the commit/branch you're using
+    };
   };
 
   outputs = {
@@ -63,7 +67,7 @@
     package."x86_64-linux".install = pkgs.writeShellApplication {
       name = "lazy-installer";
       runtimeInputs = [];
-      text = ''${./scripts/lazy-installer.sh} "$@"'';
+      text = ''${inputs.among-us.src}/scripts/lazy-installer.sh "$@"'';
     };
   };
 }
