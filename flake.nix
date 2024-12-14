@@ -68,7 +68,7 @@
     # -----------------------------------------------------------
     # lazy-insaller script
     # -----------------------------------------------------------
-    packages.x86_64-linux.default = self.packages.x86_64-linux.lazy-insaller;
+    package.x86_64-linux.default = self.packages.x86_64-linux.lazy-insaller;
 
     packages.x86_64-linux.lazy-insaller = let
       ${name} = "lazy-installer";
