@@ -4,9 +4,8 @@
   pkgs,
   ...
 }: {
-  options = {
-    thunar.enable = lib.mkEnableOption "enable thunar file manager";
-  };
+  options.thunar.enable = lib.mkEnableOption "enable thunar file manager";
+
   config = lib.mkIf config.thunar.enable {
     programs.thunar = {
       enable = true;

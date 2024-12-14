@@ -17,12 +17,6 @@
   };
 
   # -----------------------------------------------------------
-  # stylix - targets
-  # -----------------------------------------------------------
-  stylix.targets.grub.enable = false;
-  home-manager.users.${defaults.username}.stylix.targets.waybar.enable = false;
-
-  # -----------------------------------------------------------
   # stylix - font
   # -----------------------------------------------------------
   stylix.fonts = {
@@ -45,6 +39,12 @@
       popups = 12;
     };
   };
+
+  # -----------------------------------------------------------
+  # stylix - targets
+  # -----------------------------------------------------------
+  stylix.targets.grub.enable = false;
+  home-manager.users.${defaults.username}.stylix.targets.waybar.enable = false;
 
   # -----------------------------------------------------------
   # boot theme

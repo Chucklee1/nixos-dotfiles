@@ -21,12 +21,10 @@
   base0E = "B62D65";
   base0F = "DD9D82";
 in {
-  options = {
-    theme-fancy.enable = lib.mkEnableOption "enable fancy theme";
-  };
+  options.theme-fancy.enable = lib.mkEnableOption "enable fancy theme";
 
-  config = lib.mkIf config.theme-fancy.enable {
-    stylix = {
+  config = {
+    stylix = lib.mkIf config.theme-fancy.enable {
       opacity.terminal = 0.7;
       base16Scheme = {
         base00 = base00;
@@ -47,10 +45,33 @@ in {
         base0F = base0F;
       };
     };
-    # waybar
+
     home-manager.sharedModules = [
       {
-        home.file.".config/waybar/config.jsonc".text = ''
+        programs.niri.settings = lib.mkIf (config.theme-fancy.enable && config.niri.enable) {
+          layout = {
+            gaps = 8;
+            border.width = 2;
+            always-center-single-column = false;
+          };
+          window-rules = [
+            {
+              matches = [];
+              draw-border-with-background = false;
+              clip-to-geometry = true;
+              geometry-corner-radius = let
+                r = 12.0;
+              in {
+                top-left = r;
+                top-right = r;
+                bottom-left = r;
+                bottom-right = r;
+              };
+            }
+          ];
+        };
+
+        home.file.".config/waybar/config.jsonc".text = lib.mkIf config.theme-fancy.enable ''
           {
               "layer": "top",
               "position": "top",
@@ -174,7 +195,7 @@ in {
           }
         '';
 
-        home.file.".config/waybar/style.css".text = ''
+        home.file.".config/waybar/style.css".text = lib.mkIf config.theme-fancy.enable ''
           @define-color background ${base02};
           @define-color foreground ${base04};
           @define-color text ${base06};

@@ -5,9 +5,7 @@
   defaults,
   ...
 }: {
-  options = {
-    bspwm.enable = lib.mkEnableOption "enable bspwm";
-  };
+  options.bspwm.enable = lib.mkEnableOption "enable bspwm";
 
   config = lib.mkIf config.bspwm.enable {
     services.xserver = {
@@ -16,7 +14,6 @@
         enable = true;
         configFile = builtins.toFile "bspwmrc" ''
           pgrep -x sxhkd > /dev/null || sxhkd &
-          ${lib.getExe pkgs.polybar}
 
           bspc monitor -d I II III IV V VI VII VIII IX X
 
@@ -53,10 +50,10 @@
               wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 
           XF86MonBrightnessUp
-              ${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%+
+              brightnessctl --device=amdgpu_bl1 s 5%+
 
           XF86MonBrightnessDown
-              ${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%-
+              brightnessctl --device=amdgpu_bl1 s 5%-
 
           # Window actions
           super + q

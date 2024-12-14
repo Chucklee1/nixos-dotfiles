@@ -6,9 +6,8 @@
   defaults,
   ...
 }: {
-  options = {
-    niri.enable = lib.mkEnableOption "enable niri window manager";
-  };
+  options.niri.enable = lib.mkEnableOption "enable niri window manager";
+
   config = lib.mkIf config.niri.enable {
     nixpkgs.overlays = [inputs.niri.overlays.niri];
     programs.niri = {
@@ -139,33 +138,6 @@
             position.y = 0;
             mode.refresh = 60.008;
           };
-
-          layout =
-            lib.mkIf config.theme-fancy.enable {
-              gaps = 8;
-              border.width = 2;
-              always-center-single-column = false;
-            }
-            // lib.mkIf config.theme-minimal.enable {
-              gaps = 0;
-              border.width = 2;
-              always-center-single-column = false;
-            };
-          window-rules = lib.mkIf config.theme-fancy.enable [
-            {
-              matches = [];
-              draw-border-with-background = false;
-              clip-to-geometry = true;
-              geometry-corner-radius = let
-                r = 12.0;
-              in {
-                top-left = r;
-                top-right = r;
-                bottom-left = r;
-                bottom-right = r;
-              };
-            }
-          ];
         };
       }
     ];

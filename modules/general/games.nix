@@ -4,9 +4,7 @@
   pkgs,
   ...
 }: {
-  options = {
-    games.enable = lib.mkEnableOption "enable gaming module";
-  };
+  options.games.enable = lib.mkEnableOption "enable gaming module";
 
   config = lib.mkIf config.games.enable {
     programs.steam = {

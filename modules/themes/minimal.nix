@@ -25,8 +25,8 @@ in {
     theme-minimal.enable = lib.mkEnableOption "enable minimal theme";
   };
 
-  config = lib.mkIf config.theme-minimal.enable {
-    stylix = {
+  config = {
+    stylix = lib.mkIf config.theme-minimal.enable {
       opacity.terminal = 1.0;
       base16Scheme = {
         base00 = base00;
@@ -47,9 +47,16 @@ in {
         base0F = base0F;
       };
     };
+
     home-manager.sharedModules = [
       {
-        programs.waybar = {
+        layout = lib.mkIf (config.theme-minimal.enable && config.niri.enable) {
+          gaps = 0;
+          border.width = 2;
+          always-center-single-column = false;
+        };
+
+        programs.waybar = lib.mkIf config.theme-minimal.enable {
           enable = true;
           systemd.enable = true;
           settings = [
