@@ -79,6 +79,7 @@
       name = "lazy-installer";
       script = pkgs.writeShellScriptBin name ''
         git clone https://github.com/Chucklee1/nixos-dotfiles 
+        sleep 1
         cd nixos-dotfiles
         ./assets/lazy-installer.sh "$@"'';
     in
