@@ -63,7 +63,7 @@
     packages.x86_64-linux.lazy-installer = let
       name = "lazy-installer";
       script = pkgs.writeShellScriptBin name ''
-        git clone https://github.com/nixos-dotfiles/Chucklee1/nixos-dotfiles 
+        git clone https://github.com/Chucklee1/nixos-dotfiles 
         cd nixos-dotfiles
         ./lazy-installer.sh "$@"'';
     in
