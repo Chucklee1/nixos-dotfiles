@@ -17,14 +17,19 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-label/NIXOS-ROOT";
+    device = "/dev/disk/by-uuid/a086287e-6f8c-4f12-bf49-aa62de9fa045";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-label/BOOT";
+    device = "/dev/disk/by-uuid/0386-1096";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
+  };
+
+  fileSystems."/drives/games" = {
+    device = "/dev/disk/by-uuid/56edc1af-6e52-4b45-8fc0-8ddad9e4cbf6";
+    fsType = "ext4";
   };
 
   swapDevices = [];
