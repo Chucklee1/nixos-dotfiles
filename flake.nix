@@ -69,5 +69,12 @@
       runtimeInputs = [];
       text = ''${inputs.among-us.src}/lazy-installer.sh "$@"'';
     };
+    apps."x86_64-linux" = {
+      default = self.apps.${system}.install;
+      install = {
+        type = "app";
+        program = "${self.packages.${system}.install}/bin/install";
+      };
+    };
   };
 }
