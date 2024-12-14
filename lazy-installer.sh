@@ -13,11 +13,11 @@ mkfs.ext4 -L NIXOS-ROOT ${DISK}p2
 sleep 2
 
 echo "mounting root partition to /mnt"
-mount /dev/${DISK}p2 /mnt
+mount ${DISK}p2 /mnt
 echo "creating boot directory"
 mkdir /mnt/boot
 echo "mounting boot partition to /mnt/boot"
-mount /dev/${DISK}p1 /mnt/boot
+mount ${DISK}p1 /mnt/boot
 sleep 2
 
 echo "generating hardware config"
