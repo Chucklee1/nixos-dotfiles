@@ -20,10 +20,8 @@ echo "mounting boot partition to /mnt/boot"
 mount /dev/${DISK}p1 /mnt/boot
 sleep 2
 
-echo "cloning repo"
-git clone https://github.com/Chucklee1/nixos-dotfiles
 echo "generating hardware config"
-sudo nixos-generate-config --only-hardware > ./nixos-dotfiles/modules/machines/desktop.nix
+sudo nixos-generate-config --only-hardware > ./modules/machines/desktop.nix
 echo "installing nixos"
-nixos-install --flake ./nixos-dotfiles#desktop
+nixos-install --flake ./#desktop
 

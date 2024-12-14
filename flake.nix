@@ -63,12 +63,7 @@
     # -----------------------------------------------------------
     packages.x86_64-linux.lazy-installer = let
       name = "lazy-installer";
-      script = pkgs.writeShellScriptBin name ''
-        ${pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/main/lazy-installer.sh"; # Replace with correct URL
-          sha256 = "00rkgmiv1lmhr3agjxalaf5zyxjalbk2zvddav6nh4a2klsfdfp8"; # Correct SHA256 hash
-        }} "$@"
-      '';
+      script = pkgs.writeShellScriptBin name ''./lazy-installer.sh "$@"'';
     in
       pkgs.symlinkJoin {
         name = name;
