@@ -17,10 +17,7 @@
   } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
-    wallpaper = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/Chucklee1/assets/refs/heads/main/elqlyrb492u71.PNG";
-      sha256 = "0c16zcn5sfq704hi6s0ia200fjdnn2q5yra9hccpqxzrkf4l1lsi";
-    };
+    wallpaper = ./assets/wallpaper.PNG;
     specialArgs = {inherit inputs system wallpaper;};
     shared-modules = with inputs;
       [
@@ -82,7 +79,8 @@
       name = "lazy-installer";
       script = pkgs.writeShellScriptBin name ''
         git clone https://github.com/Chucklee1/nixos-dotfiles 
-        ./nixos-dotfiles/lazy-installer.sh "$@"'';
+        cd nixos-dotfiles
+        ./assets/lazy-installer.sh "$@"'';
     in
       pkgs.symlinkJoin {
         name = name;

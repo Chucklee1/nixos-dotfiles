@@ -41,8 +41,8 @@ msg-sleep "mounted boot to /mnt/boot"
 
 
 msg-sleep "generating hardware config"
-sudo nixos-generate-config --show-hardware-config --root /mnt > /home/nixos/nixos-dotfiles/modules/machines/desktop.nix
+sudo nixos-generate-config --show-hardware-config --root /mnt > $HOME/nixos-dotfiles/modules/machines/desktop.nix
 msg-sleep "generated to desktop module"
 msg-sleep "installing nixos"
-sudo nixos-install --flake /home/nixos/nixos-dotfiles/#desktop
+sudo nixos-install --flake $HOME/nixos-dotfiles/#desktop
 msg-sleep "completed!"

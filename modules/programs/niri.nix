@@ -3,6 +3,7 @@
   config,
   pkgs,
   inputs,
+  wallpaper,
   ...
 }: {
   options = {
@@ -52,7 +53,7 @@
           };
 
           spawn-at-startup = [
-            {command = ["sh" "-c" ''swww-daemon && swww img /home/goat/Pictures/elqlyrb492u71.PNG ''];}
+            {command = ["sh" "-c" ''swww-daemon && swww img ${wallpaper} ''];}
             {command = ["${lib.getExe pkgs.dunst}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
             {command = ["${lib.getExe pkgs.lxqt.lxqt-policykit}"];}
