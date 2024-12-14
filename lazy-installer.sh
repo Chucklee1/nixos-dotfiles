@@ -13,11 +13,11 @@ msg-sleep "partitioning ${DISK}..."
 parted $DISK -- mklabel gpt
 msg-sleep "created gpt label"
 
-parted $DISK -- mkpart ESP fat32 1MB 1G
-parted $DISK -- set 1 esp on
+parted $DISK -- --script mkpart ESP fat32 1MB 1G
+parted $DISK -- --script set 1 esp on
 parted "created boot partition"
 
-parted $DISK -- mkpart root 1G 100%
+parted $DISK -- --script mkpart root 1G 100%
 msg-sleep "created root partition"
 
 
