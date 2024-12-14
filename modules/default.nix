@@ -1,21 +1,21 @@
 {...}: {
   imports = [
-    ./general/os-settings.nix
+    ./general/games.nix
+    ./general/hardware.nix
     ./general/infastructure.nix
-    ./general/user.nix
+    ./general/os-settings.nix
     ./general/packages.nix
     ./general/security.nix
     ./general/theming.nix
-    ./general/hardware.nix
 
-    ./programs/thunar.nix
     ./programs/bash.nix
     ./programs/git.nix
-    ./programs/tmux.nix
     ./programs/kitty.nix
+    ./programs/thunar.nix
     ./programs/neovim.nix
-    ./programs/vscode.nix #
     ./programs/niri.nix #
+    ./programs/tmux.nix
+    ./programs/vscode.nix #
 
     ./themes/fancy.nix #
     ./themes/minimal.nix #
