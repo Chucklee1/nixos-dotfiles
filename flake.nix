@@ -67,7 +67,7 @@
     in
       pkgs.symlinkJoin {
         name = name;
-        paths = [script] ++ [pkgs.cowsay pkgs.ddate];
+        paths = [script] ++ [pkgs.parted pkgs.git];
         buildInputs = [pkgs.makeWrapper];
         postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin";
       };
