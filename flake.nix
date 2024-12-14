@@ -17,8 +17,15 @@
   } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
-    wallpaper = ./assets/wallpaper.PNG;
-    specialArgs = {inherit inputs system wallpaper;};
+    defaults = {
+      username = "goat";
+      timeZone = "America/Vancouver";
+      locale = "en_CA.UTF-8";
+      wallpaper = ./assets/wallpaper.PNG;
+      terminal = "kitty";
+      file-manager = "thunar";
+    };
+    specialArgs = {inherit inputs system defaults;};
     shared-modules = with inputs;
       [
         home-manager.nixosModules.home-manager

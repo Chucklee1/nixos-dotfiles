@@ -3,7 +3,7 @@
   config,
   pkgs,
   inputs,
-  wallpaper,
+  defaults,
   ...
 }: {
   options = {
@@ -53,7 +53,7 @@
           };
 
           spawn-at-startup = [
-            {command = ["sh" "-c" ''swww-daemon && swww img ${wallpaper} ''];}
+            {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper} ''];}
             {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
             {command = ["${pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
@@ -65,7 +65,8 @@
             action = command: {action.spawn = ["sh" "-c" ''niri msg action ${command}''];};
           in {
             # programs
-            "Mod+Return" = spawn "kitty";
+            "Mod+Return" = spawn "${defaults.terminal}";
+            "Mod+E" = spawn "${defaults.file-manager}";
             "Mod+Space" = spawn "fuzzel";
             "Super+Shift+L" = spawn "swaylock";
             "Super+Shift+P" = spawn "wlogout";
@@ -75,8 +76,8 @@
             "XF86AudioLowerVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
             "XF86AudioMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
             "XF86AudioMicMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-            "XF86MonBrightnessUp" = spawn "${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%+";
-            "XF86MonBrightnessDown" = spawn "${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%-";
+            "XF86MonBrightnessUp" = spawn "brightnessctl --device=amdgpu_bl1 s 5%+";
+            "XF86MonBrightnessDown" = spawn "brightnessctl --device=amdgpu_bl1 s 5%-";
 
             # screenshot
             "Print" = spawn "screenshot";

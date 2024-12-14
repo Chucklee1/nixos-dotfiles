@@ -24,12 +24,7 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-      package = pkgs.kdePackages.sddm-kcm;
-      theme = "sddm-astronaut-theme";
-    };
+    displayManager.ly.enable = true;
     blueman.enable = true;
     printing.enable = true;
     fstrim.enable = true;

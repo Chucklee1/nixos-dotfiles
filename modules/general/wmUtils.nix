@@ -11,6 +11,7 @@
 
   home-manager.sharedModules = [
     {
+      home.packages = [pkgs.brightnessctl];
       services = {
         gnome-keyring.enable = true;
         dunst.enable = true;

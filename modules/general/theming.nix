@@ -1,6 +1,6 @@
 {
   pkgs,
-  wallpaper,
+  defaults,
   ...
 }: {
   # -----------------------------------------------------------
@@ -10,7 +10,7 @@
     enable = true;
     autoEnable = true;
     homeManagerIntegration.autoImport = true;
-    image = wallpaper;
+    image = defaults.wallpaper;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
     cursor.size = 24;
@@ -19,12 +19,8 @@
   # -----------------------------------------------------------
   # stylix - targets
   # -----------------------------------------------------------
-  stylix.targets = {
-    grub.enable = false;
-  };
-  home-manager.users.goat.stylix.targets = {
-    waybar.enable = false;
-  };
+  stylix.targets.grub.enable = false;
+  home-manager.users.${defaults.username}.stylix.targets.waybar.enable = false;
 
   # -----------------------------------------------------------
   # stylix - font

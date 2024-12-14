@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  defaults,
   ...
 }: {
   options = {
@@ -15,6 +16,7 @@
         enable = true;
         configFile = builtins.toFile "bspwmrc" ''
           pgrep -x sxhkd > /dev/null || sxhkd &
+          ${lib.getExe pkgs.polybar}
 
           bspc monitor -d I II III IV V VI VII VIII IX X
 
@@ -24,122 +26,104 @@
           bspc config split_ratio          0.52
           bspc config borderless_monocle   true
           bspc config gapless_monocle      true
-
-          bspc rule -a Gimp desktop='^8' state=floating follow=on
-          bspc rule -a Chromium desktop='^2'
-          bspc rule -a mplayer2 state=floating
-          bspc rule -a Kupfer.py focus=on
-          bspc rule -a Screenkey manage=off
         '';
 
         sxhkd.configFile = builtins.toFile "sxhkdrc" ''
-          # terminal emulator
+          # programs
           super + Return
-            kitty
+              ${defaults.terminal}
 
-          # program launcher
-          super + @space
-            rofi
+          super + space
+              rofi -show drun
 
-          # make sxhkd reload its configuration files:
-          super + Escape
-            pkill -USR1 -x sxhkd
+          super + e
+            thunar
 
+          # Media Keys
+          XF86AudioRaiseVolume
+              wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+
 
-          # quit/restart bspwm
-          ctrl + alt + {del,r}
-            bspc {quit,wm -r}
+          XF86AudioLowerVolume
+              wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-
 
-          # close and kill
-          super + {_,shift + }q
-            bspc node -{c,k}
+          XF86AudioMute
+              wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
 
-          # alternate between the tiled and monocle layout
+          XF86AudioMicMute
+              wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+
+          XF86MonBrightnessUp
+              ${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%+
+
+          XF86MonBrightnessDown
+              ${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%-
+
+          # Window actions
+          super + q
+              bspc node -c
+
+          ctrl + alt + Delete
+              bspwm-msg quit
+
+          super + Left
+              bspc focus left
+
+          super + Right
+              bspc focus right
+
+          super + Up
+              bspc focus up
+
+          super + Down
+              bspc focus down
+
+          # Moving windows
+          super + shift + Left
+              bspc node -f left
+
+          super + shift + Right
+              bspc node -f right
+
+          super + shift + Up
+              bspc node -f up
+
+          super + shift + Down
+              bspc node -f down
+
+          # Column manipulation
+          super + comma
+              bspc node -t tiled
+
+          super + period
+              bspc node -t floating
+
+          # Column and Window size
+          super + r
+              bspc config border_width 1
+
           super + m
-            bspc desktop -l next
+              bspc node -t full
 
-          # send the newest marked node to the newest preselected node
-          super + y
-            bspc node newest.marked.local -n newest.!automatic.local
+          super + shift + m
+              bspc node -t fullscreen
 
-          # swap the current node and the biggest window
-          super + g
-            bspc node -s biggest.window
+          super + minus
+              bspc config border_width -10
 
-          # set the window state
-          super + {t,shift + t,s,f}
-            bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+          super + plus
+              bspc config border_width +10
 
-          # set the node flags
-          super + ctrl + {m,x,y,z}
-            bspc node -g {marked,locked,sticky,private}
+          super + shift + minus
+              bspc node -z right -10 0
 
-          # focus the node in the given direction
-          super + {_,shift + }{h,j,k,l}
-            bspc node -{f,s} {west,south,north,east}
-
-          # focus the node for the given path jump
-          super + {p,b,comma,period}
-            bspc node -f @{parent,brother,first,second}
-
-          # focus the next/previous window in the current desktop
-          super + {_,shift + }c
-            bspc node -f {next,prev}.local.!hidden.window
-
-          # focus the next/previous desktop in the current monitor
-          super + bracket{left,right}
-            bspc desktop -f {prev,next}.local
-
-          # focus the last node/desktop
-          super + {grave,Tab}
-            bspc {node,desktop} -f last
-
-          # focus the older or newer node in the focus history
-          super + {o,i}
-            bspc wm -h off; \
-            bspc node {older,newer} -f; \
-            bspc wm -h on
-
-          # focus or send to the given desktop
-          super + {_,shift + }{1-9,0}
-            bspc {desktop -f,node -d} '^{1-9,10}'
-
-          #
-          # preselect
-          #
-
-          # preselect the direction
-          super + ctrl + {h,j,k,l}
-            bspc node -p {west,south,north,east}
-
-          # preselect the ratio
-          super + ctrl + {1-9}
-            bspc node -o 0.{1-9}
-
-          # cancel the preselection for the focused node
-          super + ctrl + space
-            bspc node -p cancel
-
-          # cancel the preselection for the focused desktop
-          super + ctrl + shift + space
-            bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
-
-          # expand a window by moving one of its side outward
-          super + alt + {h,j,k,l}
-            bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
-
-          # contract a window by moving one of its side inward
-          super + alt + shift + {h,j,k,l}
-            bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
-
-          # move a floating window
-          super + {Left,Down,Up,Right}
-            bspc node -v {-20 0,0 20,0 -20,20 0}
+          super + shift + plus
+              bspc node -z right +10 0
         '';
       };
     };
     home-manager.sharedModules = [
       {
+        #services.polybar.enable = true;
         home.packages = with pkgs; [
           rofi # A more flexible alternative to dmenu
           feh # For setting background images

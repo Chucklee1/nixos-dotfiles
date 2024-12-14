@@ -2,6 +2,7 @@
   lib,
   system,
   inputs,
+  defaults,
   ...
 }: {
   # -----------------------------------------------------------
@@ -21,14 +22,14 @@
   # -----------------------------------------------------------
 
   networking = {
-    hostName = "goat";
+    hostName = "${defaults.username}";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
   };
   system.stateVersion = "24.05"; # DO NOT CHANGE
 
-  time.timeZone = "America/Vancouver";
-  i18n.defaultLocale = "en_CA.UTF-8";
+  time.timeZone = "${defaults.timeZone}";
+  i18n.defaultLocale = "${defaults.locale}";
   console = {
     earlySetup = true;
     keyMap = "us";
@@ -49,7 +50,7 @@
   # -----------------------------------------------------------
   # system user declaration
   # -----------------------------------------------------------
-  users.users.goat = {
+  users.users.${defaults.username} = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
   };
@@ -61,10 +62,10 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
-    users.goat = {
+    users.${defaults.username} = {
       home.stateVersion = "24.05"; # DO NOT CHANGE
-      home.username = "goat";
-      home.homeDirectory = "/home/goat";
+      home.username = "${defaults.username}";
+      home.homeDirectory = "/home/${defaults.username}";
     };
   };
 }
