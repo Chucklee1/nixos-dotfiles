@@ -67,25 +67,21 @@
     # -----------------------------------------------------------
     # lazy-insaller script
     # -----------------------------------------------------------
-    packages = forAllSystems (system: let
-      pkgs = nixpkgsFor.${system};
-    in {
-      default = self.packages.${system}.install;
+    defaultPackage.x86_64-linux = self.packages.x86_64-linux.lazy-insaller;
 
-      install = pkgs.writeShellApplication {
-        name = "install";
-        runtimeInputs = with pkgs; [git]; # deps
-        text = ''${./lazy-installer.sh} "$@"''; # the script
+    packages.x86_64-linux.lazy-insaller = let
+      ${name} = "lazy-installer";
+      sscript = pkgs.writeShellScriptBin name ''
+        DATE=$(ddate +'the %e of %B%, %Y')
+        cowsay Hello, world! Today is $DATE.
+      '';
+      dependants = with pkgs; [cowsay ddate];
+    in
+      pkgs.symlinkJoin {
+        name = ${name};
+        paths = [sscript] ++ dependants;
+        buildInputs = [pkgs.makeWrapper];
+        postBuild = "wrapProgram $out/bin/${${name}} --prefix PATH : $out/bin";
       };
-    });
-
-    apps = forAllSystems (system: {
-      default = self.apps.${system}.install;
-
-      install = {
-        type = "app";
-        program = "${self.packages.${system}.install}/bin/install";
-      };
-    });
   };
 }
