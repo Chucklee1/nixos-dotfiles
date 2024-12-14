@@ -28,20 +28,21 @@ sudo mkfs.ext4 -L NIXOS-ROOT ${DISK}p2
 msg-sleep "formatted NIXOS-ROOT"
 
 
-msg-sleep "mounting root partition to /mnt"
+msg-sleep "mounting partitions..."
+
 sudo mount ${DISK}p2 /mnt
-msg-sleep "success"
+msg-sleep "mounted root to /mnt"
 
-msg-sleep "creating boot directory"
 sudo mkdir /mnt/boot
-msg-sleep "success"
+msg-sleep "created directory /mnt/boot"
 
-msg-sleep "mounting boot partition to /mnt/boot"
 sudo mount ${DISK}p1 /mnt/boot
-msg-sleep "success"
+msg-sleep "mounted boot to /mnt/boot"
+
 
 msg-sleep "generating hardware config"
 sudo nixos-generate-config --show-hardware-config --root /mnt > /home/nixos/nixos-dotfiles/modules/machines/desktop.nix
+msg-sleep "generated to desktop module"
 msg-sleep "installing nixos"
 sudo nixos-install --flake /home/nixos/nixos-dotfiles/#desktop
-
+msg-sleep "completed!"
