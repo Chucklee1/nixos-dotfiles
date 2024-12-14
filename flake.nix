@@ -29,7 +29,7 @@
       ++ [./modules/default.nix];
   in {
     # -----------------------------------------------------------
-    # desktop profile - WIP
+    # desktop profile
     # -----------------------------------------------------------
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = system;
