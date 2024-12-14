@@ -1,15 +1,25 @@
-{pkgs, ...}: {
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  options = {
+    games.enable = lib.mkEnableOption "enable gaming module";
   };
-  environment.variables = {STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";};
 
-  environment.systemPackages = with pkgs; [
-    protonup-qt
-    openmw
-    prismlauncher
-  ];
+  config = lib.mkIf config.games.enable {
+    programs.steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+    };
+    environment.variables = {STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";};
+    environment.systemPackages = with pkgs; [
+      protonup-qt
+      openmw
+      prismlauncher
+    ];
+  };
 }

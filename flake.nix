@@ -42,6 +42,7 @@
             vscode.enable = true;
             thunar.enable = true;
             niri.enable = true;
+            i3.enable = true;
             theme-minimal.enable = true;
             theme-fancy.enable = false;
             AMD.enable = true;
@@ -64,6 +65,7 @@
             vscode.enable = true;
             thunar.enable = false;
             niri.enable = true;
+            i3.enable = false;
             theme-minimal.enable = true;
             theme-fancy.enable = false;
             AMD.enable = true;
