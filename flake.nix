@@ -63,10 +63,7 @@
     # -----------------------------------------------------------
     packages.x86_64-linux.lazy-installer = let
       name = "lazy-installer";
-      script = pkgs.writeShellScriptBin name ''
-        DATE=$(ddate +'the %e of %B%, %Y')
-        cowsay Hello, world! Today is $DATE.
-      '';
+      script = pkgs.writeShellScriptBin name ''./lazy-installer.sh "$@"'';
     in
       pkgs.symlinkJoin {
         name = name;
