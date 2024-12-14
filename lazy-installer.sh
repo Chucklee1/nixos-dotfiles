@@ -1,5 +1,5 @@
 DISK="/dev/${1}"
-
+PART="sudo parted ${DISK} --"
 msg-sleep() {
     local msg="$1"
     echo "${msg}" 
@@ -8,14 +8,14 @@ msg-sleep() {
 
 msg-sleep "partitioning ${DISK}..."
 
-sudo parted $DISK -- mklabel gpt
+$PART mklabel gpt
 msg-sleep "created gpt label"
 
-sudo parted $DISK -- --script mkpart ESP fat32 1MB 1G
-sudo parted $DISK -- --script set 1 esp on
-sudo parted "created boot partition"
+$PART mkpart ESP fat32 1MB 1G
+$PART set 1 esp on
+msg-sleep "created boot partition"
 
-sudo parted $DISK -- --script mkpart root 1G 100%
+$PART mkpart root 1G 100%
 msg-sleep "created root partition"
 
 
@@ -41,7 +41,7 @@ sudo mount ${DISK}p1 /mnt/boot
 msg-sleep "success"
 
 msg-sleep "generating hardware config"
-sudo nixos-generate-config --only-hardware --root /mnt > /home/nixos/nixos-dotfiles/modules/machines/desktop.nix
+sudo nixos-generate-config --show-hardware-config --root /mnt > /home/nixos/nixos-dotfiles/modules/machines/desktop.nix
 msg-sleep "installing nixos"
 sudo nixos-install --flake /home/nixos/nixos-dotfiles/#desktop
 
