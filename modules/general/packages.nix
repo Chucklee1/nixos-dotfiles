@@ -52,5 +52,6 @@ in {
     cowsay
     firefox
     papirus-icon-theme
+    sddm-astronaut
   ];
 }
