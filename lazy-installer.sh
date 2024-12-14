@@ -3,8 +3,10 @@ DISK="/dev/${1}"
 msg-sleep() {
     local msg="$1"
     echo "${msg}" 
-    sleep 4
+    sleep 2
 }
+
+sudo -i
 
 msg-sleep "partitioning ${DISK}..."
 
@@ -30,18 +32,18 @@ msg-sleep "formatted NIXOS-ROOT"
 
 msg-sleep "mounting root partition to /mnt"
 mount ${DISK}p2 /mnt
-msg-sleep "mounted"
+msg-sleep "success"
 
 msg-sleep "creating boot directory"
 mkdir /mnt/boot
-msg-sleep "mounted"
+msg-sleep "success"
 
 msg-sleep "mounting boot partition to /mnt/boot"
 mount ${DISK}p1 /mnt/boot
-msg-sleep "mounted"
+msg-sleep "success"
 
 msg-sleep "generating hardware config"
-sudo nixos-generate-config --only-hardware > ./nixos-dotfiles/modules/machines/desktop.nix
+sudo nixos-generate-config --only-hardware --root /mnt > /home/nixos/nixos-dotfiles/modules/machines/desktop.nix
 msg-sleep "installing nixos"
-nixos-install --flake ./nixos-dotfiles/#desktop
+nixos-install --flake /home/nixos/nixos-dotfiles/#desktop
 
