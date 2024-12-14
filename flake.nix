@@ -21,6 +21,9 @@
   } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
+    supportedSystems = ["aarch64-linux" "i686-linux" "x86_64-linux"];
+    forAllSystems = inputs.nixpkgs.lib.genAttrs supportedSystems;
+    nixpkgsFor = forAllSystems (system: import inputs.nixpkgs {inherit system;});
     wallpaper = pkgs.fetchurl {
       url = "https://raw.githubusercontent.com/Chucklee1/assets/refs/heads/main/elqlyrb492u71.PNG";
       sha256 = "0c16zcn5sfq704hi6s0ia200fjdnn2q5yra9hccpqxzrkf4l1lsi";
@@ -64,17 +67,25 @@
     # -----------------------------------------------------------
     # lazy-insaller script
     # -----------------------------------------------------------
-    package."x86_64-linux".install = pkgs.writeShellApplication {
-      name = "lazy-installer";
-      runtimeInputs = [];
-      text = ''${inputs.among-us.src}/lazy-installer.sh "$@"'';
-    };
-    apps."x86_64-linux" = {
+    packages = forAllSystems (system: let
+      pkgs = nixpkgsFor.${system};
+    in {
+      default = self.packages.${system}.install;
+
+      install = pkgs.writeShellApplication {
+        name = "install";
+        runtimeInputs = with pkgs; [git]; # deps
+        text = ''${./lazy-installer.sh} "$@"''; # the script
+      };
+    });
+
+    apps = forAllSystems (system: {
       default = self.apps.${system}.install;
+
       install = {
         type = "app";
         program = "${self.packages.${system}.install}/bin/install";
       };
-    };
+    });
   };
 }
