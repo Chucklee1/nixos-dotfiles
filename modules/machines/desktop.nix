@@ -17,12 +17,12 @@
   };
 
   fileSystems."/" = {
-    device = "LABEL=NIXOS-ROOT";
+    device = "/dev/disk/by-uuid/a086287e-6f8c-4f12-bf49-aa62de9fa045";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "label=BOOT";
+    device = "/dev/disk/by-uuid/0386-1096";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
   };
