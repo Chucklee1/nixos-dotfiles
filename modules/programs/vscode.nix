@@ -19,18 +19,21 @@
             kamadorueda.alejandra
           ];
           userSettings = {
+            "update.mode" = "none";
+            "update.enableWindowsBackgroundUpdates" = false'
+            "editor.tabSize" = 2;
             "editor.minimap.enabled" = false;
-            "explorer.confirmDragAndDrop" = false;
             "editor.autoClosingBrackets" = "never";
             "editor.autoClosingQuotes" = "never";
             "editor.autoClosingParentheses" = "never";
             "files.autoSave" = "off";
             "files.confirmDelete" = false;
+            "explorer.confirmDragAndDrop" = false;
+            "explorer.confirmDelete" = false;
             "git.confirmSync" = false;
             "git.enableSmartCommit" = true;
             "workbench.statusBar.visible" = false;
             "workbench.colorTheme" = "Stylix";
-            "[nix]"."editor.tabSize" = 2;
           };
         };
       }
