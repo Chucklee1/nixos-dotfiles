@@ -20,7 +20,7 @@
           ];
           userSettings = {
             "update.mode" = "none";
-            "update.enableWindowsBackgroundUpdates" = false'
+            "update.enableWindowsBackgroundUpdates" = false;
             "editor.tabSize" = 2;
             "editor.minimap.enabled" = false;
             "editor.autoClosingBrackets" = "never";
