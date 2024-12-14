@@ -5,11 +5,12 @@
     ./general/infastructure.nix
     ./general/os-settings.nix
     ./general/packages.nix
-    ./general/security.nix
     ./general/theming.nix
+    ./general/wmUtils.nix
 
     ./programs/bash.nix
     ./programs/git.nix
+    ./programs/i3.nix
     ./programs/kitty.nix
     ./programs/thunar.nix
     ./programs/neovim.nix

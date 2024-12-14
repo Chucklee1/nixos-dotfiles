@@ -2,7 +2,6 @@
   security = {
     rtkit.enable = true; # rtkit for sound
     polkit.enable = true;
-    polkit.package = pkgs.lxqt.lxqt-policykit;
   };
   xdg.portal = {
     enable = true;
