@@ -1,16 +1,25 @@
 DISK="/dev/${1}"
 
-echo "partitioning disk ${DISK}"
+msg-sleep() {
+    local msg="$1"
+    sleep 2
+    echo "$msg"
+}
+
+msg-sleep "partitioning disk ${DISK}"
 parted $DISK -- mklabel gpt
+msg-sleep "created gpt label"
 parted $DISK -- mkpart ESP fat32 1MB 1G
 parted $DISK -- set 1 esp on
-parted $DISK -- mkpart root ext4 1G 
-sleep 2
+parted "created boot partition"
+parted $DISK -- mkpart root ext4 1G 100%
+msg-sleep "created root partition"
 
 echo "formatting disk ${DISK}"
 mkfs.fat -F32 -n BOOT ${DISK}p1
+msg-sleep "formatted BOOT"
 mkfs.ext4 -L NIXOS-ROOT ${DISK}p2
-sleep 2
+msg-sleep "formatted NIXOS-ROOT"
 
 echo "mounting root partition to /mnt"
 mount ${DISK}p2 /mnt
