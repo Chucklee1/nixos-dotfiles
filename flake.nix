@@ -40,7 +40,7 @@
           ./modules/machines/desktop.nix
           {
             vscode.enable = true;
-            thunar.enable = false;
+            thunar.enable = true;
             niri.enable = true;
             theme-minimal.enable = true;
             theme-fancy.enable = false;
