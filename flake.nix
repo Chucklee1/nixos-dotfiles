@@ -64,8 +64,7 @@
       name = "lazy-installer";
       script = pkgs.writeShellScriptBin name ''
         git clone https://github.com/Chucklee1/nixos-dotfiles 
-        cd nixos-dotfiles
-        ./lazy-installer.sh "$@"'';
+        ./nixos-dotfiles/lazy-installer.sh "$@"'';
     in
       pkgs.symlinkJoin {
         name = name;
