@@ -25,7 +25,25 @@
       terminal = "kitty";
       file-manager = "thunar";
     };
-    specialArgs = {inherit inputs system defaults;};
+    colors = {
+      base00 = "#151515";
+      base01 = "#202020";
+      base02 = "#303030";
+      base03 = "#505050";
+      base04 = "#B0B0B0";
+      base05 = "#D0D0D0";
+      base06 = "#E0E0E0";
+      base07 = "#F5F5F5";
+      base08 = "#AC4142";
+      base09 = "#D28445";
+      base0A = "#F4BF75";
+      base0B = "#90A959";
+      base0C = "#75B5AA";
+      base0D = "#6A9FB5";
+      base0E = "#AA759F";
+      base0F = "#8F5536";
+    };
+    specialArgs = {inherit inputs system defaults colors;};
     shared-modules = with inputs;
       [
         home-manager.nixosModules.home-manager
@@ -49,7 +67,6 @@
             niri.enable = true;
             bspwm.enable = true;
             theme-minimal.enable = true;
-            theme-fancy.enable = false;
             AMD.enable = true;
             nvidia.enable = true;
             radeon.enable = false;
@@ -70,7 +87,6 @@
             niri.enable = true;
             bspwm.enable = false;
             theme-minimal.enable = true;
-            theme-fancy.enable = false;
             AMD.enable = true;
             nvidia.enable = false;
             radeon.enable = true;
