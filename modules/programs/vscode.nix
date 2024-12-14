@@ -12,6 +12,7 @@
           "update.mode" = "none";
           "update.enableWindowsBackgroundUpdates" = false;
           "editor.tabSize" = 2;
+          "editor.detectIndentation" = false;
           "editor.minimap.enabled" = false;
           "editor.autoClosingBrackets" = "never";
           "editor.autoClosingQuotes" = "never";
@@ -22,7 +23,7 @@
           "explorer.confirmDelete" = false;
           "git.confirmSync" = false;
           "git.enableSmartCommit" = true;
-          "workbench.statusBar.visible" = false;
+          "workbench.statusBar.visible" = true;
           "workbench.colorTheme" = "Stylix";
         };
       };
