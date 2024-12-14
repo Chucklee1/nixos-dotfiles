@@ -62,6 +62,7 @@
             nvidia.enable = false;
             radeon.enable = true;
           }
+          0
         ];
     };
     # -----------------------------------------------------------
@@ -71,7 +72,7 @@
 
     packages.x86_64-linux.lazy-insaller = let
       ${name} = "lazy-installer";
-      sscript = pkgs.writeShellScriptBin name ''
+      script = pkgs.writeShellScriptBin name ''
         DATE=$(ddate +'the %e of %B%, %Y')
         cowsay Hello, world! Today is $DATE.
       '';
@@ -79,7 +80,7 @@
     in
       pkgs.symlinkJoin {
         name = ${name};
-        paths = [sscript] ++ dependants;
+        paths = [script] ++ dependants;
         buildInputs = [pkgs.makeWrapper];
         postBuild = "wrapProgram $out/bin/${${name}} --prefix PATH : $out/bin";
       };
