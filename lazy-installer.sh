@@ -12,11 +12,11 @@ mkfs.fat -F32 -n BOOT ${DISK}p1
 mkfs.ext4 -L NIXOS-ROOT ${DISK}p2
 
 echo "mounting root partition to /mnt"
-mount /dev/disk/by-label/NIXOS-ROOT /mnt
+mount /dev/${DISK}p2 /mnt
 echo "creating boot directory"
 mkdir /mnt/boot
 echo "mounting boot partition to /mnt/boot"
-mount /dev/disk/by-label/BOOT /mnt/boot
+mount /dev/${DISK}p1 /mnt/boot
 
 echo "cloning repo"
 git clone https://github.com/Chucklee1/nixos-dotfiles
