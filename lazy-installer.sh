@@ -2,24 +2,24 @@ DISK="/dev/${1}"
 
 msg-sleep() {
     local msg="$1"
+    echo "${msg}" 
     sleep 4
-    printf "--------------------\n-- %s --\n--------------------\n" "$msg"
 }
 
-msg-sleep "partitioning disk ${DISK}"
+msg-sleep "partitioning ${DISK}..."
 
 parted $DISK -- mklabel gpt
 msg-sleep "created gpt label"
 
-parted $DISK -- mkpart ESP fat32 1MB 1G
-parted $DISK -- set 1 esp on
-parted "created boot partition"
-
 parted $DISK -- mkpart root ext4 1G 100%
 msg-sleep "created root partition"
 
+parted $DISK -- mkpart ESP fat32 1MB 1G
+parted $DISK -- set 2 esp on
+parted "created boot partition"
 
-msg-sleep "formatting disk ${DISK}"
+
+msg-sleep "formatting ${DISK}..."
 
 mkfs.fat -F32 -n BOOT ${DISK}p1
 msg-sleep "formatted BOOT"
