@@ -154,10 +154,7 @@
               layer = "top";
               position = "bottom";
 
-              modules-left = [
-                "niri/workspaces"
-                "idle_inhibitor"
-              ];
+              modules-left = ["niri/workspaces" "idle_inhibitor"];
 
               "niri/workspaces" = {
                 format = "{icon}";
@@ -175,11 +172,7 @@
                 };
               };
 
-              modules-center = [
-                "clock#1"
-                "custom/divider"
-                "clock#2"
-              ];
+              modules-center = ["clock#1" "custom/divider" "clock#2"];
 
               "clock#1" = {
                 format = "{:%H:%M:%S}";
@@ -241,17 +234,7 @@
               "backlight" = {
                 device = "amdgpu_bl1e";
                 format = "{percent}% {icon}";
-                "format-icons" = [
-                  ""
-                  ""
-                  ""
-                  ""
-                  ""
-                  ""
-                  ""
-                  ""
-                  ""
-                ];
+                "format-icons" = ["" "" "" "" "" "" "" "" ""];
               };
 
               "battery" = {
@@ -261,13 +244,7 @@
                   critical = 15;
                 };
                 format = "{capacity}% {icon}";
-                "format-icons" = [
-                  ""
-                  ""
-                  ""
-                  ""
-                  ""
-                ];
+                "format-icons" = ["" "" "" "" ""];
               };
 
               "tray" = {};
@@ -283,8 +260,8 @@
             @define-color text ${colors.base06};
 
             * {
-                font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
-                font-size: 11px;
+              font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
+              font-size: 11px;
             }
 
             window#waybar {
@@ -292,17 +269,15 @@
                 color: @text;
             }
 
-            #workspaces {
-                background: @background;
-            }
+            #workspaces { background: @background; }
+            #workspaces button.focused { color: @text; }
 
             #workspaces button {
                 padding: 0 2px;
                 color: @text;
             }
-            #workspaces button.focused {
-                color: @text;
-            }
+
+
             #workspaces button:hover {
                 box-shadow: inherit;
                 text-shadow: inherit;
