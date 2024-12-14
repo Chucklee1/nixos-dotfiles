@@ -16,7 +16,7 @@
     };
 
     # nvidia support
-    hardware.nvidia.modesetting.enable = lib.mkIf (config.niri.enable && config.nvidia.enable);
+    hardware.nvidia.modesetting.enable = lib.mkIf (config.niri.enable && config.nvidia.enable) true;
     environment.variables = lib.mkIf (config.niri.enable && config.nvidia.enable) {
       WLR_NO_HARDWARE_CURSORS = "1";
       GBM_BACKEND = "nvidia_drm";
