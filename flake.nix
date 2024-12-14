@@ -66,7 +66,6 @@
           {
             niri.enable = true;
             bspwm.enable = true;
-            theme-minimal.enable = true;
             AMD.enable = true;
             nvidia.enable = true;
             radeon.enable = false;
@@ -86,7 +85,6 @@
           {
             niri.enable = true;
             bspwm.enable = false;
-            theme-minimal.enable = true;
             AMD.enable = true;
             nvidia.enable = false;
             radeon.enable = true;
