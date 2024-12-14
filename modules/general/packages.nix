@@ -4,9 +4,9 @@ in {
   # system
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # dev tools
+    # tools
     wine-wayland
-    # language tools
+    gcc
     alejandra
     nixd
     asm-lsp
