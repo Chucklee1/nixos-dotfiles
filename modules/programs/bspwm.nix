@@ -5,10 +5,10 @@
   ...
 }: {
   options = {
-    i3.enable = lib.mkEnableOption "enable i3 wm";
+    bspwm.enable = lib.mkEnableOption "enable bspwm";
   };
 
-  config = lib.mkIf config.i3.enable {
+  config = lib.mkIf config.bspwm.enable {
     home-manager.sharedModules = [
       {
         home.packages = with pkgs; [
@@ -18,14 +18,13 @@
           feh # For setting background images
         ];
         #programs.i3blocks.enable = true;
-        #xsession = {
-        #  enable = true;
-        #  windowManager.i3 = {
-        #    enable = true;
-        #    config = {
-        #      terminal = "kitty";};
-        #  };
-        #};
+        xsession = {
+          enable = true;
+
+          windowManager.i3 = {
+            enable = true;
+          };
+        };
       }
     ];
   };

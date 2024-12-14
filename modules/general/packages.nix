@@ -46,11 +46,11 @@ in {
     # libs
     libnotify
     libsecret
-    # cli fun
+    # misc
     neofetch
     sl
     cowsay
-    # apps
     firefox
+    papirus-icon-theme
   ];
 }
