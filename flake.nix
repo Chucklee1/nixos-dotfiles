@@ -46,8 +46,6 @@
         ++ [
           ./modules/machines/desktop.nix
           {
-            vscode.enable = true;
-            thunar.enable = true;
             niri.enable = true;
             bspwm.enable = true;
             theme-minimal.enable = true;
@@ -69,8 +67,6 @@
         ++ [
           ./modules/machines/laptop.nix
           {
-            vscode.enable = true;
-            thunar.enable = false;
             niri.enable = true;
             bspwm.enable = false;
             theme-minimal.enable = true;

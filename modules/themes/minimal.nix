@@ -50,7 +50,7 @@ in {
 
     home-manager.sharedModules = [
       {
-        layout = lib.mkIf (config.theme-minimal.enable && config.niri.enable) {
+        programs.niri.settings.layout = lib.mkIf (config.theme-minimal.enable && config.niri.enable) {
           gaps = 0;
           border.width = 2;
           always-center-single-column = false;
