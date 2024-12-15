@@ -20,8 +20,8 @@
       enable = true;
       windowManager.bspwm = {
         enable = true;
-        configFile = "/home/goat/nixos-dotfiles/assets/bspwmrc";
-        sxhkd.configFile = "/home/goat/nixos-dotfiles/assets/sxhkdrc";
+        configFile = ../../assets/bspwmrc;
+        sxhkd.configFile = ../../assets/sxhkdrc;
       };
     };
   };
