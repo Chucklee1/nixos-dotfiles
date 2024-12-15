@@ -64,6 +64,7 @@
         ++ [
           ./modules/machines/desktop.nix
           {
+            games.enable = true;
             niri.enable = true;
             bspwm.enable = true;
             AMD.enable = true;
@@ -83,6 +84,7 @@
         ++ [
           ./modules/machines/laptop.nix
           {
+            games.enable = true;
             niri.enable = true;
             bspwm.enable = false;
             AMD.enable = true;
