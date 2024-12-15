@@ -25,8 +25,12 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
-    xserver.enable = true;
-    xserver.displayManager.lightdm.greeters.slick.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+      autoNumlock = true;
+      theme = "sddm-chili-theme";
+    };
     blueman.enable = true;
     printing.enable = true;
     fstrim.enable = true;

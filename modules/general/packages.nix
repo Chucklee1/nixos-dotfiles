@@ -14,6 +14,7 @@ in {
     killall
     ripgrep
     pciutils
+    zenity
     btop
     ncdu
     # web/net
@@ -23,6 +24,7 @@ in {
     # compresssion, archiving, & filed
     unrar
     unzip
+    p7zip
     file-roller
     tree
     isoimagewriter
@@ -51,6 +53,6 @@ in {
     sl
     cowsay
     firefox
-    papirus-icon-theme
+    sddm-chili-theme
   ];
 }
