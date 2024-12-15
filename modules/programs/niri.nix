@@ -15,7 +15,28 @@
       enable = true;
       package = pkgs.niri-unstable;
     };
-
+    environment.systemPackages = with pkgs; [
+      # wayland
+      wayland-utils
+      wayland-scanner
+      egl-wayland
+      qt5.qtwayland
+      qt6.qtwayland
+      # clipboard
+      wl-clipboard
+      cliphist
+      # media
+      mpv
+      imv
+      ffmpeg
+      v4l-utils
+      # hardware I/O tools
+      wev
+      pavucontrol
+      # libs
+      libnotify
+      libsecret
+    ];
     security.polkit.enable = true;
     xdg.portal = {
       enable = true;

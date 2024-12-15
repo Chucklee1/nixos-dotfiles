@@ -31,10 +31,17 @@
       autoNumlock = true;
       theme = "sddm-chili-theme";
     };
-    libinput.enable = true;
-    blueman.enable = true;
+    xserver.enable = true;
+    desktopManager.plasma6.enable = true;
+    #libinput.enable = true;
+    #blueman.enable = true;
     printing.enable = true;
     fstrim.enable = true;
     openssh.enable = true;
   };
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    plasma-browser-integration
+    konsole
+    oxygen
+  ];
 }

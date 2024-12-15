@@ -5,7 +5,6 @@ in {
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # tools
-    wine-wayland
     gcc
     alejandra
     nixd
@@ -28,26 +27,6 @@ in {
     file-roller
     tree
     isoimagewriter
-    # wayland
-    wayland-utils
-    wayland-scanner
-    egl-wayland
-    qt5.qtwayland
-    qt6.qtwayland
-    # clipboard
-    wl-clipboard
-    cliphist
-    # media
-    mpv
-    imv
-    ffmpeg
-    v4l-utils
-    # hardware I/O tools
-    wev
-    pavucontrol
-    # libs
-    libnotify
-    libsecret
     # misc
     neofetch
     sl
