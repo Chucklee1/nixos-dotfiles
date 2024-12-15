@@ -13,7 +13,7 @@
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
   };
-  secruity.rtkit.enable = true; # sound thing
+  security.rtkit.enable = true; # sound thing
 
   # -----------------------------------------------------------
   # services
