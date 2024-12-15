@@ -2,7 +2,7 @@
 #       hotkeys
 #============================
 super + return
-  kitty -e tmux
+  kitty
 super + e
   thunar
 super + space

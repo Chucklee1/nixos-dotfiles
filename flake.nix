@@ -22,7 +22,7 @@
       timeZone = "America/Vancouver";
       locale = "en_CA.UTF-8";
       wallpaper = ./assets/wallpaper.PNG;
-      terminal = "kitty -- tmux";
+      terminal = "kitty";
       file-manager = "thunar";
     };
     colors = {

@@ -10,6 +10,7 @@
           confirm_os_window_close = 0;
         };
         extraConfig = ''
+          shell: tmux
           tab_bar_style fade
           tab_fade 1
           active_tab_font_style bold
