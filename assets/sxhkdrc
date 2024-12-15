@@ -1,7 +1,6 @@
 # programs
 super + Return
 kitty
-
 super + space
 rofi -show drun
 
