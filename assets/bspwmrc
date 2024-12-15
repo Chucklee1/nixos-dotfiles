@@ -1,5 +1,5 @@
 #! /bin/sh
-
+sxhkd -c /home/goat/nixos-dotfile/assets/sxhkdrc
 picom &
 redshift &
 dunst &
