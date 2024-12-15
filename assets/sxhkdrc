@@ -13,7 +13,7 @@ ctrl + alt + f
 #============================
 #       windows   
 #============================
-super + Up
+super + 
   bspc node -f north
 super + Down
   bspc node -f south
