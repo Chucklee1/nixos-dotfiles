@@ -16,6 +16,13 @@
       package = pkgs.niri-unstable;
     };
 
+    security.polkit.enable = true;
+    xdg.portal = {
+      enable = true;
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
+      config.common.default = ["gtk"];
+    };
+
     # nvidia support
     hardware.nvidia.modesetting.enable = lib.mkIf (config.niri.enable && config.nvidia.enable) true;
     environment.variables = lib.mkIf (config.niri.enable && config.nvidia.enable) {
@@ -28,8 +35,14 @@
     home-manager.sharedModules = [
       {
         home.packages = [pkgs.swww];
-        programs.fuzzel.enable = true;
-        programs.wlogout.enable = true;
+        programs = {
+          fuzzel.enable = true;
+          wlogout.enable = true;
+        };
+        services = {
+          gnome-keyring.enable = true;
+          dunst.enable = true;
+        };
 
         programs.niri.settings = {
           prefer-no-csd = true;
@@ -53,7 +66,7 @@
           };
 
           spawn-at-startup = [
-            {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper} ''];}
+            {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper} && waybar''];}
             {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
             {command = ["${pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
@@ -76,8 +89,8 @@
             "XF86AudioLowerVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
             "XF86AudioMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
             "XF86AudioMicMute" = spawn "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-            "XF86MonBrightnessUp" = spawn "brightnessctl --device=amdgpu_bl1 s 5%+";
-            "XF86MonBrightnessDown" = spawn "brightnessctl --device=amdgpu_bl1 s 5%-";
+            "XF86MonBrightnessUp" = spawn "${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%+";
+            "XF86MonBrightnessDown" = spawn "${lib.getExe pkgs.brightnessctl} --device=amdgpu_bl1 s 5%-";
 
             # screenshot
             "Print" = spawn "screenshot";
@@ -148,7 +161,6 @@
 
         programs.waybar = {
           enable = true;
-          systemd.enable = true;
           settings = [
             {
               layer = "top";

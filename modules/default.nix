@@ -6,7 +6,6 @@
     ./general/os-settings.nix
     ./general/packages.nix
     ./general/theming.nix
-    ./general/wmUtils.nix
 
     ./programs/bash.nix
     ./programs/git.nix
