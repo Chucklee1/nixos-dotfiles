@@ -25,7 +25,8 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
-    displayManager.ly.enable = true;
+    xserver.enable = true;
+    xserver.displayManager.lightdm.greeters.slick.enable = true;
     blueman.enable = true;
     printing.enable = true;
     fstrim.enable = true;

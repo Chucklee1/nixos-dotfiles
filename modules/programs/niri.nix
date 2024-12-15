@@ -66,7 +66,7 @@
           };
 
           spawn-at-startup = [
-            {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper} && waybar''];}
+            {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper}''];}
             {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
             {command = ["${pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
@@ -111,17 +111,9 @@
             "Mod+Shift+Up" = action "move-window-to-workspace-up";
             "Mod+Shift+Down" = action "move-window-to-workspace-down";
 
-            "Mod+Comma" = action "consume-window-into-column";
-            "Mod+Period" = action "expel-window-from-column";
-
             "Mod+R" = action "switch-preset-column-width";
             "Mod+M" = action "maximize-column";
             "Mod+Shift+M" = action "fullscreen-window";
-
-            "Mod+Minus" = action "set-column-width -10%";
-            "Mod+Plus" = action "set-column-width +10%";
-            "Mod+Shift+Minus" = action "set-window-height -1%";
-            "Mod+Shift+Plus" = action "set-window-height +1%";
           };
 
           input = {
@@ -161,6 +153,7 @@
 
         programs.waybar = {
           enable = true;
+          systemd.enable = true;
           settings = [
             {
               layer = "top";
