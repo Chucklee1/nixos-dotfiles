@@ -31,6 +31,7 @@
       autoNumlock = true;
       theme = "sddm-chili-theme";
     };
+    libinput.enable = true;
     blueman.enable = true;
     printing.enable = true;
     fstrim.enable = true;
