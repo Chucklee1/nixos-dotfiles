@@ -10,7 +10,6 @@
 
     ./programs/bash.nix
     ./programs/git.nix
-    ./programs/bspwm.nix
     ./programs/kitty.nix
     ./programs/thunar.nix
     ./programs/neovim.nix

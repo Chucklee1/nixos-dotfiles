@@ -66,7 +66,6 @@
           {
             games.enable = true;
             niri.enable = true;
-            bspwm.enable = true;
             AMD.enable = true;
             nvidia.enable = true;
             radeon.enable = false;
@@ -86,7 +85,6 @@
           {
             games.enable = true;
             niri.enable = true;
-            bspwm.enable = false;
             AMD.enable = true;
             nvidia.enable = false;
             radeon.enable = true;
