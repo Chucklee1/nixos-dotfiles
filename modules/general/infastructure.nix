@@ -27,7 +27,7 @@
     };
     xserver.enable = true;
     displayManager.ly.enable = true;
-    xserver.desktopManager.cinnamnon.enable = true;
+    xserver.desktopManager.cinnamon.enable = true;
     libinput.enable = true;
     blueman.enable = true;
     printing.enable = true;
