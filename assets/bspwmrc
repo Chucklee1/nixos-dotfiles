@@ -3,7 +3,7 @@
 picom &
 redshift &
 dunst &
-feh --bg-scale /home/nixos-dotfiles/assets/wallpaper.PNG
+feh --bg-scale /home/goat/nixos-dotfiles/assets/wallpaper.PNG
 
 bspc monitor -d I II III IV V VI VII VIII IX X
 
