@@ -7,6 +7,7 @@
   options.games.enable = lib.mkEnableOption "enable gaming module";
 
   config = lib.mkIf config.games.enable {
+    programs.gamescope.enable = true;
     programs.steam = {
       enable = true;
       remotePlay.openFirewall = true;
