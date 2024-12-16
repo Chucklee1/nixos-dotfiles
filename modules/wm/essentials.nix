@@ -14,7 +14,6 @@
 
     # utils/libs
     brightnessctl
-    networkmanagerapplet
     ffmpeg
     v4l-utils
     libnotify

@@ -50,6 +50,7 @@
           spawn-at-startup = [
             {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper} && nm-applet''];}
             {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
+            {command = ["${pkgs.networkmanagerapplet}"];}
             {command = ["${pkgs.lxqt.lxqt-policykit}"];}
             {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
           ];
