@@ -2,9 +2,7 @@
   imports = [
     ./general/games.nix #
     ./general/hardware.nix #
-    ./general/infastructure.nix
-    ./general/os-settings.nix
-    ./general/packages.nix
+    ./general/system.nix # main config
     ./general/theming.nix
 
     ./programs/bash.nix

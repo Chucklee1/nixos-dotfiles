@@ -26,8 +26,8 @@
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
   };
-  system.stateVersion = "24.05"; # DO NOT CHANGE
 
+  system.stateVersion = "24.05"; # DO NOT CHANGE
   time.timeZone = "${defaults.timeZone}";
   i18n.defaultLocale = "${defaults.locale}";
   console = {
@@ -62,10 +62,75 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
-    users.${defaults.username} = {
-      home.stateVersion = "24.05"; # DO NOT CHANGE
-      home.username = "${defaults.username}";
-      home.homeDirectory = "/home/${defaults.username}";
+    users.${defaults.username}.home = {
+      stateVersion = "24.05"; # DO NOT CHANGE
+      username = "${defaults.username}";
+      homeDirectory = "/home/${defaults.username}";
     };
+  };
+
+  # -----------------------------------------------------------
+  # system packages
+  # -----------------------------------------------------------
+  environment.systemPackages = with pkgs; [
+    # tools
+    gcc
+    alejandra
+    nixd
+    asm-lsp
+    # cli
+    killall
+    ripgrep
+    pciutils
+    zenity
+    btop
+    ncdu
+    # web/net
+    wget
+    git
+    curl
+    # compresssion, archiving, & filed
+    unrar
+    unzip
+    p7zip
+    file-roller
+    tree
+    isoimagewriter
+    # misc
+    neofetch
+    sl
+    cowsay
+    firefox
+  ];
+
+  # -----------------------------------------------------------
+  # infastrcuture
+  # -----------------------------------------------------------
+
+  # graphics
+  hardware.graphics.enable = true; # renamed opengl to graphics as of 24.11
+  hardware.graphics.enable32Bit = true;
+
+  # bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  serivces.blueman.enable = true;
+
+  # sound
+  security.rtkit.enable = true; # for sound
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # the rest
+  services = {
+    fstrim.enable = true;
+    displayManager.ly.enable = true;
+    libinput.enable = true;
+    printing.enable = true;
+    openssh.enable = true;
   };
 }
