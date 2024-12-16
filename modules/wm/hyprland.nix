@@ -25,6 +25,15 @@
             };
             windowrulev2 = "nofocus,class:^$,title:^$,xwayland:1,floating:0,fullscreen:0,pinned:0";
 
+            # startup
+            exec-once = [
+              "waybar"
+              "nm-applet"
+              "lxqt-policykit-agent"
+              "wlsunset -T 5200"
+              "swww-daemon && swww img $HOME/nixos-dotfiles/assets/wallpaper.PNG"
+            ];
+
             misc = {
               disable_autoreload = true;
               force_default_wallpaper = 0;
