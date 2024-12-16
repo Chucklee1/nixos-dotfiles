@@ -28,6 +28,7 @@
         programs.niri.settings = {
           prefer-no-csd = true;
           hotkey-overlay.skip-at-startup = true;
+          disable-cursor-plane = true;
           screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
           # setting env vars in niri settings ensures variables only start when niri starts
           environment = {
