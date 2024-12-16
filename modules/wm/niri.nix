@@ -30,20 +30,6 @@
           hotkey-overlay.skip-at-startup = true;
           screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
           # setting env vars in niri settings ensures variables only start when niri starts
-          environment = {
-            NIXOS_OZONE_WL = "1";
-            XDG_SESSION_TYPE = "wayland";
-            DISPLAY = ":0";
-            GDK_BACKEND = "wayland";
-            GTK_CSD = "0";
-            CLUTTER_BACKEND = "wayland";
-            QT_QPA_PLATFORM = "wayland;xcb";
-            QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-            QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-            SDL_VIDEODRIVER = "x11";
-            MOZ_ENABLE_WAYLAND = "1";
-          };
-
           spawn-at-startup = [
             {command = ["swww-daemon"];}
             {command = ["swww img" "${defaults.wallpaper}"];}
