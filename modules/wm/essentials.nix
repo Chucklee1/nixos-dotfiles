@@ -13,6 +13,7 @@
     wev
     wl-clipboard
     cliphist
+    wineWowPackages.wayland
     # utils/libs
     brightnessctl
     ffmpeg
