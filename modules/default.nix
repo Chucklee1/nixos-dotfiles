@@ -14,6 +14,7 @@
 
     ./wm/essentials.nix
     ./wm/niri.nix #
+    ./wm/hyprland.nix #
     ./wm/waybar.nix #
   ];
 }
