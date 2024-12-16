@@ -62,44 +62,9 @@
   # stylix - targets
   # -----------------------------------------------------------
   stylix.targets.grub.enable = false;
-  home-manager.users.${defaults.username}.stylix.targets.waybar.enable = false;
-
-  # -----------------------------------------------------------
-  # boot theme
-  # -----------------------------------------------------------
-  boot.loader.grub2-theme = {
-    enable = true;
-    theme = "stylish";
-    footer = true;
-  };
-
-  # -----------------------------------------------------------
-  # home manager
-  # -----------------------------------------------------------
   home-manager.sharedModules = [
     {
-      home.packages = [
-        pkgs.papirus-icon-theme
-        (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-      ];
-      gtk = {
-        iconTheme = {
-          name = "Papirus-Dark";
-          package = pkgs.papirus-icon-theme;
-        };
-        gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-        gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
-      };
-      qt = {
-        enable = true;
-        style.name = "adwaita-dark";
-        platformTheme.name = "gtk3";
-      };
-      programs.oh-my-posh = {
-        enable = true;
-        enableBashIntegration = true;
-        useTheme = "pure";
-      };
+      stylix.targets.waybar.enable = false;
     }
   ];
 }

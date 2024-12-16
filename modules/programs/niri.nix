@@ -14,12 +14,6 @@
       enable = true;
       package = pkgs.niri-unstable;
     };
-    security.polkit.enable = true;
-    xdg.portal = {
-      enable = true;
-      extraPortals = [pkgs.xdg-desktop-portal-gtk];
-      config.common.default = ["gtk"];
-    };
 
     # nvidia support
     hardware.nvidia.modesetting.enable = lib.mkIf (config.niri.enable && config.nvidia.enable) true;
