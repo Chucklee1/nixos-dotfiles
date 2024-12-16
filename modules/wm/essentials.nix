@@ -1,5 +1,11 @@
-{pkgs, ...}: let
-  NVIDIA_WAYLAND = (niri.enable || hyprland.enable) && nvidia.enable;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  nvidia_wayland_bool = lib.mkIf ((config.niri.enable || config.hyprland.enable) && config.nvidia.enable);
+  nvidia_wayland_opt = lib.optionals ((config.niri.enable || config.hyprland.enable) && config.nvidia.enable);
 in {
   environment.systemPackages = with pkgs; [
     # wayland
@@ -44,9 +50,9 @@ in {
         QT_QPA_PLATFORM = "wayland;xcb";
         GDK_BACKEND = "wayland,x11,*";
         # nvidia
-        GBM_BACKEND = NVIDIA_WAYLAND "nvidia_drm";
-        __GLX_VENDOR_LIBRARY_NAME = NVIDIA_WAYLAND "nvidia";
-        LIBVA_DRIVER_NAME = NVIDIA_WAYLAND "nvidia";
+        GBM_BACKEND = nvidia_wayland_opt "nvidia_drm";
+        __GLX_VENDOR_LIBRARY_NAME = nvidia_wayland_opt "nvidia";
+        LIBVA_DRIVER_NAME = nvidia_wayland_opt "nvidia";
       };
       programs = {
         fuzzel.enable = true;
@@ -59,7 +65,7 @@ in {
     }
   ];
 
-  hardware.nvidia.modesetting.enable = NVIDIA_WAYLAND true; # nvidia compat with wayland
+  hardware.nvidia.modesetting.enable = nvidia_wayland_bool true; # nvidia compat with wayland
   security.polkit.enable = true;
   xdg.portal = {
     enable = true;

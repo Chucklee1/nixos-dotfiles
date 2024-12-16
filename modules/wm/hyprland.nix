@@ -17,15 +17,11 @@
           plugins = [pkgs.hyprlandPlugins.hyprscroller];
           settings = {
             # general
+            monitor = ", 1920x1080@165, auto, auto";
             input = {
               kb_layout = "us";
-              follow_mouse = 0;
-              accel_profile = "flat";
-            };
-
-            dwindle = {
-              pseudotile = true;
-              preserve_split = true;
+              follow_mouse = 1;
+              sensitivity = 0;
             };
 
             misc = {
@@ -45,11 +41,10 @@
 
             # theming related
             general = {
+              layout = "scroller";
               gaps_in = 5;
               gaps_out = 5;
-              border_size = 1;
-              #"col.active_border" = "rgba(88888888)";
-              #"col.inactive_border" = "rgba(00000088)";
+              border_size = 2;
               allow_tearing = true;
               resize_on_border = true;
             };
@@ -67,15 +62,31 @@
                 popups = true;
                 popups_ignorealpha = 0.2;
               };
-
               shadow = {
                 enabled = true;
-                #color = "rgba(00000055)";
                 ignore_window = true;
                 offset = "0 15";
                 range = 100;
                 render_power = 2;
                 scale = 0.97;
+              };
+              # animation: NAME, ONOFF, SPEED, CURVE [,STYLE]
+              animations = {
+                #bezier = NAME, X0, Y0, X1, Y1
+                bezier = [
+                  "ease-out-quad, 0.76, 0, 0.24, 1"
+                  "ease-out-cubic, 0.33, 1, 0.68, 1"
+                  "ease-out-expo, 0.16, 1, 0.3, 1"
+                  "spring, 0.25, 0.75, 0.50, 1.0"
+                ];
+                animation = [
+                  "workspaces, 1, 1.5, spring"
+                  "windows, 1, 1.5, spring"
+                  "windowsIn, 1, 4, ease-out-expo" # open
+                  "windowsOut, 1, 4, ease-out-quad" # close
+                  "windowsMove, 1, 2.9, spring"
+                  "fade, 0"
+                ];
               };
             };
 
@@ -84,7 +95,20 @@
             bind = [
               "$mod, return, exec, kitty -e tmux"
               "$mod, space, exec, fuzzel"
+
               "$mod, Q, killactive"
+              "$mod, M, fullscreen,"
+              ", ctrl+alt+del, exit"
+
+              "$mod, left, movefocus, l"
+              "$mod, right, movefocus, r"
+              "$mod, up, movefocus, u"
+              "$mod, down, movefocus, d"
+            ];
+            bindm = [
+              "$mod, mouse:272, movewindow"
+              "$mod, mouse:273, resizewindow"
+              "$mod ALT, mouse:272, resizewindow"
             ];
             bindl = [
               # media controls
