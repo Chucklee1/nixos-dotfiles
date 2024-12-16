@@ -65,7 +65,7 @@
           ./modules/machines/desktop.nix
           {
             games.enable = true;
-            niri.enable = false;
+            niri.enable = true;
             AMD.enable = true;
             nvidia.enable = true;
             radeon.enable = false;
