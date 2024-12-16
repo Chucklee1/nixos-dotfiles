@@ -60,6 +60,11 @@
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
   };
+  home-manager.users.${defaults.username}.home = {
+    stateVersion = "24.05"; # DO NOT CHANGE
+    username = "${defaults.username}";
+    homeDirectory = "/home/${defaults.username}";
+  };
 
   # -----------------------------------------------------------
   # home manager
@@ -68,11 +73,6 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
-    users.${defaults.username}.home = {
-      stateVersion = "24.05"; # DO NOT CHANGE
-      username = "${defaults.username}";
-      homeDirectory = "/home/${defaults.username}";
-    };
     sharedModules = [
       {
         gtk = {
