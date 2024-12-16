@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   system,
   inputs,
@@ -74,15 +75,9 @@
     };
     sharedModules = [
       {
-        home.packages = [
-          pkgs.papirus-icon-theme
-          (pkgs.nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-        ];
         gtk = {
-          iconTheme = {
-            name = "Papirus-Dark";
-            package = pkgs.papirus-icon-theme;
-          };
+          iconTheme.name = "Papirus-Dark";
+          iconTheme.package = pkgs.papirus-icon-theme;
           gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
           gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
         };
@@ -122,26 +117,6 @@
     file-roller
     tree
     isoimagewriter
-    # wayland
-    wayland-utils
-    wayland-scanner
-    egl-wayland
-    qt5.qtwayland
-    qt6.qtwayland
-    # clipboard
-    wl-clipboard
-    cliphist
-    # media
-    mpv
-    imv
-    ffmpeg
-    v4l-utils
-    # hardware I/O tools
-    wev
-    pavucontrol
-    # libs
-    libnotify
-    libsecret
     # misc
     neofetch
     sl
@@ -178,12 +153,5 @@
     libinput.enable = true;
     printing.enable = true;
     openssh.enable = true;
-  };
-
-  security.polkit.enable = true;
-  xdg.portal = {
-    enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
-    config.common.default = ["gtk"];
   };
 }
