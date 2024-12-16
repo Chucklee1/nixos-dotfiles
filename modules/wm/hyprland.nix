@@ -23,6 +23,7 @@
               follow_mouse = 1;
               sensitivity = 0;
             };
+            windowrulev2 = "nofocus,class:^$,title:^$,xwayland:1,floating:0,fullscreen:0,pinned:0";
 
             misc = {
               disable_autoreload = true;
@@ -99,11 +100,12 @@
               "$mod shift, p, exec, wlogout"
               "$mod shift, l, exec, swaylock"
               # hyprland
-              "$mod, F, togglefloating"
-              "$mod, M, fullscreen"
-              ", ctrl+alt+del, exit"
-              # scroller plugin
+              "$mod, f, togglefloating"
+              "$mod, m, scroller:fitsize, active"
+              "$mod shift, m, fullscreen"
               "$mod shift, space, scroller:toggleoverview"
+              ", ctrl+alt+del, exit"
+
               # windows
               "$mod, Q, killactive"
               "$mod, left, movefocus, l"
