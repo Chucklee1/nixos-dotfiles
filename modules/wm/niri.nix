@@ -18,7 +18,6 @@
     # nvidia support
     hardware.nvidia.modesetting.enable = lib.mkIf (config.niri.enable && config.nvidia.enable) true;
     environment.variables = lib.mkIf (config.niri.enable && config.nvidia.enable) {
-      WLR_NO_HARDWARE_CURSORS = "1";
       GBM_BACKEND = "nvidia_drm";
       __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       LIBVA_DRIVER_NAME = "nvidia";
