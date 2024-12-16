@@ -1,7 +1,6 @@
 {
   pkgs,
   defaults,
-  colors,
   ...
 }: {
   # -----------------------------------------------------------
@@ -16,22 +15,22 @@
     cursor.name = "Bibata-Modern-Classic";
     cursor.size = 24;
     base16Scheme = {
-      base00 = colors.base00;
-      base01 = colors.base01;
-      base02 = colors.base02;
-      base03 = colors.base03;
-      base04 = colors.base04;
-      base05 = colors.base05;
-      base06 = colors.base06;
-      base07 = colors.base07;
-      base08 = colors.base08;
-      base09 = colors.base09;
-      base0A = colors.base0A;
-      base0B = colors.base0B;
-      base0C = colors.base0C;
-      base0D = colors.base0D;
-      base0E = colors.base0E;
-      base0F = colors.base0F;
+      base00 = defaults.colors.base00;
+      base01 = defaults.colors.base01;
+      base02 = defaults.colors.base02;
+      base03 = defaults.colors.base03;
+      base04 = defaults.colors.base04;
+      base05 = defaults.colors.base05;
+      base06 = defaults.colors.base06;
+      base07 = defaults.colors.base07;
+      base08 = defaults.colors.base08;
+      base09 = defaults.colors.base09;
+      base0A = defaults.colors.base0A;
+      base0B = defaults.colors.base0B;
+      base0C = defaults.colors.base0C;
+      base0D = defaults.colors.base0D;
+      base0E = defaults.colors.base0E;
+      base0F = defaults.colors.base0F;
     };
   };
 

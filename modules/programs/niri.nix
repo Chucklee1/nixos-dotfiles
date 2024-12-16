@@ -4,7 +4,6 @@
   pkgs,
   inputs,
   defaults,
-  colors,
   ...
 }: {
   options.niri.enable = lib.mkEnableOption "enable niri window manager";
@@ -15,28 +14,6 @@
       enable = true;
       package = pkgs.niri-unstable;
     };
-    environment.systemPackages = with pkgs; [
-      # wayland
-      wayland-utils
-      wayland-scanner
-      egl-wayland
-      qt5.qtwayland
-      qt6.qtwayland
-      # clipboard
-      wl-clipboard
-      cliphist
-      # media
-      mpv
-      imv
-      ffmpeg
-      v4l-utils
-      # hardware I/O tools
-      wev
-      pavucontrol
-      # libs
-      libnotify
-      libsecret
-    ];
     security.polkit.enable = true;
     xdg.portal = {
       enable = true;
@@ -282,8 +259,8 @@
             }
           ];
           style = ''
-            @define-color background ${colors.base02};
-            @define-color text ${colors.base06};
+            @define-color background ${defaults.colors.base02};
+            @define-color text ${defaults.colors.base06};
 
             * {
               font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;
