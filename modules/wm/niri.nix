@@ -47,7 +47,7 @@
           };
 
           spawn-at-startup = [
-            {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper} && nm-applet''];}
+            {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper} ''];}
             {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
             {command = ["${pkgs.networkmanagerapplet}"];}
             {command = ["${pkgs.lxqt.lxqt-policykit}"];}
