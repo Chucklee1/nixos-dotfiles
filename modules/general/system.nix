@@ -135,7 +135,7 @@
   # bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
-  serivces.blueman.enable = true;
+  services.blueman.enable = true;
 
   # sound
   security.rtkit.enable = true; # for sound
