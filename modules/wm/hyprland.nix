@@ -42,8 +42,8 @@
             # theming related
             general = {
               layout = "scroller";
-              gaps_in = 5;
-              gaps_out = 5;
+              gaps_in = 4;
+              gaps_out = 4;
               border_size = 2;
               allow_tearing = true;
               resize_on_border = true;
@@ -70,7 +70,6 @@
                 render_power = 2;
                 scale = 0.97;
               };
-              # animation: NAME, ONOFF, SPEED, CURVE [,STYLE]
               animations = {
                 #bezier = NAME, X0, Y0, X1, Y1
                 bezier = [
@@ -79,6 +78,7 @@
                   "ease-out-expo, 0.16, 1, 0.3, 1"
                   "spring, 0.25, 0.75, 0.50, 1.0"
                 ];
+                # animation: NAME, ONOFF, SPEED, CURVE [,STYLE]
                 animation = [
                   "workspaces, 1, 1.5, spring"
                   "windows, 1, 1.5, spring"
@@ -93,17 +93,32 @@
             # bindings: MODS, key, dispatcher, params
             "$mod" = "SUPER";
             bind = [
+              # programs
               "$mod, return, exec, kitty -e tmux"
               "$mod, space, exec, fuzzel"
-
-              "$mod, Q, killactive"
-              "$mod, M, fullscreen,"
+              "$mod shift, p, exec, wlogout"
+              "$mod shift, l, exec, swaylock"
+              # hyprland
+              "$mod, F, togglefloating"
+              "$mod, M, fullscreen"
               ", ctrl+alt+del, exit"
-
+              # scroller plugin
+              "$mod shift, space, scroller:toggleoverview"
+              # windows
+              "$mod, Q, killactive"
               "$mod, left, movefocus, l"
               "$mod, right, movefocus, r"
               "$mod, up, movefocus, u"
               "$mod, down, movefocus, d"
+              "$mod shift, left, movewindow, l"
+              "$mod shift, right, movewindow, r"
+              "$mod shift, up, movewindow, u"
+              "$mod shift, down, movewindow, d"
+              # workspaces
+              "$mod ctrl, up, workspace, -1"
+              "$mod ctrl, down, workspace, +1"
+              "$mod shift ctrl, up, movetoworkspace, -1"
+              "$mod shift ctrl, down, movetoworkspace, +1"
             ];
             bindm = [
               "$mod, mouse:272, movewindow"
@@ -111,21 +126,16 @@
               "$mod ALT, mouse:272, resizewindow"
             ];
             bindl = [
-              # media controls
               ", XF86AudioPlay, exec, playerctl play-pause"
               ", XF86AudioPrev, exec, playerctl previous"
               ", XF86AudioNext, exec, playerctl next"
-
-              # volume
               ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
               ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
             ];
 
             bindle = [
-              # volume
               ", XF86AudioRaiseVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%+"
               ", XF86AudioLowerVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%-"
-              # backlight
               ", XF86MonBrightnessUp, exec, brightnessctl s 5%+"
               ", XF86MonBrightnessDown, exec, brightnessctl s 5%-"
             ];
