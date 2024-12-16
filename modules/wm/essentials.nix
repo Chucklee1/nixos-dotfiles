@@ -7,11 +7,12 @@
     qt5.qtwayland
     qt6.qtwayland
     swww
+    wlsunset
+    networkmanagerapplet
+    lxqt.lxqt-policykit
     wev
     wl-clipboard
     cliphist
-    # X11
-
     # utils/libs
     brightnessctl
     ffmpeg
