@@ -1,4 +1,4 @@
-{}: {
+{defaults, ...}: {
   home-manager.sharedModules = [
     {
       programs.waybar = {
