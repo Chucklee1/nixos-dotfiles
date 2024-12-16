@@ -45,11 +45,12 @@
           };
 
           spawn-at-startup = [
-            {command = ["sh" "-c" ''swww-daemon && swww img ${defaults.wallpaper} ''];}
+            {command = ["swww-daemon"];}
+            {command = ["swww img" "${defaults.wallpaper}"];}
             {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
             {command = ["${pkgs.networkmanagerapplet}"];}
             {command = ["${pkgs.lxqt.lxqt-policykit}"];}
-            {command = ["${lib.getExe pkgs.wlsunset}" "sh" "-c" ''-T 5500''];}
+            {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
           ];
 
           binds = let

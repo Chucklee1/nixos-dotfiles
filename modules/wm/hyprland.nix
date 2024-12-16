@@ -18,10 +18,9 @@
           monitor=,1920x1080@165,auto,auto
 
             exec-once = swww-daemon && swww img ${defaults.wallpaper}
-            exec-once = ${lib.getExe pkgs.xwayland-satellite}
             exec-once = ${pkgs.networkmanagerapplet}
             exec-once = ${pkgs.lxqt.lxqt-policykit}
-            exec-once =  ${lib.getExe pkgs.wlsunset} -T 5500
+            exec-once =  ${lib.getExe pkgs.wlsunset} -T 5200
 
 
           #############################
@@ -44,7 +43,9 @@
           ENV =  __GLX_VENDOR_LIBRARY_NAME,nvidia
           ENV =  LIBVA_DRIVER_NAME,nvidia
 
-          cursor { no_hardware_cursors = true }
+          cursor {
+            no_hardware_cursors = true
+          }
 
           #####################
           ### LOOK AND FEEL ###
@@ -114,7 +115,9 @@
               preserve_split = true
           }
 
-          master { new_status = master }
+          master {
+            new_status = master
+          }
 
           misc {
               force_default_wallpaper = 0
@@ -140,7 +143,9 @@
               }
           }
 
-          gestures { workspace_swipe = false }
+          gestures {
+            workspace_swipe = false
+          }
 
           ###################
           ### KEYBINDINGS ###
@@ -153,7 +158,7 @@
           bind = $mainMod, M, exit,
           bind = $mainMod, E, exec, ${defaults.file-manager}
           bind = $mainMod, V, togglefloating,
-          bind = $mainMod, R, exec, fuzzel
+          bind = $mainMod, space, exec, fuzzel
           bind = $mainMod, P, pseudo, # dwindle
           bind = $mainMod, J, togglesplit, # dwindle
 
