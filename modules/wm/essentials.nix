@@ -8,16 +8,17 @@ in {
     egl-wayland
     qt5.qtwayland
     qt6.qtwayland
+    wineWowPackages.wayland
+    # window manager utils
+    wev
+    brightnessctl
+    wl-clipboard
+    cliphist
     swww
     wlsunset
     networkmanagerapplet
     lxqt.lxqt-policykit
-    wev
-    wl-clipboard
-    cliphist
-    wineWowPackages.wayland
-    # utils/libs
-    brightnessctl
+    # reqs/libs
     ffmpeg
     v4l-utils
     libnotify
@@ -33,9 +34,8 @@ in {
   home-manager.sharedModules = [
     {
       home.sessionVariables = {
-        # xdg
+        # wayland
         XDG_SESSION_TYPE = "wayland";
-        # toolkit backend
         CLUTTER_BACKEND = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
         # xwayland compat.
@@ -59,8 +59,7 @@ in {
     }
   ];
 
-  # nvidia compat with wayland
-  hardware.nvidia.modesetting.enable = NVIDIA_WAYLAND true;
+  hardware.nvidia.modesetting.enable = NVIDIA_WAYLAND true; # nvidia compat with wayland
   security.polkit.enable = true;
   xdg.portal = {
     enable = true;

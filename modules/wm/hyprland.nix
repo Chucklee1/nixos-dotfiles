@@ -16,18 +16,45 @@
           enable = true;
           plugins = [pkgs.hyprlandPlugins.hyprscroller];
           settings = {
+            # general
+            input = {
+              kb_layout = "us";
+              follow_mouse = 0;
+              accel_profile = "flat";
+            };
+
+            dwindle = {
+              pseudotile = true;
+              preserve_split = true;
+            };
+
+            misc = {
+              disable_autoreload = true;
+              force_default_wallpaper = 0;
+              animate_mouse_windowdragging = false;
+            };
+
+            gestures = {
+              workspace_swipe = true;
+              workspace_swipe_forever = true;
+            };
+
+            xwayland.force_zero_scaling = true;
+            render.direct_scanout = true;
+            debug.disable_logs = false;
+
+            # theming related
             general = {
               gaps_in = 5;
               gaps_out = 5;
               border_size = 1;
               #"col.active_border" = "rgba(88888888)";
               #"col.inactive_border" = "rgba(00000088)";
-
               allow_tearing = true;
               resize_on_border = true;
             };
             decoration = {
-              rounding = 16;
+              rounding = 8;
               blur = {
                 enabled = true;
                 brightness = 1.0;
@@ -35,8 +62,8 @@
                 noise = 0.01;
                 vibrancy = 0.2;
                 vibrancy_darkness = 0.5;
-                passes = 4;
-                size = 7;
+                passes = 5;
+                size = 3;
                 popups = true;
                 popups_ignorealpha = 0.2;
               };
@@ -52,33 +79,7 @@
               };
             };
 
-            input = {
-              kb_layout = "us";
-              follow_mouse = 0;
-              accel_profile = "flat";
-            };
-            dwindle = {
-              pseudotile = true;
-              preserve_split = true;
-            };
-
-            misc = {
-              disable_autoreload = true;
-              force_default_wallpaper = 0;
-              animate_mouse_windowdragging = false;
-            };
-
-            render.direct_scanout = true;
-
-            gestures = {
-              workspace_swipe = true;
-              workspace_swipe_forever = true;
-            };
-
-            xwayland.force_zero_scaling = true;
-            debug.disable_logs = false;
-
-            # bind = MODS, key, dispatcher, params
+            # bindings: MODS, key, dispatcher, params
             "$mod" = "SUPER";
             bind = [
               "$mod, return, exec, kitty -e tmux"
