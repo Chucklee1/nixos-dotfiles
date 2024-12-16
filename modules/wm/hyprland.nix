@@ -15,7 +15,7 @@
         wayland.windowManager.hyprland = {
           enable = true;
           plugins = [pkgs.hyprlandPlugins.hyprscroller];
-          hyprland.settings = {
+          settings = {
             general = {
               gaps_in = 5;
               gaps_out = 5;
@@ -33,13 +33,10 @@
                 brightness = 1.0;
                 contrast = 1.0;
                 noise = 0.01;
-
                 vibrancy = 0.2;
                 vibrancy_darkness = 0.5;
-
                 passes = 4;
                 size = 7;
-
                 popups = true;
                 popups_ignorealpha = 0.2;
               };
@@ -57,13 +54,10 @@
 
             input = {
               kb_layout = "us";
-
-              # do not follow mouse on move
               follow_mouse = 0;
               accel_profile = "flat";
             };
             dwindle = {
-              # keep floating dimentions while tiling
               pseudotile = true;
               preserve_split = true;
             };
@@ -72,7 +66,6 @@
               disable_autoreload = true;
               force_default_wallpaper = 0;
               animate_mouse_windowdragging = false;
-              vrr = 1;
             };
 
             render.direct_scanout = true;
@@ -89,7 +82,8 @@
             "$mod" = "SUPER";
             bind = [
               "$mod, return, exec, kitty -e tmux"
-              ", Print, exec, g"
+              "$mod, space, exec, fuzzel"
+              "$mod, Q, killactive"
             ];
             bindl = [
               # media controls

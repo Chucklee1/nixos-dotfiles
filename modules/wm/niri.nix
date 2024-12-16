@@ -15,14 +15,6 @@
       package = pkgs.niri-unstable;
     };
 
-    # nvidia support
-    hardware.nvidia.modesetting.enable = lib.mkIf (config.niri.enable && config.nvidia.enable) true;
-    environment.variables = lib.mkIf (config.niri.enable && config.nvidia.enable) {
-      GBM_BACKEND = "nvidia_drm";
-      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      LIBVA_DRIVER_NAME = "nvidia";
-    };
-
     home-manager.sharedModules = [
       {
         programs.niri.settings = {

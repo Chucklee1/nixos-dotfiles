@@ -1,4 +1,6 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  NVIDIA_WAYLAND = (niri.enable || hyprland.enable) && nvidia.enable;
+in {
   environment.systemPackages = with pkgs; [
     # wayland
     wayland-utils
@@ -31,18 +33,20 @@
   home-manager.sharedModules = [
     {
       home.sessionVariables = {
-        NIXOS_OZONE_WL = "1";
+        # xdg
         XDG_SESSION_TYPE = "wayland";
-
-        GDK_BACKEND = "wayland";
+        # toolkit backend
         CLUTTER_BACKEND = "wayland";
-        QT_QPA_PLATFORM = "wayland;xcb";
-        QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-        QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-
-        SDL_VIDEODRIVER = "x11";
+        QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
+        # xwayland compat.
         DISPLAY = ":0";
-        MOZ_ENABLE_WAYLAND = "1";
+        SDL_VIDEODRIVER = "x11";
+        QT_QPA_PLATFORM = "wayland;xcb";
+        GDK_BACKEND = "wayland,x11,*";
+        # nvidia
+        GBM_BACKEND = NVIDIA_WAYLAND "nvidia_drm";
+        __GLX_VENDOR_LIBRARY_NAME = NVIDIA_WAYLAND "nvidia";
+        LIBVA_DRIVER_NAME = NVIDIA_WAYLAND "nvidia";
       };
       programs = {
         fuzzel.enable = true;
@@ -55,6 +59,8 @@
     }
   ];
 
+  # nvidia compat with wayland
+  hardware.nvidia.modesetting.enable = NVIDIA_WAYLAND true;
   security.polkit.enable = true;
   xdg.portal = {
     enable = true;

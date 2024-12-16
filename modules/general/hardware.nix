@@ -2,7 +2,13 @@
   lib,
   config,
   ...
-}: {
+}: let
+  nvidia_bool = lib.mkIf config.nvidia.enable;
+  nvidia_opt = lib.optionals config.nvidia.enable;
+  radeon_opt = lib.optionals config.radeon.enable;
+  AMD_bool = lib.mkIf config.AMD.enable;
+  AMD_opt = lib.optionals config.AMD.enable;
+in {
   options = {
     nvidia.enable = lib.mkEnableOption "enable nvidia drivers";
     radeon.enable = lib.mkEnableOption "enable radeon gpu drivers";
@@ -11,8 +17,8 @@
 
   config = {
     # GPU
-    services.xserver.videoDrivers = lib.optionals config.nvidia.enable ["nvidia"] ++ lib.optionals config.radeon.enable ["radeon"];
-    hardware.nvidia = lib.mkIf config.nvidia.enable {
+    services.xserver.videoDrivers = nvidia_opt ["nvidia"] ++ radeon_opt ["radeon"];
+    hardware.nvidia = nvidia_opt {
       powerManagement.enable = false;
       powerManagement.finegrained = false;
       open = false;
@@ -21,7 +27,7 @@
     };
 
     # CPU
-    hardware.cpu.amd.updateMicrocode = lib.mkIf config.AMD.enable true;
-    boot.kernelModules = lib.mkIf config.AMD.enable ["kvm-amd"];
+    hardware.cpu.amd.updateMicrocode = AMD_bool true;
+    boot.kernelModules = AMD_opt ["kvm-amd"];
   };
 }
