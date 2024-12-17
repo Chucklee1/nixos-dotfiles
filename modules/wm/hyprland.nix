@@ -38,9 +38,11 @@
 
             # window rules windowrule = <rule>,<info>
             windowrulev2 = [
-              "opacity,0.6,class:kitty"
-              "float,class:^(Thunar|org.gnome.FileRoller|zenity|steam_proton)$"
-              "float,title:^(.*Protontricks.*)%"
+              "opacity, 0.6, override, 0.6, class:kitty"
+              "float, class:^(Thunar|steam|org.gnome.FileRoller|zenity|steam_proton)$"
+              "float, title:^(.*Protontricks.*)%"
+              # float all steam windows except for primary one
+              "float, class:^steam$, title:^(?!steam$)"
             ];
 
             # startup
