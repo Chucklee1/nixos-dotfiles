@@ -114,7 +114,7 @@
               "$mod shift, p, exec, wlogout"
               "$mod shift, l, exec, swaylock"
               # hyprland
-              "$mod, f, togglefloating"
+              "$mod, v, togglefloating"
               "$mod, m, scroller:fitsize, active"
               "$mod shift, m, fullscreen"
               "$mod shift, space, scroller:toggleoverview"
