@@ -29,10 +29,16 @@
     options = ["fmask=0022" "dmask=0022"];
   };
 
-  fileSystems."/media/goat/GAMES" = {
+  fileSystems."/media/goat/BLUE_SATA" = {
+    device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";
+    fsType = "ext4";
+  };
+
+  fileSystems."/media/goat/AMONG_US" = {
     device = "/dev/disk/by-uuid/56edc1af-6e52-4b45-8fc0-8ddad9e4cbf6";
     fsType = "ext4";
   };
+
   swapDevices = [];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
