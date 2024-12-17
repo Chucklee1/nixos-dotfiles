@@ -81,7 +81,7 @@
                 scale = 0.97;
               };
               animations = {
-                #bezier = NAME, X0, Y0, X1, Y1
+                # bezier = NAME, X0, Y0, X1, Y1
                 bezier = [
                   "ease-out-quad, 0.76, 0, 0.24, 1"
                   "ease-out-cubic, 0.33, 1, 0.68, 1"
