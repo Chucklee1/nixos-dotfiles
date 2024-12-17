@@ -99,6 +99,7 @@
     alejandra
     nixd
     asm-lsp
+    desktop-file-utils
     # cli
     killall
     ripgrep
@@ -127,6 +128,9 @@
   # -----------------------------------------------------------
   # infastrcuture
   # -----------------------------------------------------------
+
+  # support for non-nix executables
+  programs.nix-ld.enable = true;
 
   # graphics
   hardware.graphics.enable = true; # renamed opengl to graphics as of 24.11

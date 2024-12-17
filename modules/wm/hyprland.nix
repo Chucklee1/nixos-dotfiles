@@ -27,7 +27,6 @@
 
             # startup
             exec-once = [
-              "waybar"
               "nm-applet"
               "lxqt-policykit-agent"
               "wlsunset -T 5200"
