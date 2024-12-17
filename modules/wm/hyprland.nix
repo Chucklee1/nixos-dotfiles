@@ -18,12 +18,30 @@
           settings = {
             # general
             monitor = ", 1920x1080@165, auto, auto";
+            xwayland.force_zero_scaling = true;
             input = {
               kb_layout = "us";
-              follow_mouse = 1;
+              follow_mouse = 0;
               sensitivity = 0;
             };
-            windowrulev2 = "nofocus,class:^$,title:^$,xwayland:1,floating:0,fullscreen:0,pinned:0";
+
+            misc = {
+              disable_autoreload = true;
+              force_default_wallpaper = 0;
+              animate_mouse_windowdragging = false;
+            };
+
+            gestures = {
+              workspace_swipe = false;
+              workspace_swipe_forever = false;
+            };
+
+            # window rules windowrule = <rule>,<info>
+            windowrulev2 = [
+              "opacity,0.6,class:kitty"
+              "float,class:^(Thunar|org.gnome.FileRoller|zenity|steam_proton)$"
+              "float,title:^(.*Protontricks.*)%"
+            ];
 
             # startup
             exec-once = [
@@ -34,20 +52,7 @@
               "swww-daemon && swww img $HOME/nixos-dotfiles/assets/wallpaper.PNG"
             ];
 
-            misc = {
-              disable_autoreload = true;
-              force_default_wallpaper = 0;
-              animate_mouse_windowdragging = false;
-            };
-
-            gestures = {
-              workspace_swipe = true;
-              workspace_swipe_forever = true;
-            };
-
-            xwayland.force_zero_scaling = true;
-
-            # theming related
+            # theming & layout
             general = {
               layout = "scroller";
               gaps_in = 4;
@@ -67,8 +72,6 @@
                 vibrancy_darkness = 0.5;
                 passes = 5;
                 size = 3;
-                popups = true;
-                popups_ignorealpha = 0.2;
               };
               shadow = {
                 enabled = true;
@@ -102,8 +105,10 @@
             "$mod" = "SUPER";
             bind = [
               # programs
-              "$mod, return, exec, kitty -e tmux"
+              "$mod, return, exec, kitty"
+              "$mod shift, return, exec, kitty -e tmux"
               "$mod, space, exec, fuzzel"
+              "$mod, e, exec, thunar"
               "$mod shift, p, exec, wlogout"
               "$mod shift, l, exec, swaylock"
               # hyprland
@@ -112,7 +117,6 @@
               "$mod shift, m, fullscreen"
               "$mod shift, space, scroller:toggleoverview"
               ", ctrl+alt+del, exit"
-
               # windows
               "$mod, Q, killactive"
               "$mod, left, movefocus, l"
@@ -130,18 +134,19 @@
               "$mod shift ctrl, down, movetoworkspace, +1"
             ];
             bindm = [
+              #  mouse related
               "$mod, mouse:272, movewindow"
               "$mod, mouse:273, resizewindow"
               "$mod ALT, mouse:272, resizewindow"
             ];
             bindl = [
+              # media keys
               ", XF86AudioPlay, exec, playerctl play-pause"
               ", XF86AudioPrev, exec, playerctl previous"
               ", XF86AudioNext, exec, playerctl next"
               ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
               ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
             ];
-
             bindle = [
               ", XF86AudioRaiseVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%+"
               ", XF86AudioLowerVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%-"
