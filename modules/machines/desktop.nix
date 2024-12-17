@@ -35,7 +35,7 @@
   };
 
   fileSystems."/media/goat/AMONG_US" = {
-    device = "/dev/disk/by-uuid/56edc1af-6e52-4b45-8fc0-8ddad9e4cbf6";
+    device = "/dev/disk/by-uuid/413f6666-7aaf-4d12-8220-a444800ede27";
     fsType = "ext4";
   };
 

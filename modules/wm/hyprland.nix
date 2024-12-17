@@ -9,7 +9,6 @@
 
   config = lib.mkIf config.hyprland.enable {
     programs.hyprland.enable = true;
-
     home-manager.sharedModules = [
       {
         wayland.windowManager.hyprland = {
@@ -24,16 +23,14 @@
               follow_mouse = 0;
               sensitivity = 0;
             };
-
+            gestures = {
+              workspace_swipe = false;
+              workspace_swipe_forever = false;
+            };
             misc = {
               disable_autoreload = true;
               force_default_wallpaper = 0;
               animate_mouse_windowdragging = false;
-            };
-
-            gestures = {
-              workspace_swipe = false;
-              workspace_swipe_forever = false;
             };
 
             # window rules windowrule = <rule>,<info>
@@ -136,7 +133,7 @@
               "$mod shift ctrl, down, movetoworkspace, +1"
             ];
             bindm = [
-              #  mouse related
+              # mouse related
               "$mod, mouse:272, movewindow"
               "$mod, mouse:273, resizewindow"
               "$mod ALT, mouse:272, resizewindow"
