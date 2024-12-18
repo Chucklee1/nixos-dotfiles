@@ -33,8 +33,8 @@
     useDHCP = lib.mkDefault true;
   };
 
-  time.timeZone = "${defaults.timeZone}";
-  i18n.defaultLocale = "${defaults.locale}";
+  i18n.defaultLocale = "en_CA.UTF-8";
+  time.timeZone = "America/Vancouver";
   console = {
     earlySetup = true;
     keyMap = "us";
@@ -119,9 +119,6 @@
     tree
     isoimagewriter
     # misc
-    neofetch
-    sl
-    cowsay
     firefox
   ];
 

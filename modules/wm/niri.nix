@@ -22,21 +22,15 @@
           hotkey-overlay.skip-at-startup = true;
           screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
           # setting env vars in niri settings ensures variables only start when niri starts
-          spawn-at-startup = [
-            {command = ["swww-daemon"];}
-            {command = ["swww img" "${defaults.wallpaper}"];}
-            {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
-            {command = ["${pkgs.networkmanagerapplet}"];}
-            {command = ["${pkgs.lxqt.lxqt-policykit}"];}
-            {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
-          ];
+          #spawn-at-startup = [
+          #];
 
           binds = let
             spawn = command: {action.spawn = ["sh" "-c" ''${command}''];};
             action = command: {action.spawn = ["sh" "-c" ''niri msg action ${command}''];};
           in {
             # programs
-            "Mod+Return" = spawn "${defaults.terminal}";
+            "Mod+Return" = spawn "kitty -e tmux";
             "Mod+E" = spawn "${defaults.file-manager}";
             "Mod+Space" = spawn "fuzzel";
             "Super+Shift+L" = spawn "swaylock";
@@ -90,7 +84,7 @@
             enable = true;
             mode.width = 1920;
             mode.height = 1080;
-            position.x = 1920;
+            position.x = 0;
             position.y = 0;
             mode.refresh = 165.001;
           };

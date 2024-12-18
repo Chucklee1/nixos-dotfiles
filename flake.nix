@@ -19,11 +19,7 @@
     pkgs = import nixpkgs {inherit system;};
     defaults = {
       username = "goat";
-      timeZone = "America/Vancouver";
-      locale = "en_CA.UTF-8";
       wallpaper = ./assets/wallpaper.PNG;
-      terminal = "kitty -e tmux";
-      file-manager = "thunar";
       colors = {
         base00 = "#151515";
         base01 = "#202020";
@@ -66,7 +62,7 @@
           ./modules/hosts/desktop/config.nix
           {
             games.enable = true;
-            niri.enable = false;
+            niri.enable = true;
             hyprland.enable = true;
           }
         ];
