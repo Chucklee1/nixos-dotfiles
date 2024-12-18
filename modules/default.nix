@@ -1,15 +1,9 @@
 {...}: {
   imports = [
     ./general/games.nix #
-    ./general/system.nix # main config
+    ./general/programs.nix
     ./general/stylix.nix
-
-    ./programs/bash.nix
-    ./programs/git.nix
-    ./programs/terminal.nix
-    ./programs/thunar.nix
-    ./programs/neovim.nix
-    ./programs/vscode.nix
+    ./general/system.nix # main config
 
     ./wm/essentials.nix
     ./wm/niri.nix #

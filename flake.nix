@@ -63,6 +63,7 @@
         shared-modules
         ++ [
           ./modules/hosts/desktop/hardware.nix
+          ./modules/hosts/desktop/config.nix
           {
             games.enable = true;
             niri.enable = false;
@@ -81,6 +82,7 @@
         shared-modules
         ++ [
           ./modules/hosts/laptop/hardware.nix
+          ./modules/hosts/desktop/config.nix
           {
             games.enable = true;
             niri.enable = true;
