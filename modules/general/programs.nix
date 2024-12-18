@@ -1,4 +1,18 @@
 {pkgs, ...}: {
+  programs = {
+    xfconf.enable = true;
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+  };
+  services = {
+    tumbler.enable = true;
+    gvfs.enable = true;
+  };
   home-manager.sharedModules = [
     {
       programs = {
