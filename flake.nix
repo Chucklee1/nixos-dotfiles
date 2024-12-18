@@ -19,7 +19,7 @@
     pkgs = import nixpkgs {inherit system;};
     defaults = {
       username = "goat";
-      wallpaper = ./assets/wallpaper.PNG;
+      wallpaper = ./assets/wallpaper.png;
       colors = {
         base00 = "#151515";
         base01 = "#202020";
