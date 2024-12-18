@@ -32,7 +32,7 @@ sudo mount ${DISK}p1 /mnt/boot
 msg-sleep "mounted boot to /mnt/boot"
 
 msg-sleep "generating hardware config"
-sudo nixos-generate-config --show-hardware-config --root /mnt > $HOME/nixos-dotfiles/modules/machines/${PROFILE}.nix
+sudo nixos-generate-config --show-hardware-config --root /mnt > $HOME/nixos-dotfiles/modules/hosts/${PROFILE}/hardware.nix
 msg-sleep "generated to desktop module"
 msg-sleep "installing nixos"
 sudo nixos-install --flake $HOME/nixos-dotfiles/#${PROFILE}
