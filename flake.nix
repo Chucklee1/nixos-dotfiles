@@ -62,14 +62,12 @@
       modules =
         shared-modules
         ++ [
-          ./modules/machines/desktop.nix
+          ./modules/hosts/desktop/hardware.nix
           {
             games.enable = true;
             niri.enable = false;
             hyprland.enable = true;
-            AMD.enable = true;
             nvidia.enable = true;
-            radeon.enable = false;
           }
         ];
     };
@@ -82,14 +80,12 @@
       modules =
         shared-modules
         ++ [
-          ./modules/machines/laptop.nix
+          ./modules/hosts/laptop/hardware.nix
           {
             games.enable = true;
             niri.enable = true;
             hyprland.enable = false;
-            AMD.enable = true;
             nvidia.enable = false;
-            radeon.enable = true;
           }
         ];
     };

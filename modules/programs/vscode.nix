@@ -5,7 +5,6 @@
         enable = true;
         extensions = with pkgs.vscode-extensions; [
           jnoortheen.nix-ide
-          eamodio.gitlens
           kamadorueda.alejandra
         ];
         userSettings = {
@@ -21,8 +20,6 @@
           "files.confirmDelete" = false;
           "explorer.confirmDragAndDrop" = false;
           "explorer.confirmDelete" = false;
-          "git.confirmSync" = false;
-          "git.enableSmartCommit" = true;
           "workbench.statusBar.visible" = true;
           "workbench.colorTheme" = "Stylix";
         };

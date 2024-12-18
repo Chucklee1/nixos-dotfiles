@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./general/games.nix #
-    ./general/hardware.nix #
     ./general/system.nix # main config
     ./general/stylix.nix
 
