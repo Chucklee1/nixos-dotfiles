@@ -31,7 +31,7 @@
           in {
             # programs
             "Mod+Return" = spawn "kitty -e tmux";
-            "Mod+E" = spawn "${defaults.file-manager}";
+            "Mod+E" = spawn "thunar";
             "Mod+Space" = spawn "fuzzel";
             "Super+Shift+L" = spawn "swaylock";
             "Super+Shift+P" = spawn "wlogout";
