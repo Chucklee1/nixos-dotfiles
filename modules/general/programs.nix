@@ -2,6 +2,13 @@
   home-manager.sharedModules = [
     {
       programs = {
+        # git
+        lazygit.enable = true;
+        git = {
+          enable = true;
+          userEmail = "cooperkang4@gmail.com";
+          userName = "Chucklee1 - remote";
+        };
         # shell
         oh-my-posh = {
           enable = true;
