@@ -68,7 +68,6 @@
             games.enable = true;
             niri.enable = false;
             hyprland.enable = true;
-            nvidia.enable = true;
           }
         ];
     };
@@ -87,7 +86,6 @@
             games.enable = true;
             niri.enable = true;
             hyprland.enable = false;
-            nvidia.enable = false;
           }
         ];
     };
