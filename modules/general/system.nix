@@ -1,13 +1,12 @@
 {
   pkgs,
   lib,
-  system,
   inputs,
   defaults,
   ...
 }: {
   # -----------------------------------------------------------
-  # boot loader
+  # boot
   # -----------------------------------------------------------
   boot.loader = {
     efi.canTouchEfiVariables = true;
@@ -33,7 +32,6 @@
     useDHCP = lib.mkDefault true;
   };
 
-  system.stateVersion = "24.05"; # DO NOT CHANGE
   time.timeZone = "${defaults.timeZone}";
   i18n.defaultLocale = "${defaults.locale}";
   console = {
@@ -60,35 +58,36 @@
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
   };
-  home-manager.users.${defaults.username}.home = {
-    stateVersion = "24.05"; # DO NOT CHANGE
-    username = "${defaults.username}";
-    homeDirectory = "/home/${defaults.username}";
+
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    extraSpecialArgs = {inherit inputs;};
+    users.${defaults.username}.home = {
+      stateVersion = "24.05"; # DO NOT CHANGE
+      username = "${defaults.username}";
+      homeDirectory = "/home/${defaults.username}";
+    };
   };
 
   # -----------------------------------------------------------
   # home manager
   # -----------------------------------------------------------
-  home-manager = {
-    useUserPackages = true;
-    useGlobalPkgs = true;
-    extraSpecialArgs = {inherit inputs;};
-    sharedModules = [
-      {
-        gtk = {
-          iconTheme.name = "Papirus-Dark";
-          iconTheme.package = pkgs.papirus-icon-theme;
-          gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-          gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
-        };
-        qt = {
-          enable = true;
-          style.name = "adwaita-dark";
-          platformTheme.name = "gtk3";
-        };
-      }
-    ];
-  };
+  home-manager.sharedModules = [
+    {
+      gtk = {
+        iconTheme.name = "Papirus-Dark";
+        iconTheme.package = pkgs.papirus-icon-theme;
+        gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+        gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+      };
+      qt = {
+        enable = true;
+        style.name = "adwaita-dark";
+        platformTheme.name = "gtk3";
+      };
+    }
+  ];
 
   # -----------------------------------------------------------
   # system packages
