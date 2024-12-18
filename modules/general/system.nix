@@ -57,7 +57,7 @@
   # -----------------------------------------------------------
   users.users.${defaults.username} = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager"];
+    extraGroups = ["wheel" "networkmanager" "libvirtd"];
   };
 
   home-manager = {
