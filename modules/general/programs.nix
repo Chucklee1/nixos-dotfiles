@@ -35,12 +35,8 @@
             vim = "nvim ./nixos-dotfiles";
             sv = "sudo nvim";
             cg = "sudo nix-collect-garbage";
-            gen-conf-desktop = "sudo nixos-generate-config --show-hardware-config > ./nixos-dotfiles/modules/hosts/desktop/hardware.nix";
-            gen-conf-laptop = "sudo nixos-generate-config --show-hardware-config > ./nixos-dotfiles/modules/hosts/laptop/hardware.nix";
             update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake ./nixos-dotfiles#laptop";
             update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake ./nixos-dotfiles#desktop";
-            remote-update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake github:Chucklee1/nixos-dotfiles#laptop --no-write-lock-file";
-            remote-update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake github:Chucklee1/nixos-dotfiles#desktop --no-write-lock-file";
           };
         };
         # terminal

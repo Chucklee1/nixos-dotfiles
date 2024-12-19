@@ -101,8 +101,8 @@
             "$mod" = "SUPER";
             bind = [
               # programs
-              "$mod, return, exec, kitty"
-              "$mod shift, return, exec, kitty -e tmux"
+              "$mod, return, exec, kitty /media/goat/AMONG_US"
+              "$mod shift, return, exec, kitty /media/goat/AMONG_US -e tmux"
               "$mod, space, exec, fuzzel"
               "$mod, e, exec, thunar"
               "$mod shift, p, exec, wlogout"
