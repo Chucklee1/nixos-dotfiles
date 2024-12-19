@@ -45,7 +45,7 @@
               "nm-applet"
               "lxqt-policykit-agent"
               "wlsunset -T 5200"
-              "swww-daemon && swww img $HOME/nixos-dotfiles/assets/wallpaper.PNG"
+              "swww-daemon && swww img $HOME/nixos-dotfiles/assets/wallpaper.png"
             ];
 
             # theming & layout
@@ -101,8 +101,8 @@
             "$mod" = "SUPER";
             bind = [
               # programs
-              "$mod, return, exec, kitty /media/goat/AMONG_US"
-              "$mod shift, return, exec, kitty /media/goat/AMONG_US -e tmux"
+              "$mod, return, exec, kitty"
+              "$mod shift, return, exec, kitty -e tmux"
               "$mod, space, exec, fuzzel"
               "$mod, e, exec, thunar"
               "$mod shift, p, exec, wlogout"

@@ -16,6 +16,7 @@
     };
     environment.variables = {STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";};
     environment.systemPackages = with pkgs; [
+      vulkan-tools
       osu-lazer-bin
       protonup-qt
       protontricks

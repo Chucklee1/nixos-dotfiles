@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: {
   # boot
@@ -22,6 +23,7 @@
   # hardware
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   services.xserver.videoDrivers = ["nvidia"];
+  environment.systemPackages = [pkgs.nvidia-vaapi-driver];
   hardware.nvidia = {
     powerManagement.enable = false;
     powerManagement.finegrained = false;
