@@ -16,7 +16,7 @@
     };
     environment.variables = {STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";};
     environment.systemPackages = with pkgs; [
-      osu-lazer
+      osu-lazer-bin
       protonup-qt
       protontricks
       openmw
