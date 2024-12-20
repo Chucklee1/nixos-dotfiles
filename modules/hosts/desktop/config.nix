@@ -11,7 +11,7 @@
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
     supportedFilesystems = ["ntfs"];
-    loader.grub.useOSProber = true;
+    loader.grub.useOSProber = false;
   };
 
   # system options

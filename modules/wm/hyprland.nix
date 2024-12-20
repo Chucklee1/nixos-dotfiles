@@ -64,9 +64,8 @@
                 enabled = true;
                 brightness = 1.0;
                 contrast = 1.0;
-                noise = 0.01;
-                vibrancy = 0.2;
-                vibrancy_darkness = 0.5;
+                noise = 0.02;
+                vibrancy = 0.3;
                 passes = 4;
                 size = 3;
               };
