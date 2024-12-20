@@ -9,6 +9,7 @@
 
   config = lib.mkIf config.hyprland.enable {
     programs.hyprland.enable = true;
+    stylix.opacity.terminal = 0.6;
     home-manager.sharedModules = [
       {
         wayland.windowManager.hyprland = {
@@ -66,7 +67,7 @@
                 noise = 0.01;
                 vibrancy = 0.2;
                 vibrancy_darkness = 0.5;
-                passes = 5;
+                passes = 4;
                 size = 3;
               };
               shadow = {

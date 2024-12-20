@@ -99,6 +99,7 @@
     alejandra
     nixd
     asm-lsp
+    libxcrypt
     desktop-file-utils
     # cli
     killall
