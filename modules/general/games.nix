@@ -19,6 +19,8 @@
       vulkan-tools
       osu-lazer-bin
       protonup-qt
+      wineWowPackages.unstable
+      winetricks
       protontricks
       openmw
       prismlauncher
