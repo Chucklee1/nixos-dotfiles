@@ -115,6 +115,7 @@
     curl
     # compresssion, archiving, & filed
     file-roller
+    p7zip
     tree
     isoimagewriter
     # misc
