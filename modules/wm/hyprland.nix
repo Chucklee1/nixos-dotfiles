@@ -59,7 +59,7 @@
               resize_on_border = true;
             };
             decoration = {
-              rounding = 8;
+              rounding = 4;
               blur = {
                 enabled = true;
                 brightness = 1.0;
