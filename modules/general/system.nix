@@ -99,6 +99,7 @@
     alejandra
     nixd
     asm-lsp
+    zlib
     libxcrypt
     desktop-file-utils
     # cli
@@ -113,9 +114,6 @@
     git
     curl
     # compresssion, archiving, & filed
-    unrar
-    unzip
-    p7zip
     file-roller
     tree
     isoimagewriter
