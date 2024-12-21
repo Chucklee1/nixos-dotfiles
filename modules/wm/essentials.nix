@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}: 
-{
+}: {
   environment.systemPackages = with pkgs; [
     # wayland
     wayland-utils
@@ -12,7 +11,6 @@
     egl-wayland
     qt5.qtwayland
     qt6.qtwayland
-    wineWowPackages.wayland
     # window manager utils
     wev
     brightnessctl
