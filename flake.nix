@@ -83,7 +83,7 @@
             games.enable = true;
             niri.enable = true;
             hyprland.enable = false;
-            virt.enable = false;
+            virt.enable = true;
           }
         ];
     };
