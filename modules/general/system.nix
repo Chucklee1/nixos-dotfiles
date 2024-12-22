@@ -89,24 +89,31 @@
         QT_QPA_PLATFORM = "wayland;xcb";
         GDK_BACKEND = "wayland,x11,*";
       };
-      program = {
+      programs = {
+        # wm
         waybar.enable = true;
         fuzzel.enable = true;
         wlogout.enable = true;
-        lazygit.enable = true;
+        # shelli
         git.enable = true;
-        oh-my-posh.enable = true;
-        bash.enable = true;
+        lazygit.enable = true;
         tmux.enable = true;
         kitty.enable = true;
+        bash.enable = true;
+        oh-my-posh.enable = true;
+        # soyjack editor
         vscode.enable = true;
       };
+      # theming
       gtk.enable = true;
       qt.enable = true;
+      # most wm services
       services = {
         dunst.enable = true;
         wlsunset = {
           enable = true;
+          sunrise = "00:00";
+          sunset = "00:00";
           temperature.day = 5200;
           temperature.night = 5200;
         };
@@ -119,8 +126,20 @@
   # system packages
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # tools
+    # tools/deps
     gcc
+    zenity
+    vulkan-tools
+    ffmpeg
+    v4l-utils
+    libnotify
+    libsecret
+    wineWowPackages.stagingFull
+    samba # wine security features
+    winetricks
+    protonup-qt
+    protontricks
+    # language QOL
     alejandra
     nixd
     asm-lsp
@@ -128,7 +147,6 @@
     killall
     ripgrep
     pciutils
-    zenity
     btop
     ncdu
     # web/net
@@ -151,20 +169,19 @@
     wlsunset
     networkmanagerapplet
     lxqt.lxqt-policykit
-    # reqs/libs
-    ffmpeg
-    v4l-utils
-    libnotify
-    libsecret
     # media
     mpv
     imv
     pavucontrol
-    # font
+    # apps/games
+    firefox
+    openmw
+    osu-lazer-bin
+    prismlauncher
+    # misc
+    (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     file-roller
     p7zip
-    firefox
-    (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
   ];
 
   # -----------------------------------------------------------
@@ -172,9 +189,16 @@
   # -----------------------------------------------------------
   stylix.enable = true;
   programs = {
+    # wm
     niri.enable = true;
     hyprland.enable = true;
-    nixvim.enable = true;
+    # games
+    gamemode.enable = true;
+    steam.enable = true;
+    # virt related
+    virt-manager.enable = true;
+    dconf.enable = true;
+    # file management
     xfconf.enable = true; # for thunar config
     thunar = {
       enable = true;
@@ -183,6 +207,8 @@
         thunar-volman
       ];
     };
+    # editor
+    #nixvim.enable = true;
   };
 
   # -----------------------------------------------------------
