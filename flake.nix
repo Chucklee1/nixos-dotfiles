@@ -100,7 +100,11 @@
     in
       pkgs.symlinkJoin {
         name = name;
-        paths = [script] ++ [pkgs.parted pkgs.git];
+        paths = [script] ++  [
+          pkgs.parted 
+          pkgs.git 
+          pkgs.nixos-install-tools
+          ];
         buildInputs = [pkgs.makeWrapper];
         postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin";
       };
