@@ -35,7 +35,7 @@
           # theming & layout
           general = {
             layout = "scroller";
-            gaps_in = 4;
+            gaps_in = 2;
             gaps_out = 4;
             border_size = 2;
             allow_tearing = true;
@@ -43,23 +43,6 @@
           };
           decoration = {
             rounding = 4;
-            blur = {
-              enabled = true;
-              brightness = 1.0;
-              contrast = 1.0;
-              noise = 0.02;
-              vibrancy = 0.3;
-              passes = 4;
-              size = 3;
-            };
-            shadow = {
-              enabled = true;
-              ignore_window = true;
-              offset = "0 15";
-              range = 100;
-              render_power = 2;
-              scale = 0.97;
-            };
             animations = {
               # bezier = NAME, X0, Y0, X1, Y1
               bezier = [
