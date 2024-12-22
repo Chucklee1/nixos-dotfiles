@@ -19,7 +19,7 @@
       vulkan-tools
       osu-lazer-bin
       protonup-qt
-      wineWowPackages.unstable
+      wineWowPackages.stagingFull
       winetricks
       protontricks
       openmw
