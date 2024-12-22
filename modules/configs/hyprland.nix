@@ -29,7 +29,6 @@
             "waybar"
             "nm-applet"
             "lxqt-policykit-agent"
-            "wlsunset -T 5200"
             "swww-daemon && swww img $HOME/nixos-dotfiles/assets/wallpaper.png"
           ];
           # theming & layout

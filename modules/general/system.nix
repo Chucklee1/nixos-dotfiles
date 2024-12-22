@@ -103,7 +103,15 @@
       };
       gtk.enable = true;
       qt.enable = true;
-      services.dunst.enable = true;
+      services = {
+        dunst.enable = true;
+        wlsunset = {
+          enable = true;
+          temperature.day = 5200;
+          temperature.night = 5200;
+        };
+        gnome-keyring.enable = true;
+      };
     }
   ];
 
@@ -214,7 +222,6 @@
     libinput.enable = true;
     printing.enable = true;
     openssh.enable = true;
-    gnome-keyring.enable = true;
     # for thunar
     tumbler.enable = true;
     gvfs.enable = true;

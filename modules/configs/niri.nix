@@ -11,7 +11,6 @@
           {command = ["waybar"];}
           {command = ["nm-applet"];}
           {command = ["lxqt-policykit-agent"];}
-          {command = ["wlsunset -T 5200"];}
           {command = ["swww-daemon && swww img $HOME/nixos-dotfiles/assets/wallpaper.png"];}
         ];
         # keybinds
