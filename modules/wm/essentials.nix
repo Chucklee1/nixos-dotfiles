@@ -14,6 +14,7 @@
     # window manager utils
     wev
     brightnessctl
+    xclip
     wl-clipboard
     cliphist
     swww
