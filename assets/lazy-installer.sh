@@ -36,4 +36,7 @@ sudo nixos-generate-config --show-hardware-config --root /mnt > $HOME/nixos-dotf
 msg-sleep "generated to desktop module"
 msg-sleep "installing nixos"
 sudo nixos-install --flake $HOME/nixos-dotfiles/#${PROFILE}
-msg-sleep "completed!"
+msg-sleep "install complete, copying configuration into root..."
+sudo mkdir -p /mnt/home/goat/nixos-dotfiles
+sudo cp ./* $HOME/nixos-dotfiles
+msg-sleep "done -- script finished"
