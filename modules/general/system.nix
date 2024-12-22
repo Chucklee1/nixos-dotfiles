@@ -46,6 +46,9 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${system}";
     config.allowUnfree = true;
+    overlays = [
+      inputs.niri.overlays.niri
+    ];
   };
   nix.settings = {
     auto-optimise-store = true;
@@ -59,7 +62,6 @@
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "libvirtd"];
   };
-
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
@@ -76,17 +78,32 @@
   # -----------------------------------------------------------
   home-manager.sharedModules = [
     {
-      gtk = {
-        iconTheme.name = "Papirus-Dark";
-        iconTheme.package = pkgs.papirus-icon-theme;
-        gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-        gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+      home.sessionVariables = {
+        # wayland
+        XDG_SESSION_TYPE = "wayland";
+        CLUTTER_BACKEND = "wayland";
+        QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
+        # xwayland compat.
+        DISPLAY = ":0";
+        SDL_VIDEODRIVER = "x11";
+        QT_QPA_PLATFORM = "wayland;xcb";
+        GDK_BACKEND = "wayland,x11,*";
       };
-      qt = {
-        enable = true;
-        style.name = "adwaita-dark";
-        platformTheme.name = "gtk3";
+      program = {
+        waybar.enable = true;
+        fuzzel.enable = true;
+        wlogout.enable = true;
+        lazygit.enable = true;
+        git.enable = true;
+        oh-my-posh.enable = true;
+        bash.enable = true;
+        tmux.enable = true;
+        kitty.enable = true;
+        vscode.enable = true;
       };
+      gtk.enable = true;
+      qt.enable = true;
+      services.dunst.enable = true;
     }
   ];
 
@@ -96,30 +113,81 @@
   environment.systemPackages = with pkgs; [
     # tools
     gcc
-    asm-lsp
-    nixd
     alejandra
-    zenity
+    nixd
+    asm-lsp
     # cli
-    btop
-    ncdu
     killall
     ripgrep
     pciutils
+    zenity
+    btop
+    ncdu
     # web/net
     wget
     git
     curl
-    # misc
+    # wayland
+    wayland-utils
+    wayland-scanner
+    egl-wayland
+    qt5.qtwayland
+    qt6.qtwayland
+    # window manager utils
+    wev
+    brightnessctl
+    xclip
+    wl-clipboard
+    cliphist
+    swww
+    wlsunset
+    networkmanagerapplet
+    lxqt.lxqt-policykit
+    # reqs/libs
+    ffmpeg
+    v4l-utils
+    libnotify
+    libsecret
+    # media
+    mpv
+    imv
+    pavucontrol
+    # font
     file-roller
     p7zip
-    # misc
     firefox
+    (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
   ];
+
+  # -----------------------------------------------------------
+  # system programs
+  # -----------------------------------------------------------
+  stylix.enable = true;
+  programs = {
+    niri.enable = true;
+    hyprland.enable = true;
+    nixvim.enable = true;
+    xfconf.enable = true; # for thunar config
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+  };
 
   # -----------------------------------------------------------
   # infastrcuture
   # -----------------------------------------------------------
+
+  # polkit and xdg portal support
+  security.polkit.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    config.common.default = ["gtk"];
+  };
 
   # graphics
   hardware.graphics.enable = true; # renamed opengl to graphics as of 24.11
@@ -146,5 +214,9 @@
     libinput.enable = true;
     printing.enable = true;
     openssh.enable = true;
+    gnome-keyring.enable = true;
+    # for thunar
+    tumbler.enable = true;
+    gvfs.enable = true;
   };
 }

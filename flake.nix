@@ -7,6 +7,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
     niri.url = "github:sodiboo/niri-flake";
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
@@ -45,9 +47,12 @@
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
         niri.nixosModules.niri
+        nixvim.nixosModules.nixvim
         grub2-themes.nixosModules.default
       ]
-      ++ [./modules/default.nix];
+      ++ [
+        ./modules/default.nix
+      ];
   in {
     # -----------------------------------------------------------
     # desktop profile
@@ -60,12 +65,6 @@
         ++ [
           ./modules/hosts/desktop/hardware.nix
           ./modules/hosts/desktop/config.nix
-          {
-            games.enable = true;
-            niri.enable = true;
-            hyprland.enable = true;
-            virt.enable = true;
-          }
         ];
     };
     # -----------------------------------------------------------
@@ -79,12 +78,6 @@
         ++ [
           ./modules/hosts/laptop/hardware.nix
           ./modules/hosts/desktop/config.nix
-          {
-            games.enable = true;
-            niri.enable = true;
-            hyprland.enable = false;
-            virt.enable = true;
-          }
         ];
     };
     # -----------------------------------------------------------
@@ -100,10 +93,12 @@
     in
       pkgs.symlinkJoin {
         name = name;
-        paths = [script] ++  [
-          pkgs.parted 
-          pkgs.git 
-          pkgs.nixos-install-tools
+        paths =
+          [script]
+          ++ [
+            pkgs.parted
+            pkgs.git
+            pkgs.nixos-install-tools
           ];
         buildInputs = [pkgs.makeWrapper];
         postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin";

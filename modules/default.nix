@@ -1,14 +1,14 @@
 {...}: {
   imports = [
-    ./general/games.nix #
-    ./general/programs.nix
-    ./general/stylix.nix
+    ./general/games.nix
     ./general/system.nix # main config
     ./general/virt.nix
-
-    ./wm/essentials.nix
-    ./wm/niri.nix #
-    ./wm/hyprland.nix #
-    ./wm/waybar.nix #
+    ./configs/hyprland.nix
+    ./configs/kitty.nix
+    ./configs/niri.nix
+    ./configs/shelli.nix
+    ./configs/theme.nix
+    ./configs/vscode.nix
+    ./configs/waybar.nix
   ];
 }
