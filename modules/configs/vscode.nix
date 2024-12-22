@@ -9,6 +9,7 @@
         userSettings = {
           "update.mode" = "none";
           "update.enableWindowsBackgroundUpdates" = false;
+          "git.enableSmartCommit" = true;
           "editor.tabSize" = 2;
           "editor.detectIndentation" = false;
           "editor.minimap.enabled" = false;
