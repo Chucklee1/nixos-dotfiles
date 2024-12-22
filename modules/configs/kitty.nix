@@ -1,7 +1,0 @@
-{...}: {
-  home-manager.sharedModules = [
-    {
-      programs.
-    }
-  ];
-}
