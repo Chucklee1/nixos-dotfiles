@@ -99,9 +99,6 @@
     alejandra
     nixd
     asm-lsp
-    zlib
-    libxcrypt
-    desktop-file-utils
     # cli
     killall
     ripgrep
@@ -113,11 +110,9 @@
     wget
     git
     curl
-    # compresssion, archiving, & filed
+    # misc
     file-roller
     p7zip
-    tree
-    isoimagewriter
     # misc
     firefox
   ];
