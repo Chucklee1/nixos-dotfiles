@@ -10,6 +10,7 @@
           "update.mode" = "none";
           "update.enableWindowsBackgroundUpdates" = false;
           "git.enableSmartCommit" = true;
+          "git.confirmSync" = false;
           "editor.tabSize" = 2;
           "editor.detectIndentation" = false;
           "editor.minimap.enabled" = false;
