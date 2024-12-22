@@ -96,16 +96,16 @@
   environment.systemPackages = with pkgs; [
     # tools
     gcc
-    alejandra
-    nixd
     asm-lsp
+    nixd
+    alejandra
+    zenity
     # cli
+    btop
+    ncdu
     killall
     ripgrep
     pciutils
-    zenity
-    btop
-    ncdu
     # web/net
     wget
     git
@@ -120,9 +120,6 @@
   # -----------------------------------------------------------
   # infastrcuture
   # -----------------------------------------------------------
-
-  # support for non-nix executables
-  programs.nix-ld.enable = true;
 
   # graphics
   hardware.graphics.enable = true; # renamed opengl to graphics as of 24.11

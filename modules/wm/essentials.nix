@@ -38,6 +38,7 @@
     {
       home.sessionVariables = {
         # wayland
+        NIXOS_OZONE_WL = "1";
         XDG_SESSION_TYPE = "wayland";
         CLUTTER_BACKEND = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
