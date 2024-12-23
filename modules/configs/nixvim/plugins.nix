@@ -2,7 +2,10 @@
   home-manager.sharedModules = [
     {
       programs.nixvim = {
-        plugins.lazygit.enable = true;
+        plugins = {
+          lazygit.enable = true;
+          nvim-tree.enable = true;
+        };
       };
     }
   ];
