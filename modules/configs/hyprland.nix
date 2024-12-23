@@ -1,6 +1,5 @@
 {
   pkgs,
-  defaults,
   ...
 }: {
   home-manager.sharedModules = [

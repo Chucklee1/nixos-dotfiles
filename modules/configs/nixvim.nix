@@ -1,4 +1,4 @@
-{...}: {
+_: {
   home-manager.sharedModules = [
     {
       programs.nixvim = {
