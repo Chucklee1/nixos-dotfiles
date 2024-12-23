@@ -8,9 +8,9 @@ _: {
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
         # startup
         spawn-at-startup = [
-          {command = ["waybar"];}
-          {command = ["nm-applet"];}
-          {command = ["lxqt-policykit-agent"];}
+          {command = ["sh" "-c" "waybar"];}
+          {command = ["sh" "-c" "nm-applet"];}
+          {command = ["sh" "-c" "hyprsunset -t 5200"];}
           {command = ["sh" "-c" "swaybg -i $HOME/nixos-dotfiles/assets/wallpaper.png -m fill"];}
         ];
         # keybinds
@@ -19,7 +19,7 @@ _: {
           action = command: {action.spawn = ["sh" "-c" ''niri msg action ${command}''];};
         in {
           # programs
-          "Mod+Return" = spawn "kitty -e tmux";
+          "Mod+Return" = spawn "kitty";
           "Mod+E" = spawn "thunar";
           "Mod+Space" = spawn "fuzzel";
           "Super+Shift+L" = spawn "swaylock";
@@ -83,7 +83,7 @@ _: {
         };
         # layout
         layout = {
-          gaps = 0;
+          gaps = 2;
           border.width = 2;
           always-center-single-column = false;
         };

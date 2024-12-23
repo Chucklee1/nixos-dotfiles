@@ -31,7 +31,6 @@
           exec-once = [
             "waybar"
             "nm-applet"
-            "hyprpolkitagent"
             "hyprsunset -t 5200"
             "swaybg -i $HOME/nixos-dotfiles/assets/wallpaper.png -m fill"
           ];
