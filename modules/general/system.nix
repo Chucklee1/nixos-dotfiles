@@ -101,8 +101,9 @@
         kitty.enable = true;
         bash.enable = true;
         oh-my-posh.enable = true;
-        # soyjack editor
+        # editor
         vscode.enable = true;
+        nixvim.enable = true;
       };
       # theming
       gtk.enable = true;

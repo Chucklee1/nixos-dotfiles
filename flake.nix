@@ -42,17 +42,18 @@
       };
     };
     specialArgs = {inherit inputs system defaults;};
-    shared-modules = with inputs;
-      [
-        home-manager.nixosModules.home-manager
-        stylix.nixosModules.stylix
-        niri.nixosModules.niri
-        nixvim.nixosModules.nixvim
-        grub2-themes.nixosModules.default
-      ]
-      ++ [
-        ./modules/default.nix
-      ];
+    shared-modules = [
+      ./modules/default.nix
+      inputs.home-manager.nixosModules.home-manager
+      inputs.stylix.nixosModules.stylix
+      inputs.niri.nixosModules.niri
+      inputs.grub2-themes.nixosModules.default
+      {
+        home-manager.sharedModules = [
+          inputs.nixvim.homeManagerModules.nixvim
+        ];
+      }
+    ];
   in {
     # -----------------------------------------------------------
     # desktop profile
