@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{...}: {
   home-manager.sharedModules = [
     {
       programs.nixvim = {
@@ -6,8 +6,9 @@
         # options
         globalOpts = {
           number = true;
-          tabstop = 4;
-          shiftwidth = 4;
+          signcolumn = "yes";
+          tabstop = 2;
+          shiftwidth = 2;
           softtabstop = 0;
           expandtab = true;
           smarttab = true;
@@ -19,15 +20,6 @@
             };
             register = "unnamedplus";
           };
-          # lua configs
-          extraConfigLuaPre = ''
-            if vim.g.have_nerd_font then
-              require('nvim-web-devicons').setup {}
-            end
-          '';
-          extraConfigLua = ''
-            require("telescope").load_extension("lazygit")
-          '';
         };
         # keybinds
         globals.mapleader = " ";
