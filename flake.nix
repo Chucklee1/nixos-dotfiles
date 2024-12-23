@@ -20,6 +20,8 @@
       wallpaper = ./assets/wallpaper.png;
     };
     specialArgs = {inherit inputs system defaults;};
+
+    # reads directory for .nix files
     import_modules = dir: let
       files = builtins.readDir dir;
     in
@@ -29,51 +31,36 @@
         else null)
       files;
 
-    # Import all modules in the "./modules" directory
-    imported_modules = import_modules "./modules";
-    modules =
-      imported_modules
-      ++ [
-        inputs.home-manager.nixosModules.home-manager
-        inputs.stylix.nixosModules.stylix
-        inputs.niri.nixosModules.niri
-        inputs.grub2-themes.nixosModules.default
-        {
-          home-manager.sharedModules = [
-            inputs.nixvim.homeManagerModules.nixvim
-          ];
-        }
-      ];
+    # module declaration
+    imported_modules = import_modules "./modules/shared";
+    desktop_modules = import_modules "./modules/hosts/desktop";
+    laptop_modules = import_modules "./modules/hosts/laptop";
+    flake_inputs = [
+      inputs.home-manager.nixosModules.home-manager
+      inputs.stylix.nixosModules.stylix
+      inputs.niri.nixosModules.niri
+      inputs.grub2-themes.nixosModules.default
+      {
+        home-manager.sharedModules = [
+          inputs.nixvim.homeManagerModules.nixvim
+        ];
+      }
+    ];
+    modules = flake_inputs ++ imported_modules;
   in {
-    # -----------------------------------------------------------
     # desktop profile
-    # -----------------------------------------------------------
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = system;
       specialArgs = specialArgs;
-      modules =
-        shared-modules
-        ++ [
-          ./hosts/desktop/hardware.nix
-          ./hosts/desktop/config.nix
-        ];
+      modules = modules ++ desktop_modules;
     };
-    # -----------------------------------------------------------
     # laptop profile
-    # -----------------------------------------------------------
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = system;
       specialArgs = specialArgs;
-      modules =
-        shared-modules
-        ++ [
-          ./hosts/laptop/hardware.nix
-          ./hosts/laptop/config.nix
-        ];
+      modules = modules ++ laptop_modules;
     };
-    # -----------------------------------------------------------
-    # lazy-insaller script
-    # -----------------------------------------------------------
+    # lazy install script
     packages.x86_64-linux.lazy-installer = let
       name = "lazy-installer";
       script = pkgs.writeShellScriptBin name ''
