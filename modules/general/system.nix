@@ -89,23 +89,9 @@
       };
       programs = {
         # wm
-        waybar.enable = true;
         fuzzel.enable = true;
         wlogout.enable = true;
-        # shelli
-        git.enable = true;
-        lazygit.enable = true;
-        tmux.enable = true;
-        kitty.enable = true;
-        bash.enable = true;
-        oh-my-posh.enable = true;
-        # editor
-        vscode.enable = true;
-        nixvim.enable = true;
       };
-      # theming
-      gtk.enable = true;
-      qt.enable = true;
       # most wm services
       services = {
         dunst.enable = true;
@@ -120,17 +106,17 @@
   environment.systemPackages = with pkgs; [
     # tools/deps
     gcc
-    zenity
+    #zenity
     vulkan-tools
     ffmpeg
     v4l-utils
     libnotify
     libsecret
-    wineWowPackages.stagingFull
-    samba # wine security features
-    winetricks
-    protonup-qt
-    protontricks
+    #wineWowPackages.stagingFull
+    #samba # wine security features
+    #winetricks
+    #protonup-qt
+    #protontricks
     # language QOL
     alejandra
     nixd
@@ -150,11 +136,11 @@
     qt5.qtwayland
     qt6.qtwayland
     # hyprland
-    hyprland-protocols
-    hyprshot
-    hypridle
-    hyprlock
-    hyprsunset
+    #hyprland-protocols
+    #hyprshot
+    #hypridle
+    #hyprlock
+    #hyprsunset
     # window manager utils
     wev
     brightnessctl
@@ -172,8 +158,8 @@
     # apps/games
     firefox
     openmw
-    osu-lazer-bin
-    prismlauncher
+    #osu-lazer-bin
+    #prismlauncher
     # misc
     nerd-fonts.symbols-only
     file-roller
@@ -185,16 +171,6 @@
   # -----------------------------------------------------------
   stylix.enable = true;
   programs = {
-    # wm
-    niri.enable = true;
-    hyprland.enable = true;
-    # games
-    gamemode.enable = true;
-    steam.enable = true;
-    # virt related
-    virt-manager.enable = true;
-    dconf.enable = true;
-    # file management
     xfconf.enable = true; # for thunar config
     thunar = {
       enable = true;
@@ -209,34 +185,34 @@
   # infastrcuture
   # -----------------------------------------------------------
 
-  # polkit and xdg portal support
-  security.polkit.enable = true;
+  # security and portals
+  security = {
+    polkit.enable = true;
+    rtkit.enable = true; # for sound 
+  };
   xdg.portal = {
     enable = true;
     extraPortals = [pkgs.xdg-desktop-portal-gtk];
     config.common.default = ["gtk"];
   };
 
-  # graphics
-  hardware.graphics.enable = true; # renamed opengl to graphics as of 24.11
-  hardware.graphics.enable32Bit = true;
-
-  # bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  services.blueman.enable = true;
-
-  # sound
-  security.rtkit.enable = true; # for sound
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+  # hardware
+  hardware = {
+    graphics.enable = true; # renamed opengl to graphics as of 24.11
+    graphics.enable32Bit = true;
+    bluetooth.enable = true;
+    bluetooth.powerOnBoot = true;
   };
 
-  # the rest
+  # services
   services = {
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    blueman.enable = true;
     fstrim.enable = true;
     displayManager.ly.enable = true;
     libinput.enable = true;

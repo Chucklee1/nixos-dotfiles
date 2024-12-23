@@ -1,4 +1,8 @@
 {pkgs, ...}: {
+  programs = {
+    virt-manager.enable = true;
+    dconf.enable = true;
+  };
   virtualisation = {
     spiceUSBRedirection.enable = true;
     libvirtd = {

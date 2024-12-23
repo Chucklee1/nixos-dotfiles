@@ -2,6 +2,7 @@
   home-manager.sharedModules = [
     {
       programs.waybar = {
+        enable = true;
         settings = [
           {
             layer = "top";

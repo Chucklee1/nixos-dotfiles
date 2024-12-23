@@ -1,4 +1,5 @@
 _: {
+  programs.niri.enable = true;
   home-manager.sharedModules = [
     {
       programs.niri.settings = {
@@ -8,10 +9,10 @@ _: {
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
         # startup
         spawn-at-startup = [
-          {command = ["sh" "-c" "waybar"];}
-          {command = ["sh" "-c" "nm-applet"];}
-          {command = ["sh" "-c" "hyprsunset -t 5200"];}
-          {command = ["sh" "-c" "swaybg -i $HOME/nixos-dotfiles/assets/wallpaper.png -m fill"];}
+          {command = ["waybar"];}
+          {command = ["nm-applet"];}
+          {command = ["wlsunset -T 5200"];}
+          {command = ["swaybg" "-i" "/home/goat/nixos-dotfiles/assets/wallpaper.png" "-m" "fill"];}
         ];
         # keybinds
         binds = let

@@ -2,6 +2,7 @@
   pkgs,
   ...
 }: {
+  programs.hyprland.enable = true;
   home-manager.sharedModules = [
     {
       wayland.windowManager.hyprland = {

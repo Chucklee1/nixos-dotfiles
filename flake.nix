@@ -77,7 +77,7 @@
         shared-modules
         ++ [
           ./modules/hosts/laptop/hardware.nix
-          ./modules/hosts/desktop/config.nix
+          ./modules/hosts/laptop/config.nix
         ];
     };
     # -----------------------------------------------------------
@@ -89,7 +89,8 @@
         git clone https://github.com/Chucklee1/nixos-dotfiles 
         sleep 1
         cd nixos-dotfiles
-        ./assets/lazy-installer.sh "$@"'';
+        ./assets/lazy-installer.sh "$@"
+      '';
     in
       pkgs.symlinkJoin {
         name = name;

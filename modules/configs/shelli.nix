@@ -5,11 +5,13 @@ _: {
         # git
         git = {
           enable = true;
+          enable = true;
           userEmail = "cooperkang4@gmail.com";
           userName = "Chucklee1 - remote";
         };
         # terminal emulator
         kitty = {
+          enable = true;
           settings = {
             scrollback_lines = 2000;
             wheel_scroll_min_lines = 1;
@@ -25,6 +27,7 @@ _: {
         };
         # shell
         bash = {
+          enable = true;
           shellAliases = {
             v = "nvim ./nixos-dotfiles";
             vi = "nvim ./nixos-dotfiles";
