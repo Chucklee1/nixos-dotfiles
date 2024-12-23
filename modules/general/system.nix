@@ -111,13 +111,6 @@
       # most wm services
       services = {
         dunst.enable = true;
-        wlsunset = {
-          enable = true;
-          sunrise = "00:00";
-          sunset = "00:00";
-          temperature.day = 5200;
-          temperature.night = 5200;
-        };
         gnome-keyring.enable = true;
       };
     }
@@ -155,18 +148,22 @@
     git
     curl
     # wayland
-    wayland-utils
-    wayland-scanner
     egl-wayland
     qt5.qtwayland
     qt6.qtwayland
+    # hyprland
+    hyprland-protocols
+    hyprshot
+    hypridle
+    hyprlock
+    hyprsunset
     # window manager utils
     wev
     brightnessctl
     xclip
     wl-clipboard
     cliphist
-    swww
+    swaybg
     wlsunset
     networkmanagerapplet
     lxqt.lxqt-policykit
@@ -208,8 +205,6 @@
         thunar-volman
       ];
     };
-    # editor
-    #nixvim.enable = true;
   };
 
   # -----------------------------------------------------------

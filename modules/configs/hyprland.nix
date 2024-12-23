@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  defaults,
+  ...
+}: {
   home-manager.sharedModules = [
     {
       wayland.windowManager.hyprland = {
@@ -28,10 +32,11 @@
           exec-once = [
             "waybar"
             "nm-applet"
-            "lxqt-policykit-agent"
-            "swww-daemon && swww img $HOME/nixos-dotfiles/assets/wallpaper.png"
+            "hyprpolkitagent"
+            "hyprsunset -t 5200"
+            "swaybg -i ${defaults.wallpaper} -m fill"
           ];
-          # theming & layout
+          # theming & layoutr
           general = {
             layout = "scroller";
             gaps_in = 2;
@@ -73,10 +78,23 @@
             "$mod shift, l, exec, swaylock"
             # hyprland
             "$mod, v, togglefloating"
-            "$mod, m, scroller:fitsize, active"
             "$mod shift, m, fullscreen"
-            "$mod shift, space, scroller:toggleoverview"
             ", ctrl+alt+del, exit"
+            # scroller - overview windows
+            "$mod shift, space, scroller:toggleoverview"
+            # scroller - align windows
+            "$mod, h, scroller:alignwindow, l"
+            "$mod, l, scroller:alignwindow, r"
+            # scroller - set columns
+            "$mod shift, j, scroller:admitwindow"
+            "$mod shift, k, scroller:expelwindow"
+            # scroller - semi fullscreen
+            "$mod, m, scroller:fitsize, active"
+            # scroller - set window size
+            "$mod, equal, scroller:cyclewidth, next"
+            "$mod, minus, scroller:cyclewidth, prev"
+            "$mod SHIFT, equal, scroller:cycleheight, next"
+            "$mod SHIFT, minus, scroller:cycleheight, prev"
             # windows
             "$mod, Q, killactive"
             "$mod, left, movefocus, l"
