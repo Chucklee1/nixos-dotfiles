@@ -46,9 +46,7 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${system}";
     config.allowUnfree = true;
-    overlays = [
-      inputs.niri.overlays.niri
-    ];
+    overlays = [inputs.niri.overlays.niri];
   };
   nix.settings = {
     auto-optimise-store = true;
