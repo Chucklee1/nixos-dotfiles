@@ -31,8 +31,8 @@
             vim = "nvim ./nixos-dotfiles";
             sv = "sudo nvim";
             cg = "sudo nix-collect-garbage";
-            update-laptop = "sudo nixos-rebuild switch --show-trace --flake ./nixos-dotfiles#laptop";
-            update-desktop = "sudo nixos-rebuild switch --show-trace --flake ./nixos-dotfiles#desktop";
+            update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
+            update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
           };
         };
         oh-my-posh = {
