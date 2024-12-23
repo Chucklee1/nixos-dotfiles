@@ -14,12 +14,10 @@
 
   outputs = {nixpkgs, ...} @ inputs: let
     system = "x86_64-linux";
-    pkgs = import nixpkgs {inherit system;};
     defaults = {
       username = "goat";
       wallpaper = ./assets/wallpaper.png;
     };
-    specialArgs = {inherit inputs system defaults;};
 
     # reads directory for .nix files
     import_modules = dir: let
@@ -31,37 +29,32 @@
         else null)
       files;
 
-    # module declaration
-    imported_modules = import_modules "./modules/shared";
-    desktop_modules = import_modules "./modules/hosts/desktop";
-    laptop_modules = import_modules "./modules/hosts/laptop";
-    flake_inputs = [
-      inputs.home-manager.nixosModules.home-manager
-      inputs.stylix.nixosModules.stylix
-      inputs.niri.nixosModules.niri
-      inputs.grub2-themes.nixosModules.default
-      {
-        home-manager.sharedModules = [
-          inputs.nixvim.homeManagerModules.nixvim
-        ];
-      }
-    ];
-    modules = flake_inputs ++ imported_modules;
+    # system declaration
+    systemConfig = host: (nixpkgs.lib.nixosSystem {
+      system = system;
+      specialArgs = {inherit inputs system defaults;};
+      modules = [
+        (import_modules "./modules/shared")
+        (import_modules "./modules/hosts/${host}")
+        inputs.home-manager.nixosModules.home-manager
+        inputs.stylix.nixosModules.stylix
+        inputs.niri.nixosModules.niri
+        inputs.grub2-themes.nixosModules.default
+        {
+          home-manager.sharedModules = [
+            inputs.nixvim.homeManagerModules.nixvim
+          ];
+        }
+      ];
+    });
   in {
-    # desktop profile
-    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-      system = system;
-      specialArgs = specialArgs;
-      modules = modules ++ desktop_modules;
-    };
-    # laptop profile
-    nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
-      system = system;
-      specialArgs = specialArgs;
-      modules = modules ++ laptop_modules;
-    };
+    # systems
+    nixosConfigurations.desktop = systemConfig "desktop";
+    nixosConfigurations.laptop = systemConfig "laptop";
+
     # lazy install script
     packages.x86_64-linux.lazy-installer = let
+      pkgs = import nixpkgs {inherit system;};
       name = "lazy-installer";
       script = pkgs.writeShellScriptBin name ''
         git clone https://github.com/Chucklee1/nixos-dotfiles
