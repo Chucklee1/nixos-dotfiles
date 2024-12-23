@@ -158,7 +158,7 @@
     # window manager utils
     wev
     brightnessctl
-    xclip
+    xsel
     wl-clipboard
     cliphist
     swaybg

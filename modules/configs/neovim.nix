@@ -7,7 +7,7 @@
         globalOpts = {
           # Line numbers
           number = true;
-          relativenumber = true;
+          relativenumber = false;
 
           # Always show the signcolumn, otherwise text would be shifted when displaying error icons
           signcolumn = "yes";
@@ -28,8 +28,8 @@
           listchars.__raw = "{ tab = '» ', trail = '·', nbsp = '␣' }";
 
           # Tab defaults (might get overwritten by an LSP server)
-          tabstop = 4;
-          shiftwidth = 4;
+          tabstop = 2;
+          shiftwidth = 2;
           softtabstop = 0;
           expandtab = true;
           smarttab = true;
