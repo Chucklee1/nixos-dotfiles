@@ -14,6 +14,8 @@
 
   outputs = {nixpkgs, ...} @ inputs: let
     system = "x86_64-linux";
+    lib = nixpkgs.lib;
+    pkgs = import nixpkgs {inherit system;};
     defaults = {
       username = "goat";
       wallpaper = ./assets/wallpaper.png;
@@ -23,10 +25,14 @@
     import_modules = dir: let
       files = builtins.readDir dir;
     in
-      builtins.mapAttrs' (name: path:
-        if builtins.hasSuffix ".nix" name
-        then builtins.import path
-        else null)
+      builtins.mapAttrs (
+        name: path: let
+          absolutePath = builtins.toPath (dir + "/" + name); # Ensure the path is absolute
+        in
+          if lib.hasSuffix ".nix" name
+          then builtins.import absolutePath
+          else null
+      )
       files;
 
     # system declaration
@@ -34,8 +40,8 @@
       system = system;
       specialArgs = {inherit inputs system defaults;};
       modules = [
-        (import_modules "./modules/shared")
-        (import_modules "./modules/hosts/${host}")
+        (import_modules "/home/${defaults.username}/nixos-dotfiles/modules/shared")
+        (import_modules "/home/${defaults.username}/nixos-dotfiles/modules/hosts/${host}")
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
@@ -54,7 +60,6 @@
 
     # lazy install script
     packages.x86_64-linux.lazy-installer = let
-      pkgs = import nixpkgs {inherit system;};
       name = "lazy-installer";
       script = pkgs.writeShellScriptBin name ''
         git clone https://github.com/Chucklee1/nixos-dotfiles
