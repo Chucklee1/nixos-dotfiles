@@ -2,7 +2,8 @@
   home-manager.sharedModules = [
     {
       programs.nixvim = {
-        keymaps = [
+        globals.mapleader = " ";
+	keymaps = [
   {
     key = "<leader>e";
     action = "<cmd>NvimTreeToggle<CR>";
