@@ -15,22 +15,22 @@
     cursor.name = "Bibata-Modern-Classic";
     cursor.size = 24;
     base16Scheme = {
-      base00 = defaults.colors.base00;
-      base01 = defaults.colors.base01;
-      base02 = defaults.colors.base02;
-      base03 = defaults.colors.base03;
-      base04 = defaults.colors.base04;
-      base05 = defaults.colors.base05;
-      base06 = defaults.colors.base06;
-      base07 = defaults.colors.base07;
-      base08 = defaults.colors.base08;
-      base09 = defaults.colors.base09;
-      base0A = defaults.colors.base0A;
-      base0B = defaults.colors.base0B;
-      base0C = defaults.colors.base0C;
-      base0D = defaults.colors.base0D;
-      base0E = defaults.colors.base0E;
-      base0F = defaults.colors.base0F;
+      base00 = "#151515";
+      base01 = "#202020";
+      base02 = "#303030";
+      base03 = "#505050";
+      base04 = "#B0B0B0";
+      base05 = "#D0D0D0";
+      base06 = "#E0E0E0";
+      base07 = "#F5F5F5";
+      base08 = "#AC4142";
+      base09 = "#D28445";
+      base0A = "#F4BF75";
+      base0B = "#90A959";
+      base0C = "#75B5AA";
+      base0D = "#6A9FB5";
+      base0E = "#AA759F";
+      base0F = "#8F5536";
     };
   };
 

@@ -1,4 +1,4 @@
-{defaults, ...}: {
+_: {
   home-manager.sharedModules = [
     {
       programs.waybar = {
@@ -118,8 +118,8 @@
           }
         ];
         style = ''
-          @define-color background ${defaults.colors.base02};
-          @define-color text ${defaults.colors.base06};
+          @define-color background #303030;
+          @define-color text #E0E0E0;
 
           * {
             font-family: "Nerd Fonts Symbols Only", "Ariel", sans-serif;

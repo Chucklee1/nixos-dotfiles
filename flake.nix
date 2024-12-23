@@ -12,47 +12,38 @@
     grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
-  outputs = {
-    nixpkgs,
-    ...
-  } @ inputs: let
+  outputs = {nixpkgs, ...} @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
     defaults = {
       username = "goat";
       wallpaper = ./assets/wallpaper.png;
-      colors = {
-        base00 = "#151515";
-        base01 = "#202020";
-        base02 = "#303030";
-        base03 = "#505050";
-        base04 = "#B0B0B0";
-        base05 = "#D0D0D0";
-        base06 = "#E0E0E0";
-        base07 = "#F5F5F5";
-        base08 = "#AC4142";
-        base09 = "#D28445";
-        base0A = "#F4BF75";
-        base0B = "#90A959";
-        base0C = "#75B5AA";
-        base0D = "#6A9FB5";
-        base0E = "#AA759F";
-        base0F = "#8F5536";
-      };
     };
     specialArgs = {inherit inputs system defaults;};
-    shared-modules = [
-      ./modules/default.nix
-      inputs.home-manager.nixosModules.home-manager
-      inputs.stylix.nixosModules.stylix
-      inputs.niri.nixosModules.niri
-      inputs.grub2-themes.nixosModules.default
-      {
-        home-manager.sharedModules = [
-          inputs.nixvim.homeManagerModules.nixvim
-        ];
-      }
-    ];
+    import_modules = dir: let
+      files = builtins.readDir dir;
+    in
+      builtins.mapAttrs' (name: path:
+        if builtins.hasSuffix ".nix" name
+        then builtins.import path
+        else null)
+      files;
+
+    # Import all modules in the "./modules" directory
+    imported_modules = import_modules "./modules";
+    modules =
+      imported_modules
+      ++ [
+        inputs.home-manager.nixosModules.home-manager
+        inputs.stylix.nixosModules.stylix
+        inputs.niri.nixosModules.niri
+        inputs.grub2-themes.nixosModules.default
+        {
+          home-manager.sharedModules = [
+            inputs.nixvim.homeManagerModules.nixvim
+          ];
+        }
+      ];
   in {
     # -----------------------------------------------------------
     # desktop profile
@@ -63,8 +54,8 @@
       modules =
         shared-modules
         ++ [
-          ./modules/hosts/desktop/hardware.nix
-          ./modules/hosts/desktop/config.nix
+          ./hosts/desktop/hardware.nix
+          ./hosts/desktop/config.nix
         ];
     };
     # -----------------------------------------------------------
@@ -76,8 +67,8 @@
       modules =
         shared-modules
         ++ [
-          ./modules/hosts/laptop/hardware.nix
-          ./modules/hosts/laptop/config.nix
+          ./hosts/laptop/hardware.nix
+          ./hosts/laptop/config.nix
         ];
     };
     # -----------------------------------------------------------
@@ -86,7 +77,7 @@
     packages.x86_64-linux.lazy-installer = let
       name = "lazy-installer";
       script = pkgs.writeShellScriptBin name ''
-        git clone https://github.com/Chucklee1/nixos-dotfiles 
+        git clone https://github.com/Chucklee1/nixos-dotfiles
         sleep 1
         cd nixos-dotfiles
         ./assets/lazy-installer.sh "$@"
