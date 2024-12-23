@@ -180,7 +180,7 @@
     osu-lazer-bin
     prismlauncher
     # misc
-    (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+    nerd-fonts.symbols-only
     file-roller
     p7zip
   ];
