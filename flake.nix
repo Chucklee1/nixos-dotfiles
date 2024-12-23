@@ -14,41 +14,27 @@
 
   outputs = {nixpkgs, ...} @ inputs: let
     system = "x86_64-linux";
-    lib = nixpkgs.lib;
+    lib = import nixpkgs.lib;
     pkgs = import nixpkgs {inherit system;};
     defaults = {
       username = "goat";
       wallpaper = ./assets/wallpaper.png;
     };
 
-    # reads directory for .nix files
-    import_modules = dir: let
-      files = builtins.readDir dir;
-    in
-      builtins.mapAttrs (
-        name: path: let
-          absolutePath = builtins.toPath (dir + "/" + name); # Ensure the path is absolute
-        in
-          if lib.hasSuffix ".nix" name
-          then builtins.import absolutePath
-          else null
-      )
-      files;
-
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
-      system = system;
+      system = {inherit system;};
       specialArgs = {inherit inputs system defaults;};
       modules = [
-        (import_modules "/home/${defaults.username}/nixos-dotfiles/modules/shared")
-        (import_modules "/home/${defaults.username}/nixos-dotfiles/modules/hosts/${host}")
-        inputs.home-manager.nixosModules.home-manager
+        ./modules/shared
+        ./modules/hosts/${host}
+        inputs.home-manager.nixosModules.home-manager 
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
-        inputs.grub2-themes.nixosModules.default
-        {
+        inputs.grub2-theme.nixosModules.default
+        { 
           home-manager.sharedModules = [
-            inputs.nixvim.homeManagerModules.nixvim
+            inputs.home-manager.nixosModules.nixvim
           ];
         }
       ];
@@ -69,7 +55,7 @@
       '';
     in
       pkgs.symlinkJoin {
-        name = name;
+        name = {inherit name;};
         paths =
           [script]
           ++ [
