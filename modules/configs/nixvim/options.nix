@@ -1,13 +1,11 @@
-{...}: {
+{self, ...}: {
   home-manager.sharedModules = [
     {
       programs.nixvim = {
-        vimAlias = true;
-        viAlias = true;
         globalOpts = {
           # Line numbers
           number = true;
-          relativenumber = false;
+          relativenumber = true;
 
           # Always show the signcolumn, otherwise text would be shifted when displaying error icons
           signcolumn = "yes";
@@ -28,8 +26,8 @@
           listchars.__raw = "{ tab = '» ', trail = '·', nbsp = '␣' }";
 
           # Tab defaults (might get overwritten by an LSP server)
-          tabstop = 2;
-          shiftwidth = 2;
+          tabstop = 4;
+          shiftwidth = 4;
           softtabstop = 0;
           expandtab = true;
           smarttab = true;
