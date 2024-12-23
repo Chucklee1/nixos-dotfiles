@@ -5,6 +5,7 @@
         globals.mapleader = " ";
 	keymaps = [
   {
+    mode = ["n"];
     key = "<leader>e";
     action = "<cmd>NvimTreeToggle<CR>";
     options = {

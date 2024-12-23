@@ -4,7 +4,8 @@
       programs.nixvim = {
         plugins = {
           lazygit.enable = true;
-          nvim-tree.enable = true;
+          web-devicons.enable = true;
+	  nvim-tree.enable = true;
         };
       };
     }
