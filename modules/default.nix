@@ -4,7 +4,7 @@
     ./general/virt.nix
 
     ./configs/hyprland.nix
-    ./configs/nixvim.nix
+    ./configs/neovim.nix
     ./configs/niri.nix
     ./configs/shelli.nix
     ./configs/steam.nix
