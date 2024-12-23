@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{...}: {
   home-manager.sharedModules = [
     {
       programs.niri.settings = {
@@ -11,7 +11,7 @@
           {command = ["waybar"];}
           {command = ["nm-applet"];}
           {command = ["lxqt-policykit-agent"];}
-          {command = ["swww-daemon && swww img $HOME/nixos-dotfiles/assets/wallpaper.png"];}
+          {command = ["sh" "-c" "swaybg -i $HOME/nixos-dotfiles/assets/wallpaper.png -m fill"];}
         ];
         # keybinds
         binds = let

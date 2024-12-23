@@ -34,7 +34,7 @@
             "nm-applet"
             "hyprpolkitagent"
             "hyprsunset -t 5200"
-            "swaybg -i ${defaults.wallpaper} -m fill"
+            "swaybg -i $HOME/nixos-dotfiles/assets/wallpaper.png -m fill"
           ];
           # theming & layoutr
           general = {
