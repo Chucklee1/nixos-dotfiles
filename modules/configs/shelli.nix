@@ -5,7 +5,6 @@ _: {
         # git
         git = {
           enable = true;
-          enable = true;
           userEmail = "cooperkang4@gmail.com";
           userName = "Chucklee1 - remote";
         };
