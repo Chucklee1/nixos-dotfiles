@@ -2,7 +2,7 @@
   pkgs,
   lib,
   inputs,
-  defaults,
+  username,
   system,
   ...
 }: {
@@ -28,7 +28,7 @@
   # -----------------------------------------------------------
 
   networking = {
-    hostName = "${defaults.username}";
+    hostName = "${username}";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
   };
@@ -56,7 +56,7 @@
   # -----------------------------------------------------------
   # system user declaration
   # -----------------------------------------------------------
-  users.users.${defaults.username} = {
+  users.users.${username} = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "libvirtd"];
   };
@@ -64,10 +64,10 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit inputs;};
-    users.${defaults.username}.home = {
+    users.${username}.home = {
       stateVersion = "24.05"; # DO NOT CHANGE
-      username = "${defaults.username}";
-      homeDirectory = "/home/${defaults.username}";
+      username = "${username}";
+      homeDirectory = "/home/${username}";
     };
   };
 
@@ -188,7 +188,7 @@
   # security and portals
   security = {
     polkit.enable = true;
-    rtkit.enable = true; # for sound 
+    rtkit.enable = true; # for sound
   };
   xdg.portal = {
     enable = true;

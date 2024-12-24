@@ -16,25 +16,23 @@
     system = "x86_64-linux";
     lib = import nixpkgs.lib;
     pkgs = import nixpkgs {inherit system;};
-    defaults = {
-      username = "goat";
-      wallpaper = ./assets/wallpaper.png;
-    };
+    username = "goat";
+    wallpaper = ./assets/wallpaper.png;
 
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       system = {inherit system;};
-      specialArgs = {inherit inputs system defaults;};
+      specialArgs = {inherit inputs system username wallpaper;};
       modules = [
         ./modules/shared
         ./modules/hosts/${host}
-        inputs.home-manager.nixosModules.home-manager 
+        inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
-        inputs.grub2-theme.nixosModules.default
-        { 
+        inputs.grub2-themes.nixosModules.default
+        {
           home-manager.sharedModules = [
-            inputs.home-manager.nixosModules.nixvim
+            inputs.nixvim.homeManagerModules.nixvim
           ];
         }
       ];
