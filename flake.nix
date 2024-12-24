@@ -39,7 +39,6 @@
         inputs.niri.nixosModules.niri
         inputs.grub2-themes.nixosModules.default
         {
-          overlays = [inputs.niri.overlays.niri];
           home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
         }
       ];
