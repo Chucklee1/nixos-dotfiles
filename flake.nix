@@ -30,17 +30,9 @@
       system = def.system;
       specialArgs = {inherit inputs def;};
       modules = [
-        ./modules/default.nix
-        ./host/${host}/config.nix
-        inputs.home-manager.nixosModules.home-manager
-        inputs.niri.nixosModules.niri
-        inputs.stylix.homeManagerModules.stylix
-        inputs.grub2-theme.homeManagerModules.default
-        {
-          home-manager.sharedModules = [
-            inputs.nixvim.homeManagerModules.nivim
-          ];
-        }
+        (import ./default.nix).config.shared
+        (import ./default.nix).config.${host}
+        ./hosts/${host}-hardware.nix
       ];
     });
   in {
