@@ -23,31 +23,45 @@
     def = {
       username = "goat";
       system = "x86_64-linux";
-      wallpaper = waveout;
+      wallpaper = wallpapers.waveout;
       layout = "us";
     };
-
-    # system declaration
-    systemConfig = host: (nixpkgs.lib.nixosSystem {
-      system = def.system;
-      specialArgs = {inherit inputs def;};
-      modules = [
-        ./modules/default.nix
-        shared.modules
-        ${host}.modules
-        inputs.home-manager.nixosModules.home-manager
-        {
-          home-manager = [universal.home-modules];
-          home-manager.sharedModules = [
-            shared.home-modules
-            ${host}.home-modules
-          ];
-        }
-      ];
-    });
   in {
     # systems
-    nixosConfigurations.desktop = systemConfig "desktop";
-    nixosConfigurations.laptop = systemConfig "laptop";
+    desktop = nixpkgs.lib.nixosSystem {
+      system = def.system;
+      specialArgs = {inherit inputs def;};
+      modules =
+        shared.modules
+        ++ desktop.modules [
+          ./modules/default.nix
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = [
+              universal.home-modules
+              sharedModules.shared.home-modules
+              sharedModules.desktop.home-modules
+            ];
+          }
+        ];
+    };
+    laptop = nixpkgs.lib.nixosSystem {
+      system = def.system;
+      specialArgs = {inherit inputs def;};
+      modules =
+        shared.modules
+        ++ laptop.modules [
+          ./modules/default.nix
+
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = [
+              universal.home-modules
+              sharedModules.shared.home-modules
+              sharedModules.laptop.home-modules
+            ];
+          }
+        ];
+    };
   };
 }
