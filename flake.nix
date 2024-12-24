@@ -24,8 +24,8 @@
       system = {inherit system;};
       specialArgs = {inherit inputs system username wallpaper;};
       modules = [
-        ./modules/shared
-        ./modules/hosts/${host}
+        ./modules/shared/default.nix
+        ./modules/hosts/${host}/default.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
