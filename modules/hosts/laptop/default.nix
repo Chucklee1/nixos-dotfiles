@@ -7,9 +7,7 @@
   # boot
   boot = {
     initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
-    initrd.kernelModules = [];
     kernelModules = ["kvm-amd"];
-    extraModulePackages = [];
   };
 
   # system options

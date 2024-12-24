@@ -11,11 +11,8 @@
   # -----------------------------------------------------------
   boot = {
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-    initrd.kernelModules = [];
     kernelModules = ["kvm-amd"];
-    extraModulePackages = [];
     supportedFilesystems = ["ntfs"];
-    loader.grub.useOSProber = false;
   };
 
   system.stateVersion = "24.05"; # DO NOT CHANGE
@@ -117,7 +114,7 @@
           monitor = ", 1920x1080@165, auto, auto";
           xwayland.force_zero_scaling = true;
           input = {
-            kb_layout = "${layout\}";
+            kb_layout = "${def.layout}";
             follow_mouse = 0;
             sensitivity = 0;
           };
@@ -131,7 +128,7 @@
             animate_mouse_windowdragging = false;
           };
           # window rules windowrule = <rule>,<info>
-          windowrulev2 = [];
+          # windowrulev2 = [];
           # startup
           exec-once = [
             "waybar"

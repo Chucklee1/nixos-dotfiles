@@ -16,13 +16,13 @@ _: {
             wheel_scroll_min_lines = 1;
             window_padding_width = 4;
             confirm_os_window_close = 0;
+            window_border_width = "0px";
+            tab_bar_edge = "top";
+            tab_bar_margin_width = "0.0";
+            tab_bar_style = "fade";
+            placement_strategy = "top-left";
+            hide_window_decorations = true;
           };
-          extraConfig = ''
-            tab_bar_style fade
-            tab_fade 1
-            active_tab_font_style bold
-            inactive_tab_font_style bold
-          '';
         };
         # shell
         bash = {

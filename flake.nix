@@ -13,19 +13,23 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
-    # general args
+    # use nix-prefetch-url to get hash
+    wallpapers = {
+      waveset.url = "https://w.wallhaven.cc/full/5g/wallhaven-5g5qz8.png";
+      waveset.hash = "0m4iw550yj31zzng9v222izl26qycrbmgfx5palppf4n9m34izwi";
+      #TES5mountains https://w.wallhaven.cc/full/85/wallhaven-85wvmy.jpg
+    };
     def = {
       username = "goat";
       system = "x86_64-linux";
-      inputs = {inherit inputs;};
-      wallpaper = ./assets/wallpaper.png;
+      wallpaper = waveset;
       layout = "us";
     };
 
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       system = def.system;
-      specialArgs = {inherit def;};
+      specialArgs = {inherit inputs def;};
       modules = [
         ./modules/shared/default.nix
         ./modules/hosts/${host}/default.nix
@@ -33,7 +37,17 @@
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
         inputs.grub2-themes.nixosModules.default
-        {home-manager.sharedModules = inputs.nixvim.homeManagerModules.nixvim;}
+        {
+          overlays = [inputs.niri.overlays.niri];
+          home-manager.sharedModules = [
+            inputs.nixvim.homeManagerModules.nixvim
+            {
+              useUserPackages = true;
+              useGlobalPkgs = true;
+              extraSpecialArgs = {inherit inputs;};
+            }
+          ];
+        }
       ];
     });
   in {

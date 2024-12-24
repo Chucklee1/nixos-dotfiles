@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    ./niri.nix
+    #./niri.nix
     ./nixvim.nix
     ./shelli.nix
     ./theme.nix
@@ -35,7 +35,7 @@
   # -----------------------------------------------------------
 
   networking = {
-    hostName = "${username}";
+    hostName = "${def.username}";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
   };
@@ -44,16 +44,15 @@
   time.timeZone = "America/Vancouver";
   console = {
     earlySetup = true;
-    keyMap = layout;
+    keyMap = def.layout;
   };
 
   # -----------------------------------------------------------
   # nix options
   # -----------------------------------------------------------
   nixpkgs = {
-    hostPlatform = lib.mkDefault "${system}";
+    hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
-    overlays = [inputs.niri.overlays.niri];
   };
   nix.settings = {
     auto-optimise-store = true;
@@ -63,18 +62,15 @@
   # -----------------------------------------------------------
   # system user declaration
   # -----------------------------------------------------------
-  users.users.${username} = {
+  users.users.${def.username} = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "libvirtd"];
   };
   home-manager = {
-    useUserPackages = true;
-    useGlobalPkgs = true;
-    extraSpecialArgs = {inherit inputs;};
-    users.${username}.home = {
+    users.${def.username}.home = {
       stateVersion = "24.05"; # DO NOT CHANGE
-      username = "${username}";
-      homeDirectory = "/home/${username}";
+      username = "${def.username}";
+      homeDirectory = "/home/${def.username}";
     };
   };
 

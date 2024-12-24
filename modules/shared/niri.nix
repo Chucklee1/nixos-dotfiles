@@ -54,7 +54,7 @@
         };
         # input
         input = {
-          keyboard.xkb.layout = "${layout}";
+          keyboard.xkb.layout = "${def.layout}";
           mouse.accel-speed = 1.0;
           touchpad = {
             tap = true;
@@ -66,7 +66,7 @@
           touch.map-to-output = "eDP-1";
         };
         # monitors
-        outputs."HKC OVERSEAS LIMITED 24E4 0000000000001" = {
+        outputs."DP-1" = {
           enable = true;
           mode.width = 1920;
           mode.height = 1080;
@@ -74,20 +74,25 @@
           position.y = 0;
           mode.refresh = 165.001;
         };
-        outputs."eDP-1" = {
-          enable = true;
-          mode.width = 1920;
-          mode.height = 1080;
-          position.x = 0;
-          position.y = 0;
-          mode.refresh = 60.008;
-        };
-        # layout
+        # layout n theming
         layout = {
-          gaps = 2;
+          gaps = 4;
           border.width = 2;
           always-center-single-column = false;
         };
+        window-rules = [
+          {
+            geometry-corner-radius = let
+              r = 2.0;
+            in {
+              top-left = r;
+              top-right = r;
+              bottom-left = r;
+              bottom-right = r;
+            };
+            clip-to-geometry = true;
+          }
+        ];
       };
     }
   ];
