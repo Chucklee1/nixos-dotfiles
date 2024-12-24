@@ -17,7 +17,7 @@
     wallpapers = {
       TES5mountains.url = "https://w.wallhaven.cc/full/85/wallhaven-85wvmy.jpg";
       TES6mountains.hash = "0980sdgk3v351rsswyxgyw3rjjhym15fpa23xc8c8z5jfq49zvhk";
-      waveout.url = "https://github.com/Chucklee1/nixos-dotfiles/blob/main/assets/wallpaper.png?raw=true";
+      waveout.url = "https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/assets/wallpaper.png";
       waveout.hash = "1za3bpr6m974j87f470pp1vmn3rxl0p1jic2mkvsy7qbkx3gccin";
     };
     def = {
