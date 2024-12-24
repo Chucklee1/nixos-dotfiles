@@ -214,7 +214,7 @@
   # home manager
   # -----------------------------------------------------------
   home-manager.sharedModules = [
-    inputs.nixvim.homeManagerModules.nivim
+    inputs.nixvim.homeManagerModules.nixvim
     {
       # -----------------------------------------------------------
       # general

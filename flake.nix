@@ -36,8 +36,8 @@
           ./${host}-hardware.nix
           inputs.home-manager.nixosModules.home-manager
           inputs.niri.nixosModules.niri
-          inputs.stylix.homeManagerModules.stylix
-          inputs.grub2-theme.homeManagerModules.default
+          inputs.stylix.nixosModules.stylix
+          inputs.grub2-themes.nixosModules.default
         ];
       };
     in
