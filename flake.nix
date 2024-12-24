@@ -1,5 +1,5 @@
 {
-  description = "i dont kow what im doing";
+  description = "i don't know what I'm doing";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -13,7 +13,6 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
-    # use nix-prefetch-url to get hash
     wallpapers = {
       TES5mountains.url = "https://w.wallhaven.cc/full/85/wallhaven-85wvmy.jpg";
       TES6mountains.hash = "0980sdgk3v351rsswyxgyw3rjjhym15fpa23xc8c8z5jfq49zvhk";
@@ -26,22 +25,27 @@
       wallpaper = wallpapers.waveout;
       layout = "us";
     };
-    systemConfig = host: (nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {inherit inputs def;};
-      modules = [
-        (import ./default.nix).config.shared
-        (import ./default.nix).config.${host}
-        ./hosts/${host}-hardware.nix
-        inputs.home-manager.nixosModules.home-manager
-        inputs.niri.nixosModules.niri
-        inputs.stylix.homeManagerModules.stylix
-        inputs.grub2-theme.homeManagerModules.default
-      ];
-    });
+
+    systemConfig = host: let
+      hostConfig = nixpkgs.lib.nixosSystem {
+        system = def.system;
+        specialArgs = {inherit inputs def;};
+        modules = [
+          ./shared.nix
+          ./${host}.nix
+          ./${host}-hardware.nix
+          inputs.home-manager.nixosModules.home-manager
+          inputs.niri.nixosModules.niri
+          inputs.stylix.homeManagerModules.stylix
+          inputs.grub2-theme.homeManagerModules.default
+        ];
+      };
+    in
+      hostConfig; # Return the hostConfig here
   in {
-    # systems
-    nixosConfigurations.desktop = systemConfig "desktop";
-    laptop = systemConfig "laptop";
+    nixosConfigurations = {
+      desktop = systemConfig "desktop";
+      laptop = systemConfig "laptop";
+    };
   };
 }
