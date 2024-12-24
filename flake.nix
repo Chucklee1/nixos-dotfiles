@@ -26,42 +26,26 @@
       wallpaper = wallpapers.waveout;
       layout = "us";
     };
+    systemConfig = host: (nixpkgs.lib.nixosSystem {
+      system = def.system;
+      specialArgs = {inherit inputs def;};
+      modules = [
+        ./modules/default.nix
+        ./host/${host}/config.nix
+        inputs.home-manager.nixosModules.home-manager
+        inputs.niri.nixosModules.niri
+        inputs.stylix.homeManagerModules.stylix
+        inputs.grub2-theme.homeManagerModules.default
+        {
+          home-manager.sharedModules = [
+            inputs.nixvim.homeManagerModules.nivim
+          ];
+        }
+      ];
+    });
   in {
     # systems
-    desktop = nixpkgs.lib.nixosSystem {
-      system = def.system;
-      specialArgs = {inherit inputs def;};
-      modules =
-        shared.modules
-        ++ desktop.modules [
-          ./modules/default.nix
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = [
-              universal.home-modules
-              sharedModules.shared.home-modules
-              sharedModules.desktop.home-modules
-            ];
-          }
-        ];
-    };
-    laptop = nixpkgs.lib.nixosSystem {
-      system = def.system;
-      specialArgs = {inherit inputs def;};
-      modules =
-        shared.modules
-        ++ laptop.modules [
-          ./modules/default.nix
-
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = [
-              universal.home-modules
-              sharedModules.shared.home-modules
-              sharedModules.laptop.home-modules
-            ];
-          }
-        ];
-    };
+    desktop = systemConfig "desktop";
+    laptop = systemConfig "laptop";
   };
 }
