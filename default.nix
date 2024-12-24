@@ -1,10 +1,13 @@
-{...}: {
+{
+  config,
+  inputs,
+  ...
+}: {
   # -----------------------------------------------------------
   # systems
   # -----------------------------------------------------------
   config = {
     desktop = [
-      inputs.home-manager.nixosModules.home-manager
       ({
         config,
         lib,
@@ -245,7 +248,6 @@
       })
     ];
     laptop = [
-      inputs.home-manager.nixosModules.home-manager
       ({
         config,
         lib,
@@ -268,10 +270,6 @@
       })
     ];
     shared = [
-      inputs.home-manager.nixosModules.home-manager
-      inputs.niri.nixosModules.niri
-      inputs.stylix.homeManagerModules.stylix
-      inputs.grub2-theme.homeManagerModules.default
       ({
         config,
         lib,

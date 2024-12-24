@@ -27,17 +27,21 @@
       layout = "us";
     };
     systemConfig = host: (nixpkgs.lib.nixosSystem {
-      system = def.system;
+      system = "x86_64-linux";
       specialArgs = {inherit inputs def;};
       modules = [
         (import ./default.nix).config.shared
         (import ./default.nix).config.${host}
         ./hosts/${host}-hardware.nix
+        inputs.home-manager.nixosModules.home-manager
+        inputs.niri.nixosModules.niri
+        inputs.stylix.homeManagerModules.stylix
+        inputs.grub2-theme.homeManagerModules.default
       ];
     });
   in {
     # systems
-    desktop = systemConfig "desktop";
+    nixosConfigurations.desktop = systemConfig "desktop";
     laptop = systemConfig "laptop";
   };
 }
