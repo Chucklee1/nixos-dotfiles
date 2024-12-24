@@ -1,4 +1,4 @@
-_: {
+{def, ...}: {
   programs.niri.enable = true;
   home-manager.sharedModules = [
     {
@@ -54,7 +54,7 @@ _: {
         };
         # input
         input = {
-          keyboard.xkb.layout = "us";
+          keyboard.xkb.layout = "${layout}";
           mouse.accel-speed = 1.0;
           touchpad = {
             tap = true;

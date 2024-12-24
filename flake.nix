@@ -13,16 +13,19 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
-    system = "x86_64-linux";
-    lib = import nixpkgs.lib;
-    pkgs = import nixpkgs {inherit system;};
-    username = "goat";
-    wallpaper = ./assets/wallpaper.png;
+    # general args
+    def = {
+      username = "goat";
+      system = "x86_64-linux";
+      inputs = {inherit inputs;};
+      wallpaper = ./assets/wallpaper.png;
+      layout = "us";
+    };
 
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
-      system = {inherit system;};
-      specialArgs = {inherit inputs system username wallpaper;};
+      system = def.system;
+      specialArgs = {inherit def;};
       modules = [
         ./modules/shared/default.nix
         ./modules/hosts/${host}/default.nix
@@ -30,39 +33,12 @@
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
         inputs.grub2-themes.nixosModules.default
-        {
-          home-manager.sharedModules = [
-            inputs.nixvim.homeManagerModules.nixvim
-          ];
-        }
+        {home-manager.sharedModules = inputs.nixvim.homeManagerModules.nixvim;}
       ];
     });
   in {
     # systems
     nixosConfigurations.desktop = systemConfig "desktop";
     nixosConfigurations.laptop = systemConfig "laptop";
-
-    # lazy install script
-    packages.x86_64-linux.lazy-installer = let
-      name = "lazy-installer";
-      script = pkgs.writeShellScriptBin name ''
-        git clone https://github.com/Chucklee1/nixos-dotfiles
-        sleep 1
-        cd nixos-dotfiles
-        ./assets/lazy-installer.sh "$@"
-      '';
-    in
-      pkgs.symlinkJoin {
-        name = {inherit name;};
-        paths =
-          [script]
-          ++ [
-            pkgs.parted
-            pkgs.git
-            pkgs.nixos-install-tools
-          ];
-        buildInputs = [pkgs.makeWrapper];
-        postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin";
-      };
   };
 }

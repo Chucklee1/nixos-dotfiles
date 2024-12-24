@@ -1,9 +1,7 @@
 {
   pkgs,
   lib,
-  inputs,
-  username,
-  system,
+  def,
   ...
 }: {
   imports = [
@@ -14,6 +12,7 @@
     ./vscode.nix
     ./waybar.nix
   ];
+
   # -----------------------------------------------------------
   # boot
   # -----------------------------------------------------------
@@ -45,7 +44,7 @@
   time.timeZone = "America/Vancouver";
   console = {
     earlySetup = true;
-    keyMap = "us";
+    keyMap = layout;
   };
 
   # -----------------------------------------------------------
@@ -114,17 +113,11 @@
   environment.systemPackages = with pkgs; [
     # tools/deps
     gcc
-    #zenity
     vulkan-tools
     ffmpeg
     v4l-utils
     libnotify
     libsecret
-    #wineWowPackages.stagingFull
-    #samba # wine security features
-    #winetricks
-    #protonup-qt
-    #protontricks
     # language QOL
     alejandra
     nixd
@@ -143,12 +136,6 @@
     egl-wayland
     qt5.qtwayland
     qt6.qtwayland
-    # hyprland
-    #hyprland-protocols
-    #hyprshot
-    #hypridle
-    #hyprlock
-    #hyprsunset
     # window manager utils
     wev
     brightnessctl
@@ -166,8 +153,6 @@
     # apps/games
     firefox
     openmw
-    #osu-lazer-bin
-    #prismlauncher
     # misc
     nerd-fonts.symbols-only
     file-roller
