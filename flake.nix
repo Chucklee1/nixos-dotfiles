@@ -15,8 +15,6 @@
   outputs = {nixpkgs, ...} @ inputs: let
     # use nix-prefetch-url to get hash
     wallpapers = {
-      waveset.url = "https://w.wallhaven.cc/full/5g/wallhaven-5g5qz8.png";
-      waveset.hash = "0m4iw550yj31zzng9v222izl26qycrbmgfx5palppf4n9m34izwi";
       TES5mountains.url = "https://w.wallhaven.cc/full/85/wallhaven-85wvmy.jpg";
       TES6mountains.hash = "0980sdgk3v351rsswyxgyw3rjjhym15fpa23xc8c8z5jfq49zvhk";
       waveout.url = "https://github.com/Chucklee1/nixos-dotfiles/blob/main/assets/wallpaper.png?raw=true";
@@ -25,7 +23,7 @@
     def = {
       username = "goat";
       system = "x86_64-linux";
-      wallpaper = waveset;
+      wallpaper = waveout;
       layout = "us";
     };
 
@@ -34,21 +32,15 @@
       system = def.system;
       specialArgs = {inherit inputs def;};
       modules = [
-        ./modules/shared/default.nix
-        ./modules/hosts/${host}/default.nix
+        ./modules/default.nix
+        shared.modules
+        ${host}.modules
         inputs.home-manager.nixosModules.home-manager
-        inputs.stylix.nixosModules.stylix
-        inputs.niri.nixosModules.niri
-        inputs.grub2-themes.nixosModules.default
         {
-          overlays = [inputs.niri.overlays.niri];
+          home-manager = [universal.home-modules];
           home-manager.sharedModules = [
-            inputs.nixvim.homeManagerModules.nixvim
-            {
-              useUserPackages = true;
-              useGlobalPkgs = true;
-              extraSpecialArgs = {inherit inputs;};
-            }
+            shared.home-modules
+            ${host}.home-modules
           ];
         }
       ];

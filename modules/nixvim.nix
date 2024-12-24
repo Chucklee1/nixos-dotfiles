@@ -1,5 +1,6 @@
-_: {
-  home-manager.sharedModules = [
+{inputs, ...}: {
+  shared.modules = [
+    inputs.nixvim.homeManagerModules.nixvim
     {
       programs.nixvim = {
         enable = true;

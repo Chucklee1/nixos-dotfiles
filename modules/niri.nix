@@ -1,7 +1,20 @@
-{def, ...}: {
-  programs.niri.enable = true;
-  home-manager.sharedModules = [
-    {
+{inputs, ...}: {
+  shared.modules = [
+    inputs.niri.nixosModules.niri
+    ({pkgs, ...}: {
+      programs.niri.enable = true;
+      nixpkgs.overlays = [niri.overlays.niri];
+      programs.niri.package = pkgs.niri-unstable;
+    })
+  ];
+  shared.home-modules = [
+    ({
+      lib,
+      nixosConfig,
+      config,
+      pkgs,
+      ...
+    }: {
       programs.niri.settings = {
         # general
         prefer-no-csd = true;
@@ -9,10 +22,10 @@
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
         # startup
         spawn-at-startup = [
-          {command = ["waybar"];}
-          {command = ["nm-applet"];}
-          {command = ["wlsunset -T 5200"];}
-          {command = ["swaybg" "-i" "/home/goat/nixos-dotfiles/assets/wallpaper.png" "-m" "fill"];}
+          {command = ["${lib.getExe pkgs.waybar}"];}
+          {command = ["${lib.getExe pkgs.nm-applet}"];}
+          {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
+          {command = ["${lib.getExe pkgs.swaybg}" "-i" "/home/goat/nixos-dotfiles/assets/wallpaper.png" "-m" "fill"];}
         ];
         # keybinds
         binds = let
@@ -94,6 +107,6 @@
           }
         ];
       };
-    }
+    })
   ];
 }
