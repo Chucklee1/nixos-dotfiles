@@ -3,7 +3,7 @@
   def,
   ...
 }: {
-  overlays = [inputs.niri.overlays.niri];
+  nixpkgs.overlays = [inputs.niri.overlays.niri];
   programs.niri.enable = true;
   home-manager.sharedModules = [
     {

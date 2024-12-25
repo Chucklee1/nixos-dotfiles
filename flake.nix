@@ -18,7 +18,7 @@
       username = "goat";
       system = "x86_64-linux";
       layout = "us";
-      wallpaper = "https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/assets/wallpaper.png";
+      wallpaper = ./assets/wallpaper.png;
     };
 
     # system declaration

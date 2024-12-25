@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-    #./niri.nix
+    ./niri.nix
     ./nixvim.nix
     ./shelli.nix
     ./theme.nix
