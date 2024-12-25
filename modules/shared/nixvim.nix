@@ -76,7 +76,7 @@ _: {
 
           {
             mode = "n";
-            key = "<leader>bd";
+            key = "<leader>dd";
             action = "<cmd>bdelete<cr>";
             options = {
               desc = "Delete buffer";
@@ -85,8 +85,24 @@ _: {
         ];
         # plugins
         plugins = {
-          # icons
-          web-devicons.enable = true;
+          web-devicons.enable = true; # icons
+          treesitter.enable = true; # fancy styff
+          telescope.enable = true; # fuzzy finder
+          lazygit.enable = true;
+          bufferline.enable = true; # tabs
+          lualine.enable = true; # cool status bar
+          noice.enable = true;  # fancy command window
+          nix.enable = true; #nix expression support
+          # built in terminal
+          toggleterm = {
+            enable = true;
+            settings = {
+              hide_numbers = false;
+              autochdir = true;
+              close_on_exit = true;
+              direction = "vertical";
+            };
+          };
           # image support
           image = {
             enable = true;
@@ -111,8 +127,6 @@ _: {
               };
             };
           };
-          treesitter.enable = true;
-          telescope.enable = true;
           # file tree
           neo-tree = {
             enable = true;
@@ -137,14 +151,6 @@ _: {
               };
             };
           };
-          # tabs
-          bufferline.enable = true;
-          # cool bar
-          lualine.enable = true;
-          # fancy command window
-          noice.enable = true;
-          # nix expression support
-          nix.enable = true;
           # language server
           none-ls = {
             enable = true;
@@ -165,8 +171,7 @@ _: {
               };
               formatting.alejandra.enable = true;
             };
-          };
-          lazygit.enable = true;
+          }; 
         };
       };
     }

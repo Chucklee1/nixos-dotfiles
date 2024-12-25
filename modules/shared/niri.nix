@@ -1,6 +1,5 @@
-{
-  lib,
-  pkgs,
+{ lib, 
+  pkgs, 
   inputs,
   def,
   ...
