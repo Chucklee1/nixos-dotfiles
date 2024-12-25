@@ -146,6 +146,11 @@
     wlsunset
     networkmanagerapplet
     lxqt.lxqt-policykit
+    # xwayland
+    xwayland
+    xwayland-run
+    xsel
+    xclip
     # media
     mpv
     imv

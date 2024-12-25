@@ -48,7 +48,8 @@
     hypridle
     hyprlock
     hyprsunset
-    # games
+    # apps/games
+    webcord
     osu-lazer-bin
     prismlauncher
   ];

@@ -1,4 +1,6 @@
 {
+  lib,
+  pkgs,
   inputs,
   def,
   ...
@@ -14,10 +16,10 @@
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
         # startup
         spawn-at-startup = [
-          {command = ["waybar"];}
-          {command = ["nm-applet"];}
-          {command = ["wlsunset -T 5200"];}
-          {command = ["swaybg" "-i" "/home/goat/nixos-dotfiles/assets/wallpaper.png" "-m" "fill"];}
+          {command = ["${lib.getExe pkgs.waybar}"];}
+          {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
+          {command = ["${lib.getExe pkgs.waybar}" "-T" "5200"];}
+          {command = ["${lib.getExe pkgs.waybar}" "-i" "${def.wallpaper}" "-m" "fill"];}
         ];
         # keybinds
         binds = let
@@ -52,10 +54,16 @@
           "Mod+Shift+Right" = action "move-column-right";
           "Mod+Shift+Up" = action "move-window-to-workspace-up";
           "Mod+Shift+Down" = action "move-window-to-workspace-down";
-          # window presets
+          # window presets && row/col manipulation
           "Mod+R" = action "switch-preset-column-width";
           "Mod+M" = action "maximize-column";
           "Mod+Shift+M" = action "fullscreen-window";
+          "Mod+Comma" = action "consume-window-into-column";
+          "Mod+Period" = action "expel-window-from-column";
+          "Mod+Minus" = action "set-column-width -10%";
+          "Mod+Plus" = action "set-column-width +10%";
+          "Mod+Shift+Minus" = action "set-window-height -10%";
+          "Mod+Shift+Plus" = action "set-window-height +10%";
         };
         # input
         input = {
@@ -71,24 +79,26 @@
           touch.map-to-output = "eDP-1";
         };
         # monitors
-        outputs."DP-1" = {
+        outputs."DP-2" = {
           enable = true;
-          mode.width = 1920;
-          mode.height = 1080;
+          mode = {
+            width = 1920;
+            height = 1080;
+            refresh = 165.001;
+          };
           position.x = 0;
           position.y = 0;
-          mode.refresh = 165.001;
         };
         # layout n theming
         layout = {
-          gaps = 4;
+          gaps = 8;
           border.width = 2;
           always-center-single-column = false;
         };
         window-rules = [
           {
             geometry-corner-radius = let
-              r = 2.0;
+              r = 3.0;
             in {
               top-left = r;
               top-right = r;
