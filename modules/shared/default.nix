@@ -97,14 +97,7 @@
         # wm
         fuzzel.enable = true;
         wlogout.enable = true;
-        nixvim = {
-          enable = true;
-          settings = import [
-            ./nixvim/options.nix
-            ./keybinds.nix
-            ./nixvim/plugins.nix
-          ];
-        };
+        nixvim = import ./nixvim/default.nix;
       };
       # most wm services
       services = {
