@@ -7,7 +7,6 @@
 }: {
   imports = [
     ./niri.nix
-    ./nixvim.nix
     ./shelli.nix
     ./theme.nix
     ./vscode.nix
@@ -98,6 +97,14 @@
         # wm
         fuzzel.enable = true;
         wlogout.enable = true;
+        nixvim = {
+          enable = true;
+          settings = import [
+            ./nixvim/options.nix
+            ./keybinds.nix
+            ./nixvim/plugins.nix
+          ];
+        };
       };
       # most wm services
       services = {
