@@ -23,7 +23,7 @@
 
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
-      system = def.system;
+      system = {inherit (def.system);};
       specialArgs = {inherit inputs def;};
       modules = [
         ./modules/shared/default.nix
