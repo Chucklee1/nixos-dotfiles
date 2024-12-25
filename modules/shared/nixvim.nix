@@ -111,6 +111,7 @@ _: {
               };
             };
           };
+          treesitter.enable = true;
           telescope.enable = true;
           # file tree
           neo-tree = {
