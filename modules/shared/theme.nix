@@ -12,8 +12,8 @@
     autoEnable = true;
     homeManagerIntegration.autoImport = true;
     image = pkgs.fetchurl {
-      url = def.wallpaper.url;
-      hash = def.wallpaper.hash or lib.fakeHash;
+      url = def.wallpaper;
+      hash = lib.fakeHash;
     };
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
