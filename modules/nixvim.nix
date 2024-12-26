@@ -4,30 +4,38 @@ _: {
   # -----------------------------------------------------------
   enable = true;
   globalOpts = {
-    # general
+    # ui
+    number = true;
+    splitright = true;
+    splitbelow = true;
+
+    # Enable mouse
     mouse = "a";
-    clipboard = "null";
-    undofile = true;
+
+    # Search
+    ignorecase = true;
+    smartcase = true;
+
+    # shows tails
+    list = true;
+    # NOTE: .__raw here means that this field is raw lua code
+    listchars.__raw = "{ tab = '» ', trail = '·', nbsp = '␣' }";
 
     # tabs
+    tabstop = 2;
     shiftwidth = 2;
-    softtabstop = 2;
-    softtabwidth = 0;
+    softtabstop = 0;
     expandtab = true;
     smarttab = true;
 
-    # UI config
-    number = true; # show absolute number
-    relativenumber = true; # add numbers to each line on the left side
-    cursorline = true; # highlight cursor line underneath the cursor horizontally
-    splitbelow = true; # open new vertical split bottom
-    splitright = true; # open new horizontal splits right
-
-    # Searching
-    incsearch = true; # search as characters are entered
-    hlsearch = false; # do not highlight matches
-    ignorecase = true; # ignore case in searches by default
-    smartcase = true; # but make it case sensitive if an uppercase is entered
+    # System clipboard support, needs xclip/wl-clipboard
+    clipboard = {
+      providers = {
+        wl-copy.enable = true; # Wayland
+        xsel.enable = true; # For X11
+      };
+      register = "";
+    };
   };
 
   # auto formatt nix files

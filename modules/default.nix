@@ -126,7 +126,7 @@
     libnotify
     libsecret
     # language QOL
-    alejandra
+    alajendra
     nixd
     asm-lsp
     # cli
