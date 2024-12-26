@@ -24,10 +24,9 @@
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       system = {inherit (def.system);};
-      specialArgs = {inherit inputs def;};
+      specialArgs = {inherit inputs def host;};
       modules = [
-        ./modules/shared/default.nix
-        ./modules/hosts/${host}/default.nix
+        ./modules/default.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri

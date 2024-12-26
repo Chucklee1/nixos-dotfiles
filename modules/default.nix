@@ -3,9 +3,11 @@
   lib,
   inputs,
   def,
+  host,
   ...
 }: {
   imports = [
+    ./hosts/${host}/default.nix
     ./niri.nix
     ./shelli.nix
     ./theme.nix
