@@ -41,7 +41,7 @@ _: {
   # auto formatt nix files
   autoCmd = [
     {
-      command = "silent! execute '!alajendra %'";
+      command = "silent! execute '!alejandra %'";
       event = [
         "BufWritePre"
       ];
@@ -129,14 +129,6 @@ _: {
       action = "<cmd>BufferLineCyclePrev<cr>";
       options = {
         desc = "Cycle to previous buffer";
-      };
-    }
-    {
-      action = "<cmd>bd<CR>";
-      key = "<leader>c";
-      options = {
-        noremap = true;
-        silent = true;
       };
     }
   ];
