@@ -1,88 +1,42 @@
 _: {
+  globals.mapleader = " ";
   globalOpts = {
-    # Line numbers
-    number = true;
-    # Always show the signcolumn, otherwise text would be shifted when displaying error icons
-    signcolumn = "yes";
-
-    # Enable mouse
+    # general
     mouse = "a";
+    clipboard = "null";
+    undofile = true;
 
-    # Search
-    ignorecase = true;
-    smartcase = true;
-
-    # Configure how new splits should be opened
-    splitright = true;
-    splitbelow = true;
-
-    list = true;
-    # NOTE: .__raw here means that this field is raw lua code
-    listchars.__raw = "{ tab = '» ', trail = '·', nbsp = '␣' }";
-
-    # Tab defaults (might get overwritten by an LSP server)
-    tabstop = 2;
+    # tabs
     shiftwidth = 2;
-    softtabstop = 0;
+    softtabstop = 2;
+    softtabwidth = 0;
     expandtab = true;
     smarttab = true;
 
-    # System clipboard support, needs xclip/wl-clipboard
-    clipboard = {
-      providers = {
-        wl-copy.enable = true; # Wayland
-        xsel.enable = true; # For X11
-      };
-      register = "unnamedplus";
-    };
+    # UI config
+    number = true; # show absolute number
+    relativenumber = true; # add numbers to each line on the left side
+    cursorline = true; # highlight cursor line underneath the cursor horizontally
+    splitbelow = true; # open new vertical split bottom
+    splitright = true; # open new horizontal splits right
 
-    # Save undo history
-    undofile = true;
-
-    # Highlight the current line for cursor
-    cursorline = true;
-
-    # Show line and column when searching
-    ruler = true;
-
-    # Global substitution by default
-    gdefault = true;
-
-    # Start scrolling when the cursor is X lines away from the top/bottom
-    scrolloff = 5;
+    # Searching
+    incsearch = true; # search as characters are entered
+    hlsearch = false; # do not highlight matches
+    ignorecase = true; # ignore case in searches by default
+    smartcase = true; # but make it case sensitive if an uppercase is entered
   };
 
-  userCommands = {
-    Q.command = "q";
-    Q.bang = true;
-    Wq.command = "q";
-    Wq.bang = true;
-    WQ.command = "q";
-    WQ.bang = true;
-    W.command = "q";
-    W.bang = true;
-  };
-
-  globals.mapleader = " ";
-
+  # auto formatt nix files
   autoCmd = [
     {
-      event = ["VimEnter"];
-      callback = {__raw = "function() if vim.fn.argv(0) == '' then require('telescope.builtin').find_files() end end";};
+      command = "silent! execute '!alajendra %'";
+      event = [
+        "BufWritePre"
+      ];
+      pattern = [
+        "*.nix"
+      ];
     }
   ];
-  #autoCmd = [
-  #  {
-  #    event = [ "BufEnter" "BufWinEnter" ];
-  #    pattern = [ "*.md" "*.mdx" ];
-  #    command = "MarkdownPreviewToggle";
-  #  }
-  #];
-
-  highlight = {
-    Comment.fg = "#ff00ff";
-    Comment.bg = "#000000";
-    Comment.underline = true;
-    Comment.bold = true;
-  };
 }

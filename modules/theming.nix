@@ -34,7 +34,7 @@
     targets.grub.enable = false;
   };
 
-  home-manager.sharedModule = [
+  home-manager.sharedModules = [
     {
       stylix.targets.waybar.enable = false;
       gtk = {

@@ -1,22 +1,6 @@
 _: {
   keymaps = [
-    # Neo-tree bindings
-    {
-      action = "<cmd>Neotree toggle<CR>";
-      key = "<leader>e";
-    }
-
-    # Undotree
-    {
-      mode = "n";
-      key = "<leader>ut";
-      action = "<cmd>UndotreeToggle<CR>";
-      options = {
-        desc = "Undotree";
-      };
-    }
-
-    # Lazygit
+    # lazygit
     {
       mode = "n";
       key = "<leader>gg";
@@ -25,55 +9,26 @@ _: {
         desc = "LazyGit (root dir)";
       };
     }
-
-    # Commentary bindings
-    {
-      action = "<cmd>Commentary<CR>";
-      key = "<leader>/";
-    }
-
-    # Telescope bindings
-
-    {
-      action = "<cmd>Telescope live_grep<CR>";
-      key = "<leader>fw";
-    }
-    {
-      action = "<cmd>Telescope find_files<CR>";
-      key = "<leader>ff";
-    }
-    {
-      action = "<cmd>Telescope git_commits<CR>";
-      key = "<leader>fg";
-    }
-    {
-      action = "<cmd>Telescope oldfiles<CR>";
-      key = "<leader>fh";
-    }
-    {
-      action = "<cmd>Telescope colorscheme<CR>";
-      key = "<leader>ch";
-    }
-    {
-      action = "<cmd>Telescope man_pages<CR>";
-      key = "<leader>fm";
-    }
-
-    # Notify bindings
-
+    # toggleterm
     {
       mode = "n";
-      key = "<leader>un";
-      action = ''
-        <cmd>lua require("notify").dismiss({ silent = true, pending = true })<cr>
-      '';
+      action = "<cmd>ToggleTerm<CR>";
+      key = "<leader>t";
       options = {
-        desc = "Dismiss All Notifications";
+        noremap = true;
+        silent = true;
       };
     }
-
-    # Bufferline bindings
-
+    {
+      mode = "t";
+      action = "<cmd>ToggleTerm<CR>";
+      key = "<leader>x";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    # bufferline
     {
       mode = "n";
       key = "<Tab>";
@@ -109,13 +64,12 @@ _: {
         desc = "Cycle to previous buffer";
       };
     }
-
     {
-      mode = "n";
-      key = "<leader>bd";
-      action = "<cmd>bdelete<cr>";
+      action = "<cmd>bd<CR>";
+      key = "<leader>c";
       options = {
-        desc = "Delete buffer";
+        noremap = true;
+        silent = true;
       };
     }
   ];
