@@ -34,20 +34,16 @@ _: {
         wl-copy.enable = true; # Wayland
         xsel.enable = true; # For X11
       };
-      register = "";
+      register = "unnamedplus";
     };
   };
 
   # auto formatt nix files
   autoCmd = [
     {
-      command = "silent! execute '!alejandra %'";
-      event = [
-        "BufWritePre"
-      ];
-      pattern = [
-        "*.nix"
-      ];
+      command = "!alejandra %";
+      event = ["BufWritePre"];
+      pattern = ["*.nix"];
     }
   ];
 
@@ -55,11 +51,11 @@ _: {
   # plugins
   # -----------------------------------------------------------
   plugins = {
-    bufferline.enable = true;
-    web-devicons.enable = true;
-    toggleterm.enable = true;
-    lualine.enable = true;
-    lazygit.enable = true;
+    web-devicons.enable = true; # icon support
+    bufferline.enable = true; # tabs
+    toggleterm.enable = true; # intigrated terminal
+    lualine.enable = true; # cool status bar
+    lazygit.enable = true; 
   };
 
   # -----------------------------------------------------------
@@ -67,6 +63,12 @@ _: {
   # -----------------------------------------------------------
   globals.mapleader = " ";
   keymaps = [
+    # formatter
+    {
+      mode = "n";
+      key = "<leader>w";
+      action = "<cmd>w<CR><cmd>!alejandra %<CR>";
+    }
     # lazygit
     {
       mode = "n";
