@@ -101,7 +101,6 @@
       };
 
       programs = {
-        # wm
         fuzzel.enable = true;
         wlogout.enable = true;
         nixvim = import ./nixvim.nix;

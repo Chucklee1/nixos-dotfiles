@@ -38,15 +38,6 @@ _: {
     };
   };
 
-  # auto formatt nix files
-  autoCmd = [
-    {
-      command = "!alejandra %";
-      event = ["BufWritePre"];
-      pattern = ["*.nix"];
-    }
-  ];
-
   # -----------------------------------------------------------
   # plugins
   # -----------------------------------------------------------
@@ -55,7 +46,12 @@ _: {
     bufferline.enable = true; # tabs
     toggleterm.enable = true; # intigrated terminal
     lualine.enable = true; # cool status bar
-    lazygit.enable = true; 
+    lazygit.enable = true;
+    gitsigns = {
+      enable = true;
+      settings.current_line_blame = true;
+    };
+    nix.enable = true; # nix expression support
   };
 
   # -----------------------------------------------------------
@@ -63,14 +59,15 @@ _: {
   # -----------------------------------------------------------
   globals.mapleader = " ";
   keymaps = [
-    # formatter
+    # format write
     {
       mode = "n";
       key = "<leader>w";
-      action = "<cmd>w<CR><cmd>!alejandra %<CR>";
+      action = "<cmd>w<CR><cmd>!alejandra %<CR><cmd>w<CR>";
     }
     # lazygit
     {
+
       mode = "n";
       key = "<leader>gg";
       action = "<cmd>LazyGit<CR>";
