@@ -68,7 +68,7 @@
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {inherit inputs def;};
     users.${def.username}.home = {
       stateVersion = "24.05"; # DO NOT CHANGE
       username = "${def.username}";
@@ -104,7 +104,7 @@
         # wm
         fuzzel.enable = true;
         wlogout.enable = true;
-        nixvim = import ./nixvim/default.nix;
+        nixvim = import ./nixvim.nix;
       };
       # most wm services
       services = {
