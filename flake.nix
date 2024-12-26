@@ -31,9 +31,7 @@
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
         inputs.grub2-themes.nixosModules.default
-        {
-          home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
-        }
+        {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];}
       ];
     });
   in {

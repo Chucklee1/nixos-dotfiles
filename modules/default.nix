@@ -95,6 +95,19 @@
         QT_QPA_PLATFORM = "wayland;xcb";
         GDK_BACKEND = "wayland,x11,*";
       };
+      stylix.targets.waybar.enable = false;
+      gtk = {
+        enable = true;
+        iconTheme.name = "Papirus-Dark";
+        iconTheme.package = pkgs.papirus-icon-theme;
+        gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+        gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+      };
+      qt = {
+        enable = true;
+        style.name = "adwaita-dark";
+        platformTheme.name = "gtk3";
+      };
       programs = {
         # wm
         fuzzel.enable = true;
@@ -169,7 +182,7 @@
   # -----------------------------------------------------------
   # system programs
   # -----------------------------------------------------------
-  stylix.enable = true;
+  stylix = import ./stylix.nix;
   programs = {
     xfconf.enable = true; # for thunar config
     thunar = {
