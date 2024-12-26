@@ -5,7 +5,8 @@
   def,
   ...
 }: {
-  imports = [./hardware.nix];
+  imports = [./hardware.nix ./nvidia.nix];
+  nvidia.enable = true;
   # -----------------------------------------------------------
   # system
   # -----------------------------------------------------------
@@ -22,18 +23,6 @@
   };
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.nvidia = {
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-  hardware.graphics.extraPackages = with pkgs; [
-    nvidia-vaapi-driver
-    vaapiVdpau
-    libvdpau-va-gl
-  ];
 
   # -----------------------------------------------------------
   # packages
