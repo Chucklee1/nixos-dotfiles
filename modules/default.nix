@@ -8,11 +8,7 @@
 }: {
   imports = [
     ./hosts/${host}/default.nix
-    ./niri.nix
-    ./shelli.nix
-    ./theme.nix
-    ./vscode.nix
-    ./waybar.nix
+    ((import ./theming.nix).stylix.nixosMod {inherit pkgs lib def;})
   ];
 
   # -----------------------------------------------------------
@@ -55,6 +51,7 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
+    overlays = [inputs.niri.overlays.niri];
   };
   nix.settings = {
     auto-optimise-store = true;
@@ -84,6 +81,13 @@
   # -----------------------------------------------------------
   home-manager.sharedModules = [
     {
+      imports = [
+        ./niri.nix
+        ./shelli.nix
+        ./vscode.nix
+        ./waybar.nix
+        ((import ./theming.nix).theming.homeMod {inherit pkgs;})
+      ];
       home.sessionVariables = {
         # wayland
         XDG_SESSION_TYPE = "wayland";
@@ -95,19 +99,7 @@
         QT_QPA_PLATFORM = "wayland;xcb";
         GDK_BACKEND = "wayland,x11,*";
       };
-      stylix.targets.waybar.enable = false;
-      gtk = {
-        enable = true;
-        iconTheme.name = "Papirus-Dark";
-        iconTheme.package = pkgs.papirus-icon-theme;
-        gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-        gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
-      };
-      qt = {
-        enable = true;
-        style.name = "adwaita-dark";
-        platformTheme.name = "gtk3";
-      };
+
       programs = {
         # wm
         fuzzel.enable = true;
@@ -182,8 +174,8 @@
   # -----------------------------------------------------------
   # system programs
   # -----------------------------------------------------------
-  stylix = import ./stylix.nix;
   programs = {
+    niri.enable = true;
     xfconf.enable = true; # for thunar config
     thunar = {
       enable = true;
