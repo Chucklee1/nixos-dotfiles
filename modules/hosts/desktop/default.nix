@@ -29,13 +29,17 @@
     open = false;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+  hardware.graphics.extraPackages = with pkgs; [
+    nvidia-vaapi-driver
+    vaapiVdpau
+    libvdpau-va-gl
+  ];
 
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # tools/deps
-    nvidia-vaapi-driver
     zenity
     wineWowPackages.stagingFull
     samba
@@ -168,7 +172,7 @@
             # programs
             "$mod, return, exec, kitty"
             "$mod shift, return, exec, kitty -e tmux"
-            "$mod, space, exec, fuzzel"
+            "$mod, space, exec, fuzzel --anchor bottom --y-margin 5 -w 60 -l 15 -f"
             "$mod, e, exec, thunar"
             "$mod shift, p, exec, wlogout"
             "$mod shift, l, exec, swaylock"
