@@ -8,7 +8,7 @@
 }: {
   imports = [
     ./hosts/${host}/default.nix
-    ((import ./theming.nix).stylix.nixosMod {inherit pkgs lib def;})
+    ./theming.nix
   ];
 
   # -----------------------------------------------------------
@@ -86,10 +86,10 @@
         ./shelli.nix
         ./vscode.nix
         ./waybar.nix
-        ((import ./theming.nix).theming.homeMod {inherit pkgs;})
       ];
       home.sessionVariables = {
         # wayland
+        NIXOS_OZONE_WL = 1;
         XDG_SESSION_TYPE = "wayland";
         CLUTTER_BACKEND = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
@@ -152,7 +152,6 @@
     swaybg
     wlsunset
     networkmanagerapplet
-    lxqt.lxqt-policykit
     # xwayland
     xwayland
     xwayland-run

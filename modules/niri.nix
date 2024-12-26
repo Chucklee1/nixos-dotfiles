@@ -12,10 +12,9 @@
     screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
     # startup
     spawn-at-startup = [
-      {command = ["${lib.getExe pkgs.waybar}"];}
       {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
-      {command = ["${lib.getExe pkgs.waybar}" "-T" "5200"];}
-      {command = ["${lib.getExe pkgs.waybar}" "-i" "${def.wallpaper}" "-m" "fill"];}
+      {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
+      {command = ["${lib.getExe pkgs.swaybg}" "-i" "${def.wallpaper}" "-m" "fill"];}
     ];
     # keybinds
     binds = let
@@ -28,6 +27,7 @@
       "Mod+Space" = spawn "fuzzel";
       "Super+Shift+L" = spawn "swaylock";
       "Super+Shift+P" = spawn "wlogout";
+      "Mod+W" = spawn "systemctl --user restart waybar.service";
       # media keys
       "XF86AudioRaiseVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
       "XF86AudioLowerVolume" = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";

@@ -44,10 +44,6 @@
     protontricks
     # hyprland
     hyprland-protocols
-    hyprshot
-    hypridle
-    hyprlock
-    hyprsunset
     # apps/games
     webcord
     osu-lazer-bin
@@ -132,7 +128,6 @@
           # windowrulev2 = [];
           # startup
           exec-once = [
-            "waybar"
             "nm-applet"
             "hyprsunset -t 5200"
             "swaybg -i $HOME/nixos-dotfiles/assets/wallpaper.png -m fill"
