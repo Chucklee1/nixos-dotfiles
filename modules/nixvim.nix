@@ -59,15 +59,54 @@ _: {
   # -----------------------------------------------------------
   globals.mapleader = " ";
   keymaps = [
-    # format write
+    /*
+     reminder for myself
+    yank lines -> +y
+    paste -> +p
+    cut/delete lines -> del/+d
+    */
+    # lazy clipboard
+    {
+      mode = ["n" "v"];
+      action = "+y";
+      key = "<C-S-c>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    {
+      mode = ["n" "v"];
+      action = "+d";
+      key = "<C-S-x>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    {
+      mode = ["n" "v"];
+      action = "+p";
+      key = "<C-S-v>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    # undo 
+    {
+    mode = "n";
+    key = "<C-u>";
+    action = "<cmd>u<CR>";
+    }
+    # format text
     {
       mode = "n";
-      key = "<leader>w";
-      action = "<cmd>w<CR><cmd>!alejandra %<CR><cmd>w<CR>";
+      key = "<leader>f";
+      action = "<cmd>!alejandra %<CR>";
     }
     # lazygit
     {
-
       mode = "n";
       key = "<leader>gg";
       action = "<cmd>LazyGit<CR>";
@@ -77,23 +116,14 @@ _: {
     }
     # toggleterm
     {
-      mode = "n";
+      mode = ["n" "t"];
       action = "<cmd>ToggleTerm<CR>";
       key = "<leader>t";
       options = {
         noremap = true;
         silent = true;
       };
-    }
-    {
-      mode = "t";
-      action = "<cmd>ToggleTerm<CR>";
-      key = "<leader>x";
-      options = {
-        noremap = true;
-        silent = true;
-      };
-    }
+    }    
     # bufferline
     {
       mode = "n";
@@ -103,28 +133,9 @@ _: {
         desc = "Cycle to next buffer";
       };
     }
-
     {
       mode = "n";
       key = "<S-Tab>";
-      action = "<cmd>BufferLineCyclePrev<cr>";
-      options = {
-        desc = "Cycle to previous buffer";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<S-l>";
-      action = "<cmd>BufferLineCycleNext<cr>";
-      options = {
-        desc = "Cycle to next buffer";
-      };
-    }
-
-    {
-      mode = "n";
-      key = "<S-h>";
       action = "<cmd>BufferLineCyclePrev<cr>";
       options = {
         desc = "Cycle to previous buffer";

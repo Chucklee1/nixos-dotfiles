@@ -200,7 +200,7 @@
     xserver = {
       enable = true;
       xkb.layout = "us";
-      xkb.Variant = "";
+      xkb.variant = "";
     };
     pipewire = {
       enable = true;

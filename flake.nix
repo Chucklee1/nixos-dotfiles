@@ -20,7 +20,6 @@
       layout = "us";
       wallpaper = ./assets/wallpaper.png;
     };
-
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs def host;};
