@@ -59,7 +59,7 @@
   };
 
   # -----------------------------------------------------------
-  # system user declaration
+  # user & home manager
   # -----------------------------------------------------------
   users.users.${def.username} = {
     isNormalUser = true;
@@ -74,32 +74,25 @@
       username = "${def.username}";
       homeDirectory = "/home/${def.username}";
     };
+    sharedModules = [
+      ./niri.nix
+      ./shelli.nix
+      ./vscode.nix
+      ./waybar.nix
+      ./nixvim.nix
+      {
+        programs = {
+          fuzzel.enable = true;
+          wlogout.enable = true;
+        };
+        # most wm services
+        services = {
+          dunst.enable = true;
+          gnome-keyring.enable = true;
+        };
+      }
+    ];
   };
-
-  # -----------------------------------------------------------
-  # home manager
-  # -----------------------------------------------------------
-  home-manager.sharedModules = [
-    {
-      imports = [
-        ./niri.nix
-        ./shelli.nix
-        ./vscode.nix
-        ./waybar.nix
-      ];
-
-      programs = {
-        fuzzel.enable = true;
-        wlogout.enable = true;
-        nixvim = import ./nixvim.nix;
-      };
-      # most wm services
-      services = {
-        dunst.enable = true;
-        gnome-keyring.enable = true;
-      };
-    }
-  ];
 
   # -----------------------------------------------------------
   # system packages
