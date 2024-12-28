@@ -87,18 +87,6 @@
         ./vscode.nix
         ./waybar.nix
       ];
-      home.sessionVariables = {
-        # wayland
-        NIXOS_OZONE_WL = 1;
-        XDG_SESSION_TYPE = "wayland";
-        CLUTTER_BACKEND = "wayland";
-        QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
-        # xwayland compat.
-        DISPLAY = ":0";
-        SDL_VIDEODRIVER = "x11";
-        QT_QPA_PLATFORM = "wayland;xcb";
-        GDK_BACKEND = "wayland,x11,*";
-      };
 
       programs = {
         fuzzel.enable = true;
@@ -211,8 +199,8 @@
   services = {
     xserver = {
       enable = true;
-      layout = "us";
-      xkbVariant = "";
+      xkb.layout = "us";
+      xkb.Variant = "";
     };
     pipewire = {
       enable = true;
