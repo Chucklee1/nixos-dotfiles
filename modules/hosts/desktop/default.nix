@@ -5,8 +5,11 @@
   def,
   ...
 }: {
-  imports = [./hardware.nix ./nvidia.nix];
-  nvidia.enable = true;
+  imports = [
+    ./hardware.nix
+    ./nvidia.nix
+  ];
+
   # -----------------------------------------------------------
   # system
   # -----------------------------------------------------------
@@ -118,9 +121,10 @@
             animate_mouse_windowdragging = false;
           };
           # window rules windowrule = <rule>,<info>
-          # windowrulev2 = [];
+          #windowrulev2 = [];
           # startup
           exec-once = [
+            "waybar"
             "nm-applet"
             "hyprsunset -t 5200"
             "swaybg -i $HOME/nixos-dotfiles/assets/wallpaper.png -m fill"
@@ -156,29 +160,31 @@
             };
           };
           # bindings: MODS, key, dispatcher, params
+          # row: -- column: |
           "$mod" = "SUPER";
           bind = [
             # programs
             "$mod, return, exec, kitty"
             "$mod shift, return, exec, kitty -e tmux"
-            "$mod, space, exec, fuzzel --anchor bottom --y-margin 5 -w 60 -l 15 -f"
+            "$mod, space, exec, fuzzel"
+
             "$mod, e, exec, thunar"
             "$mod shift, p, exec, wlogout"
             "$mod shift, l, exec, swaylock"
             # hyprland
-            "$mod, v, togglefloating"
-            "$mod shift, m, fullscreen"
+            "$mod, v, togglefloating" 
             ", ctrl+alt+del, exit"
             # scroller - overview windows
             "$mod shift, space, scroller:toggleoverview"
             # scroller - align windows
             "$mod, h, scroller:alignwindow, l"
             "$mod, l, scroller:alignwindow, r"
-            # scroller - set columns
+            # scroller - columns
             "$mod shift, j, scroller:admitwindow"
             "$mod shift, k, scroller:expelwindow"
-            # scroller - semi fullscreen
-            "$mod, m, scroller:fitsize, active"
+            "$mod, m, scroller:fitsize, active" # toggle full window
+            "$mod shift, m, fullscreen" # toggle full screen
+            "$mod, p, scroller:pin" # toggle pin window 
             # scroller - set window size
             "$mod, equal, scroller:cyclewidth, next"
             "$mod, minus, scroller:cyclewidth, prev"
@@ -194,11 +200,6 @@
             "$mod shift, right, movewindow, r"
             "$mod shift, up, movewindow, u"
             "$mod shift, down, movewindow, d"
-            # workspaces
-            "$mod ctrl, up, workspace, -1"
-            "$mod ctrl, down, workspace, +1"
-            "$mod shift ctrl, up, movetoworkspace, -1"
-            "$mod shift ctrl, down, movetoworkspace, +1"
           ];
           bindm = [
             # mouse related
