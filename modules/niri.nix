@@ -10,6 +10,25 @@
     prefer-no-csd = true;
     hotkey-overlay.skip-at-startup = true;
     screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+    # env vars
+    environment = {
+      NIXOS_OZONE_WL = 1;
+      MOZ_ENABLE_WAYLAND = 1;
+
+      XDG_CURRENT_DESKTOP = "Hyprland";
+      XDG_SESSION_TYPE = "wayland";
+      XDG_SESSION_DESKTOP = "Hyprland";
+
+      GDK_BACKEND = "wayland,x11,*";
+      CLUTTER_BACKEND = "wayland";
+      QT_QPA_PLATFORM = "wayland;xcb";
+      QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
+      QT_AUTO_SCREEN_SCALE_FACTOR = 1;
+
+      SDL_VIDEODRIVER = "x11";
+      DISPLAY = ":0";
+    };
+
     # startup
     spawn-at-startup = [
       {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}

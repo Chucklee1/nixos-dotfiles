@@ -209,6 +209,11 @@
 
   # services
   services = {
+    xserver = {
+      enable = true;
+      layout = "us";
+      xkbVariant = "";
+    };
     pipewire = {
       enable = true;
       alsa.enable = true;
