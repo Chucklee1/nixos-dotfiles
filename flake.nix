@@ -20,16 +20,28 @@
       layout = "us";
       wallpaper = ./assets/wallpaper.png;
     };
+    lib = nixpkgs.lib;
+    importNixFiles = path: suffix: (
+      lib.filter
+      (n: lib.strings.hasSuffix "${suffix}" n)
+      (lib.filesystem.listFilesRecursive ./modules/${path})
+    );
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs def host;};
       modules = [
-        ./modules/default.nix
+        (importNixFiles "shared" ".mod.nix")
+        (importNixFiles "hosts/${host}" ".nix")
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri
         inputs.grub2-themes.nixosModules.default
-        {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];}
+        {
+          home-manager.sharedModules = [
+            (importNixFiles "shared" ".home.nix")
+            inputs.nixvim.homeManagerModules.nixvim
+          ];
+        }
       ];
     });
   in {
