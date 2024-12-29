@@ -48,10 +48,6 @@
             "_JAVA_AWT_WM_NONREPARENTING,1"
             "PROTON_ENABLE_NGX_UPDATER,1"
 
-            "GBM_BACKEND,nvidia-drm"
-            "LIBVA_DRIVER_NAME,nvidia"
-            "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-            "NVD_BACKEND,direct"
             "__GL_GSYNC_ALLOWED,1"
             "__GL_VRR_ALLOWED,1"
             "__GL_MaxFramesAllowed,1"
