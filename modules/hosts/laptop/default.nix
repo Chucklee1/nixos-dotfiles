@@ -3,7 +3,7 @@
   config,
   ...
 }: {
-  imports = [./hardware.nix]
+  imports = [./hardware.nix];
 
 # boot
   boot = {
