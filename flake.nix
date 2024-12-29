@@ -21,28 +21,52 @@
       wallpaper = ./assets/wallpaper.png;
     };
     lib = nixpkgs.lib;
-    importNixFiles = path: suffix: (
+    /*
+      importNixFiles = path: suffix: (
       lib.filter
       (n: lib.strings.hasSuffix "${suffix}" n)
       (lib.filesystem.listFilesRecursive ./modules/${path})
     );
+    */
+    readModulesRecursively = dir: suffix: let
+      # List all entries in the directory
+      entries = builtins.readDir dir;
+
+      # Recursively handle directories and files
+      processEntry = name: let
+        path = "${dir}/${name}";
+        info = builtins.readDir dir.${name};
+      in
+        if info.type == "directory"
+        then
+          # Recursively read directories
+          readModulesRecursively path suffix
+        else if lib.strings.hasSuffix suffix path
+        then
+          # Return valid files with matching suffix
+          [(import path)]
+        else []; # Ignore other files
+    in
+      # Flatten the results
+      lib.flatten (map processEntry entries);
+
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs def host;};
-      modules = [
-        (importNixFiles "shared" ".mod.nix")
-        (importNixFiles "hosts/${host}" ".nix")
-        inputs.home-manager.nixosModules.home-manager
-        inputs.stylix.nixosModules.stylix
-        inputs.niri.nixosModules.niri
-        inputs.grub2-themes.nixosModules.default
-        {
-          home-manager.sharedModules = [
-            (importNixFiles "shared" ".home.nix")
-            inputs.nixvim.homeManagerModules.nixvim
-          ];
-        }
-      ];
+      modules =
+        (readModulesRecursively ./modules/shared ".mod.nix")
+        ++ (readModulesRecursively ./modules/hosts/${host} ".nix")
+        ++ [
+          inputs.home-manager.nixosModules.home-manager
+          inputs.stylix.nixosModules.stylix
+          inputs.niri.nixosModules.niri
+          inputs.grub2-themes.nixosModules.default
+          {
+            home-manager.sharedModules =
+              (readModulesRecursively "./modules/shared" ".home.nix")
+              ++ [inputs.nixvim.homeManagerModules.nixvim];
+          }
+        ];
     });
   in {
     # systems
