@@ -1,4 +1,4 @@
-{
+_: {
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -7,7 +7,23 @@
         layer = "top";
         position = "bottom";
 
-        modules-left = ["idle_inhibitor"];
+        modules-left = ["niri/workspaces" "hyprland/workspaces" "idle_inhibitor"];
+
+        "niri/workspaces" = {
+          format = "{icon}";
+          "format-icons" = {
+            focused = "󰻀";
+            default = "";
+          };
+        };
+
+        "hyprland/workspaces" = {
+          format = "{icon}";
+          "format-icons" = {
+            focused = "󰻀";
+            default = "";
+          };
+        };
 
         "idle_inhibitor" = {
           format = "{icon}";
