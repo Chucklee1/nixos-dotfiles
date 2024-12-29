@@ -6,6 +6,10 @@
   host,
   ...
 }: {
+  imports = [
+    ./theming.mod.nix
+  ];
+
   # -----------------------------------------------------------
   # boot
   # -----------------------------------------------------------
@@ -70,6 +74,11 @@
       homeDirectory = "/home/${def.username}";
     };
     sharedModules = [
+      ./niri.home.nix
+      ./nixvim.home.nix
+      ./shelli.home.nix
+      ./vscode.home.nix
+      ./waybar.home.nix
       {
         programs = {
           fuzzel.enable = true;
