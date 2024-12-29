@@ -5,12 +5,17 @@
   def,
   host,
   ...
-}: {
+}: let
+  importNixFiles = path: (
+    lib.filter
+    (n: lib.strings.hasSuffix ".nix" n)
+    (lib.filesystem.listFilesRecursive ./${path})
+  );
+in {
   imports = [
-    ./hosts/${host}/default.nix
-    ./theming.nix
+    (importNixFiles "shared")
+    (importNixFiles "${host}")
   ];
-
   # -----------------------------------------------------------
   # boot
   # -----------------------------------------------------------
@@ -75,11 +80,6 @@
       homeDirectory = "/home/${def.username}";
     };
     sharedModules = [
-      ./niri.nix
-      ./shelli.nix
-      ./vscode.nix
-      ./waybar.nix
-      ./nixvim.nix
       {
         programs = {
           fuzzel.enable = true;
