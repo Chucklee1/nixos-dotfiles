@@ -23,8 +23,8 @@
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs def host;};
       modules = [
-        ./shared/default.nix
-        ./hosts/${host}/config.nix
+        ./modules/shared/default.nix
+        ./modules/hosts/${host}/default.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri

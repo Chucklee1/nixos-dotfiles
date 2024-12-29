@@ -3,12 +3,9 @@
   lib,
   inputs,
   def,
-  host,
   ...
 }: {
-  imports = [
-    ./theming.mod.nix
-  ];
+  imports = [./theming.mod.nix];
 
   # -----------------------------------------------------------
   # boot
@@ -77,12 +74,12 @@
       ./niri.home.nix
       ./nixvim.home.nix
       ./shelli.home.nix
-      ./vscode.home.nix
       ./waybar.home.nix
       {
         programs = {
           fuzzel.enable = true;
           wlogout.enable = true;
+          emacs.enable = true;
         };
         # most wm services
         services = {
