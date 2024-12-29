@@ -6,16 +6,14 @@
   host,
   ...
 }: let
-  importNixFiles =
-    path
-    suffix: (
-      lib.filter
-      (n: lib.strings.hasSuffix "${suffix}" n)
-      (lib.filesystem.listFilesRecursive ./${path})
-    );
+  importNixFiles = path: suffix: (
+    lib.filter
+    (n: lib.strings.hasSuffix "${suffix}" n)
+    (lib.filesystem.listFilesRecursive ./${path})
+  );
 in {
   imports =
-    (importNixFiles "shared" ".nix") ++ (importNixFiles "hosts/${host}" ".nix");
+    (importNixFiles "shared" ".mod.nix") ++ (importNixFiles "hosts/${host}" ".nix");
   # -----------------------------------------------------------
   # boot
   # -----------------------------------------------------------
