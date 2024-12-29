@@ -23,14 +23,7 @@
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs def host;};
-      modules = [
-        ./modules/default.nix
-        inputs.home-manager.nixosModules.home-manager
-        inputs.stylix.nixosModules.stylix
-        inputs.niri.nixosModules.niri
-        inputs.grub2-themes.nixosModules.default
-        {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];}
-      ];
+      modules = import ./modules/default.nix;
     });
   in {
     # systems
