@@ -9,8 +9,8 @@
     inputs.niri.nixosModules.niri
     inputs.grub2-themes.nixosModules.default
     ./hosts/${host}/default.nix
-    ./shared/user.nix
     ./shared/system.nix
+    ./shared/infastructure.nix
     ./shared/software.nix
     ./shared/theming.nix
   ];

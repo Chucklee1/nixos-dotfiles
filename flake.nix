@@ -23,7 +23,7 @@
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs def host;};
-      modules = ./modules/default.nix;
+      modules = [./modules/default.nix];
     });
   in {
     # systems
