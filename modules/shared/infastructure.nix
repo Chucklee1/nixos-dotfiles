@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  def,
+  ...
+}: {
   # -----------------------------------------------------------
   # infastrcuture
   # -----------------------------------------------------------
@@ -26,7 +30,7 @@
   services = {
     xserver = {
       enable = true;
-      xkb.layout = "us";
+      xkb.layout = def.layout;
       xkb.variant = "";
     };
     pipewire = {
