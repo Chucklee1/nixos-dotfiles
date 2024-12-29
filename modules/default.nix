@@ -6,16 +6,16 @@
   host,
   ...
 }: let
-  importNixFiles = path: (
-    lib.filter
-    (n: lib.strings.hasSuffix ".nix" n)
-    (lib.filesystem.listFilesRecursive ./${path})
-  );
+  importNixFiles =
+    path
+    suffix: (
+      lib.filter
+      (n: lib.strings.hasSuffix "${suffix}" n)
+      (lib.filesystem.listFilesRecursive ./${path})
+    );
 in {
-  imports = [
-    (importNixFiles "shared")
-    (importNixFiles "${host}")
-  ];
+  imports =
+    (importNixFiles "shared" ".nix") ++ (importNixFiles "hosts/${host}" ".nix");
   # -----------------------------------------------------------
   # boot
   # -----------------------------------------------------------
@@ -80,6 +80,7 @@ in {
       homeDirectory = "/home/${def.username}";
     };
     sharedModules = [
+      (importNixFiles "shared" ".home.nix")
       {
         programs = {
           fuzzel.enable = true;
