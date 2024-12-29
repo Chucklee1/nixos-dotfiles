@@ -143,7 +143,7 @@
     pavucontrol
     # apps/games
     firefox
-    openmw
+    #openmw
     # misc
     nerd-fonts.symbols-only
     file-roller
