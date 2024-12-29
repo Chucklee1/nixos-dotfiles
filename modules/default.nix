@@ -3,7 +3,7 @@
   host,
   ...
 }: {
-  modules = [
+  imports = [
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
     inputs.niri.nixosModules.niri
@@ -13,17 +13,15 @@
     ./shared/system.nix
     ./shared/software.nix
     ./shared/theming.nix
-    {
-      home-manager.sharedModules = [
-        inputs.nixvim.homeManagerModules.nixvim
-        ./home/settings.nix
-        ./home/theming.nix
-        ./home/shelli.nix
-        ./home/niri.nix
-        ./home/nixvim.nix
-        ./home/vscode.nix
-        ./home/waybar.nix
-      ];
-    }
+  ];
+  home-manager.sharedModules = [
+    inputs.nixvim.homeManagerModules.nixvim
+    ./home/settings.nix
+    ./home/theming.nix
+    ./home/shelli.nix
+    ./home/niri.nix
+    ./home/nixvim.nix
+    ./home/vscode.nix
+    ./home/waybar.nix
   ];
 }
