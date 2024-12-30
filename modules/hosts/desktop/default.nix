@@ -8,7 +8,6 @@
   imports = [
     ./hardware.nix
     ./hyprland.nix
-    ./nvidia.nix
     ./virt.nix
   ];
   # -----------------------------------------------------------
@@ -26,12 +25,32 @@
     interfaces.wlp6s0.useDHCP = lib.mkDefault true;
   };
 
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
+  hardware = {
+    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    nvidia = {
+      modesetting.enable = true;
+      package = nvidiaPackage;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+      open = false;
+    };
+    graphics.extraPackages = with pkgs; [
+      nvidia-vaapi-driver
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+  nixpkgs.config.nvidia.acceptLicense = true;
+  services.xserver.videoDrivers = ["nvidia"];
+  
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
+    # vulkan
+    vulkan-loader
+    vulkan-validation-layers
+    vulkan-tools
     # tools/deps
     zenity
     wineWowPackages.stagingFull
@@ -57,26 +76,5 @@
       localNetworkGameTransfers.openFirewall = true;
     };
   };
-
-  environment.variables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";
-    ELECTRON_OZONE_PLATFORM_HINT = "auto";
-    MOZ_DISABLE_RDD_SANDBOX = "1";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    PROTON_ENABLE_NGX_UPDATER = "1";
-
-    GBM_BACKEND = "nvidia-drm";
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    NVD_BACKEND = "direct";
-
-    WLR_NO_HARDWARE_CURSORS = "1";
-    WLR_DRM_NO_ATOMIC = "1";
-    WLR_USE_LIBINPUT = "1";
-    WLR_RENDERER_ALLOW_SOFTWARE = "1";
-
-    __GL_GSYNC_ALLOWED = "1";
-    __GL_VRR_ALLOWED = "1";
-    __GL_MaxFramesAllowed = "1";
-  };
+  environment.variables = {STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";};
 }
