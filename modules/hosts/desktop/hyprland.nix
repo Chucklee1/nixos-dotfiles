@@ -72,7 +72,7 @@
           exec-once = [
             "waybar"
             "nm-applet --indicator"
-            "hyprsunset -t 5200"
+            "wlsunset -T 5200"
             "swaybg -i $HOME/nixos-dotfiles/assets/wallpaper.png -m fill"
           ];
           # theming & layoutr
