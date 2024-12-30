@@ -79,7 +79,7 @@
         home.sessionVariables = {
           NIXOS_OZONE_WL = "1";
           MOZ_ENABLE_WAYLAND = "1";
-          SDL_VIDEODRIVER = "wayland";
+          SDL_VIDEODRIVER = "wayland,x11";
           GDK_BACKEND = "wayland,x11";
           QT_QPA_PLATFORM = "wayland;xcb";
           QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
@@ -89,7 +89,6 @@
         programs = {
           fuzzel.enable = true;
           wlogout.enable = true;
-          emacs.enable = true;
         };
         # most wm services
         services = {
@@ -139,8 +138,6 @@
     wlsunset
     networkmanagerapplet
     # xwayland
-    xwayland
-    xwayland-run
     xsel
     xclip
     # media
@@ -197,11 +194,6 @@
 
   # services
   services = {
-    xserver = {
-      enable = true;
-      xkb.layout = "us";
-      xkb.variant = "";
-    };
     pipewire = {
       enable = true;
       alsa.enable = true;

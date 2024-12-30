@@ -34,29 +34,9 @@
             initial_workspace_tracking = 0;
           };
           # env vars
-          env = [
-            "GBM_BACKEND,nvidia-drm"
-            "LIBVA_DRIVER_NAME,nvidia"
-            "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-            "NVD_BACKEND,direct"
-
-            "__GL_GSYNC_ALLOWED,1"
-            "__GL_VRR_ALLOWED,1"
-            "__GL_MaxFramesAllowed,1"
-
-            "WLR_NO_HARDWARE_CURSORS,1"
-            "WLR_DRM_NO_ATOMIC,1"
-            "WLR_USE_LIBINPUT,1"
-            "WLR_RENDERER_ALLOW_SOFTWARE,1"
-
-            "ELECTRON_OZONE_PLATFORM_HINT,auto"
-            "MOZ_DISABLE_RDD_SANDBOX,1"
-            "_JAVA_AWT_WM_NONREPARENTING,1"
-            "PROTON_ENABLE_NGX_UPDATER,1"
-            
+          env = [            
             "XDG_CURRENT_DESKTOP,Hyprland"
             "XDG_SESSION_DESKTOP,Hyprland"
-            "DISPLAY=0:"
           ];
 
           # window rules windowrule = <rule>,<info>

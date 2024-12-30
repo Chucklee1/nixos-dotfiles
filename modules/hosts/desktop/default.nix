@@ -60,11 +60,9 @@
     protontricks
     # apps/games
     webcord
-    osu-lazer-bin
+    #osu-lazer-bin
+    gamescope
     prismlauncher
-    xwayland-satellite
-    xwayland
-    xwayland-run
   ];
 
   programs = {
@@ -76,5 +74,23 @@
       localNetworkGameTransfers.openFirewall = true;
     };
   };
-  environment.variables = {STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";};
+  environment.variables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";
+    GBM_BACKEND = "nvidia-drm";
+    LIBVA_DRIVER_NAME = "nvidia";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    NVD_BACKEND = "direct";
+
+    __GL_GSYNC_ALLOWED = "1";
+    __GL_VRR_ALLOWED = "0";
+    __GL_MaxFramesAllowed = "1";
+
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_RENDERER_ALLOW_SOFTWARE = "1";
+
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    PROTON_ENABLE_NGX_UPDATER = "1";
+  };
 }
