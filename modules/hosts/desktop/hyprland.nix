@@ -56,6 +56,7 @@
             
             "XDG_CURRENT_DESKTOP,Hyprland"
             "XDG_SESSION_DESKTOP,Hyprland"
+            "DISPLAY=0:"
           ];
 
           # window rules windowrule = <rule>,<info>
