@@ -13,17 +13,8 @@
     screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
     # env vars
     environment = {
-      NIXOS_OZONE_WL = "1";
-      NIXPKGS_ALLOW_UNFREE = "1";
-      MOZ_ENABLE_WAYLAND = "1";
-      SDL_VIDEODRIVER = "wayland";
       XDG_CURRENT_DESKTOP = "niri";
       XDG_SESSION_DESKTOP = "niri";
-      GDK_BACKEND = "wayland,x11,*";
-      CLUTTER_BACKEND = "wayland";
-      QT_QPA_PLATFORM = "wayland;xcb";
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-      QT_AUTO_SCREEN_SCALE_FACTOR = "1";
     };
 
     # startup
@@ -34,7 +25,7 @@
     ];
 
     switch-events = with config.lib.niri.actions; let
-      sh = spawn "sh" "-c"; 
+      sh = spawn "sh" "-c";
     in {
       tablet-mode-on.action = sh "notify-send tablet-mode-on";
       tablet-mode-off.action = sh "notify-send tablet-mode-off";

@@ -12,6 +12,7 @@ _: {
       cursorline = true;
       scrolloff = 10;
       showmode = false;
+      foldlevel = 99;
       # Enable mouse
       mouse = "a";
       # Search
@@ -46,7 +47,7 @@ _: {
       }
       {
         mode = "n";
-        key = "<leader>f";
+        key = "ff";
         action = "<cmd>!alejandra %<CR>";
       }
       {
@@ -96,11 +97,14 @@ _: {
       bufferline.enable = true;
       lualine.enable = true;
       # qol
-      treesitter.enable = true;
+      treesitter = {
+        enable = true;
+        folding = true;
+      };
       toggleterm = {
         enable = true;
         settings = {
-          hide_numbers = false;
+          hide_numbers = true;
           autochdir = true;
           close_on_exit = true;
         };
@@ -113,6 +117,12 @@ _: {
       };
       # lsp
       nix.enable = true;
+      lsp = {
+        enable = true;
+        servers = {
+          clangd.enable = true;
+        };
+      };
     };
   };
 }
