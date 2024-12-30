@@ -8,6 +8,7 @@
   imports = [
     ./hardware.nix
     ./hyprland.nix
+    ./i3.nix
     ./virt.nix
   ];
   # -----------------------------------------------------------
@@ -29,7 +30,8 @@
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     nvidia = {
       modesetting.enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
+      package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
+      videoAcceleration = true;
       powerManagement.enable = false;
       powerManagement.finegrained = false;
       open = false;
@@ -63,6 +65,8 @@
     osu-lazer-bin
     gamescope
     prismlauncher
+    # x11
+    rofi 
   ];
 
   programs = {
@@ -80,17 +84,8 @@
     LIBVA_DRIVER_NAME = "nvidia";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     NVD_BACKEND = "direct";
-
     __GL_GSYNC_ALLOWED = "1";
-    __GL_VRR_ALLOWED = "0";
+    __GL_VRR_ALLOWED = "1";
     __GL_MaxFramesAllowed = "1";
-
-    WLR_NO_HARDWARE_CURSORS = "1";
-    WLR_RENDERER_ALLOW_SOFTWARE = "1";
-
-    ELECTRON_OZONE_PLATFORM_HINT = "auto";
-    MOZ_DISABLE_RDD_SANDBOX = "1";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    PROTON_ENABLE_NGX_UPDATER = "1";
   };
 }

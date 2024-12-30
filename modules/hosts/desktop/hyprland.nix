@@ -34,9 +34,14 @@
             initial_workspace_tracking = 0;
           };
           # env vars
-          env = [            
+          env = [
             "XDG_CURRENT_DESKTOP,Hyprland"
             "XDG_SESSION_DESKTOP,Hyprland"
+            "WLR_NO_HARDWARE_CURSORS,1"
+            "WLR_RENDERER_ALLOW_SOFTWARE,1"
+            "ELECTRON_OZONE_PLATFORM_HINT,auto"
+            "MOZ_DISABLE_RDD_SANDBOX,1"
+            "_JAVA_AWT_WM_NONREPARENTING,1"
           ];
 
           # window rules windowrule = <rule>,<info>
