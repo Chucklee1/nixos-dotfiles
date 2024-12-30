@@ -29,7 +29,7 @@
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     nvidia = {
       modesetting.enable = true;
-      package = nvidiaPackage;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement.enable = false;
       powerManagement.finegrained = false;
       open = false;
@@ -42,7 +42,7 @@
   };
   nixpkgs.config.nvidia.acceptLicense = true;
   services.xserver.videoDrivers = ["nvidia"];
-  
+
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
