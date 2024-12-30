@@ -60,7 +60,7 @@
     protontricks
     # apps/games
     webcord
-    #osu-lazer-bin
+    osu-lazer-bin
     gamescope
     prismlauncher
   ];
