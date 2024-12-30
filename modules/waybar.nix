@@ -7,23 +7,7 @@ _: {
         layer = "top";
         position = "bottom";
 
-        modules-left = ["niri/workspaces" "hyprland/workspaces" "idle_inhibitor"];
-
-        "niri/workspaces" = {
-          format = "{icon}";
-          "format-icons" = {
-            focused = "󰻀";
-            default = "";
-          };
-        };
-
-        "hyprland/workspaces" = {
-          format = "{icon}";
-          "format-icons" = {
-            focused = "󰻀";
-            default = "";
-          };
-        };
+        modules-left = ["idle_inhibitor"];
 
         "idle_inhibitor" = {
           format = "{icon}";
