@@ -38,7 +38,7 @@
       sh = spawn "sh" "-c";
       mod = "Mod";
       mod-s = "Mod+Shift";
-      modc = "Mod+Ctrl";
+      mod-c = "Mod+Ctrl";
       mod-sc = "Mod+Shift+Ctrl";
     in {
       # programs
