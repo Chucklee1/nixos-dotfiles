@@ -36,17 +36,21 @@
     # keybinds
     binds = with config.lib.niri.actions; let
       sh = spawn "sh" "-c";
+      mod = "Mod";
+      mod-s = "Mod+Shift";
+      modc = "Mod+Ctrl";
+      mod-sc = "Mod+Shift+Ctrl";
     in {
       # programs
-      "Mod+Return".action = spawn "kitty";
-      "Mod+E".action = spawn "thunar";
-      "Mod+Space".action = spawn "fuzzel";
-      "Super+Shift+L".action = spawn "swaylock";
-      "Super+Shift+P".action = spawn "wlogout";
-      "Mod+W".action = sh ''systemctl --user restart waybar.service'';
+      "${mod}+Return".action = spawn "kitty";
+      "${mod}+E".action = spawn "thunar";
+      "${mod}+Space".action = spawn "fuzzel";
+      "${mod-s}+L".action = spawn "swaylock";
+      "${mod-s}+P".action = spawn "wlogout";
+      "${mod}+W".action = sh ''systemctl --user restart waybar.service'';
       # clipboard
-      "Mod+Shift+C".action = sh "env DISPLAY=:0 xsel -ob | wl-copy"; 
-      "Mod+shift+V".action = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
+      "${mod-s}+C".action = sh "env DISPLAY=:0 xsel -ob | wl-copy";
+      "${mod-s}+V".action = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
       # media keys
       "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
       "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
@@ -58,26 +62,30 @@
       "Ctrl+Print".action = screenshot-screen;
       "Alt+Print".action = screenshot-window;
       # window actions
-      "Mod+Q".action = close-window;
+      "${mod}+Q".action = close-window;
       "Ctrl+Alt+Delete".action = quit;
-      "Mod+Left".action = focus-column-left;
-      "Mod+Right".action = focus-column-right;
-      "Mod+Up".action = focus-workspace-up;
-      "Mod+Down".action = focus-workspace-down;
-      "Mod+Shift+Left".action = move-column-left;
-      "Mod+Shift+Right".action = move-column-right;
-      "Mod+Shift+Up".action = move-window-to-workspace-up;
-      "Mod+Shift+Down".action = move-window-to-workspace-down;
+      "${mod}+Left".action = focus-column-left;
+      "${mod}+Right".action = focus-column-right;
+      "${mod}+Up".action = focus-workspace-up;
+      "${mod}+Down".action = focus-workspace-down;
+      "${mod-s}+Left".action = move-column-left;
+      "${mod-s}+Right".action = move-column-right;
+      "${mod-s}+Up".action = move-window-to-workspace-up;
+      "${mod-s}+Down".action = move-window-to-workspace-down;
       # window presets && row/col manipulation
-      "Mod+R".action = switch-preset-column-width;
-      "Mod+M".action = maximize-column;
-      "Mod+Shift+M".action = fullscreen-window;
-      "Mod+Comma".action = consume-window-into-column;
-      "Mod+Period".action = expel-window-from-column;
-      "Mod+Minus".action = set-column-width "-10%";
-      "Mod+Equal".action = set-column-width "+10%";
-      "Mod+Shift+Minus".action = set-window-height "-10%";
-      "Mod+Shift+Equal".action = set-window-height "+10%";
+      "${mod}+R".action = switch-preset-column-width;
+      "${mod}+M".action = maximize-column;
+      "${mod-s}+M".action = fullscreen-window;
+      "${mod}+Period".action = consume-window-into-column;
+      "${mod}+Comma".action = expel-window-from-column;
+      "${mod}+Minus".action = set-column-width "-10%";
+      "${mod}+Equal".action = set-column-width "+10%";
+      "${mod-s}+Minus".action = set-column-width "-1%";
+      "${mod-s}+Equal".action = set-column-width "+1%";
+      "${mod-c}+Minus".action = set-window-height "-10%";
+      "${mod-c}+Equal".action = set-window-height "+10%";
+      "${mod-c-s}+Minus".action = set-column-width "-1%";
+      "${mod-c-s}+Equal".action = set-column-width "+1%";
     };
     # input
     input = {
@@ -105,14 +113,14 @@
     };
     # layout n theming
     layout = {
-      gaps = 5;
+      gaps = 7;
       border.width = 2;
       always-center-single-column = false;
     };
     window-rules = [
       {
         geometry-corner-radius = let
-          r = 3.0;
+          r = 4.0;
         in {
           top-left = r;
           top-right = r;
