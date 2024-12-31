@@ -26,7 +26,6 @@
       specialArgs = {inherit inputs def host;};
       modules = [
         ./modules/shared/default.nix
-        ./modules/hosts/${host}/default.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.niri.nixosModules.niri

@@ -47,24 +47,12 @@
   # packages
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # vulkan
-    vulkan-tools
-    vulkan-loader
-    vulkan-validation-layers
     # tools/deps
-    zenity
-    wineWowPackages.stagingFull
-    samba
-    winetricks
+
     protonup-qt
     protontricks
     # apps/games
-    webcord
-    osu-lazer-bin 
     prismlauncher
-    gamescope
-    xwayland
-    xwayland-run
   ];
 
   programs = {

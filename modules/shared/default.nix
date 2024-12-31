@@ -3,9 +3,13 @@
   lib,
   inputs,
   def,
+  host,
   ...
 }: {
-  imports = [./theming.mod.nix];
+  imports = [
+    ../hosts/${host}/default.nix
+    ./theming.mod.nix
+  ];
 
   # -----------------------------------------------------------
   # boot
@@ -29,7 +33,7 @@
   # -----------------------------------------------------------
 
   networking = {
-    hostName = "${def.username}";
+    hostName = "${def.username}-${host}";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
   };
@@ -72,32 +76,11 @@
       homeDirectory = "/home/${def.username}";
     };
     sharedModules = [
+      ./wayland.nix
       ./niri.home.nix
       ./nixvim.home.nix
       ./shelli.home.nix
       ./waybar.home.nix
-      {
-        home.sessionVariables = {
-          DISPLAY=":0";
-          NIXOS_OZONE_WL = "1";
-          MOZ_ENABLE_WAYLAND = "1";
-          SDL_VIDEODRIVER = "wayland,x11";
-          GDK_BACKEND = "wayland,x11";
-          QT_QPA_PLATFORM = "wayland;xcb";
-          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-          QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-        };
-
-        programs = {
-          fuzzel.enable = true;
-          wlogout.enable = true;
-        };
-        # most wm services
-        services = {
-          dunst.enable = true;
-          gnome-keyring.enable = true;
-        };
-      }
     ];
   };
 
@@ -108,10 +91,15 @@
     # tools/deps
     gcc
     vulkan-tools
-    ffmpeg
-    v4l-utils
+    vulkan-loader
+    vulkan-validation-layers
+    zenity
     libnotify
     libsecret
+    # wine
+    wineWowPackages.stagingFull
+    samba
+    winetricks
     # language QOL
     alejandra
     nixd
@@ -130,24 +118,25 @@
     egl-wayland
     qt5.qtwayland
     qt6.qtwayland
-    # window manager utils
     wev
-    brightnessctl
-    wl-clipboard
-    cliphist
-    swaybg
-    wlsunset
-    networkmanagerapplet
     # xwayland
+    xwayland
+    xwayland-run
+    xwayland-satellite
+    # clipboard
     xsel
     xclip
-    xwayland-satellite
+    wl-clipboard
     # media
     mpv
     imv
     pavucontrol
-    # apps/games
+    v4l-utils
+    ffmpeg
+    # gui applications
     firefox
+    webcord
+    osu-lazer-bin
     #openmw
     # misc
     nerd-fonts.symbols-only
@@ -180,11 +169,7 @@
     polkit.enable = true;
     rtkit.enable = true; # for sound
   };
-  xdg.portal = {
-    enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
-    config.common.default = ["gtk"];
-  };
+  xdg.portal.enable = true;
 
   # hardware
   hardware = {
