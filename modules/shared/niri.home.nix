@@ -39,7 +39,7 @@
       mod = "Mod";
       mod-s = "Mod+Shift";
       mod-c = "Mod+Ctrl";
-      mod-sc = "Mod+Shift+Ctrl";
+      mod-s-c = "Mod+Shift+Ctrl";
     in {
       # programs
       "${mod}+Return".action = spawn "kitty";
