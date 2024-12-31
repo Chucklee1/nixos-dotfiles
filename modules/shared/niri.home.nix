@@ -5,8 +5,6 @@
   def,
   ...
 }: {
-
-
   programs.niri.settings = {
     # general
     prefer-no-csd = true;
@@ -16,17 +14,48 @@
     environment = {
       XDG_CURRENT_DESKTOP = "niri";
       XDG_SESSION_DESKTOP = "niri";
-
       DISPLAY = ":0";
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
-
       SDL_VIDEODRIVER = "wayland,x11";
       GDK_BACKEND = "wayland,x11";
       QT_QPA_PLATFORM = "wayland;xcb";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       QT_AUTO_SCREEN_SCALE_FACTOR = "1";
     };
+
+    spawn-at-startup = let
+      sh = cmd: ["sh" "-c" ''${cmd}''];
+    in [
+      {
+        command = [
+          "${lib.getExe pkgs.networkmanagerapplet}"
+        ];
+      }
+      {
+        command = [
+          "${lib.getExe pkgs.wlsunset}"
+          "-T"
+          "5200"
+        ];
+      }
+      {
+        command = [
+          "${lib.getExe pkgs.swaybg}"
+          "-i"
+          "${def.wallpaper}"
+          "-m"
+          "fill"
+        ];
+      }
+      {
+        command = sh ''
+          if systemctl --user list-units --type=service --all | grep -q 'waybar.service'; then
+            systemctl --user restart waybar.service
+          fi
+        '';
+      }
+    ];
 
     switch-events = with config.lib.niri.actions; let
       sh = spawn "sh" "-c";
@@ -56,11 +85,11 @@
       "${mod-s}+C".action = sh "env DISPLAY=:0 xsel -ob | wl-copy";
       "${mod-s}+V".action = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
       # media keys
-      "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
-      "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
+      "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
+      "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
       "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-      "XF86MonBrightnessUp".action = sh "${lib.getExe pkgs.brightnessctl} set 10%+";
-      "XF86MonBrightnessDown".action = sh "${lib.getExe pkgs.brightnessctl} set 10%-";
+      "XF86MonBrightnessUp".action = sh "${lib.getExe pkgs.brightnessctl} set 5%+";
+      "XF86MonBrightnessDown".action = sh "${lib.getExe pkgs.brightnessctl} set 5%-";
       # screenshot
       "Print".action = screenshot;
       "Ctrl+Print".action = screenshot-screen;

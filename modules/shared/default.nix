@@ -76,7 +76,6 @@
       homeDirectory = "/home/${def.username}";
     };
     sharedModules = [
-      ./wayland.nix
       ./niri.home.nix
       ./nixvim.home.nix
       ./shelli.home.nix
