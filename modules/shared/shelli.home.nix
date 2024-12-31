@@ -33,6 +33,8 @@ _: {
         cg = "sudo nix-collect-garbage";
         update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
         update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
+        # xwayland
+        xrun = "xwayland-run -geometry 1920x1080 -fullscreen --";
       };
     };
     oh-my-posh = {

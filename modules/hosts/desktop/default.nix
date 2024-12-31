@@ -60,13 +60,14 @@
     protontricks
     # apps/games
     webcord
-    osu-lazer-bin
-    gamescope
+    osu-lazer-bin 
     prismlauncher
+    gamescope
+    xwayland
+    xwayland-run
   ];
 
   programs = {
-    gamemode.enable = true;
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -83,10 +84,10 @@
     __GL_GSYNC_ALLOWED = "1";
     __GL_VRR_ALLOWED = "1";
     __GL_MaxFramesAllowed = "1";
-    #WLR_NO_HARDWARE_CURSORS = "1";
-    #WLR_RENDERER_ALLOW_SOFTWARE = "1";
-    #ELECTRON_OZONE_PLATFORM_HINT = "auto";
-    #MOZ_DISABLE_RDD_SANDBOX = "1";
-    #_JAVA_AWT_WM_NONREPARENTING = "1";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_RENDERER_ALLOW_SOFTWARE = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
   };
 }

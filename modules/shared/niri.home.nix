@@ -36,7 +36,6 @@
     # keybinds
     binds = with config.lib.niri.actions; let
       sh = spawn "sh" "-c";
-      msg = command: sh "niri msg action ${command}";
     in {
       # programs
       "Mod+Return".action = spawn "kitty";
@@ -44,14 +43,16 @@
       "Mod+Space".action = spawn "fuzzel";
       "Super+Shift+L".action = spawn "swaylock";
       "Super+Shift+P".action = spawn "wlogout";
-      "Mod+W".action = spawn "systemctl --user restart waybar.service";
+      "Mod+W".action = sh ''systemctl --user restart waybar.service'';
+      # clipboard
+      "Mod+Shift+C".action = sh "env DISPLAY=:0 xsel -ob | wl-copy"; 
+      "Mod+shift+V".action = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
       # media keys
-      "XF86AudioRaiseVolume".action = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
-      "XF86AudioLowerVolume".action = spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
-      "XF86AudioMute".action = spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-      "XF86AudioMicMute".action = spawn "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-      "XF86MonBrightnessUp".action = spawn "brightnessctl --device=amdgpu_bl1 s 5%+";
-      "XF86MonBrightnessDown".action = spawn "brightnessctl --device=amdgpu_bl1 s 5%-";
+      "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
+      "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
+      "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+      "XF86MonBrightnessUp".action = sh "brightnessctl set 10%+";
+      "XF86MonBrightnessDown".action = sh "brightnessctl set 10%-";
       # screenshot
       "Print".action = screenshot;
       "Ctrl+Print".action = screenshot-screen;

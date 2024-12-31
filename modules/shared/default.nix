@@ -38,6 +38,7 @@
   time.timeZone = "America/Vancouver";
   console = {
     earlySetup = true;
+    font = "Lat2-Terminus16";
     keyMap = def.layout;
   };
 
@@ -77,6 +78,7 @@
       ./waybar.home.nix
       {
         home.sessionVariables = {
+          DISPLAY=":0";
           NIXOS_OZONE_WL = "1";
           MOZ_ENABLE_WAYLAND = "1";
           SDL_VIDEODRIVER = "wayland,x11";
@@ -131,7 +133,6 @@
     # window manager utils
     wev
     brightnessctl
-    xclip
     wl-clipboard
     cliphist
     swaybg
@@ -140,6 +141,7 @@
     # xwayland
     xsel
     xclip
+    xwayland-satellite
     # media
     mpv
     imv
@@ -199,6 +201,10 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+    };
+    xserver = {
+      enable = true;
+      xkb.layout = def.layout;
     };
     blueman.enable = true;
     fstrim.enable = true;
