@@ -7,8 +7,6 @@
 }: {
   imports = [
     ./hardware.nix
-    ./hyprland.nix
-    ./i3.nix
     ./virt.nix
   ];
   # -----------------------------------------------------------
@@ -50,13 +48,13 @@
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # vulkan
+    vulkan-tools
     vulkan-loader
     vulkan-validation-layers
-    vulkan-tools
     # tools/deps
     zenity
     wineWowPackages.stagingFull
-    samba
+    samb
     winetricks
     protonup-qt
     protontricks
@@ -65,8 +63,6 @@
     osu-lazer-bin
     gamescope
     prismlauncher
-    # x11
-    rofi 
   ];
 
   programs = {
@@ -87,5 +83,10 @@
     __GL_GSYNC_ALLOWED = "1";
     __GL_VRR_ALLOWED = "1";
     __GL_MaxFramesAllowed = "1";
+    #WLR_NO_HARDWARE_CURSORS = "1";
+    #WLR_RENDERER_ALLOW_SOFTWARE = "1";
+    #ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    #MOZ_DISABLE_RDD_SANDBOX = "1";
+    #_JAVA_AWT_WM_NONREPARENTING = "1";
   };
 }
