@@ -1,4 +1,4 @@
-{lib, pkgs, ...}:
+{lib, pkgs, def, ...}:
 {
   programs = {
     fuzzel.enable = true;
@@ -34,9 +34,9 @@
         if systemctl --user list-units --type=service --all | grep -q 'waybar.service'; then
           systemctl --user restart waybar.service
         fi
-        ${lib.getExe pkgs.networkmanagerapplet}
-        ${lib.getExe pkgs.wlsunset} -T 5200
-        ${lib.getExe pkgs.swaybg} -i ${def.wallpaper} -m fill
+        ${lib.getExe pkgs.networkmanagerapplet} &
+        ${lib.getExe pkgs.wlsunset} -T 5200 &
+        ${lib.getExe pkgs.swaybg} -i ${def.wallpaper} -m fill &
       '';
       Restart = "always";
       RestartSec = "2";
