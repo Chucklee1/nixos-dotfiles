@@ -54,7 +54,7 @@
     # tools/deps
     zenity
     wineWowPackages.stagingFull
-    samb
+    samba
     winetricks
     protonup-qt
     protontricks
