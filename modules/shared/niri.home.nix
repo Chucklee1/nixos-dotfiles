@@ -84,8 +84,8 @@
       "${mod-s}+Equal".action = set-column-width "+1%";
       "${mod-c}+Minus".action = set-window-height "-10%";
       "${mod-c}+Equal".action = set-window-height "+10%";
-      "${mod-c-s}+Minus".action = set-column-width "-1%";
-      "${mod-c-s}+Equal".action = set-column-width "+1%";
+      "${mod-s-c}+Minus".action = set-column-width "-1%";
+      "${mod-s-c}+Equal".action = set-column-width "+1%";
     };
     # input
     input = {
