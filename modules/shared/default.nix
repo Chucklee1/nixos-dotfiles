@@ -76,9 +76,10 @@
       homeDirectory = "/home/${def.username}";
     };
     sharedModules = [
-      ./niri.home.nix
-      ./nixvim.home.nix
       ./shelli.home.nix
+      ./nixvim.home.nix
+      ./wayland.home.nix
+      ./niri.home.nix
       ./waybar.home.nix
     ];
   };
