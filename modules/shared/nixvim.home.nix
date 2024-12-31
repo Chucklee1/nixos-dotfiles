@@ -40,26 +40,36 @@ _: {
       undofile = true;
     };
     keymaps = [
+      # builtins
+            {
+        mode = "n";
+        key = "<leader>c";
+        action = "<cmd>bd<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>e";
+        action = "<cmd>Ex<CR>";
+      }
+      # git related
       {
         mode = "n";
         key = "<leader>gg";
         action = "<cmd>LazyGit<CR>";
       }
+      # formatter for nix
       {
         mode = "n";
         key = "ff";
         action = "<cmd>!alejandra %<CR>";
       }
+      # toggleterm
       {
         mode = "n";
         key = "<leader>t";
         action = "<cmd>ToggleTerm<CR>";
       }
-      {
-        mode = "n";
-        key = "<leader>c";
-        action = "<cmd>bd<CR>";
-      }
+      # bufferline
       {
         mode = "n";
         key = "<Tab>";
@@ -70,24 +80,6 @@ _: {
         mode = "n";
         key = "<S-Tab>";
         action = "<cmd>BufferLineCyclePrev<cr>";
-      }
-
-      {
-        mode = "n";
-        key = "<S-l>";
-        action = "<cmd>BufferLineCycleNext<cr>";
-      }
-
-      {
-        mode = "n";
-        key = "<S-h>";
-        action = "<cmd>BufferLineCyclePrev<cr>";
-      }
-
-      {
-        mode = "n";
-        key = "<leader>bd";
-        action = "<cmd>bdelete<cr>";
       }
     ];
     plugins = {

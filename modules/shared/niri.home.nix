@@ -62,8 +62,8 @@
     in {
       tablet-mode-on.action = sh "notify-send tablet-mode-on";
       tablet-mode-off.action = sh "notify-send tablet-mode-off";
-      lid-open.action = sh "notify-send lid-open";
-      lid-close.action = sh "notify-send lid-close";
+      lid-open.action = sh "swaylock";
+      lid-close.action = sh "power-off-monitors";
     };
 
     # keybinds
