@@ -6,6 +6,7 @@ _: {
       {
         layer = "top";
         position = "bottom";
+        height = 26;
 
         modules-left = ["idle_inhibitor"];
 

@@ -136,6 +136,8 @@
     # gui applications
     firefox
     krita
+    spotify
+    zoom-us
     webcord
     osu-lazer-bin
     # misc
