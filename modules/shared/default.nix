@@ -81,6 +81,15 @@
       ./wayland.home.nix
       ./niri.home.nix
       ./waybar.home.nix
+      {
+        home.packages = with pkgs; [
+          krita
+          webcord
+          spotify
+          zoom-us
+        ];
+        programs.firefox.enable = true;
+      }
     ];
   };
 
@@ -133,14 +142,8 @@
     pavucontrol
     v4l-utils
     ffmpeg
-    # gui applications
-    firefox
-    krita
-    spotify
-    zoom-us
-    webcord
-    osu-lazer-bin
     # misc
+    osu-lazer-bin
     nerd-fonts.symbols-only
     file-roller
     p7zip
