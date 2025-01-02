@@ -33,6 +33,7 @@ _: {
         cg = "sudo nix-collect-garbage";
         update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
         update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
+        OSU = "rm -rf /media/goat/BLUE_SATA/games/osu-lazer/framework.ini && sleep 1 && osu!";
       };
     };
     oh-my-posh = {

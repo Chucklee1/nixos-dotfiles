@@ -109,6 +109,10 @@ _: {
       };
       # lsp
       nix.enable = true;
+      render-markdown = {
+        enable = true;
+        autoLoad = true;
+      };
       lsp = {
         enable = true;
         servers = {

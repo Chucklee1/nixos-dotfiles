@@ -135,9 +135,9 @@
     ffmpeg
     # gui applications
     firefox
+    krita
     webcord
     osu-lazer-bin
-    #openmw
     # misc
     nerd-fonts.symbols-only
     file-roller
@@ -148,7 +148,10 @@
   # system programs
   # -----------------------------------------------------------
   programs = {
-    niri.enable = true;
+    niri = {
+      enable = true;
+      package = pkgs.niri-unstable;
+    };
     dconf.enable = true;
     xfconf.enable = true; # for thunar config
     thunar = {

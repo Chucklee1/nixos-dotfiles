@@ -62,8 +62,11 @@
     in {
       tablet-mode-on.action = sh "notify-send tablet-mode-on";
       tablet-mode-off.action = sh "notify-send tablet-mode-off";
-      lid-open.action = sh "swaylock";
-      lid-close.action = sh "power-off-monitors";
+      lid-open.action = sh ''
+        niri msg action power-on-monitors
+        swaylock
+      '';
+      lid-close.action = sh "niri msg action power-off-monitors";
     };
 
     # keybinds
@@ -74,43 +77,45 @@
       mod-c = "Mod+Ctrl";
       mod-s-c = "Mod+Shift+Ctrl";
     in {
-      # programs
+      # hotkeys - programs
       "${mod}+Return".action = spawn "kitty";
       "${mod}+E".action = spawn "thunar";
       "${mod}+Space".action = spawn "fuzzel";
       "${mod-s}+L".action = spawn "swaylock";
       "${mod-s}+P".action = spawn "wlogout";
       "${mod}+W".action = sh ''systemctl --user restart waybar.service'';
-      # clipboard
+      # hotkeys - clipboard
       "${mod-s}+C".action = sh "env DISPLAY=:0 xsel -ob | wl-copy";
       "${mod-s}+V".action = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
-      # media keys
+      # hotkeys - media keys
       "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
       "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
       "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
       "XF86MonBrightnessUp".action = sh "${lib.getExe pkgs.brightnessctl} set 5%+";
       "XF86MonBrightnessDown".action = sh "${lib.getExe pkgs.brightnessctl} set 5%-";
-      # screenshot
+      # niri - screenshot
       "Print".action = screenshot;
       "Ctrl+Print".action = screenshot-screen;
       "Alt+Print".action = screenshot-window;
-      # window actions
+      # niri - quits
       "${mod}+Q".action = close-window;
       "Ctrl+Alt+Delete".action = quit;
+      # niri - window focus and move
+      "${mod}+Up".action = focus-window-up;
+      "${mod}+Down".action = focus-window-down;
       "${mod}+Left".action = focus-column-left;
       "${mod}+Right".action = focus-column-right;
-      "${mod}+Up".action = focus-workspace-up;
-      "${mod}+Down".action = focus-workspace-down;
+      "${mod-s}+Up".action = move-window-up;
+      "${mod-s}+Down".action = move-window-down;
       "${mod-s}+Left".action = move-column-left;
       "${mod-s}+Right".action = move-column-right;
-      "${mod-s}+Up".action = move-window-to-workspace-up;
-      "${mod-s}+Down".action = move-window-to-workspace-down;
-      # window presets && row/col manipulation
+      # niri - window presets
       "${mod}+R".action = switch-preset-column-width;
       "${mod}+M".action = maximize-column;
       "${mod-s}+M".action = fullscreen-window;
-      "${mod}+Period".action = consume-window-into-column;
-      "${mod}+Comma".action = expel-window-from-column;
+      "${mod}+Period".action = consume-or-expel-window-right;
+      "${mod}+Comma".action = consume-or-expel-window-left;
+      # niri - column width - using = since + needs shift
       "${mod}+Minus".action = set-column-width "-10%";
       "${mod}+Equal".action = set-column-width "+10%";
       "${mod-s}+Minus".action = set-column-width "-1%";
@@ -119,6 +124,11 @@
       "${mod-c}+Equal".action = set-window-height "+10%";
       "${mod-s-c}+Minus".action = set-column-width "-1%";
       "${mod-s-c}+Equal".action = set-column-width "+1%";
+      # niri - floating windows 
+      "${mod}+f".action = switch-focus-between-floating-and-tiling;
+      "${mod-s}+f".action = toggle-window-floating;
+      # debugging
+      "Ctrl+Shift+d".action = toggle-debug-tint;
     };
     # input
     input = {

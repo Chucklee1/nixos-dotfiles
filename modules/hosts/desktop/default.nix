@@ -28,7 +28,7 @@
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     nvidia = {
       modesetting.enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
       videoAcceleration = true;
       powerManagement.enable = false;
       powerManagement.finegrained = false;
