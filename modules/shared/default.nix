@@ -9,6 +9,7 @@
   imports = [
     ../hosts/${host}/default.nix
     ./theming.mod.nix
+    ./virt.nix
   ];
 
   # -----------------------------------------------------------
@@ -131,7 +132,6 @@
     # xwayland
     xwayland
     xwayland-run
-    xwayland-satellite
     # clipboard
     xsel
     xclip

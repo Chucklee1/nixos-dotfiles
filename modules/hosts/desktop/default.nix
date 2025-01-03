@@ -6,9 +6,7 @@
   ...
 }: {
   imports = [
-    ./hardware.nix
-    ./virt.nix
-  ];
+    ./hardware.nix];
   # -----------------------------------------------------------
   # system
   # -----------------------------------------------------------
@@ -48,7 +46,6 @@
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # tools/deps
-
     protonup-qt
     protontricks
     # apps/games

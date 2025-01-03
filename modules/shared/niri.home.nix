@@ -32,6 +32,11 @@
           "${lib.getExe pkgs.networkmanagerapplet}"
         ];
       }
+            {
+        command = [
+          "${lib.getExe pkgs.xwayland-satellite}"
+        ];
+      }
       {
         command = [
           "${lib.getExe pkgs.wlsunset}"
@@ -47,7 +52,7 @@
           "-m"
           "fill"
         ];
-      }
+      } 
       {
         command = sh ''
           if systemctl --user list-units --type=service --all | grep -q 'waybar.service'; then
