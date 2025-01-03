@@ -204,9 +204,15 @@
     displayManager.ly.enable = true;
     libinput.enable = true;
     printing.enable = true;
-    openssh.enable = true;
     # for thunar
     tumbler.enable = true;
     gvfs.enable = true;
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "prohibit-password";
+      };
+    };
   };
 }
