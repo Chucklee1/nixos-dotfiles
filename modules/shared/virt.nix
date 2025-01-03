@@ -4,6 +4,8 @@
   virtualisation = {
     spiceUSBRedirection.enable = true;
     libvirtd = {
+      onBoot = "ignore";
+      onShutdown = "shutdown";
       enable = true;
       qemu = {
         package = pkgs.qemu_kvm;
