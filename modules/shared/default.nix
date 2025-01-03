@@ -20,6 +20,7 @@
       enable = true;
       efiSupport = true;
       device = "nodev";
+      useOSProber = true;
     };
     grub2-theme = {
       enable = true;
@@ -42,7 +43,6 @@
   time.timeZone = "America/Vancouver";
   console = {
     earlySetup = true;
-    font = "Lat2-Terminus16";
     keyMap = def.layout;
   };
 
