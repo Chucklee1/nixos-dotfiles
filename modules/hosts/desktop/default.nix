@@ -5,7 +5,7 @@
   def,
   ...
 }: {
-  imports = [./hardware.nix ];
+  imports = [./hardware.nix];
 
   # -----------------------------------------------------------
   # system
@@ -44,6 +44,7 @@
     windowManager.dwm = {
       enable = true;
       package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
+    };
   };
   # -----------------------------------------------------------
   # packages
