@@ -43,7 +43,7 @@
     videoDrivers = ["nvidia"];
     windowManager.dwm = {
       enable = true;
-      package = pkgs.dwm.overrideAttrs (old: {src = ../../assets/dwm-src;});
+      #package = pkgs.dwm.overrideAttrs (old: {src = ../../assets/dwm-src;});
     };
   };
   # -----------------------------------------------------------
@@ -61,7 +61,7 @@
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
+     dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
     };
   };
