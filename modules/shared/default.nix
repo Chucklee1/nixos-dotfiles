@@ -147,6 +147,8 @@
     nerd-fonts.symbols-only
     file-roller
     p7zip
+    dwarf-fortress
+    dwarf-fortress-packages.soundSense
   ];
 
   # -----------------------------------------------------------

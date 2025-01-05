@@ -39,29 +39,36 @@
     ];
   };
   nixpkgs.config.nvidia.acceptLicense = true;
+
   services.xserver = {
     videoDrivers = ["nvidia"];
     windowManager.dwm = {
       enable = true;
       package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
     };
+    #displayManager.sessionCommands = ''
+    #  ${lib.getExe pkgs.xorg.xrandr} --output DP-2 --mode 1920x1080 --rate 165.00
+    #  ${lib.getExe pkgs.networkmanagerapplet}
+    #  ${lib.getExe pkgs.picom}
+    #  ${lib.getExe pkgs.nitrogen} ${def.wallpaper}
+    #'';
   };
+
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # tools/deps
     protonup-qt
     protontricks
-    # apps/games
     prismlauncher
+    rofi
   ];
 
   programs = {
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
-     dedicatedServer.openFirewall = true;
+      dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
     };
   };
