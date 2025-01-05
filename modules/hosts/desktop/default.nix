@@ -5,10 +5,8 @@
   def,
   ...
 }: {
-  imports = [
-    ./hardware.nix 
-  ];
-  home-manager.sharedModules = [./dwm.nix];
+  imports = [./hardware.nix ];
+
   # -----------------------------------------------------------
   # system
   # -----------------------------------------------------------
@@ -41,8 +39,12 @@
     ];
   };
   nixpkgs.config.nvidia.acceptLicense = true;
-  services.xserver.videoDrivers = ["nvidia"];
-
+  services.xserver = {
+    videoDrivers = ["nvidia"];
+    windowManager.dwm = {
+      enable = true;
+      package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
+  };
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
