@@ -153,11 +153,17 @@
   # system programs
   # -----------------------------------------------------------
   programs = {
+    dconf.enable = true;
     niri = {
       enable = true;
       package = pkgs.niri-unstable;
     };
-    dconf.enable = true;
+  };
+
+  # -----------------------------------------------------------
+  # thunar
+  # -----------------------------------------------------------
+  programs = {
     xfconf.enable = true; # for thunar config
     thunar = {
       enable = true;
@@ -167,52 +173,85 @@
       ];
     };
   };
+  # services for thunar
+  services = {
+    tumbler.enable = true;
+    gvfs.enable = true;
+  };
 
   # -----------------------------------------------------------
-  # infastrcuture
+  # security & polkit
   # -----------------------------------------------------------
-
-  # security and portals
+  xdg.portal.enable = true;
   security = {
     polkit.enable = true;
     rtkit.enable = true; # for sound
   };
-  xdg.portal.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "prohibit-password";
+    };
+  };
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [9001 1701];
+    allowedUDPPortRanges = [
+      {
+        from = 4000;
+        to = 4007;
+      }
+      {
+        from = 8000;
+        to = 8010;
+      }
+    ];
+  };
 
-  # hardware
+  # -----------------------------------------------------------
+  # global drivers
+  # -----------------------------------------------------------
+
+  # audio
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # bluetooth
   hardware = {
-    graphics.enable = true; # renamed opengl to graphics as of 24.11
-    graphics.enable32Bit = true;
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
   };
+  services.blueman.enable = true;
 
-  # services
+  # opengl - renamed to graphics as of 24.11
+  hardware = {
+    graphics.enable = true;
+    graphics.enable32Bit = true;
+  };
+
+  # printing
+  services.printing.enable = true;
+
+  # user input
+  programs.weylus.enable = true;
   services = {
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
     xserver = {
       enable = true;
       xkb.layout = def.layout;
     };
-    blueman.enable = true;
+    udev.extraRules = ''
+      KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+    '';
+  };
+
+  # the rest
+  services = {
     fstrim.enable = true;
     displayManager.ly.enable = true;
-    libinput.enable = true;
-    printing.enable = true;
-    # for thunar
-    tumbler.enable = true;
-    gvfs.enable = true;
-    openssh = {
-      enable = true;
-      settings = {
-        PasswordAuthentication = false;
-        PermitRootLogin = "prohibit-password";
-      };
-    };
   };
 }
