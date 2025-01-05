@@ -43,7 +43,7 @@
     videoDrivers = ["nvidia"];
     windowManager.dwm = {
       enable = true;
-      package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
+      package = pkgs.dwm.overrideAttrs (old: {src = ../../assets/dwm-src;});
     };
   };
   # -----------------------------------------------------------
