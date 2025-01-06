@@ -9,7 +9,7 @@
   imports = [
     ../hosts/${host}/default.nix
     ./theming.mod.nix
-    ./dwm.nix
+    ./x11.nix
     ./virt.nix
   ];
 
