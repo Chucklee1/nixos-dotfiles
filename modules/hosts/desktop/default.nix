@@ -48,8 +48,7 @@
   # dwm
   # -----------------------------------------------------------
   services.xserver = {
-    enableTCP = true;
-    # dwm override
+# dwm override
     windowManager.dwm = {
       enable = true;
       package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
