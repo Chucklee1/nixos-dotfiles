@@ -10,8 +10,6 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
-    dwm-src.url = "github:Chucklee1/dwm-src";
-    dwm-src.flake = false;
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
@@ -21,7 +19,7 @@
       system = "x86_64-linux";
       layout = "us";
       wallpaper = ./assets/wallpaper.png;
-      dwm-src = inputs.dwm-src;
+      dwm-src = ./assets/dwm-src;
     };
 
     # system declaration
