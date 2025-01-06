@@ -14,7 +14,7 @@
     };
     # startup commands
     displayManager = {
-      xstart.enable = true;
+      startx.enable = true;
       sessionCommands = ''
         ${lib.getExe pkgs.feh} --bg-scale $HOME/nixos-dotfiles/assets/wallpaper.png &
         ${lib.getExe pkgs.xorg.xrandr} --output DP-2 --mode 1920x1080 -r 165.00

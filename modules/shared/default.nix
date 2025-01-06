@@ -94,7 +94,6 @@
     sharedModules = [
       ./shelli.home.nix
       ./nixvim.home.nix
-      ./wayland.home.nix
       ./niri.home.nix
       ./waybar.home.nix
       {
