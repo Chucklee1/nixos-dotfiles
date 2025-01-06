@@ -19,7 +19,10 @@
       system = "x86_64-linux";
       layout = "us";
       wallpaper = ./assets/wallpaper.png;
-      dwm-src = ./assets/dwm-src; 
+      dwm-src = builtins.fetchGit {
+        url = "https://github.com/Chucklee1/dwm-src.git";
+        rev = "main"; 
+      }; 
     };
 
     # system declaration
