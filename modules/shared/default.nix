@@ -9,7 +9,7 @@
   imports = [
     ../hosts/${host}/default.nix
     ./theming.mod.nix
-    ./devices.nix
+    ./dwm.nix
     ./virt.nix
   ];
 
@@ -57,6 +57,10 @@
 
   i18n.defaultLocale = "en_CA.UTF-8";
   time.timeZone = "America/Vancouver";
+  console = {
+    earlySetup = true;
+    keyMap = def.layout;
+  };
 
   # -----------------------------------------------------------
   # nix options
@@ -100,7 +104,13 @@
           spotify
           zoom-us
         ];
+
         programs.firefox.enable = true;
+
+        services = {
+          dunst.enable = true;
+          gnome-keyring.enable = true;
+        };
       }
     ];
   };
@@ -143,6 +153,8 @@
     # xwayland
     xwayland
     xwayland-run
+    # x11
+    rofi
     # clipboard
     xsel
     xclip
@@ -212,10 +224,36 @@
   # global drivers
   # -----------------------------------------------------------
 
+  # audio
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # bluetooth
+  hardware = {
+    bluetooth.enable = true;
+    bluetooth.powerOnBoot = true;
+  };
+  services.blueman.enable = true;
+
+  # opengl - renamed to graphics as of 24.11
+  hardware = {
+    graphics.enable = true;
+    graphics.enable32Bit = true;
+  };
+
+  # tablet support
+  programs.weylus.enable = true;
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+  '';
+
+  # misc
   services = {
-    xserver.enable = true;
     printing.enable = true;
     fstrim.enable = true;
-    displayManager.ly.enable = true;
   };
 }

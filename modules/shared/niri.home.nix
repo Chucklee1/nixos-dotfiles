@@ -5,6 +5,18 @@
   def,
   ...
 }: {
+  services.swayidle.enable = true;
+  programs = {
+    fuzzel.enable = true;
+    wlogout = {
+      enable = true;
+    };
+    swaylock = {
+      enable = true;
+      package = pkgs.swaylock-effects;
+    };
+  };
+
   programs.niri.settings = {
     # general
     prefer-no-csd = true;

@@ -45,29 +45,12 @@
   services.xserver.videoDrivers = ["nvidia"];
 
   # -----------------------------------------------------------
-  # dwm
-  # -----------------------------------------------------------
-  services.xserver = {
-# dwm override
-    windowManager.dwm = {
-      enable = true;
-      package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
-    };
-    # startup command
-    displayManager.sessionCommands = ''
-      ${lib.getExe pkgs.feh} --bg-scale $HOME/nixos-dotfiles/assets/wallpaper.png &
-      ${lib.getExe pkgs.xorg.xrandr} --output DP-2 --mode 1920x1080 -r 165.00
-    '';
-  };
-
-  # -----------------------------------------------------------
   # software
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     protonup-qt
     protontricks
     prismlauncher
-    rofi
   ];
 
   programs.steam = {
