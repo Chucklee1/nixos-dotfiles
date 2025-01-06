@@ -209,26 +209,11 @@
   };
 
   # -----------------------------------------------------------
-  # dwm
-  # -----------------------------------------------------------
-  services.xserver = {
-    enable = true;
-    # dwm override
-    windowManager.dwm = {
-      enable = true;
-      package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
-    };
-    # startup command
-    displayManager.sessionCommands = ''
-      ${lib.getExe pkgs.feh} --bg-scale $HOME/nixos-dotfiles/assets/wallpaper.png &
-    '';
-  };
-
-  # -----------------------------------------------------------
   # global drivers
   # -----------------------------------------------------------
 
   services = {
+    xserver.enable = true;
     printing.enable = true;
     fstrim.enable = true;
     displayManager.ly.enable = true;

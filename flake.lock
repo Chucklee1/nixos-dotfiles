@@ -87,22 +87,6 @@
         "type": "github"
       }
     },
-    "dwm-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1736193739,
-        "narHash": "sha256-Cc4B8evvuRxOjbeOhg3oAs3Nxi/msxWg950/eiq536w=",
-        "owner": "Chucklee1",
-        "repo": "dwm-src",
-        "rev": "324970edb797aa1929c91c53b722857d60abb646",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Chucklee1",
-        "repo": "dwm-src",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "locked": {
         "lastModified": 1696426674,
@@ -645,7 +629,6 @@
     },
     "root": {
       "inputs": {
-        "dwm-src": "dwm-src",
         "grub2-themes": "grub2-themes",
         "home-manager": "home-manager",
         "niri": "niri",
