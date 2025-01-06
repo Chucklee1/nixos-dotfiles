@@ -48,22 +48,16 @@
   # dwm
   # -----------------------------------------------------------
   services.xserver = {
-    enable = true;
-    xkb.layout = def.layout;
+    enableTCP = true;
     # dwm override
     windowManager.dwm = {
       enable = true;
       package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
     };
     # startup command
-    displayManager.sessionCommands = let
-      feh = lib.getExe pkgs.feh;
-      xrandr = lib.getExe pkgs.xorg.xrandr;
-    in ''
-      if [ "$XDG_SESSION_DESKTOP" = "none+dwm" ]; then
-        ${feh} --bg-scale /path/to/wallpaper.jpg &
-        ${xrandr} xrandr --output DP-2 --mode 1920x1080 -r 165.00
-      fi
+    displayManager.sessionCommands = ''
+      ${lib.getExe pkgs.feh} --bg-scale $HOME/nixos-dotfiles/assets/wallpaper.png &
+      ${lib.getExe pkgs.xorg.xrandr} --output DP-2 --mode 1920x1080 -r 165.00
     '';
   };
 
@@ -104,7 +98,7 @@
   home-manager.sharedModules = [
     {
       programs.niri.settings = {
-        variables = {
+        environment = {
           GBM_BACKEND = "nvidia-drm";
           NVD_BACKEND = "direct";
           WLR_NO_HARDWARE_CURSORS = "1";

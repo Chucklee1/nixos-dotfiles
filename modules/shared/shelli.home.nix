@@ -26,7 +26,7 @@ _: {
     bash = {
       enable = true;
       shellAliases = {
-        nixc = "nvim $HOME/nixos-dotfiles"
+        nixc = "nvim $HOME/nixos-dotfiles";
         v = "nvim";
         vi = "nvim";
         vim = "nvim";

@@ -9,6 +9,7 @@
   imports = [
     ../hosts/${host}/default.nix
     ./theming.mod.nix
+    ./devices.nix
     ./virt.nix
   ];
 
@@ -38,14 +39,24 @@
     hostName = "${def.username}-${host}";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [1701 1901];
+      allowedUDPPortRanges = [
+        {
+          from = 400;
+          to = 4007;
+        }
+        {
+          from = 8000;
+          to = 8010;
+        }
+      ];
+    };
   };
 
   i18n.defaultLocale = "en_CA.UTF-8";
   time.timeZone = "America/Vancouver";
-  console = {
-    earlySetup = true;
-    keyMap = def.layout;
-  };
 
   # -----------------------------------------------------------
   # nix options
@@ -65,7 +76,7 @@
   # -----------------------------------------------------------
   users.users.${def.username} = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "libvirtd"];
+    extraGroups = ["wheel" "networkmanager" "libvirtd" "uinput"];
   };
   home-manager = {
     useUserPackages = true;
@@ -201,38 +212,9 @@
   # global drivers
   # -----------------------------------------------------------
 
-  # audio
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # bluetooth
-  hardware = {
-    bluetooth.enable = true;
-    bluetooth.powerOnBoot = true;
-  };
-  services.blueman.enable = true;
-
-  # opengl - renamed to graphics as of 24.11
-  hardware = {
-    graphics.enable = true;
-    graphics.enable32Bit = true;
-  };
-
-  # printing
-  services.printing.enable = true;
-
-  # user input
-  programs.weylus.enable = true;
-  services.udev.extraRules = ''
-    KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
-  '';
-
-  # the rest
   services = {
+    xserver.enable = true;
+    printing.enable = true;
     fstrim.enable = true;
     displayManager.ly.enable = true;
   };
