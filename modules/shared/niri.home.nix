@@ -14,7 +14,6 @@
     environment = {
       XDG_CURRENT_DESKTOP = "niri";
       XDG_SESSION_DESKTOP = "niri";
-      DISPLAY = ":0";
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
       SDL_VIDEODRIVER = "wayland,x11";
@@ -32,7 +31,7 @@
           "${lib.getExe pkgs.networkmanagerapplet}"
         ];
       }
-            {
+      {
         command = [
           "${lib.getExe pkgs.xwayland-satellite}"
         ];
@@ -52,7 +51,7 @@
           "-m"
           "fill"
         ];
-      } 
+      }
       {
         command = sh ''
           if systemctl --user list-units --type=service --all | grep -q 'waybar.service'; then
@@ -129,7 +128,7 @@
       "${mod-c}+Equal".action = set-window-height "+10%";
       "${mod-s-c}+Minus".action = set-column-width "-1%";
       "${mod-s-c}+Equal".action = set-column-width "+1%";
-      # niri - floating windows 
+      # niri - floating windows
       "${mod}+f".action = switch-focus-between-floating-and-tiling;
       "${mod-s}+f".action = toggle-window-floating;
       # debugging
@@ -147,17 +146,6 @@
       };
       tablet.map-to-output = "eDP-1";
       touch.map-to-output = "eDP-1";
-    };
-    # monitors
-    outputs."DP-2" = {
-      enable = true;
-      mode = {
-        width = 1920;
-        height = 1080;
-        refresh = 165.001;
-      };
-      position.x = 0;
-      position.y = 0;
     };
     # layout n theming
     layout = {

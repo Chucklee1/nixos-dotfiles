@@ -26,14 +26,14 @@ _: {
     bash = {
       enable = true;
       shellAliases = {
-        v = "nvim ./nixos-dotfiles";
-        vi = "nvim ./nixos-dotfiles";
-        vim = "nvim ./nixos-dotfiles";
+        nixc = "nvim $HOME/nixos-dotfiles"
+        v = "nvim";
+        vi = "nvim";
+        vim = "nvim";
         sv = "sudo nvim";
         cg = "sudo nix-collect-garbage";
         update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
         update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
-        OSU = "rm -rf /media/goat/BLUE_SATA/games/osu-lazer/framework.ini && sleep 1 && osu!";
       };
     };
     oh-my-posh = {

@@ -196,20 +196,6 @@
       PermitRootLogin = "prohibit-password";
     };
   };
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [9001 1701];
-    allowedUDPPortRanges = [
-      {
-        from = 4000;
-        to = 4007;
-      }
-      {
-        from = 8000;
-        to = 8010;
-      }
-    ];
-  };
 
   # -----------------------------------------------------------
   # global drivers
@@ -241,15 +227,9 @@
 
   # user input
   programs.weylus.enable = true;
-  services = {
-    xserver = {
-      enable = true;
-      xkb.layout = def.layout;
-    };
-    udev.extraRules = ''
-      KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
-    '';
-  };
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+  '';
 
   # the rest
   services = {
