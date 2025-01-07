@@ -6,10 +6,6 @@
   ...
 }: {
   imports = [./hardware.nix];
-  home-manager.sharedModules = [
-    ./niri.home.nix
-    waybar.home.nix
-  ];
 
   # -----------------------------------------------------------
   # system
@@ -52,34 +48,17 @@
   # software
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # wayland
-    egl-wayland
-    qt5.qtwayland
-    qt6.qtwayland
-    wev
-    xwayland
-    xwayland-run
-    wl-clipboard
-    # games/game utils
     protonup-qt
     protontricks
     prismlauncher
     osu-lazer-bin
   ];
 
-  # steam
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
-  };
-
-  # niri
-  nixpkgs.overlays = [inputs.niri.overlays.niri];
-  programs.niri = {
-    enable = true;
-    package = pkgs.niri-unstable;
   };
 
   # -----------------------------------------------------------
@@ -94,5 +73,31 @@
     __GL_GSYNC_ALLOWED = "1";
     __GL_VRR_ALLOWED = "1";
     __GL_MaxFramesAllowed = "1";
+    # wayland
+    GBM_BACKEND = "nvidia-drm";
+    NVD_BACKEND = "direct";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_RENDERER_ALLOW_SOFTWARE = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
   };
+
+  # -----------------------------------------------------------
+  # niri
+  # -----------------------------------------------------------
+  home-manager.sharedModules = [
+    {
+      programs.niri.settings = {
+        outputs."DP-2" = {
+          enable = true;
+          mode = {
+            width = 1920;
+            height = 1080;
+            refresh = 165.001;
+          };
+          position.x = 0;
+          position.y = 0;
+        };
+      };
+    }
+  ];
 }

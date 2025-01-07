@@ -113,12 +113,6 @@ _: {
         enable = true;
         autoLoad = true;
       };
-      lsp = {
-        enable = true;
-        servers = {
-          clangd.enable = true;
-        };
-      };
     };
   };
 }

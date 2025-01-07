@@ -21,6 +21,7 @@
       enable = true;
       efiSupport = true;
       device = "nodev";
+      useOSProber = true;
     };
     grub2-theme = {
       enable = true;
@@ -66,6 +67,7 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
+    overlays = [inputs.niri.overlays.niri];
   };
 
   nix.settings = {
@@ -92,17 +94,30 @@
     sharedModules = [
       ./shelli.home.nix
       ./nixvim.home.nix
+      ./niri.home.nix
+      ./waybar.home.nix
       {
         home.packages = with pkgs; [
           krita
           webcord
           spotify
           zoom-us
+          dwarf-fortress
+          dwarf-fortress-packages.soundSense
         ];
         programs = {
           firefox.enable = true;
+          fuzzel.enable = true;
+          wlogout = {
+            enable = true;
+          };
+          swaylock = {
+            enable = true;
+            package = pkgs.swaylock-effects;
+          };
         };
         services = {
+          swayidle.enable = true;
           dunst.enable = true;
           gnome-keyring.enable = true;
         };
@@ -140,6 +155,16 @@
     wget
     git
     curl
+    # wayland
+    egl-wayland
+    qt5.qtwayland
+    qt6.qtwayland
+    wev
+    xwayland
+    xwayland-run
+    # clipboard
+    wl-clipboard
+    xclip
     # media/files
     file-roller
     p7zip
@@ -148,7 +173,6 @@
     pavucontrol
     v4l-utils
     ffmpeg
-    xclip
     # font
     nerd-fonts.symbols-only
   ];
@@ -157,6 +181,10 @@
   programs = {
     dconf.enable = true;
     xfconf.enable = true;
+    niri = {
+      enable = true;
+      package = pkgs.niri-unstable;
+    };
     thunar = {
       enable = true;
       plugins = with pkgs.xfce; [
@@ -171,8 +199,7 @@
   # -----------------------------------------------------------
   xdg.portal = {
     enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
-    config.common.default = ["gtk"];
+    config.common.default = ["gnome"];
   };
   security = {
     polkit.enable = true;
