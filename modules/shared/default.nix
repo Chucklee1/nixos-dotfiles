@@ -67,7 +67,6 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
-    overlays = [inputs.niri.overlays.niri];
   };
   nix.settings = {
     auto-optimise-store = true;
@@ -93,14 +92,17 @@
     sharedModules = [
       ./shelli.home.nix
       ./nixvim.home.nix
-      ./niri.home.nix
-      ./waybar.home.nix
+      #./niri.home.nix
+      #./wayland.nix
+      #./waybar.home.nix
       {
         home.packages = with pkgs; [
           krita
           webcord
           spotify
           zoom-us
+          dwarf-fortress
+          dwarf-fortress-packages.soundSense
         ];
         programs.firefox.enable = true;
         services = {
@@ -141,51 +143,32 @@
     wget
     git
     curl
-    # wayland
-    egl-wayland
-    qt5.qtwayland
-    qt6.qtwayland
-    wev
-    # xwayland
-    xwayland
-    xwayland-run
-    # x11
+    # X11
     rofi
-    # clipboard
     xsel
     xclip
-    wl-clipboard
-    # media
+    # media/files
+    file-roller
+    p7zip
     mpv
     imv
     pavucontrol
     v4l-utils
     ffmpeg
-    # misc
-    osu-lazer-bin
+    # font
     nerd-fonts.symbols-only
-    file-roller
-    p7zip
-    dwarf-fortress
-    dwarf-fortress-packages.soundSense
   ];
 
-  # -----------------------------------------------------------
-  # system programs
-  # -----------------------------------------------------------
+  # config utils
   programs = {
     dconf.enable = true;
-    niri = {
-      enable = true;
-      package = pkgs.niri-unstable;
-    };
+    xfconf.enable = true;
   };
 
   # -----------------------------------------------------------
   # thunar
   # -----------------------------------------------------------
   programs = {
-    xfconf.enable = true; # for thunar config
     thunar = {
       enable = true;
       plugins = with pkgs.xfce; [
@@ -203,7 +186,11 @@
   # -----------------------------------------------------------
   # security & polkit
   # -----------------------------------------------------------
-  xdg.portal.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    config.common.default = ["gtk"];
+  };
   security = {
     polkit.enable = true;
     rtkit.enable = true; # for sound

@@ -51,6 +51,7 @@
     protonup-qt
     protontricks
     prismlauncher
+    osu-lazer-bin
   ];
 
   programs.steam = {
@@ -77,7 +78,8 @@
   # -----------------------------------------------------------
   # extra niri settings
   # -----------------------------------------------------------
-  home-manager.sharedModules = [
+  /*
+    home-manager.sharedModules = [
     {
       programs.niri.settings = {
         environment = {
@@ -101,4 +103,5 @@
       };
     }
   ];
+  */
 }
