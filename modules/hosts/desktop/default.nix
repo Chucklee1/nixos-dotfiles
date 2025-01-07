@@ -67,7 +67,6 @@
   environment.variables = {
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
     MOZ_DISABLE_RDD_SANDBOX = "1";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
     LIBVA_DRIVER_NAME = "nvidia";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     __GL_GSYNC_ALLOWED = "1";

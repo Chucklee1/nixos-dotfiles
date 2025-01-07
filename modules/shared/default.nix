@@ -102,8 +102,6 @@
           webcord
           spotify
           zoom-us
-          dwarf-fortress
-          dwarf-fortress-packages.soundSense
         ];
         programs = {
           firefox.enable = true;
@@ -221,7 +219,9 @@
   services.xserver = {
     enable = true;
     xkb.layout = def.layout;
+    windowManager.dwm.enable = true;
   };
+  environment.variables._JAVA_AWT_WM_NONREPARENTING = "1";
 
   # audio
   services.pipewire = {
