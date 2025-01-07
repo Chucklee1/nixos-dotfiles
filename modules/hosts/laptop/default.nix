@@ -5,17 +5,16 @@
 }: {
   imports = [./hardware.nix];
 
-# boot
-  boot = {
-    initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
-    kernelModules = ["kvm-amd"];
-  };
-
-  # system options
+  # extra system options
+  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
+  boot.kernelModules = ["kvm-amd"];
   system.stateVersion = "24.05"; # DO NOT CHANGE
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
-
-  # hardware
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  services.xserver.videoDrivers = ["radeon"];
+
+  # xserver
+  services.xserver = {
+    videoDriver = ["radeon"];
+    windowManager.dwm.enable = true;
+  };
 }
