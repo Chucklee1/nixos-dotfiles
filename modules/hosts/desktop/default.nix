@@ -5,7 +5,9 @@
   def,
   ...
 }: {
-  imports = [./hardware.nix];
+  imports = [./hardware.nix
+
+./niri.nix];
 
   # -----------------------------------------------------------
   # system
