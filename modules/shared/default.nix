@@ -9,7 +9,6 @@
   imports = [
     ../hosts/${host}/default.nix
     ./theming.mod.nix
-    ./x11.nix
     ./virt.nix
   ];
 
@@ -103,9 +102,7 @@
           spotify
           zoom-us
         ];
-
         programs.firefox.enable = true;
-
         services = {
           dunst.enable = true;
           gnome-keyring.enable = true;
@@ -223,6 +220,21 @@
   # global drivers
   # -----------------------------------------------------------
 
+  # X11
+  services.xserver = {
+    enable = true;
+    xkb.layout = def.layout;
+    windowManager.dwm = {
+      enable = true;
+      package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
+    };
+    displayManager.sessionCommands = ''
+      ${lib.getExe pkgs.feh} --bg-scale $HOME/nixos-dotfiles/assets/wallpaper.png &
+      ${lib.getExe pkgs.xorg.xrandr} --output DP-2 --mode 1920x1080 -r 165.00
+      ${lib.getExe pkgs.redshift} -O 5100
+    '';
+  };
+
   # audio
   services.pipewire = {
     enable = true;
@@ -252,6 +264,7 @@
 
   # misc
   services = {
+    displayManager.ly.enable = true;
     printing.enable = true;
     fstrim.enable = true;
   };
