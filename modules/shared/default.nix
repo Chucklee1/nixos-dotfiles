@@ -67,7 +67,9 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
+    overlays = [inputs.niri.overlays.niri];
   };
+
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
@@ -104,8 +106,20 @@
           dwarf-fortress
           dwarf-fortress-packages.soundSense
         ];
-        programs.firefox.enable = true;
+        programs = {
+          firefox.enable = true;
+
+          fuzzel.enable = true;
+          wlogout = {
+            enable = true;
+          };
+          swaylock = {
+            enable = true;
+            package = pkgs.swaylock-effects;
+          };
+        };
         services = {
+          swayidle.enable = true;
           dunst.enable = true;
           gnome-keyring.enable = true;
         };
@@ -143,9 +157,15 @@
     wget
     git
     curl
-    # X11
-    rofi
-    xsel
+    # wayland
+    egl-wayland
+    qt5.qtwayland
+    qt6.qtwayland
+    wev
+    xwayland
+    xwayland-run
+    # clipboard
+    wl-clipboard
     xclip
     # media/files
     file-roller
@@ -159,16 +179,14 @@
     nerd-fonts.symbols-only
   ];
 
-  # config utils
+  # programs
   programs = {
     dconf.enable = true;
     xfconf.enable = true;
-  };
-
-  # -----------------------------------------------------------
-  # thunar
-  # -----------------------------------------------------------
-  programs = {
+    niri = {
+      enable = true;
+      package = pkgs.niri-unstable;
+    };
     thunar = {
       enable = true;
       plugins = with pkgs.xfce; [
@@ -176,11 +194,6 @@
         thunar-volman
       ];
     };
-  };
-  # services for thunar
-  services = {
-    tumbler.enable = true;
-    gvfs.enable = true;
   };
 
   # -----------------------------------------------------------
@@ -211,15 +224,6 @@
   services.xserver = {
     enable = true;
     xkb.layout = def.layout;
-    windowManager.dwm = {
-      enable = true;
-      package = pkgs.dwm.overrideAttrs (old: {src = def.dwm-src;});
-    };
-    displayManager.sessionCommands = ''
-      ${lib.getExe pkgs.feh} --bg-scale $HOME/nixos-dotfiles/assets/wallpaper.png &
-      ${lib.getExe pkgs.xorg.xrandr} --output DP-2 --mode 1920x1080 -r 165.00
-      ${lib.getExe pkgs.redshift} -O 5100
-    '';
   };
 
   # audio
@@ -254,5 +258,7 @@
     displayManager.ly.enable = true;
     printing.enable = true;
     fstrim.enable = true;
+    tumbler.enable = true;
+    gvfs.enable = true;
   };
 }

@@ -18,8 +18,7 @@
       username = "goat";
       system = "x86_64-linux";
       layout = "us";
-      wallpaper = ./assets/wallpaper.png;
-      dwm-src = ./assets/dwm-src; 
+      wallpaper = ./assets/wallpaper.png; 
     };
 
     # system declaration

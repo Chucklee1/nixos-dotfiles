@@ -73,23 +73,20 @@
     __GL_GSYNC_ALLOWED = "1";
     __GL_VRR_ALLOWED = "1";
     __GL_MaxFramesAllowed = "1";
+    # wayland
+    GBM_BACKEND = "nvidia-drm";
+    NVD_BACKEND = "direct";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_RENDERER_ALLOW_SOFTWARE = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
   };
 
   # -----------------------------------------------------------
-  # extra niri settings
+  # niri
   # -----------------------------------------------------------
-  /*
-    home-manager.sharedModules = [
+  home-manager.sharedModules = [
     {
       programs.niri.settings = {
-        environment = {
-          GBM_BACKEND = "nvidia-drm";
-          NVD_BACKEND = "direct";
-          WLR_NO_HARDWARE_CURSORS = "1";
-          WLR_RENDERER_ALLOW_SOFTWARE = "1";
-          ELECTRON_OZONE_PLATFORM_HINT = "auto";
-        };
-        # monitors
         outputs."DP-2" = {
           enable = true;
           mode = {
@@ -103,5 +100,4 @@
       };
     }
   ];
-  */
 }
