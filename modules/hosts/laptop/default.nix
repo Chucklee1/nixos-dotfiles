@@ -16,7 +16,10 @@
   # xserver
   services.xserver = {
     videoDrivers = ["radeon"];
-    windowManager.dwm.enable = true;
+    windowManager.dwm = {
+      enable = true;
+      package = /home/goat/dwm;
+    };
   };
 
   environment.systemPackages = with pkgs; [

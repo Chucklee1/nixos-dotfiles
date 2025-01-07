@@ -21,7 +21,6 @@
       enable = true;
       efiSupport = true;
       device = "nodev";
-      useOSProber = true;
     };
     grub2-theme = {
       enable = true;
