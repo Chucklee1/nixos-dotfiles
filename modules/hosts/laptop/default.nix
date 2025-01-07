@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: {
   imports = [./hardware.nix];
@@ -14,7 +15,12 @@
 
   # xserver
   services.xserver = {
-    videoDriver = ["radeon"];
+    videoDrivers = ["radeon"];
     windowManager.dwm.enable = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    st
+    dmenu
+  ];
 }
