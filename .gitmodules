@@ -1,0 +1,3 @@
+[submodule "assets/dwm"]
+	path = assets/dwm
+	url = git@github.com:Chucklee1/dwm
