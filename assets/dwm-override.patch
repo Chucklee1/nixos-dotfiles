@@ -1,0 +1,95 @@
+From 39ec52632a9115aac3bf013480e98597192eac33 Mon Sep 17 00:00:00 2001
+From: Chucklee1 - remote <cooperkang4@gmail.com>
+Date: Wed, 8 Jan 2025 11:50:48 -0800
+Subject: [PATCH] personal config changes
+
+---
+ config.def.h | 36 +++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 23 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 809d0b2..97dec33 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -19,16 +19,11 @@ static const char *colors[][3]      = {
+ };
+ 
+ /* tagging */
+-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
++static const char *tags[] = { "1", "2", "3", "4" };
+ 
+ static const Rule rules[] = {
+-	/* xprop(1):
+-	 *	WM_CLASS(STRING) = instance, class
+-	 *	WM_NAME(STRING) = title
+-	 */
+ 	/* class      instance    title       tags mask     isfloating   monitor */
+-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
++	{ NULL,       NULL,       NULL,       0,            1,           -1 },
+ };
+ 
+ /* layout(s) */
+@@ -45,7 +40,7 @@ static const Layout layouts[] = {
+ };
+ 
+ /* key definitions */
+-#define MODKEY Mod1Mask
++#define MODKEY Mod4Mask
+ #define TAGKEYS(KEY,TAG) \
+ 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+@@ -67,27 +62,27 @@ static Key keys[] = {
+ 	{ MODKEY|ShiftMask,             XK_o,	shiftview,           { .i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_i,	shiftview,           { .i = -1 } },
+ 	{ MODKEY,	                      XK_i, shiftviewclients,    { .i = -1 } },
+- 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+- 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
++ 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
++ 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+  	{ MODKEY,                       XK_b,      togglebar,      {0} },	
+   { MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+ 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+ 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+ 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+ 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+-	{ MODKEY|ShiftMask,		XK_h,      shiftboth,      { .i = -1 }	},
+-	{ MODKEY|ControlMask,		XK_h,      shiftswaptags,  { .i = -1 }	},
+-	{ MODKEY|ControlMask,		XK_l,      shiftswaptags,  { .i = +1 }	},
++	{ MODKEY|ShiftMask,		          XK_h,      shiftboth,      { .i = -1 }	},
++	{ MODKEY|ControlMask,		        XK_h,      shiftswaptags,  { .i = -1 }	},
++	{ MODKEY|ControlMask,		        XK_l,      shiftswaptags,  { .i = +1 }	},
+ 	{ MODKEY|ShiftMask,             XK_l,      shiftboth,      { .i = +1 }	},
+ 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+-	{ MODKEY,                       XK_Return, zoom,           {0} },
++	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
+ 	{ MODKEY,                       XK_Tab,    view,           {0} },
+-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
++	{ MODKEY,                       XK_q,      killclient,     {0} },
+ 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+ 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+ 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+-	{ MODKEY,                       XK_space,  setlayout,      {0} },
+-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
++	{ MODKEY,                       XK_p,      setlayout,      {0} },
++	{ MODKEY|ShiftMask,             XK_p,      togglefloating, {0} },
+ 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+ 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+ 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+@@ -98,12 +93,7 @@ static Key keys[] = {
+ 	TAGKEYS(                        XK_2,                      1)
+ 	TAGKEYS(                        XK_3,                      2)
+ 	TAGKEYS(                        XK_4,                      3)
+-	TAGKEYS(                        XK_5,                      4)
+-	TAGKEYS(                        XK_6,                      5)
+-	TAGKEYS(                        XK_7,                      6)
+-	TAGKEYS(                        XK_8,                      7)
+-	TAGKEYS(                        XK_9,                      8)
+-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
++	{ ControlMask|Mod1Mask,         XK_Delete, quit,           {0} },
+ };
+ 
+ /* button definitions */
+-- 
+2.47.0
+

@@ -175,11 +175,10 @@
     xkb.layout = def.layout;
     windowManager.dwm = {
       enable = true;
-      package = pkgs.dwm.overrideAttrs {src = /home/goat/dwm;};
+      package = pkgs.dwm.override {patches = [../../assets/dwm-override.patch];};
       extraSessionCommands = ''
         ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
         ${lib.getExe pkgs.redshift} -O 5100
-        ${lib.getExe pkgs.dwmblocks.overrideAttrs {src = /home/goat/dwmblocks-async;}}
       '';
     };
   };
