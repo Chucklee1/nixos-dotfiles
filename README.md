@@ -24,4 +24,5 @@
     - generate key -> *$ ssh-keygen*
     - pair key to remote -> *ssh-copy-id -i ./.ssh/<name-of-ssh-keygen-file>.pub //
       <remotename>@<remoteip>*
-
+- **patching commands:**
+    - git format-patch --stdout HEAD~2..HEAD > $HOME/nixos-dotfiles/assets/dwm-override.patch 

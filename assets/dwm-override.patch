@@ -246,17 +246,17 @@ index 0000000..cf130c8
 2.47.0
 
 
-From 070304e303727304fd700b57dcd793febd96ae4d Mon Sep 17 00:00:00 2001
+From e10399656c9b4838a90d047d169aabc2eac5c85c Mon Sep 17 00:00:00 2001
 From: Chucklee1 - remote <cooperkang4@gmail.com>
-Date: Wed, 8 Jan 2025 13:21:41 -0800
+Date: Wed, 8 Jan 2025 13:55:04 -0800
 Subject: [PATCH 2/2] personal changes
 
 ---
- config.def.h | 27 +++++++++------------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
+ config.def.h | 29 ++++++++++-------------------
+ 1 file changed, 10 insertions(+), 19 deletions(-)
 
 diff --git a/config.def.h b/config.def.h
-index 71d0873..8d2fe75 100644
+index 71d0873..7e4e2e5 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -19,16 +19,11 @@ static const char *colors[][3]      = {
@@ -278,6 +278,15 @@ index 71d0873..8d2fe75 100644
  };
  
  /* layout(s) */
+@@ -45,7 +40,7 @@ static const Layout layouts[] = {
+ };
+ 
+ /* key definitions */
+-#define MODKEY Mod1Mask
++#define MODKEY Mod4Mask
+ #define TAGKEYS(KEY,TAG) \
+ 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 @@ -58,7 +53,7 @@ static const Layout layouts[] = {
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
