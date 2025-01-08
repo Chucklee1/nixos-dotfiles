@@ -178,16 +178,24 @@
   services.xserver = {
     enable = true;
     xkb.layout = def.layout;
-    windowManager.dwm.enable = true;
+    windowManager.dwm = {
+      enable = true;
+      package = pkgs.dwm.overrideAttrs (oldAttrs: {
+        src = builtins.path {
+          path = /home/goat/nixos-dotfiles/assets/dwm;
+          recursive = true;
+        };
+      });
+    };
     displayManager.sessionCommands = ''
       ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
       ${lib.getExe pkgs.redshift} -O 5100
-      ${lib.getExe pkgs.picom}
     '';
   };
 
   # audio
   services.pipewire = {
+    
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;

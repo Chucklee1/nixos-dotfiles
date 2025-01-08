@@ -18,7 +18,6 @@
       system = "x86_64-linux";
       layout = "us";
       wallpaper = ./assets/wallpaper.png; 
-      dwm-src = ./assets/dwm;
     };
 
     # system declaration
