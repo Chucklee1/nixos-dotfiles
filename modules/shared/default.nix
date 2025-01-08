@@ -179,6 +179,7 @@
     enable = true;
     xkb.layout = def.layout;
     windowManager.dwm.enable = true;
+    windowManager.dwm.package = pkgs.dwm.overrideAttrs {src = ../../assets/dwm}
   };
 
   # audio
