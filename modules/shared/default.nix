@@ -9,7 +9,6 @@
   imports = [
     ../hosts/${host}/default.nix
     ./theming.mod.nix
-    ./virt.nix
   ];
 
   # -----------------------------------------------------------
@@ -38,20 +37,6 @@
     hostName = "${def.username}-${host}";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [1701 1901];
-      allowedUDPPortRanges = [
-        {
-          from = 400;
-          to = 4007;
-        }
-        {
-          from = 8000;
-          to = 8010;
-        }
-      ];
-    };
   };
 
   i18n.defaultLocale = "en_CA.UTF-8";
@@ -67,7 +52,6 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
-    overlays = [inputs.niri.overlays.niri];
   };
 
   nix.settings = {
@@ -80,7 +64,7 @@
   # -----------------------------------------------------------
   users.users.${def.username} = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "libvirtd" "uinput"];
+    extraGroups = ["wheel" "networkmanager" "uinput" "libvirtd"];
   };
   home-manager = {
     useUserPackages = true;
@@ -94,8 +78,6 @@
     sharedModules = [
       ./shelli.home.nix
       ./nixvim.home.nix
-      ./niri.home.nix
-      ./waybar.home.nix
       {
         home.packages = with pkgs; [
           krita
@@ -103,19 +85,8 @@
           spotify
           zoom-us
         ];
-        programs = {
-          firefox.enable = true;
-          fuzzel.enable = true;
-          wlogout = {
-            enable = true;
-          };
-          swaylock = {
-            enable = true;
-            package = pkgs.swaylock-effects;
-          };
-        };
+        programs.firefox.enable = true;
         services = {
-          swayidle.enable = true;
           dunst.enable = true;
           gnome-keyring.enable = true;
         };
@@ -129,22 +100,21 @@
   environment.systemPackages = with pkgs; [
     # tools/deps
     gcc
-    vulkan-tools
-    vulkan-loader
-    vulkan-validation-layers
-    zenity
+    #vulkan-tools
+    #vulkan-loader
+    #vulkan-validation-layers
+    #zenity
     libnotify
     libsecret
     # wine
-    wineWowPackages.stagingFull
-    samba
-    winetricks
+    #wineWowPackages.stagingFull
+    #samba
+    #winetricks
     # language QOL
     alejandra
     nixd
     asm-lsp
     # cli
-    killall
     ripgrep
     pciutils
     btop
@@ -153,16 +123,10 @@
     wget
     git
     curl
-    # wayland
-    egl-wayland
-    qt5.qtwayland
-    qt6.qtwayland
-    wev
-    xwayland
-    xwayland-run
-    # clipboard
-    wl-clipboard
+    # x11/wm
+    dmenu
     xclip
+    nerd-fonts.symbols-only
     # media/files
     file-roller
     p7zip
@@ -171,18 +135,12 @@
     pavucontrol
     v4l-utils
     ffmpeg
-    # font
-    nerd-fonts.symbols-only
   ];
 
   # programs
   programs = {
     dconf.enable = true;
     xfconf.enable = true;
-    niri = {
-      enable = true;
-      package = pkgs.niri-unstable;
-    };
     thunar = {
       enable = true;
       plugins = with pkgs.xfce; [
@@ -197,7 +155,8 @@
   # -----------------------------------------------------------
   xdg.portal = {
     enable = true;
-    config.common.default = ["gnome"];
+    extraPortals = [pkgs.xdg-desktop-portal];
+    config.common.default = ["gtk"];
   };
   security = {
     polkit.enable = true;
@@ -221,7 +180,6 @@
     xkb.layout = def.layout;
     windowManager.dwm.enable = true;
   };
-  environment.variables._JAVA_AWT_WM_NONREPARENTING = "1";
 
   # audio
   services.pipewire = {
