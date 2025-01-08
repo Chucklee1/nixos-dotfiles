@@ -182,7 +182,7 @@
     windowManager.dwm.package = pkgs.dwm.overrideAttrs {src = /home/goat/nixos-dotfiles/assets/dwm;};
     displayManager.sessionCommands = ''
       ${lib.getExe pkgs.redshift} -O 5100
-      ${lib.getEe pkgs.picom}
+      ${lib.getExe pkgs.picom}
     '';
   };
 
