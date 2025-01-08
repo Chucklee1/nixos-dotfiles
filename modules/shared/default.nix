@@ -86,10 +86,7 @@
           zoom-us
         ];
         programs.firefox.enable = true;
-        services = {
-          dunst.enable = true;
-          gnome-keyring.enable = true;
-        };
+        services.gnome-keyring.enable = true;
       }
     ];
   };
@@ -130,8 +127,6 @@
     # media/files
     file-roller
     p7zip
-    mpv
-    imv
     pavucontrol
     v4l-utils
     ffmpeg
@@ -182,7 +177,7 @@
       enable = true;
       package = pkgs.dwm.overrideAttrs (oldAttrs: {
         src = builtins.path {
-          path = /home/goat/nixos-dotfiles/assets/dwm;
+          path = /home/goat/dwm;
           recursive = true;
         };
       });
@@ -195,7 +190,6 @@
 
   # audio
   services.pipewire = {
-    
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
