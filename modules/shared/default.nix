@@ -179,8 +179,8 @@
     enable = true;
     xkb.layout = def.layout;
     windowManager.dwm.enable = true;
-    windowManager.dwm.package = pkgs.dwm.overrideAttrs {src = /home/goat/nixos-dotfiles/assets/dwm;};
     displayManager.sessionCommands = ''
+      ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
       ${lib.getExe pkgs.redshift} -O 5100
       ${lib.getExe pkgs.picom}
     '';
