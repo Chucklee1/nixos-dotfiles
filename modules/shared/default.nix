@@ -175,17 +175,16 @@
     xkb.layout = def.layout;
     windowManager.dwm = {
       enable = true;
-      package = pkgs.dwm.overrideAttrs (oldAttrs: {
-        src = builtins.path {
-          path = /home/goat/dwm;
-          recursive = true;
-        };
-      });
+      package = pkgs.dwm.overrideAttrs (src = /home/goat/dwm;);
     };
     displayManager.sessionCommands = ''
       ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
       ${lib.getExe pkgs.redshift} -O 5100
     '';
+  };
+  services.dwm-status = {
+    enable = true;
+    package = pkgs.dwm.overrideAttrs (src = /home/goat/dwmblocks-async;);
   };
 
   # audio
