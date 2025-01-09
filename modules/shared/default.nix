@@ -70,14 +70,7 @@
       "uinput"
       "libvirtd"
       "audio"
-      "cdrom"
-      "floppy"
-      "plugdev"
       "video"
-      "power"
-      "netdev"
-      "lp"
-      "scanner"
     ];
   };
   home-manager = {
@@ -114,13 +107,13 @@
     vulkan-tools
     vulkan-loader
     vulkan-validation-layers
-    #zenity
+    zenity
     libnotify
     libsecret
-    # wine
-    #wineWowPackages.stagingFull
-    #samba
-    #winetricks
+    wine
+    wineWowPackages.stagingFull
+    samba
+    winetricks
     # language QOL
     alejandra
     nixd
@@ -187,22 +180,16 @@
   services.xserver = {
     enable = true;
     xkb.layout = def.layout;
-    windowManager = {
-      dwm = {
+    desktopManager.xterm.enable = false;
+    windowManager.dwm = {
         enable = true;
-        package = pkgs.dwm.override {patches = [../../assets/dwm-override.patch];};
+      package = pkgs.dwm.override {patches = [../../assets/dwm-override.patch];};
         extraSessionCommands = ''
           ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
           ${lib.getExe pkgs.redshift} -O 5200
           ${lib.getExe pkgs.picom} -b
         '';
       };
-      i3 = {
-        enable = true;
-      };
-    };
-  };
-  services.dwm-status.enable = true;
 
   # audio
   services.pipewire = {
