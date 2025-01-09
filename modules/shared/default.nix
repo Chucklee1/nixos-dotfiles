@@ -188,6 +188,7 @@
           ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
           ${lib.getExe pkgs.redshift} -O 5200
           ${lib.getExe pkgs.picom} -b
+          ${lib.getExe pkgs.dwmblocks} 
         '';
       };
 
