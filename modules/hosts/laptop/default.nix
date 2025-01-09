@@ -14,5 +14,5 @@
   # system options
   system.stateVersion = "24.05"; # DO NOT CHANGE
   # hardware
-  #services.xserver.videoDrivers = ["radeon"];
+  services.xserver.videoDrivers = ["amdgpu"];
 }

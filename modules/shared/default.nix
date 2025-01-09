@@ -64,7 +64,21 @@
   # -----------------------------------------------------------
   users.users.${def.username} = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "uinput" "libvirtd"];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "uinput"
+      "libvirtd"
+      "audio"
+      "cdrom"
+      "floppy"
+      "plugdev"
+      "video"
+      "power"
+      "netdev"
+      "lp"
+      "scanner"
+    ];
   };
   home-manager = {
     useUserPackages = true;
@@ -97,9 +111,9 @@
   environment.systemPackages = with pkgs; [
     # tools/deps
     gcc
-    #vulkan-tools
-    #vulkan-loader
-    #vulkan-validation-layers
+    vulkan-tools
+    vulkan-loader
+    vulkan-validation-layers
     #zenity
     libnotify
     libsecret
@@ -150,7 +164,7 @@
   # -----------------------------------------------------------
   xdg.portal = {
     enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
     config.common.default = ["gtk"];
   };
   security = {
@@ -173,15 +187,22 @@
   services.xserver = {
     enable = true;
     xkb.layout = def.layout;
-    windowManager.dwm = {
-      enable = true;
-      package = pkgs.dwm.override {patches = [../../assets/dwm-override.patch];};
-      extraSessionCommands = ''
-        ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
-        ${lib.getExe pkgs.redshift} -O 5100
-      '';
+    windowManager = {
+      dwm = {
+        enable = true;
+        package = pkgs.dwm.override {patches = [../../assets/dwm-override.patch];};
+        extraSessionCommands = ''
+          ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
+          ${lib.getExe pkgs.redshift} -O 5200
+          ${lib.getExe pkgs.picom} -b
+        '';
+      };
+      i3 = {
+        enable = true;
+      };
     };
   };
+  services.dwm-status.enable = true;
 
   # audio
   services.pipewire = {
