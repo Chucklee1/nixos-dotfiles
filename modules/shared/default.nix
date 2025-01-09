@@ -190,7 +190,7 @@
           ${lib.getExe pkgs.picom} -b
           ${lib.getExe pkgs.dwmblocks} 
         '';
-      };
+      };};
 
   # audio
   services.pipewire = {
