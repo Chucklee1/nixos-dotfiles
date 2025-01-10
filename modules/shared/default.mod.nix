@@ -49,11 +49,6 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
-    config.packageOverrides = pkgs: {
-      dwm = pkgs.dwm.overrideAttrs (_: {
-        src = /home/goat/dwm;
-      });
-    };
   };
 
   nix.settings = {

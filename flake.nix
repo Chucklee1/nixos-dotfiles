@@ -12,12 +12,14 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
-    # use nix-prefetch-url to get hash
+    overlays = [
+      (import ./overlays/dwm-slstatus-overlay.nix {fetchgit = nixpkgs.fetchgit;})
+    ];
     def = {
       username = "goat";
       system = "x86_64-linux";
       layout = "us";
-      wallpaper = ./assets/wallpaper.png; 
+      wallpaper = ./assets/wallpaper.png;
     };
 
     # system declaration
