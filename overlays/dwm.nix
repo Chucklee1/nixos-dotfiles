@@ -2,17 +2,15 @@
   dwm = prev.dwm.overrideAttrs (old: {
     src = fetchgit {
       url = "https://github.com/Chucklee1/dwm";
-      sparseCheckout = ["dwm"];
       rev = "main";
-      hash = "sha256-1cdbaf1894fbb5141181c1401897a9288999445a=";
+      hash = "sha256-19zcqpaxnkbmwr5v8pv4rrgj9bd641qiiygkvvc4dnzh9wp5mxs5=";
     };
   });
   slstatus = prev.slstatus.overrideAttrs (old: {
     src = fetchgit {
       url = "https://github.com/Chucklee1/dwm";
-      sparseCheckout = ["slstatus"];
       rev = "main";
-      hash = "sha256-1cdbaf1894fbb5141181c1401897a9288999445a=";
+      hash = "sha256-00nly3wc38as7lfir097safapj1xlqrvq1ycqdc8bw51102s96mh=";
     };
   });
 }
