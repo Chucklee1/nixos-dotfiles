@@ -182,15 +182,20 @@
     xkb.layout = def.layout;
     desktopManager.xterm.enable = false;
     windowManager.dwm = {
-        enable = true;
+      enable = true;
       package = pkgs.dwm.override {patches = [../../assets/dwm-override.patch];};
-        extraSessionCommands = ''
-          ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
-          ${lib.getExe pkgs.redshift} -O 5200
-          ${lib.getExe pkgs.picom} -b
-          ${lib.getExe pkgs.dwmblocks} 
-        '';
-      };};
+      extraSessionCommands = ''
+        ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
+        ${lib.getExe pkgs.redshift} -O 5200
+        ${lib.getExe pkgs.picom} -b
+        dwm-status
+      '';
+    };
+  };
+  services.dwm-status = {
+    enable = true;
+    order = ["audio" "backlight" "battery" "cpu_load" "network" "time"];
+  };
 
   # audio
   services.pipewire = {
