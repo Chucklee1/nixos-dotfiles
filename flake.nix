@@ -24,7 +24,8 @@
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs def host;};
       modules = [
-        ./modules/shared/default.nix
+        ./modules/shared/default.mod.nix
+        ./modules/shared/default.home.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.grub2-themes.nixosModules.default

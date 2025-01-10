@@ -6,10 +6,7 @@
   host,
   ...
 }: {
-  imports = [
-    ../hosts/${host}/default.nix
-    ./theming.mod.nix
-  ];
+  imports = [../hosts/${host}/default.nix];
 
   # -----------------------------------------------------------
   # boot
@@ -52,6 +49,11 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
+    config.packageOverrides = pkgs: {
+      dwm = pkgs.dwm.overrideAttrs (_: {
+        src = /home/goat/dwm;
+      });
+    };
   };
 
   nix.settings = {
@@ -60,7 +62,7 @@
   };
 
   # -----------------------------------------------------------
-  # user & home manager
+  # user
   # -----------------------------------------------------------
   users.users.${def.username} = {
     isNormalUser = true;
@@ -73,33 +75,9 @@
       "video"
     ];
   };
-  home-manager = {
-    useUserPackages = true;
-    useGlobalPkgs = true;
-    extraSpecialArgs = {inherit inputs def;};
-    users.${def.username}.home = {
-      stateVersion = "24.05"; # DO NOT CHANGE
-      username = "${def.username}";
-      homeDirectory = "/home/${def.username}";
-    };
-    sharedModules = [
-      ./shelli.home.nix
-      ./nixvim.home.nix
-      {
-        home.packages = with pkgs; [
-          krita
-          webcord
-          spotify
-          zoom-us
-        ];
-        programs.firefox.enable = true;
-        services.gnome-keyring.enable = true;
-      }
-    ];
-  };
 
   # -----------------------------------------------------------
-  # system packages
+  # packages
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
     # tools/deps
@@ -128,7 +106,12 @@
     git
     curl
     # x11/wm
+    dwm
     dmenu
+    slstatus
+    redshift
+    picom
+    feh
     xclip
     nerd-fonts.symbols-only
     # media/files
@@ -137,7 +120,6 @@
     pavucontrol
     v4l-utils
     ffmpeg
-    slstatus
   ];
 
   # programs
@@ -151,6 +133,38 @@
         thunar-volman
       ];
     };
+  };
+
+  # -----------------------------------------------------------
+  # theming
+  # -----------------------------------------------------------
+  stylix = {
+    enable = true;
+    autoEnable = true;
+    homeManagerIntegration.autoImport = true;
+    image = def.wallpaper;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
+
+    cursor.package = pkgs.bibata-cursors;
+    cursor.name = "Bibata-Modern-Classic";
+    cursor.size = 24;
+
+    fonts.monospace.package = pkgs.nerd-fonts.jetbrains-mono;
+    fonts.monospace.name = "JetBrainsMono Nerd Font Mono";
+
+    fonts.sansSerif.package = pkgs.noto-fonts-cjk-sans;
+    fonts.sansSerif.name = "Noto Sans CJK";
+
+    fonts.serif.package = pkgs.noto-fonts-cjk-serif;
+    fonts.serif.name = "Noto Serif CJK";
+
+    fonts.sizes = {
+      applications = 12;
+      terminal = 12;
+      desktop = 11;
+      popups = 12;
+    };
+    targets.grub.enable = false;
   };
 
   # -----------------------------------------------------------
@@ -182,20 +196,21 @@
     enable = true;
     xkb.layout = def.layout;
     desktopManager.xterm.enable = false;
-    windowManager.dwm = {
-      enable = true;
-      package = pkgs.dwm.override {patches = [../../assets/dwm-override.patch];};
-      extraSessionCommands = ''
-        ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
-        ${lib.getExe pkgs.redshift} -O 5200
-        ${lib.getExe pkgs.picom} -b
-        slstatus
-      '';
-    };
-  };
-  services.dwm-status = {
-    enable = true;
-    order = ["audio" "backlight" "battery" "cpu_load" "network" "time"];
+    windowManager.session = [
+      {
+        name = "none+suswm";
+        start = ''
+          export _JAVA_AWT_WM_NONREPARENTING=1
+          dwm &
+          waitPID=$!
+
+          feh --bg-scale ${def.wallpaper}
+          redshift -O 5200
+          picom
+          slstatus
+        '';
+      }
+    ];
   };
 
   # audio
