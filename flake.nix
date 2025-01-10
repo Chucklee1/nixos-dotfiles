@@ -12,9 +12,6 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
-    overlays = [
-      (import ./overlays/dwm-slstatus-overlay.nix {fetchgit = nixpkgs.fetchgit;})
-    ];
     def = {
       username = "goat";
       system = "x86_64-linux";
