@@ -6,7 +6,10 @@
   host,
   ...
 }: {
-  imports = [../hosts/${host}/default.nix];
+  imports = [
+    ../hosts/${host}/default.nix
+    ./dwm.nix
+  ];
 
   # -----------------------------------------------------------
   # boot
@@ -49,16 +52,6 @@
   nixpkgs = {
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
-    overlays = [
-    (final: prev: {
-      dwm = prev.dwm.override {
-        src = /home/goat/dwm;  
-      };};)
-      (final: prev: { 
-        slstatus = prev.slstatus.override {
-        src = /home/goat/slstatus;
-      };};)
-    ];
   };
 
   nix.settings = {
@@ -110,16 +103,6 @@
     wget
     git
     curl
-    # x11/wm
-    dwm
-    dmenu
-    slstatus
-    redshift
-    acpilight
-    picom
-    feh
-    xclip
-    nerd-fonts.symbols-only
     # media/files
     file-roller
     p7zip
@@ -176,11 +159,6 @@
   # -----------------------------------------------------------
   # security & polkit
   # -----------------------------------------------------------
-  xdg.portal = {
-    enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
-    config.common.default = ["gtk"];
-  };
   security = {
     polkit.enable = true;
     rtkit.enable = true; # for sound
@@ -196,28 +174,6 @@
   # -----------------------------------------------------------
   # global drivers
   # -----------------------------------------------------------
-
-  # X11
-  services.xserver = {
-    enable = true;
-    xkb.layout = def.layout;
-    desktopManager.xterm.enable = false;
-    windowManager.session = [
-      {
-        name = "none+suswm";
-        start = ''
-          export _JAVA_AWT_WM_NONREPARENTING=1
-          dwm &
-          waitPID=$!
-
-          feh --bg-scale ${def.wallpaper}
-          redshift -O 5200
-          picom
-          slstatus
-        '';
-      }
-    ];
-  };
 
   # audio
   services.pipewire = {
