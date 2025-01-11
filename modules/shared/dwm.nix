@@ -24,7 +24,7 @@
     desktopManager.xterm.enable = false;
     windowManager.session = [
       {
-        name = "dmwmdmw";
+        name = "none+dwm";
         start = ''
           export _JAVA_AWT_WM_NONREPARENTING=1
           dwm &
@@ -52,7 +52,7 @@
       slstatus
       dmenu
       redshift
-      acpilight
+      light
       picom
       feh
       xclip
