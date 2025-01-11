@@ -50,22 +50,14 @@
     hostPlatform = lib.mkDefault "${def.system}";
     config.allowUnfree = true;
     overlays = [
-      pkgs.dwm.overrideAttrs
-      (old: {
-        src = fetchgit {
-          url = "https://github.com/Chucklee1/dwm";
-          rev = "main";
-          hash = "sha256-aa363bf433b1b902a5d9293d866476c604742724=";
-        };
-      })
-      pkgs.slstatus.overrideAttrs
-      (old: {
-        src = fetchgit {
-          url = "https://github.com/Chucklee1/slstatus";
-          rev = "main";
-          hash = "sha256-db0cbdf6efa4c9b2c7a777e322f2b420a0f81cee=";
-        };
-      })
+    (final: prev: {
+      dwm = prev.dwm.override {
+        src = /home/goat/dwm;  
+      };};)
+      (final: prev: { 
+        slstatus = prev.slstatus.override {
+        src = /home/goat/slstatus;
+      };};)
     ];
   };
 
