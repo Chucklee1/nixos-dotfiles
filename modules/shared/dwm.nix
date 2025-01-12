@@ -7,7 +7,7 @@
   # packages
   environment.systemPackages = with pkgs; [
     dmenu
-    light
+    brightnessctl
     xclip
     # start script pkgs
     feh
@@ -42,7 +42,7 @@
 
         [audio]
         control = "Master"
-        mute = ""
+        mute = "󰝟"
         template = "{ICO} {VOL}%"
         icons = ["", "", ""]
 
