@@ -11,8 +11,12 @@
       });
     })
     (self: super: {
-      slstatus = super.slstatus.overrideAttrs (oldAttrs: {
-        src = /home/goat/slstatus;
+      dwmblocks = super.dwmblocks.overrideAttrs (oldAttrs: {
+        src = /home/goat/dwmblocks;
+        nativeBuildInputs = [pkgs.pkg-config];
+        buildInputs =
+          super.dwmblocks.buildInputs
+          ++ builtins.attrValues {inherit (pkgs.xorg) libxcb xcbutil;};
       });
     })
   ];
@@ -39,7 +43,7 @@
           feh --bg-scale ${def.wallpaper}
           redshift -O 5200
           picom
-          slstatus
+          dwmblocks
         '';
       }
     ];
@@ -49,7 +53,7 @@
   environment = {
     systemPackages = with pkgs; [
       dwm
-      slstatus
+      dwmblocks
       dmenu
       redshift
       light
