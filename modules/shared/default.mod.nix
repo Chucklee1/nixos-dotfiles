@@ -46,6 +46,13 @@
     keyMap = def.layout;
   };
 
+  # env vars
+  environment.variables = {
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    XCURSOR_SIZE = "${stylix.cursor.size}";
+    XCURSOR_THEME = "${stylix.cursor.name}";
+  };
+
   # -----------------------------------------------------------
   # nix options
   # -----------------------------------------------------------

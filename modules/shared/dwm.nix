@@ -56,7 +56,6 @@ in {
         {
           name = "none+dwm";
           start = ''
-            export _JAVA_AWT_WM_NONREPARENTING=1
             dwm &
             waitPID=$!
 
@@ -65,10 +64,14 @@ in {
             else
               echo "DP-2 does not exist"
             fi
-            ${lib.getExe pkgs.upower}
-            ${lib.getExe pkgs.picom} --backend "egl" --vsync
-            ${lib.getExe pkgs.dwm-status} "${status-cfg}"
+
             ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
+
+            ${lib.getExe pkgs.picom} --backend "egl" --vsync
+
+            ${lib.getExe pkgs.upower}
+            ${lib.getExe pkgs.dwm-status} ${status-cfg}
+
             ${lib.getExe pkgs.redshift} -O 5200
           '';
         }
