@@ -3,7 +3,45 @@
   pkgs,
   def,
   ...
-}: {
+}: let
+    status-cfg = pkgs.writeText "dwm-status.toml" ''
+    order = ["audio" "backlight" "battery" "cpu_load" "network" "time"];
+    separator = "    "
+
+    [audio]
+    control = "Master"
+    mute = ""
+    template = "{ICO} {VOL}%"
+    icons = []
+
+    [backlight]
+    device = "auto"
+    template = "{ICO} {BL}%"
+    icons = [󱩎, 󱩒, 󱩖]
+
+    [battery]
+    charging = "󱐋"
+    discharging = "󰚦"
+    enable_notifier = true
+    no_battery = "󱉝"
+    notifier_critical = 10
+    notifier_levels = [2, 5, 10, 15, 20]
+    separator = " · "
+    icons = [, , , , ]
+
+    [cpu_load]
+    template = "{CL1} {CL5} {CL15}"
+    update_interval = 20
+
+    [network]
+    no_value = "NA"
+    template = "{LocalIPv4} · {ESSID}"
+
+    [time]
+    format = "%Y-%m-%d %H:%M"
+    update_seconds = false
+  '';
+in{
   # overrides
   nixpkgs.overlays = [
     (self: super: {
@@ -31,61 +69,21 @@
             else
               echo "DP-2 does not exist"
             fi
-
+            ${lib.getExe pkgs.dwm-status} "${status-cfg}"
             ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
             ${lib.getExe pkgs.redshift} -O 5200
           '';
         }
       ];
     };
-    # status bar
-    upower.enable = true;
-    dwm-status = {
-      enable = true;
-      order = ["audio" "backlight" "battery" "cpu_load" "network" "time"];
-      extraConfig = ''
-        separator = "    "
-
-        [audio]
-        control = "Master"
-        mute = ""
-        template = "{ICO} {VOL}%"
-        icons = []
-
-        [backlight]
-        device = "auto"
-        template = "{ICO} {BL}%"
-        icons = [󱩎, 󱩒, 󱩖]
-
-        [battery]
-        charging = "󱐋"
-        discharging = "󰚦"
-        enable_notifier = true
-        no_battery = "󱉝"
-        notifier_critical = 10
-        notifier_levels = [2, 5, 10, 15, 20]
-        separator = " · "
-        icons = [, , , , ]
-
-        [cpu_load]
-        template = "{CL1} {CL5} {CL15}"
-        update_interval = 20
-
-        [network]
-        no_value = "NA"
-        template = "{LocalIPv4} · {ESSID}"
-
-        [time]
-        format = "%Y-%m-%d %H:%M"
-        update_seconds = false
-      '';
-    };
+    # needed for status bar
+    services.upower.enable = true;
     # compositor
     picom = {
       enable = true;
       backend = "egl";
       vSync = true;
-    };
+    }; 
   };
 
   # packages
