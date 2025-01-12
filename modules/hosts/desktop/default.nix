@@ -10,12 +10,15 @@
     ./virt.nix
   ];
 
+  # toggle module options 
+  amdcpu.enable = true;
+  nvidia.enable = true;
+
   # -----------------------------------------------------------
   # system
   # -----------------------------------------------------------
   boot = {
-    initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-    kernelModules = ["kvm-amd"];
+    initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"]; 
     supportedFilesystems = ["ntfs"];
   };
 
@@ -24,28 +27,6 @@
     interfaces.enp7s0.useDHCP = lib.mkDefault true;
     interfaces.wlp6s0.useDHCP = lib.mkDefault true;
   };
-
-  # -----------------------------------------------------------
-  # hardware
-  # -----------------------------------------------------------
-  hardware = {
-    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    graphics.extraPackages = with pkgs; [
-      nvidia-vaapi-driver
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-    nvidia = {
-      modesetting.enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
-      videoAcceleration = true;
-      powerManagement.enable = false;
-      powerManagement.finegrained = false;
-      open = false;
-    };
-  };
-  nixpkgs.config.nvidia.acceptLicense = true;
-  services.xserver.videoDrivers = ["nvidia"];
 
   # -----------------------------------------------------------
   # software
@@ -63,17 +44,10 @@
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
+  environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d"
 
-  # -----------------------------------------------------------
-  # global variables
-  # -----------------------------------------------------------
-  environment.variables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
-    MOZ_DISABLE_RDD_SANDBOX = "1";
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    __GL_GSYNC_ALLOWED = "1";
-    __GL_VRR_ALLOWED = "1";
-    __GL_MaxFramesAllowed = "1";
+  services = {
+    dwm-status.order = ["audio" "network" "time"];
+    xserver.displayManager.sessionCommands = "${lib.getExe pkgs.xrog.xrandr} --output DP-2 --mode 1920x1080 -r 165.00";
   };
 }

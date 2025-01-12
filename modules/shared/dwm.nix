@@ -20,12 +20,6 @@
         enable = true;
         package = pkgs.dwm.overrideAttrs (oldAttrs: {src = /home/goat/dwm;});
         extraSessionCommands = ''
-          if xrandr | grep -q "DP-2"; then
-            xrandr --output DP-2 --mode 1920x1080 -r 165.00
-          else
-            echo "DP-2 does not exist"
-          fi
-
           ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
           ${lib.getExe pkgs.redshift} -m randr -O 5200
         '';
@@ -33,7 +27,7 @@
     };
     dwm-status = {
       enable = true;
-      order = ["audio" "backlight" "battery" "network" "time"];
+      # order defined in host defaults 
       extraConfig = ''
         separator = "    "
 
@@ -67,7 +61,6 @@
         update_seconds = true
       '';
     };
-    upower.enable = true;
     picom = {
       enable = true;
       backend = "egl";

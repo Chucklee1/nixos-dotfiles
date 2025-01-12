@@ -4,15 +4,14 @@
   ...
 }: {
   imports = [./hardware.nix];
+  
+  # toggle module options
+  amdcpu.enable = true;
+  amdgpu.enable = true;
 
-# boot
-  boot = {
-    initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
-    kernelModules = ["kvm-amd"];
-  };
-
-  # system options
+  # the rest
+  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
   system.stateVersion = "24.05"; # DO NOT CHANGE
-  # hardware
-  services.xserver.videoDrivers = ["amdgpu"];
+  services.dwm-status.order = ["audio" "backlight" "battery" "network" "time"]; 
+  
 }

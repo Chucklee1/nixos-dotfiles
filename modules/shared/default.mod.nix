@@ -9,6 +9,10 @@
   imports = [
     ../hosts/${host}/default.nix
     ./dwm.nix
+    # config modules
+    ../hardware/amdcpu.nix
+    ../hardware/nvidia.nix
+    ../hardware/amdgpu.nix
   ];
 
   # -----------------------------------------------------------
@@ -87,9 +91,6 @@
   environment.systemPackages = with pkgs; [
     # tools/deps
     gcc
-    vulkan-tools
-    vulkan-loader
-    vulkan-validation-layers
     zenity
     libnotify
     libsecret
@@ -115,7 +116,6 @@
     p7zip
     pavucontrol
     v4l-utils
-    ffmpeg
   ];
 
   # programs
@@ -199,12 +199,6 @@
     bluetooth.powerOnBoot = true;
   };
   services.blueman.enable = true;
-
-  # opengl - renamed to graphics as of 24.11
-  hardware = {
-    graphics.enable = true;
-    graphics.enable32Bit = true;
-  };
 
   # tablet support
   programs.weylus.enable = true;
