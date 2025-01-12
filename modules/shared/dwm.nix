@@ -4,7 +4,7 @@
   def,
   ...
 }: let
-    status-cfg = pkgs.writeText "dwm-status.toml" ''
+  status-cfg = pkgs.writeText "dwm-status.toml" ''
     order = ["audio" "backlight" "battery" "cpu_load" "network" "time"];
     separator = "    "
 
@@ -41,14 +41,10 @@
     format = "%Y-%m-%d %H:%M"
     update_seconds = false
   '';
-in{
+in {
   # overrides
   nixpkgs.overlays = [
-    (self: super: {
-      dwm = super.dwm.overrideAttrs (oldAttrs: {
-        src = /home/goat/dwm;
-      });
-    })
+    (self: super: {dwm = super.dwm.overrideAttrs (oldAttrs: {src = /home/goat/dwm;});})
   ];
 
   services = {
@@ -69,6 +65,8 @@ in{
             else
               echo "DP-2 does not exist"
             fi
+            ${lib.getExe pkgs.upower}
+            ${lib.getExe pkgs.picom} --backend "egl" --vsync
             ${lib.getExe pkgs.dwm-status} "${status-cfg}"
             ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
             ${lib.getExe pkgs.redshift} -O 5200
@@ -76,14 +74,6 @@ in{
         }
       ];
     };
-    # needed for status bar
-    services.upower.enable = true;
-    # compositor
-    picom = {
-      enable = true;
-      backend = "egl";
-      vSync = true;
-    }; 
   };
 
   # packages
