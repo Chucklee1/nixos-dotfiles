@@ -5,7 +5,7 @@
 }: {
   # overrides
   nixpkgs.overlays = [
-    ()
+    (import ./bin.nix)
     (self: super: {
       dwm = super.dwm.overrideAttrs (oldAttrs: {
         src = /home/goat/dwm;
@@ -63,6 +63,11 @@
       xclip
       nerd-fonts.symbols-only
       # bin scripts
+      get-volume
+      get-brightness
+      get-battery
+      get-net
+      get-date
     ];
     variables = {
       _JAVA_AWT_WM_NONREPARENTING = 1;

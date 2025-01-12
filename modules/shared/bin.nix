@@ -1,7 +1,7 @@
 self: super: {
   get-volume = super.writeShellApplication rec {
     name = "get-volume";
-    script = ''
+    text = ''
       wpctl() {
           arg="$2"
 
@@ -41,19 +41,19 @@ self: super: {
 
   get-brightness = super.writeShellApplication rec {
     name = "get-brightness";
-    script = ''
+    text = ''
       curr_brightness=$(cat /sys/class/backlight/*/brightness)
       max_brightness=$(cat /sys/class/backlight/*/max_brightness)
       brightness_per=$((100 * curr_brightness / max_brightness))
-      echo "💡 ${brightness_per}%"
+      echo "󰃞 $brightness_per %"
     '';
   };
 
-  get-battery = super.writeShellApplicaiton rev {
+  get-battery = super.writeShellApplicaiton rec {
     name = "get-battery";
-    script = ''
+    text = ''
       for battery in /sys/class/power_supply/BAT?*; do
-          [ -n "${capacity + x}" ] && printf " "
+          [ -n "$capacity + x" ] && printf " "
 
           capacity="$(cat "$battery/capacity" 2>&1)"
           if [ "$capacity" -gt 90 ]; then
@@ -89,7 +89,7 @@ self: super: {
 
   get-net = super.writeShellApplication rec {
     name = "get-net";
-    script = ''
+    text = ''
       if [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'up' ] ; then
 	      wifiicon="$(awk '/^\s*w/ { print "󰖩", int($3 * 100 / 70) "% " }' /proc/net/wireless)"
       elif [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'down' ] ; then
@@ -102,7 +102,7 @@ self: super: {
 
   get-date = super.writeshellApplication rec {
     name = "get-date";
-    script = ''
+    text = ''
       display "󰥔 $(date '+%H:%M:%S')"
     '';
   };
