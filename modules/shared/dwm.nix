@@ -42,7 +42,7 @@
 
         [audio]
         control = "Master"
-        mute = ""
+        mute = ""
         template = "{ICO} {VOL}%"
         icons = ["", "", ""]
 
