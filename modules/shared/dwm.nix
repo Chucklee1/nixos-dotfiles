@@ -2,6 +2,7 @@
   lib,
   pkgs,
   def,
+  host,
   ...
 }: {
   # packages
@@ -23,11 +24,14 @@
           ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
           ${lib.getExe pkgs.redshift} -m randr -O 5200
         '';
-        };
+      };
     };
     dwm-status = {
       enable = true;
-      # order defined in host defaults 
+      dwm-status.order =
+        lib.mkIf (host == "laptop")
+        ["audio" "backlight" "battery" "network" "time"]
+        // ["audio" "network" "time"];
       extraConfig = ''
         separator = "    "
 

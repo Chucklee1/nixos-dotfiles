@@ -2,16 +2,13 @@
   config,
   lib,
   pkgs,
+  host,
   ...
-}: let
-  cfg = config.amdcpu;
-in {
-  options.amdcpu = {
-    enable = lib.mkEnableOption "enable amdcpu microcode and virtualization settings";
-  };
-
-  config = lib.mkIf cfg.enable {
-    boot.kernelModules = ["kvm-amd"];
-    hardware.cpu.amd.updateMicrocode = true;
-  };
+}: {
+  config =
+    lib.mkIf ("${host}" == "desktop" || "${host}" == "laptop")
+    {
+      boot.kernelModules = ["kvm-amd"];
+      hardware.cpu.amd.updateMicrocode = true;
+    };
 }

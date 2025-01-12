@@ -10,11 +10,6 @@
     ./virt.nix
   ];
 
-  # toggle module options 
-  amdcpu.enable = true;
-  nvidia.enable = true;
-  amdgpu.enable = false;
-
   # -----------------------------------------------------------
   # system
   # -----------------------------------------------------------
@@ -47,8 +42,7 @@
   };
   environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
 
-  services = {
-    dwm-status.order = ["audio" "network" "time"];
+  services = { 
     xserver.displayManager.sessionCommands = "${lib.getExe pkgs.xrog.xrandr} --output DP-2 --mode 1920x1080 -r 165.00";
   };
 }
