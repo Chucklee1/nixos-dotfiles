@@ -49,8 +49,8 @@
   # env vars
   environment.variables = {
     _JAVA_AWT_WM_NONREPARENTING = "1";
-    XCURSOR_SIZE = "${stylix.cursor.size}";
-    XCURSOR_THEME = "${stylix.cursor.name}";
+    XCURSOR_THEME = "Bibata-Modern-Classic";
+    XCURSOR_SIZE = "24";
   };
 
   # -----------------------------------------------------------
@@ -160,7 +160,10 @@
       desktop = 11;
       popups = 12;
     };
-    targets.grub.enable = false;
+    targets = {
+      feh.enable = true;
+      grub.enable = false;
+    };
   };
 
   # -----------------------------------------------------------
