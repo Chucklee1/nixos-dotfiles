@@ -9,9 +9,6 @@
     dmenu
     brightnessctl
     xclip
-    # start script pkgs
-    feh
-    redshift
   ];
 
   services = {
@@ -29,8 +26,8 @@
             echo "DP-2 does not exist"
           fi
 
-          feh --bg-scale ${def.wallpaper}
-          redshift -m randr -O 5200
+          ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
+          ${lib.getExe pkgs.redshift} -m randr -O 5200
         '';
         };
     };
