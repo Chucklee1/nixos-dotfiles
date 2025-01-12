@@ -13,6 +13,7 @@
   # toggle module options 
   amdcpu.enable = true;
   nvidia.enable = true;
+  amdgpu.enable = false;
 
   # -----------------------------------------------------------
   # system
@@ -44,7 +45,7 @@
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
-  environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d"
+  environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
 
   services = {
     dwm-status.order = ["audio" "network" "time"];

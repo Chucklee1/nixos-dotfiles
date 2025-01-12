@@ -7,8 +7,7 @@
   cfg = config.nvidia;
 in {
   options.nvidia = {
-    enable = lib.mkEnableOption "enables drivers for nvidia RTX gpus";
-    default = false;
+    enable = lib.mkEnableOption "enable drivers for nvidia gpus and video acceleration";
   };
 
   config = lib.mkIf cfg.enable {
@@ -29,18 +28,18 @@ in {
       nvidia = {
         modesetting.enable = true;
         package = config.boot.kernelPackages.nvidiaPackages.stable;
-        forceFullCompositionPipeline = truel
+        forceFullCompositionPipeline = true;
         videoAcceleration = true;
         nvidiaSettings = true;
         open = false;
       };
     };
     environment.variables = {
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    __GL_GSYNC_ALLOWED = "1";
-    __GL_VRR_ALLOWED = "1";
-    __GL_MaxFramesAllowed = "1";
+      LIBVA_DRIVER_NAME = "nvidia";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      __GL_GSYNC_ALLOWED = "1";
+      __GL_VRR_ALLOWED = "1";
+      __GL_MaxFramesAllowed = "1";
     };
   };
 }

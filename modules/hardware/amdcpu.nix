@@ -6,9 +6,8 @@
 }: let
   cfg = config.amdcpu;
 in {
-  options.amdgpu = {
-    enable = lib.mkEnableOption "enables drivers for amd cpus";
-    default = false;
+  options.amdcpu = {
+    enable = lib.mkEnableOption "enable amdcpu microcode and virtualization settings";
   };
 
   config = lib.mkIf cfg.enable {

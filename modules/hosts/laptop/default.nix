@@ -8,6 +8,7 @@
   # toggle module options
   amdcpu.enable = true;
   amdgpu.enable = true;
+  nvidia.enable = false;
 
   # the rest
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
