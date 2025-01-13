@@ -15,13 +15,30 @@
     def = {
       username = "goat";
       system = "x86_64-linux";
-      layout = "us";
       wallpaper = ./assets/wallpaper.png;
+    };
+
+    # conditional host checker  
+    is = host: rec {
+      the = hostname: host == hostname;
+      it = {  
+        laptop = nixpkgs.lib.optional (the "laptop");
+        desktop = nixpkgs.lib.optional (the "desktop");
+        both = nixpkgs.lib.optional (the "desktop" || the "laptop");
+      };
+      its = {
+        laptop = nixpkgs.lib.optionalAttrs (the "laptop");
+        desktop = nixpkgs.lib.optionalAttrs (the "desktop");
+        both = nixpkgs.lib.optionalAttrs (the "desktop" || the "laptop");
+      };
     };
 
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs def host;};
+      specialArgs = {
+        inherit inputs def; 
+        is.the = is host;
+      };
       modules = [
         ./modules/shared/default.mod.nix
         ./modules/shared/default.home.nix

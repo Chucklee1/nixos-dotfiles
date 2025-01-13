@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  config,
+  lib,
+  pkgs,
+  is,
+  ...
+}: {
   programs.virt-manager.enable = true;
 
   virtualisation = {

@@ -1,8 +1,7 @@
 {
   lib,
   pkgs,
-  def,
-  host,
+  is,
   ...
 }: {
   # packages
@@ -12,10 +11,17 @@
     xclip
   ];
 
+  # env vars for x11
+  environment.variables = {
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    XCURSOR_THEME = "Bibata-Modern-Classic";
+    XCURSOR_SIZE = "24";
+  };
+
   services = {
     xserver = {
       enable = true;
-      xkb.layout = def.layout;
+      xkb.layout = "us";
       desktopManager.xterm.enable = false;
       windowManager.dwm = {
         enable = true;
@@ -28,10 +34,8 @@
     };
     dwm-status = {
       enable = true;
-      dwm-status.order =
-        lib.mkIf (host == "laptop")
-        ["audio" "backlight" "battery" "network" "time"]
-        // ["audio" "network" "time"];
+      order =
+        is.it.laptop ["audio" "backlight" "battery" "network" "time"] // ["audio" "network" "time"];
       extraConfig = ''
         separator = "    "
 

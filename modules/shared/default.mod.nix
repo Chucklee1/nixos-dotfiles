@@ -3,33 +3,41 @@
   lib,
   inputs,
   def,
-  host,
+  is,
   ...
 }: {
   imports = [
-    ../hosts/${host}/default.nix
     ./dwm.nix
-    # config modules
-    ../hardware/amdcpu.nix
-    ../hardware/nvidia.nix
-    ../hardware/amdgpu.nix
+    (is.it.both ../hardware/amdcpu.nix)
+    (is.its.desktop [
+      ../hardware/nvidia.nix
+      ../hosts/desktop/default.nix
+      ../hosts/desktop/hardware.nix
+    ])
+    (is.its.laptop [
+      ../hosts/laptop/hardware.nix
+      ../hardware/amdgpu.nix
+    ])
   ];
 
   # -----------------------------------------------------------
   # boot
   # -----------------------------------------------------------
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    grub = {
-      enable = true;
-      efiSupport = true;
-      device = "nodev";
-      useOSProber = true;
-    };
-    grub2-theme = {
-      enable = true;
-      theme = "stylish";
-      footer = true;
+  boot = {
+    supportedFilesystems = is.it.desktop ["ntfs"];
+    loader = {
+      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+        useOSProber = true;
+      };
+      grub2-theme = {
+        enable = true;
+        theme = "stylish";
+        footer = true;
+      };
     };
   };
 
@@ -38,33 +46,24 @@
   # -----------------------------------------------------------
 
   networking = {
-    hostName = "${def.username}-${host}";
+    hostName = is.it.desktop "goat-desktop" is.it.laptop "goat-laptop";
     networkmanager.enable = true;
-    useDHCP = lib.mkDefault true;
+    interfaces.enp7s0.useDHCP = is.it.desktop;
+    interfaces.wlp6s0.useDHCP = is.it.desktop;
   };
 
   i18n.defaultLocale = "en_CA.UTF-8";
   time.timeZone = "America/Vancouver";
   console = {
     earlySetup = true;
-    keyMap = def.layout;
-  };
-
-  # env vars
-  environment.variables = {
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    XCURSOR_THEME = "Bibata-Modern-Classic";
-    XCURSOR_SIZE = "24";
+    keyMap = "us";
   };
 
   # -----------------------------------------------------------
   # nix options
   # -----------------------------------------------------------
-  nixpkgs = {
-    hostPlatform = lib.mkDefault "${def.system}";
-    config.allowUnfree = true;
-  };
-
+  nixpkgs.config.allowUnfree = true;
+  
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
