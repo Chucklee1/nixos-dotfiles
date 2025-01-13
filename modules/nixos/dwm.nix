@@ -45,7 +45,7 @@
 
         [audio]
         control = "Master"
-        mute = "󰝟"
+        mute = "󰝟 X"
         template = "{ICO} {VOL}%"
         icons = ["", "", ""]
 
@@ -66,10 +66,10 @@
 
         [network]
         no_value = "󰯡"
-        template = "{LocalIPv4} · {ESSID}"
+        template = "󰀂 {LocalIPv4} · {ESSID}"
 
         [time]
-        format = "%Y-%m-%d %H:%M:%S"
+        format = " %Y-%m-%d  %H:%M:%S"
         update_seconds = true
       '';
     };
