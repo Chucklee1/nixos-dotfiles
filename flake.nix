@@ -26,14 +26,15 @@
         modules = let
           mod = import ./modules/default.nix;
         in [
-          mod.nix.global
-          mod.nix.${host}
+          mod.nixos.global
+          mod.nixos.${host}
           inputs.home-manager.nixosModules.home-manager
           inputs.stylix.nixosModules.stylix
           inputs.grub2-themes.nixosModules.default
           {
             home-manager.sharedModules = [
-              mod.home
+              mod.home.global
+              mod.home.${host}
               inputs.nixvim.homeManagerModules.nixvim
             ];
           }
