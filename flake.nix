@@ -12,44 +12,33 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
-    def = {
-      username = "goat";
-      system = "x86_64-linux";
-      wallpaper = ./assets/wallpaper.png;
-    };
-
-    # conditional host checker
-    is = host: rec {
-      it = {
-        laptop = nixpkgs.lib.optional (host == "laptop");
-        desktop = nixpkgs.lib.optional (host == "desktop");
-        both = nixpkgs.lib.optional (host == "desktop" || host == "laptop");
+    systemConfig = host:
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          def = rec {
+            username = "goat";
+            hostname = "${host}-${username}";
+            system = "x86_64-linux";
+            wallpaper = ./assets/wallpaper.png;
+          };
+        };
+        modules = let
+          mod = import ./modules/default.nix;
+        in [
+          mod.nix.global
+          mod.nix.${host}
+          inputs.home-manager.nixosModules.home-manager
+          inputs.stylix.nixosModules.stylix
+          inputs.grub2-themes.nixosModules.default
+          {
+            home-manager.sharedModules = [
+              mod.home
+              inputs.nixvim.homeManagerModules.nixvim
+            ];
+          }
+        ];
       };
-      its = {
-        laptop = nixpkgs.lib.optionalAttrs (host == "laptop");
-        desktop = nixpkgs.lib.optionalAttrs (host == "desktop");
-        both = nixpkgs.lib.optionalAttrs (host == "desktop" || host == "laptop");
-      };
-    };
-
-    # system declaration
-    systemConfig = host: (nixpkgs.lib.nixosSystem {
-      specialArgs = {
-        inherit inputs def;
-        is = is host;
-      };
-      modules = [
-        ./modules/default.nix
-        ./modules/hosts/${host}/default.nix
-        inputs.home-manager.nixosModules.home-manager
-        inputs.stylix.nixosModules.stylix
-        inputs.grub2-themes.nixosModules.default
-        {
-          networking.hostName = "${host}-goat"; # setting here cause I dont want to pass host
-          home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
-        }
-      ];
-    });
   in {
     # systems
     nixosConfigurations.desktop = systemConfig "desktop";
