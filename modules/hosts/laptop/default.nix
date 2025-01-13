@@ -1,1 +1,1 @@
-
+{imports = [./hardware.nix];}

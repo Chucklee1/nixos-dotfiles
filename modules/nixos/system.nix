@@ -6,19 +6,6 @@
   is,
   ...
 }: {
-  imports = [
-    ./dwm.nix
-    (is.it.both ../hardware/amdcpu.nix)
-    (is.its.desktop [
-      ../hardware/nvidia.nix
-      ../hosts/desktop/default.nix
-      ../hosts/desktop/hardware.nix
-    ])
-    (is.its.laptop [
-      ../hosts/laptop/hardware.nix
-      ../hardware/amdgpu.nix
-    ])
-  ];
 
   # -----------------------------------------------------------
   # boot
@@ -63,7 +50,7 @@
   # nix options
   # -----------------------------------------------------------
   nixpkgs.config.allowUnfree = true;
-  
+
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
@@ -115,12 +102,18 @@
     p7zip
     pavucontrol
     v4l-utils
+    # apps
+    krita
+    webcord
+    spotify
+    zoom-us
   ];
 
   # programs
   programs = {
     dconf.enable = true;
     xfconf.enable = true;
+    firefox.enable = true;
     thunar = {
       enable = true;
       plugins = with pkgs.xfce; [
@@ -160,7 +153,6 @@
       popups = 12;
     };
     targets = {
-      feh.enable = true;
       grub.enable = false;
     };
   };
@@ -172,11 +164,14 @@
     polkit.enable = true;
     rtkit.enable = true; # for sound
   };
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      PermitRootLogin = "prohibit-password";
+  services = {
+    gnome-keyring.enable = true;
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "prohibit-password";
+      };
     };
   };
 

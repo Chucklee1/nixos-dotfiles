@@ -20,16 +20,15 @@
 
     # conditional host checker  
     is = host: rec {
-      the = hostname: host == hostname;
       it = {  
-        laptop = nixpkgs.lib.optional (the "laptop");
-        desktop = nixpkgs.lib.optional (the "desktop");
-        both = nixpkgs.lib.optional (the "desktop" || the "laptop");
+        laptop = nixpkgs.lib.optional (host == "laptop");
+        desktop = nixpkgs.lib.optional (host == "desktop");
+        both = nixpkgs.lib.optional (host == "desktop" || host == "laptop");
       };
       its = {
-        laptop = nixpkgs.lib.optionalAttrs (the "laptop");
-        desktop = nixpkgs.lib.optionalAttrs (the "desktop");
-        both = nixpkgs.lib.optionalAttrs (the "desktop" || the "laptop");
+        laptop = nixpkgs.lib.optionalAttrs (host == "laptop");
+        desktop = nixpkgs.lib.optionalAttrs (host == "desktop");
+        both = nixpkgs.lib.optionalAttrs (host == "desktop" || host == "laptop");
       };
     };
 
@@ -37,11 +36,11 @@
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit inputs def; 
-        is.the = is host;
+        is = is host;
       };
       modules = [
-        ./modules/shared/default.mod.nix
-        ./modules/shared/default.home.nix
+        ./modules/default.nix
+        ./modules/hosts/${host}/default.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.grub2-themes.nixosModules.default
