@@ -24,6 +24,7 @@
       ./home/shelli.nix
       ./home/nixvim.nix
       ./home/user-theming.nix
+      {services.gnome-keyring.enable = true;}
     ];
   };
 }

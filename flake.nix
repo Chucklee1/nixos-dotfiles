@@ -18,9 +18,9 @@
       wallpaper = ./assets/wallpaper.png;
     };
 
-    # conditional host checker  
+    # conditional host checker
     is = host: rec {
-      it = {  
+      it = {
         laptop = nixpkgs.lib.optional (host == "laptop");
         desktop = nixpkgs.lib.optional (host == "desktop");
         both = nixpkgs.lib.optional (host == "desktop" || host == "laptop");
@@ -35,7 +35,7 @@
     # system declaration
     systemConfig = host: (nixpkgs.lib.nixosSystem {
       specialArgs = {
-        inherit inputs def; 
+        inherit inputs def;
         is = is host;
       };
       modules = [
@@ -44,7 +44,10 @@
         inputs.home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
         inputs.grub2-themes.nixosModules.default
-        {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];}
+        {
+          networking.hostName = "${host}-goat"; # setting here cause I dont want to pass host
+          home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
+        }
       ];
     });
   in {

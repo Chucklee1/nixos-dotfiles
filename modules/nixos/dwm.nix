@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  def,
   is,
   ...
 }: {
@@ -27,6 +28,9 @@
         enable = true;
         package = pkgs.dwm.overrideAttrs (oldAttrs: {src = /home/goat/dwm;});
         extraSessionCommands = ''
+          if if xrandr | grep -q DP-2; then
+            xrandr --output DP-2 --mode 1920x1080 --rate 165.00
+          fi
           ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
           ${lib.getExe pkgs.redshift} -m randr -O 5200
         '';
@@ -35,7 +39,7 @@
     dwm-status = {
       enable = true;
       order =
-        is.it.laptop ["audio" "backlight" "battery" "network" "time"] // ["audio" "network" "time"];
+        ["audio"] ++ (is.it.laptop ["backlight" "battery"]) ++ ["network" "time"];
       extraConfig = ''
         separator = "    "
 

@@ -6,12 +6,11 @@
   is,
   ...
 }: {
-
   # -----------------------------------------------------------
   # boot
   # -----------------------------------------------------------
   boot = {
-    supportedFilesystems = is.it.desktop ["ntfs"];
+    supportedFilesystems = is.its.desktop ["ntfs"];
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {
@@ -32,13 +31,8 @@
   # system options
   # -----------------------------------------------------------
 
-  networking = {
-    hostName = is.it.desktop "goat-desktop" is.it.laptop "goat-laptop";
-    networkmanager.enable = true;
-    interfaces.enp7s0.useDHCP = is.it.desktop;
-    interfaces.wlp6s0.useDHCP = is.it.desktop;
-  };
-
+  system.stateVersion = "24.05";
+  networking.networkmanager.enable = true;
   i18n.defaultLocale = "en_CA.UTF-8";
   time.timeZone = "America/Vancouver";
   console = {
@@ -50,7 +44,6 @@
   # nix options
   # -----------------------------------------------------------
   nixpkgs.config.allowUnfree = true;
-
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
@@ -164,14 +157,11 @@
     polkit.enable = true;
     rtkit.enable = true; # for sound
   };
-  services = {
-    gnome-keyring.enable = true;
-    openssh = {
-      enable = true;
-      settings = {
-        PasswordAuthentication = false;
-        PermitRootLogin = "prohibit-password";
-      };
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "prohibit-password";
     };
   };
 
