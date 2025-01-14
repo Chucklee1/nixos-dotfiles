@@ -13,13 +13,13 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
-    systemConfig = host:
+    systemConfig = machine:
       nixpkgs.lib.nixosSystem {
         specialArgs = let
           def = rec {
             username = "goat";
-            host = host;
-            hostname = "${host}-${username}";
+            host = machine;
+            hostname = "${machine}-${username}";
             system = "x86_64-linux";
             wallpaper = ./assets/wallpaper.png;
           };

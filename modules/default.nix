@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  host,
   def,
   ...
 }: let
@@ -13,8 +12,8 @@
   };
 
   config =
-    if hostToMod ? host
-    then file.${hostToMod}.${host}
+    if hostToMod ? def.host
+    then file.${hostToMod}.${def.host}
     else {};
 in
   {
@@ -22,7 +21,7 @@ in
       ./software.nix
       ./system.nix
       ./theming.nix
-      ./hosts/${host}.nix
+      ./hosts/${def.host}.nix
     ];
 
     home-manager = {
