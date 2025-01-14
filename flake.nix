@@ -9,7 +9,7 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
-    this-repo.url = "github:Chucklee/nixos-dotfiles";
+    this-repo.url = "github:Chucklee1/nixos-dotfiles";
   };
 
   outputs = {
