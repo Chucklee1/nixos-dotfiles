@@ -11,13 +11,6 @@
     xclip
   ];
 
-  # env vars for x11
-  environment.variables = {
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    XCURSOR_THEME = "Bibata-Modern-Classic";
-    XCURSOR_SIZE = "24";
-  };
-
   services = {
     xserver = {
       enable = true;
@@ -27,6 +20,8 @@
         enable = true;
         package = pkgs.dwm.overrideAttrs (oldAttrs: {src = /home/goat/dwm;});
         extraSessionCommands = ''
+          export _JAVA_AWT_WM_NONREPARENTING=1
+          xrandr --output DP-2 --mode 1920x1080 --rate 165.00
           ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
           ${lib.getExe pkgs.redshift} -m randr -O 5200
         '';
@@ -34,6 +29,7 @@
     };
     dwm-status = {
       enable = true;
+      order = ["audio" "network" "time"];
       extraConfig = ''
         separator = "    "
 
@@ -42,21 +38,6 @@
         mute = "󰝟 X"
         template = "{ICO} {VOL}%"
         icons = ["", "", ""]
-
-        [backlight]
-        device = "amdgpu_bl1"
-        template = "{ICO} {BL}%"
-        icons = ["󱩎", "󱩒", "󱩖"]
-
-        [battery]
-        charging = "󱐋"
-        discharging = "󰚦"
-        enable_notifier = true
-        no_battery = "󱉝"
-        notifier_critical = 10
-        notifier_levels = [2, 5, 10, 15, 20]
-        separator = " · "
-        icons = ["", "", "", "", ""]
 
         [network]
         no_value = "󰯡"
@@ -80,6 +61,4 @@
     extraPortals = [pkgs.xdg-desktop-portal-gtk];
     config.common.default = ["gtk"];
   };
-
-  home-manager.sharedModules = [{services.gnome-keyring.enable = true;}];
 }

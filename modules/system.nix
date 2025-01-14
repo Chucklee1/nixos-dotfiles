@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   def,
   ...
@@ -41,7 +40,10 @@
   # -----------------------------------------------------------
   # nix options
   # -----------------------------------------------------------
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    hostPlatform = lib.mkDefault "x86_64-linux";
+    config.allowUnfree = true;
+  };
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];

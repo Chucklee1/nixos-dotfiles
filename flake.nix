@@ -6,6 +6,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
+    niri.url = "github:sodiboo/niri-flake";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
@@ -17,14 +18,22 @@
         specialArgs = let
           def = rec {
             username = "goat";
+            host = host;
             hostname = "${host}-${username}";
             system = "x86_64-linux";
             wallpaper = ./assets/wallpaper.png;
           };
         in {
-          inherit inputs host def;
+          inherit inputs def;
         };
-        modules = [./modules/default.nix];
+        modules = [
+          ./modules/default.nix
+          inputs.home-manager.nixosModules.home-manager
+          inputs.stylix.nixosModules.stylix
+          inputs.grub2-themes.nixosModules.default
+          inputs.niri.nixosModules.niri
+          {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];}
+        ];
       };
   in {
     # systems
