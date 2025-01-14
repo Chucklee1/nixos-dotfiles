@@ -1,5 +1,5 @@
 {
-  nix.global = [
+  nix-global = [
     {
       pkgs,
       def,
@@ -38,7 +38,7 @@
     }
   ];
 
-  home.global = [
+  home-global = [
     {pkgs, ...}: {
       gtk = {
         enable = true;

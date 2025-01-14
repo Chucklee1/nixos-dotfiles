@@ -1,5 +1,5 @@
 {
-  nix.global = [
+  nix-global = [
     {
       pkgs,
       lib,
@@ -115,7 +115,7 @@
     }
   ];
 
-  home.global = [
+  home-global = [
     {
       inputs,
       def,
@@ -134,7 +134,7 @@
     }
   ];
 
-  nix.desktop = [
+  nix-desktop = [
     {pkgs, ...}: {
       programs.virt-manager.enable = true;
       virtualisation = {
@@ -163,7 +163,7 @@
     }
   ];
 
-  home.desktop = [
+  home-desktop = [
     {
       dconf.settings."org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];

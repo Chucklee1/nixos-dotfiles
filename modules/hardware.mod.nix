@@ -1,5 +1,5 @@
 {
-  nix.laptop = [
+  nix-laptop = [
     {
       config,
       lib,
@@ -21,7 +21,7 @@
     }
   ];
 
-  nix.desktop = [
+  nix-desktop = [
     {
       config,
       lib,

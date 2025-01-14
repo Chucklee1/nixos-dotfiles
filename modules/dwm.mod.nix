@@ -1,5 +1,5 @@
 {
-  nixos.global = [
+  nixos-global = [
     {
       lib,
       pkgs,
@@ -85,9 +85,9 @@
     }
   ];
 
-  home.global = [{services.gnome-keyring.enable = true;}];
+  home-global = [{services.gnome-keyring.enable = true;}];
 
-  nixos.desktop = [
+  nixos-desktop = [
     {
       service = {
         dwm-status.order = ["audio" "network" "time"];
@@ -96,5 +96,5 @@
     }
   ];
 
-  nixos.laptop = [{service.dwm-status.order = ["audio" "battery" "backlight" "network" "time"];}];
+  nixos-laptop = [{service.dwm-status.order = ["audio" "battery" "backlight" "network" "time"];}];
 }

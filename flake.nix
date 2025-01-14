@@ -9,14 +9,9 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
-    this-repo.url = "github:Chucklee1/nixos-dotfiles";
   };
 
-  outputs = {
-    this-repo,
-    nixpkgs,
-    ...
-  } @ inputs: let
+  outputs = {nixpkgs, ...} @ inputs: let
     systemConfig = host:
       nixpkgs.lib.nixosSystem {
         specialArgs = {
@@ -25,28 +20,28 @@
             username = "goat";
             hostname = "${host}-${username}";
             system = "x86_64-linux";
-            wallpaper = (this-repo + assets/wallpaper.png);
+            wallpaper = /home/goat/nixos-dotfiles/assets/wallpaper.png;
           };
         };
         modules = let
           files = [
-            "dwm"
-            "hardware"
-            "software"
-            "system"
-            "theming"
+            /home/goat/nixos-dotfiles/modules/dwm.mod.nix
+            /home/goat/nixos-dotfiles/modules/hardware.mod.nix
+            /home/goat/nixos-dotfiles/modules/software.mod.nix
+            /home/goat/nixos-dotfiles/modules/system.mod.nix
+            /home/goat/nixos-dotfiles/modules/theming.mod.nix
           ];
-          mods = map (file: import (this-repo + "/modules/" + file ++ ".mod.nix")) files;
-          merged-nix = mods.nix.${host} ++ mods.nix.global;
-          merged-home = mods.home.${host} ++ mods.home.global;
+          mod = builtins.foldl' (acc: file: acc // (import file)) {} files;
         in [
-          merged-nix
           inputs.home-manager.nixosModules.home-manager
           inputs.stylix.nixosModules.stylix
           inputs.grub2-themes.nixosModules.default
           {
+            mod.nix-${host}
+            mod.nix-global
             home-manager.sharedModules = [
-              merged-home
+              mod.home-${host}
+              mod.home-global
               inputs.nixvim.homeManagerModules.nixvim
             ];
           }
