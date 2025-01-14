@@ -4,37 +4,27 @@
   pkgs,
   def,
   ...
-}: let
-  mkOptions = attrs:
-    lib.genAttrs attrs (name:
-      lib.mkOption {
-        type = lib.types.listOf lib.types.attrs;
-        default = [];
-        description = "Configuration for ${name}.";
-      });
-in {
+}: {
   imports = [
-    ./dwm.mod.nix
-    ./software.mod.nix
-    ./system.mod.nix
-    ./theming.mod.nix
-    ./hardware.mod.nix
-  ];
-  options = mkOptions [
-    "nixMod.global"
-    "nixMod.laptop"
-    "nixMod.desktop"
-    "homeMod.global"
-    "homeMod.desktop"
+    ./dwm.nix
+    ./software.nix
+    ./system.nix
+    ./theming.nix
+    ./hardware.nix
+    inputs.home-manager.nixosModules.home-manager
+    inputs.stylix.nixosModules.stylix
+    inputs.grub2-themes.nixosModules.default
   ];
 
-  config = {
-    nixosModules =
-      lib.concatMapAttrs (_: modules: modules) config.nixMod.global
-      ++ lib.concatMapAttrs (_: modules: modules) config.nixMod.${def.host};
-
-    homeModules =
-      lib.concatMapAttrs (_: modules: modules) config.homeMod.global
-      ++ lib.concatMapAttrs (_: modules: modules) config.homeMod.${def.host};
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    extraSpecialArgs = {inherit inputs def;};
+    users.${def.username}.home = {
+      stateVersion = "24.05"; # DO NOT CHANGE
+      username = "${def.username}";
+      homeDirectory = "/home/${def.username}";
+    };
   };
+  home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
 }

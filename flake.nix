@@ -14,34 +14,17 @@
   outputs = {nixpkgs, ...} @ inputs: let
     systemConfig = host:
       nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
+        specialArgs = let
           def = rec {
             username = "goat";
             hostname = "${host}-${username}";
             system = "x86_64-linux";
             wallpaper = ./assets/wallpaper.png;
           };
+        in {
+          inherit inputs host def;
         };
-        modules = [
-          ./default.nix
-          inputs.home-manager.nixosModules.home-manager
-          inputs.stylix.nixosModules.stylix
-          inputs.grub2-themes.nixosModules.default
-          {
-            home-manager = {
-              useUserPackages = true;
-              useGlobalPkgs = true;
-              extraSpecialArgs = {inherit inputs def;};
-              users.${def.username}.home = {
-                stateVersion = "24.05"; # DO NOT CHANGE
-                username = "${def.username}";
-                homeDirectory = "/home/${def.username}";
-              };
-            };
-            home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
-          }
-        ];
+        modules = [./default.nix];
       };
   in {
     # systems

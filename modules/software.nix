@@ -1,61 +1,57 @@
-{
-  nixMod.global = [
-    {pkgs, ...}: {
-      # -----------------------------------------------------------
-      # packages
-      # -----------------------------------------------------------
-      environment.systemPackages = with pkgs; [
-        # tools/deps
-        gcc
-        zenity
-        libnotify
-        libsecret
-        wine
-        wineWowPackages.stagingFull
-        samba
-        winetricks
-        # language QOL
-        alejandra
-        nixd
-        asm-lsp
-        # cli
-        ripgrep
-        pciutils
-        btop
-        ncdu
-        # web/net
-        wget
-        git
-        curl
-        # media/files
-        file-roller
-        p7zip
-        pavucontrol
-        v4l-utils
-        # apps
-        krita
-        webcord
-        spotify
-        zoom-us
-      ];
-
-      # programs
-      programs = {
-        dconf.enable = true;
-        xfconf.enable = true;
-        firefox.enable = true;
-        thunar = {
-          enable = true;
-          plugins = with pkgs.xfce; [
-            thunar-archive-plugin
-            thunar-volman
-          ];
-        };
-      };
-    }
+{pkgs, ...}: {
+  # -----------------------------------------------------------
+  # packages
+  # -----------------------------------------------------------
+  environment.systemPackages = with pkgs; [
+    # tools/deps
+    gcc
+    zenity
+    libnotify
+    libsecret
+    wine
+    wineWowPackages.stagingFull
+    samba
+    winetricks
+    # language QOL
+    alejandra
+    nixd
+    asm-lsp
+    # cli
+    ripgrep
+    pciutils
+    btop
+    ncdu
+    # web/net
+    wget
+    git
+    curl
+    # media/files
+    file-roller
+    p7zip
+    pavucontrol
+    v4l-utils
+    # apps
+    krita
+    webcord
+    spotify
+    zoom-us
   ];
 
-  homeMod.global = [
+  # programs
+  programs = {
+    dconf.enable = true;
+    xfconf.enable = true;
+    firefox.enable = true;
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+  };
+
+  home-manager.sharedModules = [
     {
       programs = {
         # git
@@ -281,25 +277,6 @@
           };
         };
       };
-    }
-  ];
-
-  nixMod.desktop = [
-    {pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        protonup-qt
-        protontricks
-        prismlauncher
-        osu-lazer-bin
-      ];
-
-      programs.steam = {
-        enable = true;
-        remotePlay.openFirewall = true;
-        dedicatedServer.openFirewall = true;
-        localNetworkGameTransfers.openFirewall = true;
-      };
-      environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
     }
   ];
 }
