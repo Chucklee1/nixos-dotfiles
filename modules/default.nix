@@ -2,6 +2,8 @@
   lib,
   config,
   pkgs,
+  inputs,
+  host,
   def,
   ...
 }: {

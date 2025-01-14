@@ -24,7 +24,7 @@
         in {
           inherit inputs host def;
         };
-        modules = [./default.nix];
+        modules = [./modules/default.nix];
       };
   in {
     # systems

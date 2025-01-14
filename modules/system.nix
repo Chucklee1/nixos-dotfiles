@@ -29,7 +29,7 @@
   system.stateVersion = "24.05";
   networking = {
     networkmanager.enable = true;
-    hostName = ${def.hostname};
+    hostName = def.hostname;
   };
   i18n.defaultLocale = "en_CA.UTF-8";
   time.timeZone = "America/Vancouver";
