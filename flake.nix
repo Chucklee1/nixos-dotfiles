@@ -20,30 +20,26 @@
             username = "goat";
             hostname = "${host}-${username}";
             system = "x86_64-linux";
-            wallpaper = /home/goat/nixos-dotfiles/assets/wallpaper.png;
+            wallpaper = ./assets/wallpaper.png;
           };
         };
-        modules = let
-          files = [
-            /home/goat/nixos-dotfiles/modules/dwm.mod.nix
-            /home/goat/nixos-dotfiles/modules/hardware.mod.nix
-            /home/goat/nixos-dotfiles/modules/software.mod.nix
-            /home/goat/nixos-dotfiles/modules/system.mod.nix
-            /home/goat/nixos-dotfiles/modules/theming.mod.nix
-          ];
-          mod = builtins.foldl' (acc: file: acc // (import file)) {} files;
-        in [
+        modules = [
+          ./default.nix
           inputs.home-manager.nixosModules.home-manager
           inputs.stylix.nixosModules.stylix
           inputs.grub2-themes.nixosModules.default
           {
-            mod.nix-${host}
-            mod.nix-global
-            home-manager.sharedModules = [
-              mod.home-${host}
-              mod.home-global
-              inputs.nixvim.homeManagerModules.nixvim
-            ];
+            home-manager = {
+              useUserPackages = true;
+              useGlobalPkgs = true;
+              extraSpecialArgs = {inherit inputs def;};
+              users.${def.username}.home = {
+                stateVersion = "24.05"; # DO NOT CHANGE
+                username = "${def.username}";
+                homeDirectory = "/home/${def.username}";
+              };
+            };
+            home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
           }
         ];
       };

@@ -1,5 +1,5 @@
 {
-  nix-global = [
+  nixMod.global = [
     {pkgs, ...}: {
       # -----------------------------------------------------------
       # packages
@@ -55,7 +55,7 @@
     }
   ];
 
-  home-global = [
+  homeMod.global = [
     {
       programs = {
         # git
@@ -284,7 +284,7 @@
     }
   ];
 
-  nix-desktop = [
+  nixMod.desktop = [
     {pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         protonup-qt

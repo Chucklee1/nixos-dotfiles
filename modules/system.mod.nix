@@ -1,5 +1,5 @@
 {
-  nix-global = [
+  nixMod.global = [
     {
       pkgs,
       lib,
@@ -115,26 +115,7 @@
     }
   ];
 
-  home-global = [
-    {
-      inputs,
-      def,
-      ...
-    }: {
-      home-manager = {
-        useUserPackages = true;
-        useGlobalPkgs = true;
-        extraSpecialArgs = {inherit inputs def;};
-        users.${def.username}.home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
-          username = "${def.username}";
-          homeDirectory = "/home/${def.username}";
-        };
-      };
-    }
-  ];
-
-  nix-desktop = [
+  nixMod.desktop = [
     {pkgs, ...}: {
       programs.virt-manager.enable = true;
       virtualisation = {
@@ -163,7 +144,7 @@
     }
   ];
 
-  home-desktop = [
+  homeMod.desktop = [
     {
       dconf.settings."org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
