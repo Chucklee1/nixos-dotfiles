@@ -5,6 +5,7 @@
   def,
   ...
 }: {
+  stylix.targets.waybar.enable = false;
   programs = {
     fuzzel.enable = true;
     wlogout.enable = true;
@@ -181,93 +182,7 @@
       enable = true;
       systemd.enable = true;
       style = ''${builtins.readFile ./style.css}'';
-      settings = [
-        {
-          layer = "top";
-          position = "top";
-          height = 27;
-
-          "custom/divider" = {
-            format = "";
-            tooltip = false;
-          };
-
-          modules-left = ["wlr/taskbar"];
-          modules-center = ["niri/window"];
-          modules-right = [
-            "idle_inhibitor"
-            "pulseaudio"
-            "power-profiles-daemon"
-            "battery"
-            "backlight"
-            "tray"
-            "clock"
-          ];
-
-          "wlr/taskbar" = {
-            format = "{name}";
-            tooltip = false;
-            app_ids-mapping = {
-              "gnome-terminal-server" = "org.gnome.Terminal";
-            };
-          };
-
-          "niri/window" = {
-            format = "{}";
-            max-length = 150;
-          };
-
-          "idle_inhibitor" = {
-            format = "{icon}";
-            "format-icons" = {
-              activated = "";
-              deactivated = "";
-            };
-          };
-
-          "pulseaudio" = {
-            format = "{icon} {volume:2}%";
-            "format-bluetooth" = "{{icon} volume}%";
-            "format-muted" = "󰝟 M";
-            "format-icons" = {default = ["" "" ""];};
-          };
-
-          "power-profiles-daemon" = {
-            format = "{icon}";
-            tooltip-format = "Power profile: {profile}\nDriver: {driver}";
-            tooltip = true;
-            format-icons = {
-              default = "";
-              performance = "";
-              balanced = "";
-              power-saver = "";
-            };
-          };
-
-          "battery" = {
-            states = {
-              good = 95;
-              warning = 30;
-              critical = 15;
-            };
-            format = "{capacity}% {icon}";
-            "format-icons" = ["" "" "" "" ""];
-          };
-
-          "backlight" = {
-            device = "amdgpu_bl1e";
-            format = "{percent}% {icon}";
-            "format-icons" = ["" "" "" "" "" "" "" "" ""];
-          };
-          "tray" = {};
-
-          "clock" = {
-            format = "{:%m.%d.%y} {:%H:%M:%S}";
-            tooltip = false;
-            interval = 1;
-          };
-        }
-      ];
+      settings = [builtins.fromJSON (builtins.readFile ./config.json)];
     };
   };
 }
