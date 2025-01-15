@@ -1,0 +1,43 @@
+@define-color base00 #151515; /* 0 -> black */
+@define-color base01 #202020; /* Dark gray */
+@define-color base02 #303030; /* Medium dark gray */
+@define-color base03 #505050; /* 3 -> Gray */
+@define-color base04 #b0b0b0; /* Light gray */
+@define-color base05 #d0d0d0; /* Very light gray */
+@define-color base06 #e0e0e0; /* Almost white */
+@define-color base07 #f5f5f5; /* 7 -> White */
+@define-color base08 #ac4142; /* 8 -> Red */
+@define-color base09 #d28445; /* Orange */
+@define-color base0A #f4bf75; /* Yellow */
+@define-color base0B #90a959; /* B-> Green */
+@define-color base0C #75b5aa; /* Cyan */
+@define-color base0D #6a9fb5; /* D -> Blue */
+@define-color base0E #aa759f; /* Purple */
+@define-color base0F #8f5536; /* Brown */
+
+* {
+    font-family: "JetBrainsMono nerd font";
+    font-size: 10pt;
+}
+
+window#waybar, tooltip {
+    background: @base00;
+    color: @base05;
+}
+
+tooltip {
+    border-color: @base0D;
+}
+
+#wireplumber,
+#pulseaudio,
+#wireplumber.muted,
+#battery,
+#battery.Charging,
+#clock,
+#backlight,
+#idle_inhibitor {
+    padding: 0 5px;
+}
+
+

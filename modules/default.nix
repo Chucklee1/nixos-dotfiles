@@ -3,26 +3,14 @@
   inputs,
   def,
   ...
-}: let
-  file = import ./hardware.nix;
-
-  hostToMod = {
-    laptop = "nix-laptop";
-    desktop = "nix-desktop";
-  };
-
-  config =
-    if hostToMod ? def.host
-    then file.${hostToMod}.${def.host}
-    else {};
-in
+}: 
   {
     imports = [
       ./software.nix
       ./system.nix
       ./theming.nix
-      ./hosts/${def.host}.nix
-    ];
+      ./hardware.nix
+    ]; 
 
     home-manager = {
       useUserPackages = true;
@@ -34,5 +22,4 @@ in
         homeDirectory = "/home/${def.username}";
       };
     };
-  }
-  // config
+  } 

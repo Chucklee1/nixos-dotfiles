@@ -12,9 +12,7 @@
       enable = true;
       package = pkgs.swaylock-effects;
     };
-    niri.settings = let
-      sh = cmd: "sh" "-c" ''${cmd}'';
-    in {
+    niri.settings = {
       # general
       prefer-no-csd = true;
       hotkey-overlay.skip-at-startup = true;
@@ -62,7 +60,8 @@
         }
         {
           command = [
-            sh
+            "sh"
+            "-c"
             ''
               if systemctl --user list-units --type=service --all | grep -q 'waybar.service'; then
                 systemctl --user restart waybar.service
@@ -72,14 +71,16 @@
         }
       ];
 
-      switch-events = with config.lib.niri.actions; {
-        tablet-mode-on.action = spawm sh "notify-send tablet-mode-on";
-        tablet-mode-off.action = spawm sh "notify-send tablet-mode-off";
-        lid-open.action = spawm sh ''
+      switch-events = with config.lib.niri.actions; let
+        sh = spawn "sh" "-c";
+      in {
+        tablet-mode-on.action = sh "notify-send tablet-mode-on";
+        tablet-mode-off.action = sh "notify-send tablet-mode-off";
+        lid-open.action = sh ''
           niri msg action power-on-monitors
           swaylock
         '';
-        lid-close.action = spawm sh "niri msg action power-off-monitors";
+        lid-close.action = sh "niri msg action power-off-monitors";
       };
 
       # keybinds
@@ -88,7 +89,7 @@
         mod-s = "Mod+Shift";
         mod-c = "Mod+Ctrl";
         mod-s-c = "Mod+Shift+Ctrl";
-        sh = spawn sh;
+        sh = cmd: spawn "sh" "-c" "${cmd}";
       in {
         # programs
         "${mod}+Return".action = spawn "kitty";
@@ -179,6 +180,7 @@
     waybar = {
       enable = true;
       systemd.enable = true;
+      style = ''${builtins.readFile ./style.css}'';
       settings = [
         {
           layer = "top";
@@ -266,7 +268,6 @@
           };
         }
       ];
-      style = ''foo'';
     };
   };
 }
