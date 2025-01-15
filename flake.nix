@@ -13,31 +13,57 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
-    systemConfig = machine:
-      nixpkgs.lib.nixosSystem {
-        specialArgs = let
-          def = rec {
-            username = "goat";
-            host = machine;
-            hostname = "${machine}-${username}";
-            system = "x86_64-linux";
-            wallpaper = ./assets/wallpaper.png;
-          };
-        in {
-          inherit inputs def;
-        };
+    mkSystem = host: rec {
+      # lazy naming
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {inherit system;};
+      lib = pkgs.lib;
+      config = pkgs.config;
+      def = {
+        username = "goat";
+        machine = {inherit host;};
+        wallpaper = ./assets/wallpaper.png;
+        module = typeArg: configSet:
+          if (def.machine == typeArg || "default" == typeArg)
+          then configSet
+          else {};
+        /*
+        any module not defined as a one of the defined in
+        nixosConfigurations or with default will be ignored,
+        this is nice since you can easily disable modules by
+        giving it another name, in this case I am using
+        "disabled" or "off"
+        */
+      };
+
+      # system functions
+      mkSystem.metal = lib.nixosSystem rec {
+        specialArgs = {inherit system inputs def;};
+
         modules = [
-          ./modules/default.nix
-          inputs.home-manager.nixosModules.home-manager
           inputs.stylix.nixosModules.stylix
-          inputs.grub2-themes.nixosModules.default
           inputs.niri.nixosModules.niri
-          {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];}
+          inputs.grub2-themes.nixosModules.default
+          ./software.nix
+          ./system.nix
+          ./theming.nix
+          ./hardware.nix
+          ./hosts/${host}.nix
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useUserPkgs = true;
+              useGlobalPkgs = true;
+              extraSpecialAgrs = {inherit specialArgs;};
+              sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
+            };
+          }
         ];
       };
+    };
   in {
     # systems
-    nixosConfigurations.desktop = systemConfig "desktop";
-    nixosConfigurations.laptop = systemConfig "laptop";
+    nixosConfigurations.desktop = mkSystem.metal "desktop";
+    nixosConfigurations.laptop = mkSystem.metal "laptop";
   };
 }
