@@ -1,9 +1,7 @@
 {
   pkgs,
-  def,
   ...
-}:
-def.module "default" {
+}: {
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
@@ -169,9 +167,9 @@ def.module "default" {
             key = "<A-Down>";
             action = ":m .-2<CR>==";
           }
-          # neo-tree
+          # file explorer
           {
-            action = "<cmd>Neotree toggle<CR>";
+            action = "<cmd>Ex<CR>";
             key = "<leader>e";
           }
           # git related
@@ -281,57 +279,6 @@ def.module "default" {
             };
           };
         };
-      };
-    }
-  ];
-}
-def.module "desktop" {
-  environment.systemPackages = with pkgs; [
-    protonup-qt
-    protontricks
-    prismlauncher
-    osu-lazer-bin
-  ];
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-  };
-  environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
-}
-def.module "desktop" {
-  programs.virt-manager.enable = true;
-  virtualisation = {
-    spiceUSBRedirection.enable = true;
-    libvirtd = {
-      onBoot = "ignore";
-      onShutdown = "shutdown";
-      enable = true;
-      qemu = {
-        package = pkgs.qemu_kvm;
-        runAsRoot = true;
-        swtpm.enable = true;
-        ovmf = {
-          enable = true;
-          packages = [
-            (pkgs.OVMF.override {
-              secureBoot = true;
-              tpmSupport = true;
-            })
-            .fd
-          ];
-        };
-      };
-    };
-  };
-
-  home-manager.sharedModules = [
-    {
-      dconf.settings."org/virt-manager/virt-manager/connections" = {
-        autoconnect = ["qemu:///system"];
-        uris = ["qemu:///system"];
       };
     }
   ];

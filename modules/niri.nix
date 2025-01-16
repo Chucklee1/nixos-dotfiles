@@ -5,15 +5,13 @@
   inputs,
   def,
   ...
-}:
-def.module "disabled" {
+}: {
   xdg.portal.enable = true;
   nixpkgs.overlays = [inputs.niri.overlays.niri];
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
   };
-  home-manager.sharedModules = [./niri.nix];
   environment.systemPackages = with pkgs; [
     egl-wayland
     qt5.qtwayland
@@ -23,8 +21,7 @@ def.module "disabled" {
     xwayland-run
     wl-clipboard
   ];
-}
-def.module "disabled" {
+
   home-manager.sharedModules = [
     {
       stylix.targets.waybar.enable = false;

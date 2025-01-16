@@ -12,58 +12,43 @@
     grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
-  outputs = {nixpkgs, ...} @ inputs: let
-    mkSystem = host: rec {
-      # lazy naming
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {inherit system;};
-      lib = pkgs.lib;
-      config = pkgs.config;
-      def = {
-        username = "goat";
-        machine = {inherit host;};
-        wallpaper = ./assets/wallpaper.png;
-        module = typeArg: configSet:
-          if (def.machine == typeArg || "default" == typeArg)
-          then configSet
-          else {};
-        /*
-        any module not defined as a one of the defined in
-        nixosConfigurations or with default will be ignored,
-        this is nice since you can easily disable modules by
-        giving it another name, in this case I am using
-        "disabled" or "off"
-        */
-      };
+  outputs = {nixpkgs, ...} @ inputs: rec {
+    system = "x86_64-linux";
+    pkgs = import nixpkgs {inherit system;};
+    lib = pkgs.lib;
 
-      # system functions
-      mkSystem.metal = lib.nixosSystem rec {
-        specialArgs = {inherit system inputs def;};
+    mkSystem = host:
+      lib.nixosSystem {
+        specialArgs = {
+          inherit system inputs;
+          def = {
+            username = "goat";
+            machine = host;
+            wallpaper = ./assets/wallpaper.png;
+          };
+        };
 
         modules = [
-          inputs.stylix.nixosModules.stylix
-          inputs.niri.nixosModules.niri
-          inputs.grub2-themes.nixosModules.default
+          ./dwm.nix
+          ./hardware.nix
+          #./niri.nix
           ./software.nix
           ./system.nix
           ./theming.nix
-          ./hardware.nix
-          ./hosts/${host}.nix
+          inputs.stylix.nixosModules.stylix
+          inputs.niri.nixosModules.niri
+          inputs.grub2-themes.nixosModules.default
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager = {
-              useUserPkgs = true;
-              useGlobalPkgs = true;
-              extraSpecialAgrs = {inherit specialArgs;};
               sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
             };
           }
         ];
       };
-    };
-  in {
-    # systems
-    nixosConfigurations.desktop = mkSystem.metal "desktop";
-    nixosConfigurations.laptop = mkSystem.metal "laptop";
+
+    # mkSystem declarations
+    nixosConfigurations.desktop = mkSystem "desktop";
+    nixosConfigurations.laptop = mkSystem "laptop";
   };
 }

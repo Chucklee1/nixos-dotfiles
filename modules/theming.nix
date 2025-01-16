@@ -2,8 +2,7 @@
   pkgs,
   def,
   ...
-}:
-def.module "default" {
+}: {
   stylix = {
     enable = true;
     autoEnable = true;
