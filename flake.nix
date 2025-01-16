@@ -12,41 +12,35 @@
     grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
-  outputs = {nixpkgs, ...} @ inputs: rec {
-    system = "x86_64-linux";
-    pkgs = import nixpkgs {inherit system;};
-    lib = pkgs.lib;
-
+  outputs = {nixpkgs, ...} @ inputs: let
     mkSystem = host:
-      lib.nixosSystem {
+      nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
         specialArgs = {
           inherit system inputs;
           def = {
             username = "goat";
-            machine = host;
+            inherit host;
             wallpaper = ./assets/wallpaper.png;
           };
         };
 
         modules = [
-          ./dwm.nix
-          ./hardware.nix
-          #./niri.nix
-          ./software.nix
-          ./system.nix
-          ./theming.nix
+          ./modules/dwm.nix
+          ./modules/hardware.nix
+          #./modules/niri.nix
+          ./modules/software.nix
+          ./modules/system.nix
+          ./modules/theming.nix
+          ./modules/hosts/${host}.nix
           inputs.stylix.nixosModules.stylix
           inputs.niri.nixosModules.niri
           inputs.grub2-themes.nixosModules.default
           inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              sharedModules = [inputs.nixvim.homeManagerModules.nixvim];
-            };
-          }
+          {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];} 
         ];
       };
-
+  in {
     # mkSystem declarations
     nixosConfigurations.desktop = mkSystem "desktop";
     nixosConfigurations.laptop = mkSystem "laptop";

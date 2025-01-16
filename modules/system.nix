@@ -30,7 +30,7 @@
   system.stateVersion = "24.05";
   networking = {
     networkmanager.enable = true;
-    hostName = def.hostname;
+    hostName = "${def.host}-${def.username}";
   };
   i18n.defaultLocale = "en_CA.UTF-8";
   time.timeZone = "America/Vancouver";
@@ -67,9 +67,9 @@
   };
 
   home-manager = {
-    useUserPkgs = true;
+    useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialAgrs = {inherit inputs system def;};
+    extraSpecialArgs = {inherit system inputs def;};
     users.${def.username}.home = {
       stateVersion = "24.05"; # DO NOT CHANGE
       username = "${def.username}";

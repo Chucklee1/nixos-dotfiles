@@ -26,7 +26,6 @@
         '';
       };
     };
-    dwm-status.enable = true;
     picom = {
       enable = true;
       backend = "egl";

@@ -94,6 +94,7 @@ then {
   # statusbar
   services.xserver.displayManager.sessionCommands = "xrandr --output DP-2 --mode 1920x1080 --rate 165.00";
   services.dwm-status = {
+    enable = true;
     order = ["audio" "network" "time"];
     extraConfig = ''
       separator = "    "
@@ -131,6 +132,7 @@ then {
 
   # statusbar
   services.dwm-status = {
+    enable = true;
     order = ["audio" "battery" "backlight" "network" "time"];
     extraConfig = ''
       separator = "    "
@@ -142,8 +144,8 @@ then {
       icons = ["", "", ""]
 
       [backlight]
-      device = "amd_bl1"
-      template = "[ICO] {BL}%"
+      device = "amdgpu_bl1"
+      template = "{ICO} {BL}%"
       icons = ["󱩎", "󱩒", "󱩖"]
 
       [battery]
