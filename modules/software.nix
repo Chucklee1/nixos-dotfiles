@@ -54,8 +54,6 @@
   home-manager.sharedModules = [
     {
       programs = {
-        # editor
-        helix.enable = true;
         # git
         git = {
           enable = true;

@@ -68,7 +68,7 @@
       # file explorer
       {
         action = "<cmd>Ex<CR>";
-        key = "<leader>e";
+        key = "<leader>f";
       }
       # git related
       {
