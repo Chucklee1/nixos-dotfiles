@@ -5,6 +5,7 @@
   environment.systemPackages = with pkgs; [
     # tools/deps
     gnumake
+    gdb
     gcc
     zenity
     libnotify

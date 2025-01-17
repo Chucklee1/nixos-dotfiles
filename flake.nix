@@ -6,7 +6,6 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
-    #niri.url = "github:sodiboo/niri-flake";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
@@ -32,7 +31,6 @@
           ./modules/theming.nix
           ./modules/hosts/${host}.nix
           inputs.stylix.nixosModules.stylix
-          #inputs.niri.nixosModules.niri
           inputs.grub2-themes.nixosModules.default
           inputs.home-manager.nixosModules.home-manager
           {
