@@ -28,7 +28,6 @@
         modules = [
           ./modules/dwm.nix
           ./modules/hardware.nix
-          #./modules/niri.nix
           ./modules/software.nix
           ./modules/system.nix
           ./modules/theming.nix
@@ -37,7 +36,12 @@
           inputs.niri.nixosModules.niri
           inputs.grub2-themes.nixosModules.default
           inputs.home-manager.nixosModules.home-manager
-          {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];} 
+          {
+            home-manager.sharedModules = [
+              ./modules/nixvim.nix
+              inputs.nixvim.homeManagerModules.nixvim
+            ];
+          }
         ];
       };
   in {
