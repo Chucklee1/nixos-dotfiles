@@ -24,7 +24,6 @@
             wallpaper = ./assets/wallpaper.png;
           };
         };
-
         modules = [
           ./modules/dwm.nix
           ./modules/hardware.nix
@@ -38,9 +37,8 @@
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.sharedModules = [
-              ./modules/nixvim.nix
-              ./modules/helix.nix
               inputs.nixvim.homeManagerModules.nixvim
+              {program.nixvim = import ./modules/nxvim.nix;}
             ];
           }
         ];
