@@ -36,17 +36,6 @@
     undofile = true;
   };
   keymaps = [
-    # closing buffers
-    {
-      mode = "n";
-      key = "<leader>c";
-      action = "<cmd>bd<CR>";
-    }
-    {
-      mode = "n";
-      key = "<leader-S>c";
-      action = "<cmd>bd!<CR>";
-    }
     # move selected text
     {
       mode = "n";
@@ -58,12 +47,34 @@
       key = "<A-Down>";
       action = ":m .+1<CR>==";
     }
+    # bufferline
+    {
+      mode = "n";
+      key = "<Tab>";
+      action = "<cmd>BufferLineCycleNext<cr>";
+    }
+    {
+      mode = "n";
+      key = "<S-Tab>";
+      action = "<cmd>BufferLineCyclePrev<cr>";
+    }
+    # closing buffers
+    {
+      mode = "n";
+      key = "<leader>c";
+      action = "<cmd>bd<CR>";
+    }
+    {
+      mode = "n";
+      key = "<leader-S>c";
+      action = "<cmd>bd!<CR>";
+    }
     # file explorer
     {
       action = "<cmd>Ex<CR>";
-      key = "<leader>f";
+      key = "<leader>e";
     }
-    # git related
+    # lazygit
     {
       mode = "n";
       key = "<leader>gg";
@@ -75,22 +86,17 @@
       key = "ff";
       action = "<cmd>!alejandra %<CR>";
     }
+    # make hokey
+    {
+      mode = "n";
+      key = "<leader>m";
+      action = "<cmd>!make<CR>";
+    }
     # toggleterm
     {
       mode = ["n" "t"];
       key = "<leader>t";
       action = "<cmd>ToggleTerm<CR>";
-    }
-    # bufferline
-    {
-      mode = "n";
-      key = "<Tab>";
-      action = "<cmd>BufferLineCycleNext<cr>";
-    }
-    {
-      mode = "n";
-      key = "<S-Tab>";
-      action = "<cmd>BufferLineCyclePrev<cr>";
     }
   ];
 
