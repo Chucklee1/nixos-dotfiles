@@ -112,10 +112,26 @@
   services.blueman.enable = true;
 
   # tablet support
+  hardware.uinput.enable = true;
   programs.weylus.enable = true;
   services.udev.extraRules = ''
     KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
   '';
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [1701 9001];
+    allowedUDPPortRanges = [
+      {
+        from = 4000;
+        to = 4007;
+      }
+      {
+        from = 8000;
+        to = 8010;
+      }
+    ];
+  };
 
   # misc
   services = {
