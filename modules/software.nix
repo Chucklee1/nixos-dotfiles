@@ -82,12 +82,16 @@
         bash = {
           enable = true;
           shellAliases = {
+            /*
+            neovim
+            */
             v = "nvim";
             vi = "nvim";
             vim = "nvim";
             sv = "sudo nvim";
-            nixc = "cd $HOME/nixos-dotfiles & nvim";
-            dwmc = "cd $HOME/dwm & nvim";
+            /*
+            system rebuild
+            */
             cg = "sudo nix-collect-garbage";
             update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
             update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
