@@ -3,12 +3,66 @@
   pkgs,
   def,
   ...
-}: {
+}: let
+  dwmStatusConfig =
+    if def.host == "laptop"
+    then ''
+      order = ["audio", "battery", "backlight", "network", "time"]
+      separator = "    "
+
+      [audio]
+      control = "Master"
+      mute = "󰝟 MUTE"
+      template = "{ICO} {VOL}%"
+      icons = ["", "", ""]
+
+      [backlight]
+      device = "amdgpu_bl1"
+      template = "{ICO} {BL}%"
+      icons = ["󱩎", "󱩒", "󱩖"]
+
+      [battery]
+      charging = ""
+      discharging = ""
+      enable_notifier = true
+      notifier_critical = 10
+      notifier_levels = [2, 5, 10, 15, 20]
+      separator = " · "
+      icons = ["", "", "", "", ""]
+
+      [network]
+      no_value = "󰯡"
+      template = "󰀂 {LocalIPv4} · {ESSID}"
+
+      [time]
+      format = " %Y-%m-%d  %H:%M:%S"
+      update_seconds = true
+    ''
+    else ''
+      order = ["audio", "battery", "backlight", "network", "time"]
+      separator = "    "
+
+      [audio]
+      control = "Master"
+      mute = "󰝟 MUTE"
+      template = "{ICO} {VOL}%"
+      icons = ["", "", ""]
+
+      [network]
+      no_value = "󰯡"
+      template = "󰀂 {LocalIPv4} · {ESSID}"
+
+      [time]
+      format = " %Y-%m-%d  %H:%M:%S"
+      update_seconds = true
+    '';
+in {
   # packages
   environment.systemPackages = with pkgs; [
     dmenu
     brightnessctl
     xclip
+    picom
   ];
 
   services = {
@@ -32,34 +86,16 @@
         '';
       };
     };
-    picom = {
-      enable = true;
-      backend = "egl";
-      vSync = true;
-      settings = {
-        rules = [
-          {
-            match = "class_g = 'kitty')";
-            opacity = 0.6;
-          }
-        ];
-        blur = {
-          method = "dual_kawase";
-          size = 3;
-          strength = 5;
-        };
-        # exclusion
-        force-exclude = [
-          "x = 0 && y = 0 && override_redirect = true"
-        ];
-        blur-background-exclude = [
-          "class_g ?= 'zoom'"
-        ];
-        shadow-exclude = [
-          "name = 'cpt_frame_xcb_window'"
-          "class_g ?= 'zoom'"
-        ];
-      };
+  };
+
+  systemd.user.services = {
+    dwmStatus = {
+      description = "dwm status bar";
+      wantedBy = ["graphical-session.target"];
+      partOf = ["graphical-session.target"];
+      serviceConfig.ExecStart = ''
+          ${pkgs.dwm-status}/bin/dwm-status ${pkgs.writeText "dwm-status.toml" ''${dwmStatusConfig}''}
+      '';
     };
   };
 

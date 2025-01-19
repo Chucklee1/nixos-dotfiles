@@ -3,17 +3,7 @@
   pkgs,
   def,
   ...
-}: let
-  mkDwmBar = configFile: {
-    description = "Highly performant and configurable DWM status service";
-    wantedBy = ["graphical-session.target"];
-    partOf = ["graphical-session.target"];
-    serviceConfig.ExecStart = ''
-      ${pkgs.dwm-status}/bin/dwm-status ${pkgs.writeText "dwm-status.toml" ''${configFile}''}
-    '';
-  };
-in
-  if def.host == "desktop"
+}: if def.host == "desktop"
   then {
     # boot
     boot.supportedFilesystems = ["ntfs"];
@@ -100,26 +90,7 @@ in
       }
     ];
 
-    # statusbar
     services.xserver.displayManager.sessionCommands = "xrandr --output DP-2 --mode 1920x1080 --rate 165.00";
-    systemd.user.services.dwmBar = mkDwmBar ''
-      order = ["audio", "network", "time"]
-      separator = "    "
-
-      [audio]
-      control = "Master"
-      mute = "󰝟 MUTE"
-      template = "{ICO} {VOL}%"
-      icons = ["", "", ""]
-
-      [network]
-      no_value = "󰯡"
-      template = "󰀂 {LocalIPv4} · {ESSID}"
-
-      [time]
-      format = " %Y-%m-%d  %H:%M:%S"
-      update_seconds = true
-    '';
   }
   else if def.host == "laptop"
   then {
@@ -136,38 +107,6 @@ in
       ];
     };
 
-    services.upower.enable = true;
-    systemd.user.services.dwmBar = mkDwmBar ''
-      order = ["audio", "battery", "backlight", "network", "time"]
-      separator = "    "
-
-      [audio]
-      control = "Master"
-      mute = "󰝟 MUTE"
-      template = "{ICO} {VOL}%"
-      icons = ["", "", ""]
-
-      [backlight]
-      device = "amdgpu_bl1"
-      template = "{ICO} {BL}%"
-      icons = ["󱩎", "󱩒", "󱩖"]
-
-      [battery]
-      charging = ""
-      discharging = ""
-      enable_notifier = true
-      notifier_critical = 10
-      notifier_levels = [2, 5, 10, 15, 20]
-      separator = " · "
-      icons = ["", "", "", "", ""]
-
-      [network]
-      no_value = "󰯡"
-      template = "󰀂 {LocalIPv4} · {ESSID}"
-
-      [time]
-      format = " %Y-%m-%d  %H:%M:%S"
-      update_seconds = true
-    '';
+    services.upower.enable = true; 
   }
   else {}

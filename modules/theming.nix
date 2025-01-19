@@ -3,6 +3,10 @@
   def,
   ...
 }: {
+  # boot logo
+  boot.plymouth.enable = true;
+  stylix.targets.logoAnimated = true;
+
   stylix = {
     enable = true;
     autoEnable = true;
@@ -29,17 +33,22 @@
       desktop = 11;
       popups = 12;
     };
-    targets = {
-      grub.enable = false;
-    };
   };
 
   home-manager.sharedModules = [
     {
+      stylix = {
+        icomTheme = {
+          enable = true;
+          package = pkgs.papirus-icon-theme;
+          dark = "Papirus-Dark";
+        };
+        targets = {
+          nixvim.transparentBackground.main = true;
+        };
+      };
       gtk = {
         enable = true;
-        iconTheme.name = "Papirus-Dark";
-        iconTheme.package = pkgs.papirus-icon-theme;
         gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
         gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
       };

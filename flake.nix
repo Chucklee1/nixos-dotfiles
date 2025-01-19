@@ -8,7 +8,6 @@
     stylix.url = "github:danth/stylix";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    grub2-themes.url = "github:vinceliuice/grub2-themes";
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
@@ -31,7 +30,6 @@
           ./modules/theming.nix
           ./modules/hosts/${host}.nix
           inputs.stylix.nixosModules.stylix
-          inputs.grub2-themes.nixosModules.default
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.sharedModules = [
