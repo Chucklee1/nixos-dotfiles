@@ -5,7 +5,7 @@
 }: {
   # boot logo
   boot.plymouth.enable = true;
-  stylix.targets.logoAnimated = true;
+  stylix.plymouth.targets.logoAnimated = true;
 
   stylix = {
     enable = true;
