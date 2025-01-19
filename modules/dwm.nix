@@ -18,7 +18,12 @@
       desktopManager.xterm.enable = false;
       windowManager.dwm = {
         enable = true;
-        package = pkgs.dwm.overrideAttrs (oldAttrs: {src = /home/goat/dwm;});
+        package = pkgs.dwm.overrideAttrs {
+          src = builtins.fetchGit {
+            url = "https://github.com/Chucklee1/dwm";
+            rev = "a7a5994ea18123e14e245c016a8bec10e5596391";
+          };
+        };
         extraSessionCommands = ''
           export _JAVA_AWT_WM_NONREPARENTING=1
           ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
