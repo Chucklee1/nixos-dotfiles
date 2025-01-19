@@ -75,7 +75,7 @@ in {
         package = pkgs.dwm.overrideAttrs {
           src = builtins.fetchGit {
             url = "https://github.com/Chucklee1/dwm";
-            rev = "a7a5994ea18123e14e245c016a8bec10e5596391";
+            rev = "2af98f98610612660525ffa4a87cdc218f413b84";
           };
         };
         extraSessionCommands = ''
