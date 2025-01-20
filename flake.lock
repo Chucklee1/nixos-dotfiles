@@ -2,7 +2,7 @@
   "nodes": {
     "base16": {
       "inputs": {
-        "fromYaml": "fromYaml_2"
+        "fromYaml": "fromYaml"
       },
       "locked": {
         "lastModified": 1732200724,
@@ -50,24 +50,6 @@
         "type": "github"
       }
     },
-    "base16-nix": {
-      "inputs": {
-        "fromYaml": "fromYaml"
-      },
-      "locked": {
-        "lastModified": 1732200724,
-        "narHash": "sha256-+R1BH5wHhfnycySb7Sy5KbYEaTJZWm1h+LW1OtyhiTs=",
-        "owner": "SenchoPens",
-        "repo": "base16.nix",
-        "rev": "153d52373b0fb2d343592871009a286ec8837aec",
-        "type": "github"
-      },
-      "original": {
-        "owner": "SenchoPens",
-        "repo": "base16.nix",
-        "type": "github"
-      }
-    },
     "base16-vim": {
       "flake": false,
       "locked": {
@@ -81,22 +63,6 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-vim",
-        "type": "github"
-      }
-    },
-    "classic-scheme": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1492569695,
-        "narHash": "sha256-UYN25b3VGxH4gfkMQiSNLmmIEE46rufMbKH6bW5a9sw=",
-        "owner": "detly",
-        "repo": "base16-classic-scheme",
-        "rev": "532c8b4eb1e9507c51ed467a158f91f11c6b52cb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "detly",
-        "repo": "base16-classic-scheme",
         "type": "github"
       }
     },
@@ -228,22 +194,6 @@
       }
     },
     "fromYaml": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1731966426,
-        "narHash": "sha256-lq95WydhbUTWig/JpqiB7oViTcHFP8Lv41IGtayokA8=",
-        "owner": "SenchoPens",
-        "repo": "fromYaml",
-        "rev": "106af9e2f715e2d828df706c386a685698f3223b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "SenchoPens",
-        "repo": "fromYaml",
-        "type": "github"
-      }
-    },
-    "fromYaml_2": {
       "flake": false,
       "locked": {
         "lastModified": 1731966426,
@@ -661,8 +611,6 @@
     },
     "root": {
       "inputs": {
-        "base16-nix": "base16-nix",
-        "classic-scheme": "classic-scheme",
         "home-manager": "home-manager",
         "niri": "niri",
         "nixpkgs": "nixpkgs_2",

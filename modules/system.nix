@@ -78,18 +78,14 @@
   };
 
   home-manager = {
-    useUserPackages = true;
     useGlobalPkgs = true;
+    useUserPackages = true;
     extraSpecialArgs = {inherit system inputs def;};
-    sharedModules = [./nixvim.nix];
-    users.${def.username} = {
-      home = {
-        stateVersion = "24.05"; # DO NOT CHANGE
-        username = "${def.username}";
-        homeDirectory = "/home/${def.username}";
-      };
-    };
-  };
+    users.${def.username}.home = {
+    stateVersion = "24.05"; # DO NOT CHANGE
+    username = "${def.username}";
+    homeDirectory = "/home/${def.username}";
+  };};
 
   # -----------------------------------------------------------
   # security & polkit

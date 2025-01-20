@@ -6,9 +6,6 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
-    base16-nix.url = "github:SenchoPens/base16.nix";
-    classic-scheme.url = "github:detly/base16-classic-scheme";
-    classic-scheme.flake = false;
     niri.url = "github:sodiboo/niri-flake";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -33,10 +30,15 @@
           ./modules/theming.nix
           ./modules/hosts/${host}.nix
           inputs.stylix.nixosModules.stylix
-          inputs.base16-nix.nixosModule
-          {scheme = "${inputs.classic-scheme}/classic-dark.yaml";}
           inputs.home-manager.nixosModules.home-manager
-          {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];}
+          {
+            home-manager = {
+              sharedModules = [
+                ./modules/nixvim.nix
+                inputs.nixvim.homeManagerModules.nixvim
+              ];
+            };
+          }
         ];
       };
   in {

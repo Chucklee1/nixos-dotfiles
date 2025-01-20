@@ -101,11 +101,11 @@
       }
     ];
 
-    style = let 
-      black = config.scheme.withHashtag.base00;
-      text = config.scheme.withHashtag.base07;
-      background = config.scheme.withHashtag.base01;
-      foreground = config.scheme.withHashtag.base03;
+    style = with config.lib.stylix.colors; let
+      black = "#${base00}";
+      text = "#${base07}";
+      background = "#${base01}";
+      foreground = "#${base03}";
     in ''
       * {
         font-family: "JetBrainsMono nerd font";
