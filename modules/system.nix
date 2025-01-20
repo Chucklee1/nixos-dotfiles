@@ -24,7 +24,6 @@
     ];
     # Hide the OS choice for bootloaders, press any key to bring up boot menu
     loader.timeout = 0;
-    plymouth.enable = true; # boot animation
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {

@@ -6,6 +6,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
+    niri.url = "github:sodiboo/niri-flake";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -29,11 +30,14 @@
           ./modules/system.nix
           ./modules/theming.nix
           ./modules/hosts/${host}.nix
+          ./modules/niri/default.nix
           inputs.stylix.nixosModules.stylix
+          inputs.niri.nixosModules.niri
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.sharedModules = [
               inputs.nixvim.homeManagerModules.nixvim
+              {programs.niri.settings = import ./modules/niri/config.nix;}
               {programs.nixvim = import ./modules/nixvim.nix;}
             ];
           }

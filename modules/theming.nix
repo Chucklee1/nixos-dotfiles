@@ -14,25 +14,20 @@
     cursor.name = "Bibata-Modern-Classic";
     cursor.size = 24;
 
-    fonts.monospace.package = pkgs.nerd-fonts.jetbrains-mono;
-    fonts.monospace.name = "JetBrainsMono Nerd Font Mono";
+    fonts = {
+      monospace.package = pkgs.nerd-fonts.jetbrains-mono;
+      monospace.name = "JetBrainsMono Nerd Font Mono";
+      sansSerif.package = pkgs.noto-fonts-cjk-sans;
+      sansSerif.name = "Noto Sans CJK";
+      serif.package = pkgs.noto-fonts-cjk-serif;
+      serif.name = "Noto Serif CJK";
 
-    fonts.sansSerif.package = pkgs.noto-fonts-cjk-sans;
-    fonts.sansSerif.name = "Noto Sans CJK";
-
-    fonts.serif.package = pkgs.noto-fonts-cjk-serif;
-    fonts.serif.name = "Noto Serif CJK";
-
-    fonts.sizes = {
-      applications = 12;
-      terminal = 12;
-      desktop = 11;
-      popups = 12;
-    };
-
-    targets = {
-      plymouth.logoAnimated = true;
-      feh.enable = true;
+      sizes = {
+        applications = 12;
+        terminal = 12;
+        desktop = 11;
+        popups = 12;
+      };
     };
   };
 
@@ -46,6 +41,7 @@
         };
         targets = {
           nixvim.transparentBackground.main = true;
+          waybar.enable = false;
         };
       };
       gtk = {
