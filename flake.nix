@@ -19,10 +19,7 @@
           def = {
             username = "goat";
             inherit host;
-            wallpaper = builtins.fetchurl {
-              url = "https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/assets/wallpaper.png";
-              hash = "1za3bpr6m974j87f470pp1vmn3rxl0p1jic2mkvsy7qbkx3gccin";
-            };
+            wallpaper = builtins.fetchurl "https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/assets/wallpaper.png";
           };
         };
         modules = [

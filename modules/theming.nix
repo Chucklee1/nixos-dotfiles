@@ -39,7 +39,7 @@
   home-manager.sharedModules = [
     {
       stylix = {
-        icomTheme = {
+        iconTheme = {
           enable = true;
           package = pkgs.papirus-icon-theme;
           dark = "Papirus-Dark";

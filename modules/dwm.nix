@@ -7,6 +7,7 @@
   dwmStatusConfig =
     if def.host == "laptop"
     then ''
+      order = ["audio", "network", "time"]
       separator = "    "
 
       [audio]
@@ -38,6 +39,7 @@
       update_seconds = true
     ''
     else ''
+      order = ["audio", "network", "time"]
       separator = "    "
 
       [audio]
@@ -54,11 +56,6 @@
       format = " %Y-%m-%d  %H:%M:%S"
       update_seconds = true
     '';
-
-  dwmStatusOrder =
-    if def.host == "laptop"
-    then ["audio" "battery" "backlight" "network" "time"]
-    else ["audio" "network" "time"];
 in {
   # packages
   environment.systemPackages = with pkgs; [
@@ -68,35 +65,31 @@ in {
     picom
   ];
 
-  services = {
-    xserver = {
-      enable = true;
-      xkb.layout = "us";
-      displayManager.sessionCommands =
-        if def.host == "desktop"
-        then "xrandr --output DP-2 --mode 1920x1080 --rate 165.00"
-        else "";
+  services.xserver = {
+    enable = true;
+    xkb.layout = "us";
+    displayManager.sessionCommands =
+      if def.host == "desktop"
+      then "xrandr --output DP-2 --mode 1920x1080 --rate 165.00"
+      else "";
 
-      windowManager.dwm = {
-        enable = true;
-        package = pkgs.dwm.overrideAttrs {
-          src = builtins.fetchGit {
-            url = "https://github.com/Chucklee1/dwm";
-            rev = "2af98f98610612660525ffa4a87cdc218f413b84";
-          };
-        };
-        extraSessionCommands = ''
-          export _JAVA_AWT_WM_NONREPARENTING=1
-          export XDG_SESSION_TYPE=X11
-          ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
-          ${lib.getExe pkgs.redshift} -m randr -O 5200
-        '';
-      };
-    };
-    dwm-status = {
+    windowManager.dwm = {
       enable = true;
-      order = dwmStatusOrder;
-      extraConfig = ''${pkgs.writeText "dwm-status.toml" ''${dwmStatusConfig}''}'';
+      package = pkgs.dwm.overrideAttrs {
+        src = builtins.fetchGit {
+          url = "https://github.com/Chucklee1/dwm";
+          rev = "dadaf3ebe4571856caf6bfaa1f3ade8322cdb94e";
+        };
+      };
+      extraSessionCommands = ''
+        export _JAVA_AWT_WM_NONREPARENTING=1
+        export XDG_SESSION_TYPE=X11
+        ${lib.getExe pkgs.feh} --bg-scale ${def.wallpaper}
+        ${lib.getExe pkgs.redshift} -m randr -O 5200
+        ${lib.getExe pkgs.picom} --backend "glx" --vsync --blur-method "dual_kawase" --xrender-sync-fence --blur-background -f
+        ${pkgs.dwm-status}/bin/dwm-status ${pkgs.writeText "dwm-status.toml" ''${dwmStatusConfig}''}
+
+      '';
     };
   };
 
