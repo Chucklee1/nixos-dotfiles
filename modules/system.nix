@@ -81,10 +81,7 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {inherit system inputs def;};
-    sharedModules = [
-      ./niri/config.nix
-      ./nixvim.nix
-    ];
+    sharedModules = [./nixvim.nix];
     users.${def.username} = {
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE

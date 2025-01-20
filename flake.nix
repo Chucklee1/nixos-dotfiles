@@ -33,8 +33,6 @@
           ./modules/system.nix
           ./modules/theming.nix
           ./modules/hosts/${host}.nix
-          ./modules/niri/default.nix
-          inputs.niri.nixosModules.niri
           inputs.stylix.nixosModules.stylix
           inputs.base16-nix.nixosModule
           {scheme = "${inputs.classic-scheme}/classic-dark.yaml";}

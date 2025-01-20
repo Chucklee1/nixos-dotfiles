@@ -1,11 +1,13 @@
 {
   config,
   pkgs,
+  inputs,
   def,
   ...
 }:
 if def.host == "desktop"
 then {
+  imports = [./dwm.nix];
   # boot
   boot.supportedFilesystems = ["ntfs"];
 
@@ -93,6 +95,12 @@ then {
 }
 else if def.host == "laptop"
 then {
+  imports = [
+    ./modules/niri/default.nix
+    inputs.niri.nixosModules.niri
+  ];
+  home-manageer.sharedModules = [./niri/config.nix];
+
   # hardware
   services.xserver.videoDrivers = ["amdgpu"];
   hardware.amdgpu.amdvlk.enable = true;
@@ -105,7 +113,5 @@ then {
       ffmpeg
     ];
   };
-
-  services.upower.enable = true;
 }
 else {}
