@@ -24,21 +24,16 @@
           };
         };
 
-        cpu = {
-          format = "{usage}% ";
-          tooltip = false;
-        };
-
-        memory = {format = "{}% ";};
+        cpu.format = "{usage}% ";
+        memory.format = "{}% ";
 
         modules-center = ["clock"];
-        clock = {format = "{:%H:%M:%S}";};
+        clock.format = "{:%H:%M:%S}";
 
         modules-right = [
           "pulseaudio"
           "network"
           "backlight"
-          "power-profiles-daemon"
           "battery"
           "tray"
           "custom/power"
@@ -65,18 +60,6 @@
         backlight = {
           format = "{percent}% {icon}";
           format-icons = ["" "" "" "" "" "" "" "" ""];
-        };
-
-        power-profiles-daemon = {
-          format = "{icon}";
-          format-icons = {
-            balanced = "";
-            default = "";
-            performance = "";
-            power-saver = "";
-          };
-          tooltip = true;
-          tooltip-format = "Power profile: {profile}\nDriver: {driver}";
         };
 
         battery = {
