@@ -3,7 +3,9 @@
   pkgs,
   def,
   ...
-}: {
+}: let 
+files = import ./files.nix {inherit config;};
+in{
   stylix = {
     enable = true;
     autoEnable = true;
@@ -57,7 +59,7 @@
       };
       programs.oh-my-posh =  {
         enable = true;
-        settings = files.custom-darkblood;
+        settings = files.custom-pure;
       };
     }
   ];

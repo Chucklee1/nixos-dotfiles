@@ -24,7 +24,6 @@
             username = "goat";
             inherit host;
             wallpaper = builtins.fetchurl "https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/assets/wallpaper.png";
-            files = (import ./modules/files.nix);
           };
         };
         modules = [
