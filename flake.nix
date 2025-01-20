@@ -34,13 +34,7 @@
           inputs.stylix.nixosModules.stylix
           inputs.niri.nixosModules.niri
           inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.sharedModules = [
-              inputs.nixvim.homeManagerModules.nixvim
-              {programs.niri.settings = import ./modules/niri/config.nix;}
-              {programs.nixvim = import ./modules/nixvim.nix;}
-            ];
-          }
+          {home-manager.sharedModules = [inputs.nixvim.homeManagerModules.nixvim];}
         ];
       };
   in {

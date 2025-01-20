@@ -36,7 +36,6 @@
     krita
     webcord
     spotify
-    zoom-us
   ];
 
   # programs
@@ -82,16 +81,12 @@
         bash = {
           enable = true;
           shellAliases = {
-            /*
-            neovim
-            */
+            # neovim
             v = "nvim";
             vi = "nvim";
             vim = "nvim";
             sv = "sudo nvim";
-            /*
-            system rebuild
-            */
+            # system rebuild
             cg = "sudo nix-collect-garbage";
             update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
             update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
