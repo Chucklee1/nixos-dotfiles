@@ -96,11 +96,13 @@ then {
 else if def.host == "laptop"
 then {
   imports = [
-    ./modules/niri/default.nix
+    ./niri/default.nix
     inputs.niri.nixosModules.niri
   ];
-  home-manageer.sharedModules = [./niri/config.nix
-./niri/waybar.nix];
+  home-manager.sharedModules = [
+    ./niri/config.nix
+    ./niri/waybar.nix
+  ];
 
   # hardware
   services.xserver.videoDrivers = ["amdgpu"];
