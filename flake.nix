@@ -19,7 +19,10 @@
           def = {
             username = "goat";
             inherit host;
-            wallpaper = ./assets/wallpaper.png;
+            wallpaper = builtins.fetchurl {
+              url = "https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/assets/wallpaper.png";
+              hash = "1za3bpr6m974j87f470pp1vmn3rxl0p1jic2mkvsy7qbkx3gccin";
+            };
           };
         };
         modules = [
@@ -34,7 +37,7 @@
           {
             home-manager.sharedModules = [
               inputs.nixvim.homeManagerModules.nixvim
-              {programs.nixvim = (import ./modules/nixvim.nix);}
+              {programs.nixvim = import ./modules/nixvim.nix;}
             ];
           }
         ];

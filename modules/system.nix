@@ -9,6 +9,22 @@
   # boot
   # -----------------------------------------------------------
   boot = {
+    initrd.systemd.enable = true; # force systemd to load early
+    # enable "Silent Boot"
+    consoleLogLevel = 0;
+    initrd.verbose = false;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
+    # Hide the OS choice for bootloaders, press any key to bring up boot menu
+    loader.timeout = 0;
+    plymouth.enable = true; # boot animation
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {

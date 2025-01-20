@@ -7,7 +7,6 @@
   dwmStatusConfig =
     if def.host == "laptop"
     then ''
-      order = ["audio", "battery", "backlight", "network", "time"]
       separator = "    "
 
       [audio]
@@ -39,7 +38,6 @@
       update_seconds = true
     ''
     else ''
-      order = ["audio", "battery", "backlight", "network", "time"]
       separator = "    "
 
       [audio]
@@ -56,6 +54,11 @@
       format = " %Y-%m-%d  %H:%M:%S"
       update_seconds = true
     '';
+
+  dwmStatusOrder =
+    if def.host == "laptop"
+    then ["audio" "battery" "backlight" "network" "time"]
+    else ["audio" "network" "time"];
 in {
   # packages
   environment.systemPackages = with pkgs; [
@@ -69,7 +72,11 @@ in {
     xserver = {
       enable = true;
       xkb.layout = "us";
-      desktopManager.xterm.enable = false;
+      displayManager.sessionCommands =
+        if def.host == "desktop"
+        then "xrandr --output DP-2 --mode 1920x1080 --rate 165.00"
+        else "";
+
       windowManager.dwm = {
         enable = true;
         package = pkgs.dwm.overrideAttrs {
@@ -86,16 +93,10 @@ in {
         '';
       };
     };
-  };
-
-  systemd.user.services = {
-    dwmStatus = {
-      description = "dwm status bar";
-      wantedBy = ["graphical-session.target"];
-      partOf = ["graphical-session.target"];
-      serviceConfig.ExecStart = ''
-          ${pkgs.dwm-status}/bin/dwm-status ${pkgs.writeText "dwm-status.toml" ''${dwmStatusConfig}''}
-      '';
+    dwm-status = {
+      enable = true;
+      order = dwmStatusOrder;
+      extraConfig = ''${pkgs.writeText "dwm-status.toml" ''${dwmStatusConfig}''}'';
     };
   };
 

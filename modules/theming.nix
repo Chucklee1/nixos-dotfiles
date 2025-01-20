@@ -3,10 +3,6 @@
   def,
   ...
 }: {
-  # boot logo
-  boot.plymouth.enable = true;
-  stylix.plymouth.targets.logoAnimated = true;
-
   stylix = {
     enable = true;
     autoEnable = true;
@@ -32,6 +28,11 @@
       terminal = 12;
       desktop = 11;
       popups = 12;
+    };
+
+    targets = {
+      plymouth.logoAnimated = true;
+      feh.enable = true;
     };
   };
 
