@@ -99,7 +99,8 @@ then {
     ./modules/niri/default.nix
     inputs.niri.nixosModules.niri
   ];
-  home-manageer.sharedModules = [./niri/config.nix];
+  home-manageer.sharedModules = [./niri/config.nix
+./niri/waybar.nix];
 
   # hardware
   services.xserver.videoDrivers = ["amdgpu"];

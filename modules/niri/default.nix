@@ -12,6 +12,7 @@
     egl-wayland
     qt5.qtwayland
     qt6.qtwayland
+    brightnessctl
     wev
     xwayland
     xwayland-run
