@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   def,
   ...
@@ -8,7 +9,7 @@
     autoEnable = true;
     homeManagerIntegration.autoImport = true;
     image = def.wallpaper;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
+    base16Scheme = "${config.scheme}";
 
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
@@ -53,6 +54,10 @@
         enable = true;
         style.name = "adwaita-dark";
         platformTheme.name = "gtk3";
+      };
+      programs.oh-my-posh =  {
+        enable = true;
+        settings = files.custom-darkblood;
       };
     }
   ];
