@@ -1,13 +1,18 @@
-FLAGS = --show-trace --impure --flake
+BUILD = nixos-rebuild switch 
+CLEAN = nix-collect-garbage
+EXTRAFLAGS = --show-trace --impure --flake
 
 laptop:
-	nixos-rebuild switch $(FLAGS) .\#laptop
+	$(BUILD) $(FLAGS) .\#laptop
 
 desktop: 
-	nixos-rebuild switch $(FLAGS) .\#desktop
+	$(BUILD) $(FLAGS) .\#desktop
 
 clean:
-	nixos-collect-garbage
+	$(CLEAN)
 
-fullclean:
-	nixos-collect-garbage -d
+full-clean:
+	$(CLEAN) -d
+
+optimise:
+	nix store optimise
