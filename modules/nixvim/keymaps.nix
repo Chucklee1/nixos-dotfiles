@@ -23,9 +23,6 @@
       mode = "n";
       key = "<leader>gg";
       action = "<cmd>LazyGit<CR>";
-      options = {
-        desc = "LazyGit (root dir)";
-      };
     }
 
     # Commentary bindings
@@ -53,25 +50,8 @@
       key = "<leader>fh";
     }
     {
-      action = "<cmd>Telescope colorscheme<CR>";
-      key = "<leader>ch";
-    }
-    {
       action = "<cmd>Telescope man_pages<CR>";
       key = "<leader>fm";
-    }
-
-    # Notify bindings
-
-    {
-      mode = "n";
-      key = "<leader>un";
-      action = ''
-        <cmd>lua require("notify").dismiss({ silent = true, pending = true })<cr>
-      '';
-      options = {
-        desc = "Dismiss All Notifications";
-      };
     }
 
     # Bufferline bindings
@@ -114,7 +94,7 @@
 
     {
       mode = "n";
-      key = "<leader>bd";
+      key = "<leader>q";
       action = "<cmd>bdelete<cr>";
       options = {
         desc = "Delete buffer";
