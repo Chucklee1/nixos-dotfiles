@@ -15,9 +15,9 @@
     samba
     winetricks
     # language QOL
+    sylua
     alejandra
     nixd
-    asm-lsp
     # cli
     ripgrep
     pciutils
