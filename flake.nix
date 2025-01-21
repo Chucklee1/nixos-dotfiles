@@ -34,12 +34,7 @@
           {
             home-manager = {
               sharedModules = [
-                {
-                  programs.nixvim =
-                    import./modules/nixim/options.nix
-                    // import ./modules/nixvim/plugins.nix
-                    // import ./modules/nixvim/keybinds.nix;
-                }
+                {programs.nixvim = import ./modules/nixvim/default.nix;}
                 inputs.nixvim.homeManagerModules.nixvim
               ];
             };

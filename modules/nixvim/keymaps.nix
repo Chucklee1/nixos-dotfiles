@@ -1,4 +1,6 @@
 {
+  globals.mapleader = " ";
+
   keymaps = [
     # file explorer
     {

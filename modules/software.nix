@@ -3,21 +3,26 @@
   # packages
   # -----------------------------------------------------------
   environment.systemPackages = with pkgs; [
-    # tools/deps
-    gnumake
-    gdb
-    gcc
+    # dependancies
     zenity
     libnotify
     libsecret
+    # wine
     wine
     wineWowPackages.stagingFull
     samba
     winetricks
+    # gcc glory
+    gnumake
+    gdb
+    gcc
+    nasm 
     # language QOL
-    sylua
-    alejandra
     nixd
+    asm-lsp
+    nodePackages.prettier
+    shfmt
+    alejandra
     # cli
     ripgrep
     pciutils
