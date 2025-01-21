@@ -1,4 +1,6 @@
 {
+  enable = true;
+
   globalOpts = {
     number = true;
     relativenumber = true;
@@ -7,12 +9,12 @@
     ruler = true;
     gdefault = true;
     scrolloff = 5;
-splitright = true;
+    splitright = true;
     splitbelow = true;
     mouse = "a";
     ignorecase = true;
     smartcase = true;
-  
+
     # tab defaults
     tabstop = 2;
     shiftwidth = 2;
@@ -23,8 +25,8 @@ splitright = true;
     # clipboard
     clipboard = {
       providers = {
-        wl-copy.enable = true;  
-        xsel.enable = true; 
+        wl-copy.enable = true;
+        xsel.enable = true;
       };
       register = "unnamedplus";
     };
@@ -43,8 +45,8 @@ splitright = true;
   };
   autoCmd = [
     {
-      event = [ "VimEnter" ];
-      callback = { __raw = "function() if vim.fn.argv(0) == '' then require('telescope.builtin').find_files() end end"; };
+      event = ["VimEnter"];
+      callback = {__raw = "function() if vim.fn.argv(0) == '' then require('telescope.builtin').find_files() end end";};
     }
   ];
 }

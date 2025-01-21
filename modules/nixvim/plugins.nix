@@ -11,6 +11,12 @@
     oil.enable = true; # better file explorer
 
     #
+    # qol
+    #
+    treesitter.enable = true; # tree, sitting?
+    telescope.enable = true;
+
+    #
     # language awareness seperator
     #
 
@@ -38,8 +44,6 @@
     dap = {
       enable = true;
     };
-
-    treesitter.enable = true; # tree, sitting?
 
     # language specific
     colorizer.enable = true;
