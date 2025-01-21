@@ -31,8 +31,10 @@
     };
 
     # using just for formatting
+    lsp-format.enable = true;
     none-ls = {
       enable = true;
+      enableLspFormat = true;
       sources.formatting = {
         prettier.enable = true; # a lot
         shfmt.enable = true; # shell
@@ -43,6 +45,27 @@
     # debug support
     dap = {
       enable = true;
+      extensions = {
+        dap-ui = {
+          enable = true;
+          floating.mappings = {close = ["<ESC>" "q"];};
+        };
+        dap-virtual-text = {enable = true;};
+      };
+      signs = {
+        dapBreakpoint = {
+          text = "";
+          texthl = "DapBreakpoint";
+        };
+        dapBreakpointCondition = {
+          text = "";
+          texthl = "DapBreakpointCondition";
+        };
+        dapLogPoint = {
+          text = "";
+          texthl = "DapLogPoint";
+        };
+      };
     };
 
     # language specific

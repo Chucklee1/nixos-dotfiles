@@ -2,17 +2,16 @@
   globals.mapleader = " ";
 
   keymaps = [
+    # file explorer
+    {
+      action = "<cmd>Oil<cr>";
+      key = "<leader>e";
+    }
     # Lazygit
     {
       mode = "n";
       key = "<leader>gg";
       action = "<cmd>LazyGit<CR>";
-    }
-
-    # Commentary bindings
-    {
-      action = "<cmd>Commentary<CR>";
-      key = "<leader>/";
     }
 
     # Telescope bindings
