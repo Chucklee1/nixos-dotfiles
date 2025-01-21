@@ -1,4 +1,6 @@
 {
+  config,
+  lib,
   pkgs,
   inputs,
   ...
@@ -28,7 +30,7 @@
   };
 
   home-manager.sharedModules = [
-    { 
+    {
       programs = {
         fuzzel.enable = true;
         wlogout.enable = true;
@@ -36,9 +38,11 @@
           enable = true;
           package = pkgs.swaylock-effects;
         };
-        waybar = {
+        waybar = with (import ../files.nix {inherit config lib;}); {
           enable = true;
           systemd.enable = true;
+          settings = waybarConfig;
+          style = waybarStyle;
         };
       };
     }
