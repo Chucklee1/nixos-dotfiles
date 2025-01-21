@@ -1,35 +1,37 @@
 {
   enable = true;
-
   globalOpts = {
+    # interface
     number = true;
     relativenumber = true;
     signcolumn = "yes";
     cursorline = true;
-    ruler = true;
-    gdefault = true;
-    scrolloff = 5;
     splitright = true;
     splitbelow = true;
-    mouse = "a";
-    ignorecase = true;
-    smartcase = true;
 
-    # tab defaults
+    # Tab defaults (might get overwritten by an LSP server)
     tabstop = 2;
     shiftwidth = 2;
     softtabstop = 0;
-    expandtab = true;
     smarttab = true;
+    expandtab = true;
+    autoindent = true;
+    smartindent = true;
 
-    # clipboard
+    ignorecase = true;
+    smartcase = true;
+    mouse = "a";
+    scrolloff = 5;
+
+    # history
     clipboard = {
       providers = {
-        wl-copy.enable = true;
-        xsel.enable = true;
+        wl-copy.enable = true; # Wayland
+        xsel.enable = true; # For X11
       };
       register = "unnamedplus";
     };
+    swapfile = false;
     undofile = true;
   };
 
@@ -43,10 +45,18 @@
     W.command = "q";
     W.bang = true;
   };
+
+  globals.mapleader = " ";
+
   autoCmd = [
     {
       event = ["VimEnter"];
       callback = {__raw = "function() if vim.fn.argv(0) == '' then require('telescope.builtin').find_files() end end";};
+    }
+    {
+      event = ["BufEnter" "BufWinEnter"];
+      pattern = ["*.md" "*.mdx"];
+      command = "MarkdownPreviewToggle";
     }
   ];
 }

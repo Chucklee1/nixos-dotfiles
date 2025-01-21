@@ -1,117 +1,109 @@
-{config, lib, ...}: let
+/*
+colorscheme reference:
+"Classic Dark", "Jason Heeris (http://heeris.id.au)"
+base00: #151515
+base01: #202020
+base02: #303030
+base03: #505050
+base04: #B0B0B0
+base05: #D0D0D0
+base06: #E0E0E0
+base07: #F5F5F5
+base08: #AC4142
+base09: #D28445
+base0A: #F4BF75
+base0B: #90A959
+base0C: #75B5AA
+base0D: #6A9FB5
+base0E: #AA759F
+base0F: #8F5536
+*/
+{
+  config,
+  lib,
+  ...
+}: let
   colorWithHash = lib.mapAttrs (name: color: "#${color}") config.lib.stylix.colors;
 in
   with colorWithHash; {
     waybarConfig = builtins.fromJSON (builtins.unsafeDiscardStringContext ''
       [
-      {
-        "position": "top",
-        "layer": "top",
-        "height": 20,
-        "spacing": 4,
+        {
+          "position": "top",
+          "layer": "top",
+          "height": 20,
 
-        "modules-left": [
-          "idle_inhibitor",
-          "cpu",
-          "memory",
-          "niri/window"
-        ],
+          "modules-left": ["niri/window"],
 
-        "idle_inhibitor": {
-          "format": "{icon}",
-          "format-icons": {
-            "activated": "",
-            "deactivated": ""
-          }
-        },
-        "cpu": {
-          "format": "{usage}% "
-        },
-        "memory": {
-          "format": "{}% "
-        },
+          "cpu": { "format": "{usage}% " },
+          "memory": { "format": "{}% " },
 
-        "modules-center": [
-          "clock"
-        ],
+          "modules-center": ["clock"],
+          "clock": { "format": "{:%H:%M:%S}" },
 
-        "clock": {
-          "format": "{:%H:%M:%S}"
-        },
-
-        "modules-right": [
-          "pulseaudio",
-          "network",
-          "backlight",
-          "battery",
-          "tray",
-          "custom/power"
-        ],
-
-        "pulseaudio": {
-          "format": "{volume}% {icon} {format_source}",
-          "format-bluetooth": "{volume}% {icon} {format_source}",
-          "format-icons": {
-            "default": [
-              "",
-              "",
-              ""
-            ]
-          },
-          "format-muted": " {format_source}",
-          "format-source": "{volume}% ",
-          "format-source-muted": "",
-          "on-click": "pavucontrol"
-        },
-        "network": {
-          "format-alt": "{ifname}: {ipaddr}/{cidr}",
-          "format-disconnected": "Disconnected ⚠",
-          "format-ethernet": "{ipaddr}/{cidr} ",
-          "format-wifi": "{essid} ({signalStrength}%) ",
-          "tooltip-format": "{ifname} via {gwaddr} "
-        },
-        "backlight": {
-          "format": "{percent}% {icon}",
-          "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-          ]
-        },
-        "battery": {
-          "format": "{capacity}% {icon}",
-          "format-alt": "{time} {icon}",
-          "format-charging": "{capacity}% ",
-          "format-full": "{capacity}% {icon}",
-          "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            ""
+          "modules-right": [
+            "idle_inhibitor",
+            "pulseaudio",
+            "network",
+            "backlight",
+            "battery",
+            "tray",
+            "custom/power"
           ],
-          "format-plugged": "{capacity}% ",
-          "states": {
-            "critical": 15,
-            "warning": 30
+
+          "idle_inhibitor": {
+            "format": "{icon}",
+            "format-icons": {
+              "activated": "",
+              "deactivated": ""
+            }
+          },
+          "pulseaudio": {
+            "format": "{volume}% {icon}",
+            "format-bluetooth": "{volume}% {icon}",
+            "format-icons": { "default": ["", "", ""] },
+            "format-muted": "<span color='${base08}' >M </span>",
+            "format-source": "{volume}% ",
+            "format-source-muted": "",
+            "on-click": "pavucontrol"
+          },
+          "network": {
+            "format-alt": "{ifname}: {ipaddr}/{cidr}",
+            "format-disconnected": "<span color='${base0A}' > disconnected ⚠</span>",
+            "format-ethernet": "{ipaddr}/{cidr} 󰊗",
+            "format-wifi": "{essid} ({signalStrength}%) ",
+            "tooltip-format": "{ifname} via {gwaddr} 󰊗"
+          },
+          "backlight": {
+            "format": "{percent}%<span color='${base0A}' > {icon}</span>",
+            "format-icons": ["", "", "", "", "", "", "", "", ""]
+          },
+          "battery": {
+            "interval": 1,
+            "states": {
+              "good": 99,
+              "warning": 30,
+              "critical": 20
+            },
+            "format-icons": [" ", " ", " ", " ", " "],
+            "format": "{capacity}%<span color='${base0B}' > {icon}</span>",
+            "format-critical": "{capacity}%<span color='${base08}' > {icon}</span>",
+            "format-warning": "{capacity}%<span color='${base0A}' > {icon}</span>",
+            "format-full": "{capacity}%<span color='${base0B}' > {icon}</span>",
+            "format-charging": "{capacity}%<span color='${base0B}' > {icon} </span>",
+            "format-charging-warning": "{capacity}%<span color='${base0A}' > {icon} </span>",
+            "format-charging-critical": "{capacity}%<span color='${base08}' > {icon} </span>",
+            "format-plugged": "{capacity}%<span color='${base0B}' > {icon} </span>",
+            "format-alt": "<span color='${base0B}' > {icon} </span>{time}",
+            "tooltip": false
+          },
+          "tray": { "spacing": 10 },
+          "custom/power": {
+            "format": "⏻ ",
+            "on-click": "wlogout"
           }
-        },
-        "tray": {
-          "spacing": 10
-        },
-        "custom/power": {
-          "format": "⏻ ",
-          "on-click": "wlogout"
         }
-      }
-      ]
-    '');
+      ]   '');
 
     waybarStyle = ''
       * {
@@ -162,21 +154,25 @@ in
       }
 
       #clock,
-      #battery,
       #cpu,
       #memory,
       #disk,
       #backlight,
-      #network,
       #pulseaudio,
-      #wireplumber,
-      #custom-media,
-      #tray,
-      #mode,
-      #idle_inhibitor,
-      #power-profiles-daemon {
+      #idle_inhibitor {
           padding: 0 10px;
-          color: ${base07};
+      }
+
+      #network {
+        padding: 0 3px 0 0;
+      }
+
+      #battery {
+        padding: 0 5px 0 0;
+      }
+
+      #tray {
+        padding: 0 10px 0 10px;
       }
 
       #window,
@@ -184,30 +180,13 @@ in
           margin: 0 4px;
       }
 
-      /* If workspaces is the leftmost module, omit left margin */
       .modules-left > widget:first-child > #workspaces {
           margin-left: 0;
       }
 
-      /* If workspaces is the rightmost module, omit right margin */
       .modules-right > widget:last-child > #workspaces {
           margin-right: 0;
-      }
-
-      #battery.critical:not(.charging) {
-          background-color: ${base08};
-          color: ${base07};
-          animation-name: blink;
-          animation-duration: 0.5s;
-          animation-timing-function: steps(12);
-          animation-iteration-count: infinite;
-          animation-direction: alternate;
-      }
-
-      #power-profiles-daemon {
-          padding-right: 15px;
-      }
-    '';
+      }   '';
 
     custom-pure = builtins.fromJSON (builtins.unsafeDiscardStringContext ''
       {

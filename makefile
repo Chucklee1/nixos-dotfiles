@@ -1,6 +1,6 @@
-BUILD = nixos-rebuild switch 
-CLEAN = nix-collect-garbage
-EXTRAFLAGS = --show-trace --impure --flake
+BUILD = sudo nixos-rebuild switch 
+CLEAN = sudo nix-collect-garbage
+FLAGS = --show-trace --impure --flake 
 
 laptop:
 	$(BUILD) $(FLAGS) .\#laptop
