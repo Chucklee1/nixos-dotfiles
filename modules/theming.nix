@@ -41,6 +41,7 @@
           package = pkgs.papirus-icon-theme;
           dark = "Papirus-Dark";
         };
+        targets.waybar.enable = false;
       };
       gtk = {
         enable = true;
