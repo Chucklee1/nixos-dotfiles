@@ -7,7 +7,6 @@
 }:
 if def.host == "desktop"
 then {
-  imports = [./dwm.nix];
   # boot
   boot.supportedFilesystems = ["ntfs"];
 
@@ -40,6 +39,9 @@ then {
     __GL_GSYNC_ALLOWED = "1";
     __GL_VRR_ALLOWED = "1";
     __GL_MaxFramesAllowed = "1";
+    # needed for wayland
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   };
 
   # steam
@@ -95,12 +97,6 @@ then {
 }
 else if def.host == "laptop"
 then {
-  imports = [
-    ./niri/default.nix
-    inputs.niri.nixosModules.niri
-  ];
-  home-manager.sharedModules = [./niri/config.nix];
-
   # hardware
   services.xserver.videoDrivers = ["amdgpu"];
   hardware.amdgpu.amdvlk.enable = true;

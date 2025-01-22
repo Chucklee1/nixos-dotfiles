@@ -29,11 +29,14 @@
           ./modules/system.nix
           ./modules/theming.nix
           ./modules/hosts/${host}.nix
+          ./modules/niri/default.nix
           inputs.stylix.nixosModules.stylix
+          inputs.niri.nixosModules.niri
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager = {
               sharedModules = [
+                ./modules/niri/config.nix
                 {programs.nixvim = import ./modules/nixvim/default.nix;}
                 inputs.nixvim.homeManagerModules.nixvim
               ];

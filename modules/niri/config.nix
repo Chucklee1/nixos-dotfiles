@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  def,
   ...
 }: {
   programs.niri.settings = {
@@ -16,43 +15,19 @@
       XDG_SESSION_DESKTOP = "niri";
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
+      DISPLAY = ":0";
       SDL_VIDEODRIVER = "wayland,x11";
       GDK_BACKEND = "wayland,x11";
       QT_QPA_PLATFORM = "wayland;xcb";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-      DISPLAY = ":0";
     };
 
     spawn-at-startup = [
-      {
-        command = [
-          "${lib.getExe pkgs.networkmanagerapplet}"
-        ];
-      }
-      {
-        command = [
-          "${lib.getExe pkgs.xwayland-satellite}"
-        ];
-      }
-      {
-        command = [
-          "${lib.getExe pkgs.wlsunset}"
-          "-T"
-          "5200"
-        ];
-      }
-      {
-        command = [
-          "sh"
-          "-c"
-          ''
-            if systemctl --user list-units --type=service --all | grep -q 'waybar.service'; then
-              systemctl --user restart waybar.service
-            fi
-          ''
-        ];
-      }
+      {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
+      {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
+      {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
+      {command = ["systemctl" "--user" "restart" "waybar.service"];}
     ];
 
     switch-events = with config.lib.niri.actions; let
@@ -143,15 +118,15 @@
     };
     # layout n theming
     layout = {
-      gaps = 7;
+      gaps = 4;
       border.width = 2;
       always-center-single-column = false;
     };
-    window-rules = [
+    window-rules = let
+      r = 4.0;
+    in [
       {
-        geometry-corner-radius = let
-          r = 4.0;
-        in {
+        geometry-corner-radius = {
           top-left = r;
           top-right = r;
           bottom-left = r;
