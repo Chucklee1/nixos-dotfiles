@@ -27,6 +27,7 @@
       {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
       {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
       {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
+      {command = ["wpaperd"];}
       {command = ["systemctl" "--user" "restart" "waybar.service"];}
     ];
 

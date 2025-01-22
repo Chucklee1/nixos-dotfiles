@@ -30,7 +30,6 @@
         indent.enable = true;
         highlight.enable = true;
       };
-      folding = false;
       nixvimInjections = true;
     };
     telescope.enable = true;

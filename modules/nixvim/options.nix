@@ -6,6 +6,7 @@
     relativenumber = true;
     signcolumn = "yes";
     cursorline = true;
+    scrolloff = 5;
 
     # bannana __
     splitright = true;
@@ -28,7 +29,6 @@
 
     # mouse
     mouse = "a";
-    scrolloff = 5;
 
     # history
     clipboard = {
