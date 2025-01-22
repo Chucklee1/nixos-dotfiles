@@ -4,10 +4,13 @@
     "layer": "top",
     "height": 20,
 
-    "modules-left": ["niri/window"],
+    "modules-left": ["niri/workspace", "niri/window"],
 
     "modules-center": ["clock"],
-    "clock": { "format": "{:%H:%M:%S}" },
+    "clock": {
+      "format": "{:%Y-%m-%d | %H:%M:%S}",
+      "interval": 1
+    },
 
     "modules-right": [
       "idle_inhibitor",
@@ -53,12 +56,7 @@
         "critical": 20
       },
       "format-icons": [" ", " ", " ", " ", " "],
-      "format": "{capacity}% {icon}",
-      "format-critical": "{capacity}% {icon}",
-      "format-warning": "{capacity}% {icon}",
-      "format-charging": "{capacity}% {icon}",
-      "format-charging-warning": "{capacity}% {icon}",
-      "format-charging-critical": "{capacity}% {icon}",
+      "format": "{capacity}% {format-charging}{icon}",
       "format-alt": "{icon} {time}",
       "tooltip": false
     },

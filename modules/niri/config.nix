@@ -108,7 +108,7 @@
     # input
     input = {
       keyboard.xkb.layout = "us";
-      mouse.accel-speed = 1.0;
+      mouse.accel-speed = 0.0;
       touchpad = {
         tap = true;
         dwt = true;
@@ -117,6 +117,14 @@
       };
       tablet.map-to-output = "eDP-1";
       touch.map-to-output = "eDP-1";
+    };
+    outputs."DP-2" = {
+      enable = true;
+      variable-refresh-rate = true;
+      mode = {
+        width = 1920;
+        height = 1080;
+      };
     };
     # layout n theming
     layout = {

@@ -41,7 +41,10 @@
           package = pkgs.papirus-icon-theme;
           dark = "Papirus-Dark";
         };
-        targets.waybar.enable = false;
+        targets = {
+          waybar.enable = false;
+          #nixvim.enable = false;
+        };
       };
       gtk = {
         enable = true;

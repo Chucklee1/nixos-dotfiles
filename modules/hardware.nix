@@ -1,14 +1,29 @@
 {
   config,
   pkgs,
-  inputs,
   def,
   ...
 }:
 if def.host == "desktop"
 then {
   # boot
-  boot.supportedFilesystems = ["ntfs"];
+  boot = {
+    supportedFilesystems = ["ntfs"];
+    kernelModules = [
+      "iwlwifi"
+      "iwlmvm"
+    ];
+    kernelParams = [
+      "iwlwifi.11n-disable=1"
+      "iwlwifi.swcrypto=0"
+      "iwlwifi.bt_coex_active=0"
+      "iwlwifi.power_save=0"
+      "iwlmvm.power_scheme=0"
+      "iwlwifi.d0i3_disable=1"
+      "iwlwifi.uapsd_disable=1"
+      "iwlwifi.lar_disable=1"
+    ];
+  };
 
   # nvidia
   nixpkgs.config.nvidia.acceptLicense = true;

@@ -10,20 +10,6 @@
   # -----------------------------------------------------------
   boot = {
     initrd.systemd.enable = true; # force systemd to load early
-    # enable "Silent Boot"
-    consoleLogLevel = 0;
-    initrd.verbose = false;
-    kernelParams = [
-      "quiet"
-      "splash"
-      "boot.shell_on_fail"
-      "loglevel=3"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
-    ];
-    # Hide the OS choice for bootloaders, press any key to bring up boot menu
-    loader.timeout = 0;
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {
@@ -82,10 +68,11 @@
     useUserPackages = true;
     extraSpecialArgs = {inherit system inputs def;};
     users.${def.username}.home = {
-    stateVersion = "24.05"; # DO NOT CHANGE
-    username = "${def.username}";
-    homeDirectory = "/home/${def.username}";
-  };};
+      stateVersion = "24.05"; # DO NOT CHANGE
+      username = "${def.username}";
+      homeDirectory = "/home/${def.username}";
+    };
+  };
 
   # -----------------------------------------------------------
   # security & polkit

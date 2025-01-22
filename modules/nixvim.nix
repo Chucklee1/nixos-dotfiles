@@ -45,15 +45,6 @@
     undofile = true;
   };
 
-  # theme
-  colorschemes = {
-    tokyonight = {
-      enable = true;
-      settings.style = "night";
-    };
-    kanagawa.enable = true;
-  };
-
   # command aliases
   userCommands = {
     Q.command = "q";
