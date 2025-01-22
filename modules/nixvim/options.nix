@@ -1,25 +1,32 @@
 {
   enable = true;
   globalOpts = {
-    # interface
+    # lines
     number = true;
     relativenumber = true;
     signcolumn = "yes";
     cursorline = true;
+
+    # bannana __
     splitright = true;
     splitbelow = true;
 
-    # Tab defaults (might get overwritten by an LSP server)
+    # tabs
     tabstop = 2;
     shiftwidth = 2;
     softtabstop = 0;
     smarttab = true;
     expandtab = true;
+
+    # indents
     autoindent = true;
     smartindent = true;
 
+    # cases
     ignorecase = true;
     smartcase = true;
+
+    # mouse
     mouse = "a";
     scrolloff = 5;
 
@@ -46,17 +53,20 @@
     W.bang = true;
   };
 
-  globals.mapleader = " ";
-
   autoCmd = [
-    {
-      event = ["VimEnter"];
-      callback = {__raw = "function() if vim.fn.argv(0) == '' then require('telescope.builtin').find_files() end end";};
-    }
     {
       event = ["BufEnter" "BufWinEnter"];
       pattern = ["*.md" "*.mdx"];
       command = "MarkdownPreviewToggle";
     }
   ];
+
+  # theme
+  colorschemes.kanagawa = {
+    enable = true;
+    settings = {
+      theme = "lotus";
+      terminalColors = true;
+    };
+  };
 }

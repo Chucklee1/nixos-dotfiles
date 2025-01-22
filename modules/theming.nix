@@ -42,8 +42,8 @@
           dark = "Papirus-Dark";
         };
         targets = {
-          nixvim.transparentBackground.main = true;
-          waybar.enable = false;
+          nixvim.enable = false;
+          #waybar.enable = false;
         };
       };
       gtk = {

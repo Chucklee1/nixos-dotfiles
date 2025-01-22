@@ -9,12 +9,32 @@
     lualine.enable = true; # status bar
     noice.enable = true; # fancy command pop-up
     oil.enable = true; # better file explorer
+    illuminate = {
+      enable = true;
+      underCursor = false;
+      filetypesDenylist = [
+        "Outline"
+        "TelescopePrompt"
+        "alpha"
+        "harpoon"
+        "reason"
+      ];
+    };
 
     #
     # qol
-    #
-    treesitter.enable = true; # tree, sitting?
+    # tree sitting?
+    treesitter = {
+      enable = true;
+      settings = {
+        indent.enable = true;
+        highlight.enable = true;
+      };
+      folding = false;
+      nixvimInjections = true;
+    };
     telescope.enable = true;
+    colorizer.enable = true;
     which-key.enable = true;
 
     #
@@ -30,14 +50,6 @@
         nixd.enable = true; # nix
         clangd.enable = true; # C/C++
         asm_lsp.enable = true; # GAS/GO assembly
-        ltex = {
-          enable = true;
-          settings = {
-            enabled = ["latex" "markdown" "text" "tex" "gitcommit"];
-            completionEnabled = true;
-            language = "en-US";
-          };
-        };
       };
     };
 
@@ -54,37 +66,13 @@
     };
 
     # language specific
-    colorizer.enable = true;
+
+    # nix
     nix.enable = true;
 
     # markdown
+    markdown-preview.enable = true;
     render-markdown.enable = true;
-
-    # neorg
-    neorg = {
-      enable = true;
-      telescopeIntegration.enable = true;
-      settings = {
-        load = {
-          "core.concealer" = {
-            config = {
-              icon_preset = "varied";
-            };
-          };
-          "core.defaults" = {
-            __empty = null;
-          };
-          "core.dirman" = {
-            config = {
-              workspaces = {
-                eng101 = "~/notes/eng101";
-                code = "~/notes/code";
-              };
-            };
-          };
-        };
-      };
-    };
 
     # git
     lazygit.enable = true;

@@ -38,12 +38,16 @@
           enable = true;
           package = pkgs.swaylock-effects;
         };
-        waybar = with (import ../files.nix {inherit config lib;}); {
-          enable = true;
-          systemd.enable = true;
-          settings = waybarConfig;
-          style = waybarStyle;
-        };
+        waybar =
+          /*
+          with (import ../files.nix {inherit config lib;});
+          */
+          {
+            enable = true;
+            systemd.enable = true;
+            #settings = waybarConfig;
+            #style = waybarStyle;
+          };
       };
     }
   ];
