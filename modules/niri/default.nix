@@ -3,8 +3,11 @@
   lib,
   pkgs,
   inputs,
+  def,
   ...
 }: {
+  imports = [inputs.niri.nixosModules.niri];
+
   nixpkgs.overlays = [inputs.niri.overlays.niri];
   programs.niri = {
     enable = true;
@@ -39,11 +42,11 @@
           enable = true;
           package = pkgs.swaylock-effects;
         };
-        waybar = with (import ../files.nix {inherit config lib;}); {
+        waybar = with (def.files {inherit config lib;}); {
           enable = true;
           systemd.enable = true;
           settings = waybarConfig;
-          #style = waybarStyle;
+          style = waybarStyle;
         };
       };
     }

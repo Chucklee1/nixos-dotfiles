@@ -26,84 +26,71 @@ base0F: #8F5536
   colorWithHash = lib.mapAttrs (name: color: "#${color}") config.lib.stylix.colors;
 in
   with colorWithHash; {
-    waybarConfig = builtins.fromJSON (builtins.unsafeDiscardStringContext ''
-      [
-        {
-          "position": "top",
-          "layer": "top",
-          "height": 20,
+    waybarConfig = builtins.fromJSON "${builtins.readFile ./waybar/config.json}";
 
-          "modules-left": ["niri/window"],
+    waybarStyle = ''
+      * {
+        font-family: "JetBrainsMono nerd font";
+        font-size: 12px;
+      }
+      window#waybar {
+        color: ${base07};
+        transition-duration: .5s;
+      }
+      window#waybar.hidden {
+        opacity: 0.2;
+      }
+      window#waybar.empty {
+        background-color: transparent;
+      }
+      button {
+        border: none;
+        border-radius: 0;
+      }
+      button:hover {
+        background: inherit;
+        box-shadow: inset 0 -3px ${base07};
+      }
+      #workspaces button {
+        padding: 0 5px;
+        background-color: transparent;
+        color: ${base07};
+      }
+      #workspaces button:hover {
+        background: ${base00};
+      }
+      #workspaces button.focused {
+        background-color: ${base03};
+        box-shadow: inset 0 -3px ${base07};
+      }
+      #workspaces button.urgent {
+        background-color: ${base08};
+      }
 
-          "cpu": { "format": "{usage}% " },
-          "memory": { "format": "{}% " },
+      #clock,
+      #battery,
+      #cpu,
+      #memory,
+      #disk,
+      #backlight,
+      #network,
+      #pulseaudio,
+      #tray,
+      #idle_inhibitor {
+          padding: 0 10px;
+      }
 
-          "modules-center": ["clock"],
-          "clock": { "format": "{:%H:%M:%S}" },
-
-          "modules-right": [
-            "idle_inhibitor",
-            "pulseaudio",
-            "network",
-            "backlight",
-            "battery",
-            "tray",
-            "custom/power"
-          ],
-
-          "idle_inhibitor": {
-            "format": "{icon}",
-            "format-icons": {
-              "activated": "",
-              "deactivated": ""
-            }
-          },
-          "pulseaudio": {
-            "format": "{volume}% {icon}",
-            "format-bluetooth": "{volume}% {icon}",
-            "format-icons": { "default": ["", "", ""] },
-            "format-muted": "<span color='${base08}' >M </span>",
-            "format-source": "{volume}% ",
-            "format-source-muted": "",
-            "on-click": "pavucontrol"
-          },
-          "network": {
-            "format-alt": "{ifname}: {ipaddr}/{cidr}",
-            "format-disconnected": "<span color='${base0A}' > disconnected ⚠</span>",
-            "format-ethernet": "{ipaddr}/{cidr} 󰊗",
-            "format-wifi": "{essid} ({signalStrength}%) ",
-            "tooltip-format": "{ifname} via {gwaddr} 󰊗"
-          },
-          "backlight": {
-            "format": "{percent}%<span color='${base0A}' > {icon}</span>",
-            "format-icons": ["", "", "", "", "", "", "", "", ""]
-          },
-          "battery": {
-            "interval": 1,
-            "states": {
-              "good": 99,
-              "warning": 30,
-              "critical": 20
-            },
-            "format-icons": [" ", " ", " ", " ", " "],
-            "format": "{capacity}%<span color='${base0B}' > {icon}</span>",
-            "format-critical": "{capacity}%<span color='${base08}' > {icon}</span>",
-            "format-warning": "{capacity}%<span color='${base0A}' > {icon}</span>",
-            "format-full": "{capacity}%<span color='${base0B}' > {icon}</span>",
-            "format-charging": "{capacity}%<span color='${base0B}' > {icon} </span>",
-            "format-charging-warning": "{capacity}%<span color='${base0A}' > {icon} </span>",
-            "format-charging-critical": "{capacity}%<span color='${base08}' > {icon} </span>",
-            "format-plugged": "{capacity}%<span color='${base0B}' > {icon} </span>",
-            "format-alt": "<span color='${base0B}' > {icon} </span>{time}",
-            "tooltip": false
-          },
-          "tray": { "spacing": 10 },
-          "custom/power": {
-            "format": "⏻ ",
-            "on-click": "wlogout"
-          }
-        }
-      ]   '');
+      #window,
+      #workspaces {
+          margin: 0 4px;
+      }
+      .modules-left > widget:first-child > #workspaces {
+          margin-left: 0;
+      }
+      .modules-right > widget:last-child > #workspaces {
+          margin-right: 0;
+      }
+    '';
 
     custom-pure = builtins.fromJSON (builtins.unsafeDiscardStringContext ''
       {

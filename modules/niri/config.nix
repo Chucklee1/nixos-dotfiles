@@ -16,6 +16,7 @@
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
       DISPLAY = ":0";
+      _JAVA_AWT_WM_NONREPARENTING = "1";
       SDL_VIDEODRIVER = "wayland,x11";
       GDK_BACKEND = "wayland,x11";
       QT_QPA_PLATFORM = "wayland;xcb";

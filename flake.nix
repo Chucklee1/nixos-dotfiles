@@ -20,7 +20,8 @@
           def = {
             username = "goat";
             inherit host;
-            wallpaper = builtins.fetchurl "https://raw.githubusercontent.com/Chucklee1/nixos-dotfiles/refs/heads/main/assets/wallpaper.png";
+            wallpaper = ./assets/wallpaper.png;
+            files = import ./assets/files.nix;
           };
         };
         modules = [
@@ -31,7 +32,6 @@
           ./modules/hosts/${host}.nix
           ./modules/niri/default.nix
           inputs.stylix.nixosModules.stylix
-          inputs.niri.nixosModules.niri
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager = {

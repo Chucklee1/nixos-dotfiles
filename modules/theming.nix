@@ -53,7 +53,7 @@
         style.name = "adwaita-dark";
         platformTheme.name = "gtk3";
       };
-      programs.oh-my-posh = with (import ./files.nix {inherit config lib;}); {
+      programs.oh-my-posh = with (def.files {inherit config lib;}); {
         enable = true;
         settings = custom-pure;
       };
