@@ -9,6 +9,7 @@ then {
   # boot
   boot = {
     supportedFilesystems = ["ntfs"];
+    loader.grub.useOSProber = true;
     kernelModules = [
       "iwlwifi"
       "iwlmvm"
