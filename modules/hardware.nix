@@ -6,25 +6,33 @@
 }:
 if def.host == "desktop"
 then {
-  # boot
+  # other drives
+  fileSystems."/media/goat/BLUE_SATA" = {
+    device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";
+    fsType = "ext4";
+  };
+
+  # windows...
   boot = {
     supportedFilesystems = ["ntfs"];
     loader.grub.useOSProber = true;
-    kernelModules = [
-      "iwlwifi"
-      "iwlmvm"
-    ];
-    kernelParams = [
-      "iwlwifi.11n-disable=1"
-      "iwlwifi.swcrypto=0"
-      "iwlwifi.bt_coex_active=0"
-      "iwlwifi.power_save=0"
-      "iwlmvm.power_scheme=0"
-      "iwlwifi.d0i3_disable=1"
-      "iwlwifi.uapsd_disable=1"
-      "iwlwifi.lar_disable=1"
-    ];
   };
+
+  # force load Intel Co. Wi-Fi 6 AX200
+  boot.kernelModules = [
+    "iwlwifi"
+    "iwlmvm"
+  ];
+  boot.kernelParams = [
+    "iwlwifi.11n-disable=1"
+    "iwlwifi.swcrypto=0"
+    "iwlwifi.bt_coex_active=0"
+    "iwlwifi.power_save=0"
+    "iwlmvm.power_scheme=0"
+    "iwlwifi.d0i3_disable=1"
+    "iwlwifi.uapsd_disable=1"
+    "iwlwifi.lar_disable=1"
+  ];
 
   # nvidia
   nixpkgs.config.nvidia.acceptLicense = true;
