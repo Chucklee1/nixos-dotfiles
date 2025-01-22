@@ -7,8 +7,8 @@
   ...
 }: {
   imports = [inputs.niri.nixosModules.niri];
-
   nixpkgs.overlays = [inputs.niri.overlays.niri];
+
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
@@ -33,6 +33,7 @@
   };
 
   home-manager.sharedModules = [
+    ./modules/niri/config.nix
     {
       programs = {
         fuzzel.enable = true;

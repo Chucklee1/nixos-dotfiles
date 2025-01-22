@@ -33,15 +33,6 @@
           ./modules/niri/default.nix
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              sharedModules = [
-                ./modules/niri/config.nix
-                {programs.nixvim = import ./modules/nixvim/default.nix;}
-                inputs.nixvim.homeManagerModules.nixvim
-              ];
-            };
-          }
         ];
       };
   in {

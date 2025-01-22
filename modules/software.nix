@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   # -----------------------------------------------------------
   # packages
   # -----------------------------------------------------------
@@ -58,8 +62,11 @@
   };
 
   home-manager.sharedModules = [
+    inputs.nixvim.homeManagerModules.nixvim
     {
       programs = {
+        # editor
+        nixvim = import ./nixvim.nix;
         # git
         git = {
           enable = true;
