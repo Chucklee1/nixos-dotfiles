@@ -11,7 +11,6 @@
     homeManagerIntegration.autoImport = true;
     image = def.wallpaper;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
-    opacity.terminal = 0.8;
 
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
@@ -41,10 +40,6 @@
           enable = true;
           package = pkgs.papirus-icon-theme;
           dark = "Papirus-Dark";
-        };
-        targets = {
-          nixvim.transparentBackground.main = true;
-          #waybar.enable = false;
         };
       };
       gtk = {
