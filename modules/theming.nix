@@ -11,6 +11,7 @@
     homeManagerIntegration.autoImport = true;
     image = def.wallpaper;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
+    opacity.terminal = 0.8;
 
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Classic";
@@ -42,7 +43,7 @@
           dark = "Papirus-Dark";
         };
         targets = {
-          nixvim.enable = false;
+          nixvim.transparentBackground.main = true;
           #waybar.enable = false;
         };
       };
@@ -56,9 +57,9 @@
         style.name = "adwaita-dark";
         platformTheme.name = "gtk3";
       };
-      programs.oh-my-posh = {
+      programs.oh-my-posh = with (import ./files.nix {inherit config lib;}); {
         enable = true;
-        settings = (import ./files.nix {inherit config lib;}).custom-pure;
+        settings = custom-pure;
       };
     }
   ];

@@ -60,13 +60,4 @@
       command = "MarkdownPreviewToggle";
     }
   ];
-
-  # theme
-  colorschemes.kanagawa = {
-    enable = true;
-    settings = {
-      theme = "lotus";
-      terminalColors = true;
-    };
-  };
 }

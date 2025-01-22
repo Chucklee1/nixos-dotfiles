@@ -44,15 +44,6 @@
       }
       {
         command = [
-          "${lib.getExe pkgs.swaybg}"
-          "-i"
-          "${def.wallpaper}"
-          "-m"
-          "fill"
-        ];
-      }
-      {
-        command = [
           "sh"
           "-c"
           ''
