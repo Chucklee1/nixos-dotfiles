@@ -57,7 +57,7 @@
               modules-center = ["clock"];
 
               clock = {
-                "format" = "{ :%Y-%m-%d | %H:%M:%S}";
+                "format" = "{:%H:%M:%S}";
                 "interval" = 1;
               };
 

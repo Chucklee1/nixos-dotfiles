@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   #-------------------------
   #         OPTIONS
   #-------------------------
@@ -15,8 +15,9 @@
     shfmt
     alejandra
   ];
+  extraPlugins = [pkgs.vimPlugins.plenary-nvim];
 
-  globalOpts = {
+  opts = {
     # lines
     number = true;
     relativenumber = true;
@@ -69,15 +70,6 @@
     WQ.bang = true;
     W.command = "q";
     W.bang = true;
-  };
-
-  colorschemes.catppuccin = {
-    enable = true;
-    settings = {
-      flavor = "mocha";
-      term_colors = true;
-      disable_underline = true;
-    };
   };
 
   #-------------------------

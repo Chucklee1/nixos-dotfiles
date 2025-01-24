@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  def,
   ...
 }: {
   # -----------------------------------------------------------
@@ -78,10 +79,7 @@
         bash = {
           enable = true;
           shellAliases = {
-            v = "nvim";
-            vi = "nvim";
-            vim = "nvim";
-            sv = "sudo nvim";
+            update-flake = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#${def.host}";
           };
         };
         oh-my-posh = {
