@@ -94,9 +94,7 @@
       ];
     };
 
-    #
-    # qol
-    # tree sitting?
+    # treesitting
     treesitter = {
       enable = true;
       settings = {
@@ -105,12 +103,15 @@
       };
       nixvimInjections = true;
     };
+
+    # qol plugins
     telescope.enable = true;
     colorizer.enable = true;
     which-key.enable = true;
 
     nix.enable = true; # nix expression
     render-markdown.enable = true; # markdown render
+
     lazygit.enable = true; # git menu
     gitsigns.enable = true; # git changes on left
 

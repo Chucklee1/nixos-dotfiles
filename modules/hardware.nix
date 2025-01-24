@@ -19,7 +19,6 @@ then {
     loader.grub.useOSProber = true;
   };
 
-  # force load Intel Co. Wi-Fi 6 AX200
   networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
 

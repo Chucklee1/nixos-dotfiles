@@ -25,7 +25,6 @@
     };
 
     spawn-at-startup = [
-      {command = ["${lib.getExe pkgs.networkmanagerapplet}"];}
       {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
       {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
       {command = ["wpaperd"];}
@@ -57,7 +56,6 @@
       "${mod}+E".action = spawn "thunar";
       "${mod}+Space".action = spawn "fuzzel";
       "${mod-s}+L".action = spawn "swaylock";
-      "${mod-s}+P".action = spawn "wlogout";
       "${mod}+W".action = sh ''systemctl --user restart waybar.service'';
       # clipboard
       "${mod-s}+C".action = sh "env DISPLAY=:0 xsel -ob | wl-copy";

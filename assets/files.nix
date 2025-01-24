@@ -17,37 +17,7 @@ in
         color: ${base07};
         transition-duration: .5s;
       }
-      window#waybar.hidden {
-        opacity: 0.2;
-      }
-      window#waybar.empty {
-        background-color: transparent;
-      }
-      button {
-        border: none;
-        border-radius: 0;
-      }
-      button:hover {
-        background: inherit;
-        box-shadow: inset 0 -3px ${base07};
-      }
-      #workspaces button {
-        padding: 0 5px;
-        background-color: transparent;
-        color: ${base07};
-      }
-      #workspaces button:hover {
-        background: ${base00};
-      }
-      #workspaces button.focused {
-        background-color: ${base03};
-        box-shadow: inset 0 -3px ${base07};
-      }
-      #workspaces button.urgent {
-        background-color: ${base08};
-      }
 
-      #clock,
       #battery,
       #cpu,
       #memory,
@@ -56,20 +26,7 @@ in
       #network,
       #pulseaudio,
       #tray,
-      #idle_inhibitor {
-          padding: 0 10px;
-      }
-
-      #window,
-      #workspaces {
-          margin: 0 4px;
-      }
-      .modules-left > widget:first-child > #workspaces {
-          margin-left: 0;
-      }
-      .modules-right > widget:last-child > #workspaces {
-          margin-right: 0;
-      }
+      #idle_inhibitor { padding: 0 10px; }
     '';
 
     custom-pure = builtins.fromJSON (builtins.unsafeDiscardStringContext ''

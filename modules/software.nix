@@ -79,13 +79,14 @@
         bash = {
           enable = true;
           shellAliases = {
+            cg = "nix-collect-garbage";
+            flake = "$HOME/nixos-dotfiles/flake.nix";
             update-flake = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#${def.host}";
           };
         };
         oh-my-posh = {
           enable = true;
           enableBashIntegration = true;
-          useTheme = "pure";
         };
       };
     }
