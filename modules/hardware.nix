@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   def,
   ...
@@ -19,7 +20,11 @@ then {
   };
 
   # force load Intel Co. Wi-Fi 6 AX200
-  boot.kernelModules = [
+  networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
+  networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
+
+  /*
+    boot.kernelModules = [
     "iwlwifi"
     "iwlmvm"
   ];
@@ -33,6 +38,7 @@ then {
     "iwlwifi.uapsd_disable=1"
     "iwlwifi.lar_disable=1"
   ];
+  */
 
   # nvidia
   nixpkgs.config.nvidia.acceptLicense = true;

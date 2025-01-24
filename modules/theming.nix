@@ -43,7 +43,7 @@
         };
         targets = {
           waybar.enable = false;
-          #nixvim.enable = false;
+          nixvim.enable = false;
         };
       };
       gtk = {

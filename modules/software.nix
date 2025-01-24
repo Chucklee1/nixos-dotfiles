@@ -20,13 +20,6 @@
     gnumake
     gdb
     gcc
-    nasm
-    # language QOL
-    nixd
-    asm-lsp
-    nodePackages.prettier
-    shfmt
-    alejandra
     # cli
     ripgrep
     pciutils
@@ -66,7 +59,7 @@
     {
       programs = {
         # editor
-        nixvim = import ./nixvim.nix;
+        nixvim = import ./neovim.nix;
         # git
         git = {
           enable = true;

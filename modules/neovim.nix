@@ -3,6 +3,19 @@
   #         OPTIONS
   #-------------------------
   enable = true;
+  viAlias = true;
+  vimAlias = true;
+  withPerl = false;
+  withRuby = false;
+
+  extraPackages = with pkgs; [
+    nixd
+    asm-lsp
+    nodePackages.prettier
+    shfmt
+    alejandra
+  ];
+
   globalOpts = {
     # lines
     number = true;
@@ -10,28 +23,28 @@
     signcolumn = "yes";
     cursorline = true;
     scrolloff = 5;
-
-    # bannana __
+    # windsplit
     splitright = true;
     splitbelow = true;
-
     # tabs
     tabstop = 2;
     shiftwidth = 2;
     softtabstop = 0;
     smarttab = true;
     expandtab = true;
-
     # indents
+    breakindent = true;
     autoindent = true;
     smartindent = true;
-
     # cases
     ignorecase = true;
     smartcase = true;
-
     # mouse
     mouse = "a";
+    # which key popup time
+    timeoutlen = 600;
+    # read
+    termguicolors = true;
 
     # history
     clipboard = {
@@ -41,6 +54,7 @@
       };
       register = "unnamedplus";
     };
+    backup = false;
     swapfile = false;
     undofile = true;
   };
@@ -57,14 +71,20 @@
     W.bang = true;
   };
 
+  colorschemes.catppuccin = {
+    enable = true;
+    settings = {
+      flavor = "mocha";
+      term_colors = true;
+      disable_underline = true;
+    };
+  };
+
   #-------------------------
   #         PLUGINS
   #-------------------------
   plugins = {
-    #
-    # interface sepetator
-    #
-
+    # ui
     web-devicons.enable = true; # icon support
     bufferline.enable = true; # tabs
     lualine.enable = true; # status bar
@@ -97,10 +117,12 @@
     colorizer.enable = true;
     which-key.enable = true;
 
-    #
-    # language awareness seperator
-    #
+    nix.enable = true; # nix expression
+    render-markdown.enable = true; # markdown render
+    lazygit.enable = true; # git menu
+    gitsigns.enable = true; # git changes on left
 
+    # lsp servers
     lsp = {
       enable = true;
       servers = {
@@ -124,31 +146,11 @@
         alejandra.enable = true; # nix
       };
     };
-
-    # language specific
-
-    # nix
-    nix.enable = true;
-
-    # markdown
-    markdown-preview.enable = true;
-    render-markdown.enable = true;
-
-    # git
-    lazygit.enable = true;
-    gitsigns.enable = true;
   };
 
   #--------------------------------
   #         LUA STUFF IDK
   #--------------------------------
-  autoCmd = [
-    {
-      event = ["BufEnter" "BufWinEnter"];
-      pattern = ["*.md" "*.mdx"];
-      command = "MarkdownPreviewToggle";
-    }
-  ];
   extraConfigLuaPre = ''
     if vim.g.have_nerd_font then
       require('nvim-web-devicons').setup {}
