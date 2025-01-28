@@ -33,6 +33,7 @@
           ./modules/niri/default.nix
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.home-manager
+          {${host}.enable = true;}
         ];
       };
   in {

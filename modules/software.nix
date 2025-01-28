@@ -19,10 +19,21 @@
     winetricks
     protonup-qt
     protontricks
-    # gcc glory
+    # gnu glazing
     gnumake
     gdb
     gcc
+    gimp
+    # wayland
+    egl-wayland
+    qt5.qtwayland
+    qt6.qtwayland
+    brightnessctl
+    wev
+    xwayland
+    xwayland-run
+    wl-color-picker
+    wl-clipboard
     # cli
     ripgrep
     pciutils
@@ -38,7 +49,6 @@
     pavucontrol
     v4l-utils
     # apps
-    krita
     webcord
     spotify
   ];

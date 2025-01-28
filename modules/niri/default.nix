@@ -3,7 +3,6 @@
   lib,
   pkgs,
   inputs,
-  def,
   ...
 }: {
   imports = [inputs.niri.nixosModules.niri];
@@ -13,16 +12,6 @@
     enable = true;
     package = pkgs.niri-unstable;
   };
-  environment.systemPackages = with pkgs; [
-    egl-wayland
-    qt5.qtwayland
-    qt6.qtwayland
-    brightnessctl
-    wev
-    xwayland
-    xwayland-run
-    wl-clipboard
-  ];
   xdg.portal = {
     enable = true;
     extraPortals = [
