@@ -17,6 +17,8 @@
     wineWowPackages.stagingFull
     samba
     winetricks
+    protonup-qt
+    protontricks
     # gcc glory
     gnumake
     gdb

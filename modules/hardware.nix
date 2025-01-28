@@ -74,8 +74,6 @@ then {
 
   # steam
   environment.systemPackages = with pkgs; [
-    protonup-qt
-    protontricks
     prismlauncher
     osu-lazer-bin
   ];
