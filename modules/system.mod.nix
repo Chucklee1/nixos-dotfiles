@@ -23,19 +23,21 @@ in {
     # -----------------------------------------------------------
     # machines
     # -----------------------------------------------------------
-    (mkConf "laptop" {
-      radeon.enable = true; # + enable gpuGlobal
+    {
+      # global options
+      nixvim.enable = true;
       niri.enable = true; # + enable wayland
       steam.enable = true; # + enable wine
+    }
+    (mkConf "laptop" {
+      radeon.enable = true; # + enable gpuGlobal
     })
 
     (mkConf "desktop" {
       # external options
       nvidia.enable = true; # + enable gpuGlobal
       virt.enable = true;
-      niri.enable = true; # + enable wayland
-      steam.enable = true; # + enable wine
-      ntfs = true;
+      ntfs.enable = true;
       weylus.enable = true;
 
       # other drives

@@ -17,7 +17,7 @@
         system = "x86_64-linux";
         specialArgs = {
           inherit system inputs;
-          def = lib: config: {
+          def = {
             username = "goat";
             inherit host;
             wallpaper = ./assets/wallpaper.png;
@@ -30,6 +30,7 @@
           ./modules/system.mod.nix
           ./modules/theming.mod.nix
           ./modules/hosts/${host}.nix
+          inputs.niri.nixosModules.niri
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.home-manager
           {${host}.enable = true;}
