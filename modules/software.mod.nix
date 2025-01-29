@@ -5,20 +5,14 @@
   inputs,
   def,
   ...
-}: let
-  mkConf = opt: lib.mkIf config.${opt}.enable;
-  mkOpt = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
-    description = "read";
-  };
-in {
+}:
+with def.mk; {
   options = {
-    nixvim.enable = mkOpt;
-    wine.enable = mkOpt;
-    steam.enable = mkOpt; # dep wine
-    wayland.enable = mkOpt;
-    niri.enable = mkOpt; # dep wayland
+    nixvim.enable = mk.opt;
+    wine.enable = mk.opt;
+    steam.enable = mk.opt; # dep wine
+    wayland.enable = mk.opt;
+    niri.enable = mk.opt; # dep wayland
   };
   config = lib.mkMerge [
     # -----------------------------------------------------------
@@ -104,7 +98,7 @@ in {
     # -----------------------------------------------------------
     # neovim
     # -----------------------------------------------------------
-    (mkConf "nixvim" {
+    (mk.conf "nixvim" {
       home-manager.sharedModules = [
         inputs.nixvim.homeManagerModules.nixvim
         {programs.nixvim = import ./neovim.config.nix;}
@@ -114,7 +108,7 @@ in {
     # -----------------------------------------------------------
     # wine
     # -----------------------------------------------------------
-    (mkConf "wine" {
+    (mk.conf "wine" {
       environment.systemPackages = with pkgs; [
         zenity
         samba
@@ -129,7 +123,7 @@ in {
     # -----------------------------------------------------------
     # steam
     # -----------------------------------------------------------
-    (mkConf "steam" {
+    (mk.conf "steam" {
       wine.enable = true;
       programs.steam = {
         enable = true;
@@ -143,7 +137,7 @@ in {
     # -----------------------------------------------------------
     # wayland
     # -----------------------------------------------------------
-    (mkConf "niri" {
+    (mk.conf "niri" {
       wayland.enable = true;
       nixpkgs.overlays = [inputs.niri.overlays.niri];
       home-manager.sharedModules = [./niri.config.nix];
@@ -154,7 +148,7 @@ in {
       };
     })
     # input imported this way to ensure it stays top-level
-    (mkConf "wayland" {
+    (mk.conf "wayland" {
       environment.systemPackages = with pkgs; [
         egl-wayland
         qt5.qtwayland

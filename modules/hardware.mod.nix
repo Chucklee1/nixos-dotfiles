@@ -2,28 +2,23 @@
   lib,
   config,
   pkgs,
+  def,
   ...
-}: let
-  mkConf = opt: lib.mkIf config.${opt}.enable;
-  mkOpt = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
-    description = "read";
-  };
-in {
+}:
+with def.mk; {
   options = {
-    gpuGlobal.enable = mkOpt;
-    nvidia.enable = mkOpt; # dep gpuGlobal
-    radeon.enable = mkOpt; # dep gpuGlobal
-    intelWifi6.enable = mkOpt;
-    weylus.enable = mkOpt;
-    ntfs.enable = mkOpt;
+    gpuGlobal.enable = mk.opt;
+    nvidia.enable = mk.opt; # dep gpuGlobal
+    radeon.enable = mk.opt; # dep gpuGlobal
+    intelWifi6.enable = mk.opt;
+    weylus.enable = mk.opt;
+    ntfs.enable = mk.opt;
   };
   config = lib.mkMerge [
     # -----------------------------------------------------------
     # gpus
     # -----------------------------------------------------------
-    (mkConf "gpuGlobal" {
+    (mk.conf "gpuGlobal" {
       hardware.graphics = {
         enable = true;
         enable32Bit = true;
@@ -35,7 +30,7 @@ in {
         ];
       };
     })
-    (mkConf "nvidia" {
+    (mk.conf "nvidia" {
       gpuGlobal.enable = true;
       nixpkgs.config.nvidia.acceptLicense = true;
       services.xserver.videoDrivers = ["nvidia"];
@@ -54,13 +49,13 @@ in {
           __GL_VRR_ALLOWED = "1";
           __GL_MaxFramesAllowed = "1";
         }
-        ++ mkConf "wayland" {
+        ++ mk.conf "wayland" {
           # needed for wayland
           GBM_BACKEND = "nvidia-drm";
           __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         };
     })
-    (mkConf "radeon" {
+    (mk.conf "radeon" {
       gpuGlobal.enable = true;
       services.xserver.videoDrivers = ["amdgpu"];
       hardware.amdgpu.amdvlk.enable = true;
@@ -69,7 +64,7 @@ in {
     # -----------------------------------------------------------
     # drivers
     # -----------------------------------------------------------
-    (mkConf "intelWifi6" {
+    (mk.conf "intelWifi6" {
       boot.kernelModules = [
         "iwlwifi"
         "iwlmvm"
@@ -85,7 +80,7 @@ in {
         "iwlwifi.lar_disable=1"
       ];
     })
-    (mkConf "weylus" {
+    (mk.conf "weylus" {
       # tablet support
       hardware.uinput.enable = true;
       programs.weylus.enable = true;
@@ -108,7 +103,7 @@ in {
         ];
       };
     })
-    (mkConf "ntfs" {
+    (mk.conf "ntfs" {
       boot = {
         supportedFilesystems = ["ntfs"];
         loader.grub.useOSProber = true;

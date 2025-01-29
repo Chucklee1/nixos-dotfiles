@@ -1,23 +1,16 @@
 {
-  config,
   lib,
   pkgs,
   inputs,
   system,
   def,
   ...
-}: let
-  mkConf = opt: lib.mkIf config.${opt}.enable;
-  mkOpt = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
-    description = "read";
-  };
-in {
+}:
+with def.mk; {
   options = {
-    laptop.enable = mkOpt;
-    desktop.enable = mkOpt;
-    virt.enable = mkOpt;
+    laptop.enable = mk.opt;
+    desktop.enable = mk.opt;
+    virt.enable = mk.opt;
   };
   config = lib.mkMerge [
     # -----------------------------------------------------------
@@ -29,11 +22,11 @@ in {
       niri.enable = true; # + enable wayland
       steam.enable = true; # + enable wine
     }
-    (mkConf "laptop" {
+    (mk.conf "laptop" {
       radeon.enable = true; # + enable gpuGlobal
     })
 
-    (mkConf "desktop" {
+    (mk.conf "desktop" {
       # external options
       nvidia.enable = true; # + enable gpuGlobal
       virt.enable = true;
@@ -160,7 +153,7 @@ in {
     # -----------------------------------------------------------
     # virtualisation
     # -----------------------------------------------------------
-    (mkConf "virt" {
+    (mk.conf "virt" {
       # virtualisation
       programs.virt-manager.enable = true;
       virtualisation = {
