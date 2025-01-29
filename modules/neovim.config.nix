@@ -76,12 +76,10 @@
   #         PLUGINS
   #-------------------------
   plugins = {
-    # ui
+    # eye candy
     web-devicons.enable = true; # icon support
-    bufferline.enable = true; # tabs
-    lualine.enable = true; # status bar
     noice.enable = true; # fancy command pop-up
-    oil.enable = true; # better file explorer
+    neoscroll.enable = true; # smoother scrolling
     illuminate = {
       enable = true;
       underCursor = false;
@@ -93,6 +91,9 @@
         "reason"
       ];
     };
+    bufferline.enable = true; # tabs
+    lualine.enable = true; # status bar
+    oil.enable = true; # better file explorer
 
     # treesitting
     treesitter = {

@@ -17,20 +17,21 @@
         system = "x86_64-linux";
         specialArgs = {
           inherit system inputs;
-          def = {
+          def = lib: config: {
             username = "goat";
             inherit host;
             wallpaper = ./assets/wallpaper.png;
-            files = import ./assets/files.nix;
-            mkOpt = nixpkgs.lib.mkOption {
-              type = nixpkgs.lib.types.bool;
-              default = false;
-              description = "read";
+            mk = {
+              conf = opt: lib.mkIf config.${opt}.enable;
+              opt = lib.mkOption {
+                type = lib.types.bool;
+                default = false;
+                description = "read";
+              };
             };
           };
         };
         modules = [
-          ./modules/options.nix
           ./modules/hardware.nix
           ./modules/software.nix
           ./modules/system.nix
