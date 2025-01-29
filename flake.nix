@@ -24,7 +24,7 @@
           };
         };
         modules = [
-          ./modules/lib.nix
+          #./modules/libs.nix
           ./modules/hardware.mod.nix
           ./modules/software.mod.nix
           ./modules/system.mod.nix

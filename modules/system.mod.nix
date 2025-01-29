@@ -1,56 +1,61 @@
 {
+  config,
   lib,
-  mk,
+  pkgs,
+  inputs,
+  system,
+  def,
   ...
-}: {
+}: let
+  mkConf = opt: lib.mkIf config.${opt}.enable;
+  mkOpt = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    description = "read";
+  };
+in {
   options = {
-    laptop.enable = mk.opt;
-    desktop.enable = mk.opt;
-    virt.enable = mk.opt;
+    laptop.enable = mkOpt;
+    desktop.enable = mkOpt;
+    virt.enable = mkOpt;
   };
   config = lib.mkMerge [
     # -----------------------------------------------------------
     # machines
     # -----------------------------------------------------------
-    (mk.conf "laptop" {
+    (mkConf "laptop" {
       radeon.enable = true; # + enable gpuGlobal
       niri.enable = true; # + enable wayland
       steam.enable = true; # + enable wine
     })
 
-    ({pkgs, ...}:
-      mk.conf "desktop" {
-        # external options
-        nvidia.enable = true; # + enable gpuGlobal
-        virt.enable = true;
-        niri.enable = true; # + enable wayland
-        steam.enable = true; # + enable wine
-        ntfs = true;
-        weylus.enable = true;
+    (mkConf "desktop" {
+      # external options
+      nvidia.enable = true; # + enable gpuGlobal
+      virt.enable = true;
+      niri.enable = true; # + enable wayland
+      steam.enable = true; # + enable wine
+      ntfs = true;
+      weylus.enable = true;
 
-        # other drives
-        fileSystems."/media/goat/BLUE_SATA" = {
-          device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";
-          fsType = "ext4";
-        };
-        networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
-        networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
+      # other drives
+      fileSystems."/media/goat/BLUE_SATA" = {
+        device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";
+        fsType = "ext4";
+      };
+      networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
+      networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
 
-        # extra games
-        environment.systemPackages = with pkgs; [
-          prismlauncher
-          osu-lazer-bin
-        ];
-      })
+      # extra games
+      environment.systemPackages = with pkgs; [
+        prismlauncher
+        osu-lazer-bin
+      ];
+    })
     # -----------------------------------------------------------
     # global system options
     # -----------------------------------------------------------
-    ({
-      inputs,
-      system,
-      def,
-      ...
-    }: {
+    {
       # boot
       boot = {
         initrd.systemd.enable = true; # force systemd to load early
@@ -149,46 +154,45 @@
         tumbler.enable = true;
         gvfs.enable = true;
       };
-    })
+    }
     # -----------------------------------------------------------
     # virtualisation
     # -----------------------------------------------------------
-    ({pkgs, ...}:
-      mk.conf "virt" {
-        # virtualisation
-        programs.virt-manager.enable = true;
-        virtualisation = {
-          spiceUSBRedirection.enable = true;
-          libvirtd = {
-            onBoot = "ignore";
-            onShutdown = "shutdown";
-            enable = true;
-            qemu = {
-              package = pkgs.qemu_kvm;
-              runAsRoot = true;
-              swtpm.enable = true;
-              ovmf = {
-                enable = true;
-                packages = [
-                  (pkgs.OVMF.override {
-                    secureBoot = true;
-                    tpmSupport = true;
-                  })
-                  .fd
-                ];
-              };
+    (mkConf "virt" {
+      # virtualisation
+      programs.virt-manager.enable = true;
+      virtualisation = {
+        spiceUSBRedirection.enable = true;
+        libvirtd = {
+          onBoot = "ignore";
+          onShutdown = "shutdown";
+          enable = true;
+          qemu = {
+            package = pkgs.qemu_kvm;
+            runAsRoot = true;
+            swtpm.enable = true;
+            ovmf = {
+              enable = true;
+              packages = [
+                (pkgs.OVMF.override {
+                  secureBoot = true;
+                  tpmSupport = true;
+                })
+                .fd
+              ];
             };
           };
         };
+      };
 
-        home-manager.sharedModules = [
-          {
-            dconf.settings."org/virt-manager/virt-manager/connections" = {
-              autoconnect = ["qemu:///system"];
-              uris = ["qemu:///system"];
-            };
-          }
-        ];
-      })
+      home-manager.sharedModules = [
+        {
+          dconf.settings."org/virt-manager/virt-manager/connections" = {
+            autoconnect = ["qemu:///system"];
+            uris = ["qemu:///system"];
+          };
+        }
+      ];
+    })
   ];
 }

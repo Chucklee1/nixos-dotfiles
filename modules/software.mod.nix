@@ -4,14 +4,20 @@
   pkgs,
   inputs,
   def,
-  mk,
   ...
-}: {
+}: let
+  mkConf = opt: lib.mkIf config.${opt}.enable;
+  mkOpt = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    description = "read";
+  };
+in {
   options = {
-    wine.enable = mk.opt;
-    steam.enable = mk.opt; # dep wine
-    wayland.enable = mk.opt;
-    niri.enable = mk.opt; # dep wayland
+    wine.enable = mkOpt;
+    steam.enable = mkOpt; # dep wine
+    wayland.enable = mkOpt;
+    niri.enable = mkOpt; # dep wayland
   };
   config = lib.mkMerge [
     # -----------------------------------------------------------
@@ -97,7 +103,7 @@
     # -----------------------------------------------------------
     # neovim
     # -----------------------------------------------------------
-    (mk.conf "nixvim" {
+    (mkConf "nixvim" {
       home-manager.sharedModules = [
         inputs.nixvim.homeManagerModules.nixvim
         {programs.nixvim = import ./neovim.config.nix;}
@@ -107,7 +113,7 @@
     # -----------------------------------------------------------
     # wine
     # -----------------------------------------------------------
-    (mk.conf "wine" {
+    (mkConf "wine" {
       environment.systemPackages = with pkgs; [
         zenity
         samba
@@ -122,7 +128,7 @@
     # -----------------------------------------------------------
     # steam
     # -----------------------------------------------------------
-    (mk.conf "steam" {
+    (mkConf "steam" {
       wine.enable = true;
       programs.steam = {
         enable = true;
@@ -136,7 +142,7 @@
     # -----------------------------------------------------------
     # wayland
     # -----------------------------------------------------------
-    (mk.conf "niri" {
+    (mkConf "niri" {
       imports = [inputs.niri.nixosModules.niri];
       nixpkgs.overlays = [inputs.niri.overlays.niri];
       home-manager.sharedModules = [./niri.config.nix];
@@ -146,7 +152,7 @@
         package = pkgs.niri-unstable;
       };
     })
-    (mk.conf "wayland" {
+    (mkConf "wayland" {
       environment.systemPackages = with pkgs; [
         egl-wayland
         qt5.qtwayland
