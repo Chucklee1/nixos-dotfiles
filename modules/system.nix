@@ -15,18 +15,18 @@
     lib.mkMerge [
       # machines
       (conf "laptop" {
-        radeon.enable = true;
-        niri.enable = true; # also enables wayland
-        steam.enable = true; # also enables wine
+        radeon.enable = true; # + enable gpuGlobal
+        niri.enable = true; # + enable wayland
+        steam.enable = true; # + enable wine
       })
 
       (conf "desktop" {
         # external options
-        nvidia.enable = true;
+        nvidia.enable = true; # + enable gpuGlobal
         virt.enable = true;
-        windowsCompat = true;
-        niri.enable = true; # also enables wayland
-        steam.enable = true; # also enables wine
+        niri.enable = true; # + enable wayland
+        steam.enable = true; # + enable wine
+        ntfs = true;
         weylus.enable = true;
 
         # other drives

@@ -6,40 +6,41 @@
   ...
 }: {
   options = with def.mk.opt; {
-    nvidia.enable = opt;
-    radeon.enable = opt;
+    gpuGlobal.enable = opt;
+    nvidia.enable = opt; # dep gpuGlobal
+    radeon.enable = opt; # dep gpuGlobal
     intelWifi6.enable = opt;
     weylus.enable = opt;
-    windowsCompat = opt;
+    ntfs.enable = opt;
   };
   config = with def.mk.conf;
     lib.mkMerge [
       # -----------------------------------------------------------
       # gpus
       # -----------------------------------------------------------
-      (conf "gpuGlobal" {})
+      (conf "gpuGlobal" {
+        graphics = {
+          enable = true;
+          enable32Bit = true;
+          extraPackages = with pkgs; [
+            vulkan-tools
+            vulkan-loader
+            libvdpau-va-gl
+            ffmpeg
+          ];
+        };
+      })
       (conf "nvidia" {
+        gpuGlobal.enable = true;
         nixpkgs.config.nvidia.acceptLicense = true;
         services.xserver.videoDrivers = ["nvidia"];
-        hardware = {
-          graphics = {
-            enable = true;
-            enable32Bit = true;
-            extraPackages = with pkgs; [
-              vulkan-tools
-              vulkan-loader
-              libvdpau-va-gl
-              ffmpeg
-            ];
-          };
-          nvidia = {
-            modesetting.enable = true;
-            package = config.boot.kernelPackages.nvidiaPackages.stable;
-            forceFullCompositionPipeline = true;
-            videoAcceleration = true;
-            nvidiaSettings = true;
-            open = false;
-          };
+        hardware.nvidia = {
+          modesetting.enable = true;
+          package = config.boot.kernelPackages.nvidiaPackages.stable;
+          forceFullCompositionPipeline = true;
+          videoAcceleration = true;
+          nvidiaSettings = true;
+          open = false;
         };
         environment.variables =
           {
@@ -55,17 +56,9 @@
           };
       })
       (conf "radeon" {
+        gpuGlobal.enable = true;
         services.xserver.videoDrivers = ["amdgpu"];
         hardware.amdgpu.amdvlk.enable = true;
-        hardware.graphics = {
-          enable32Bit = true;
-          extraPackages = with pkgs; [
-            vulkan-tools
-            vulkan-loader
-            libvdpau-va-gl
-            ffmpeg
-          ];
-        };
       })
       # -----------------------------------------------------------
       # drivers
@@ -109,7 +102,7 @@
           ];
         };
       })
-      (conf "windowsCompat" {
+      (conf "ntfs" {
         boot = {
           supportedFilesystems = ["ntfs"];
           loader.grub.useOSProber = true;
