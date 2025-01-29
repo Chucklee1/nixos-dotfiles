@@ -2,10 +2,9 @@
   lib,
   config,
   pkgs,
+  mk,
   ...
-}: let
-  mk = (import ./libs.nix) {inherit lib config;};
-in {
+}: {
   options = {
     gpuGlobal.enable = mk.opt;
     nvidia.enable = mk.opt; # dep gpuGlobal

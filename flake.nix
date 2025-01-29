@@ -21,21 +21,14 @@
             username = "goat";
             inherit host;
             wallpaper = ./assets/wallpaper.png;
-            mk = {
-              conf = opt: lib.mkIf config.${opt}.enable;
-              opt = lib.mkOption {
-                type = lib.types.bool;
-                default = false;
-                description = "read";
-              };
-            };
           };
         };
         modules = [
-          ./modules/hardware.nix
-          ./modules/software.nix
-          ./modules/system.nix
-          ./modules/theming.nix
+          ./modules/lib.nix
+          ./modules/hardware.mod.nix
+          ./modules/software.mod.nix
+          ./modules/system.mod.nix
+          ./modules/theming.mod.nix
           ./modules/hosts/${host}.nix
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.home-manager

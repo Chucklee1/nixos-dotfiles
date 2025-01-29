@@ -4,10 +4,9 @@
   pkgs,
   inputs,
   def,
+  mk,
   ...
-}: let
-  mk = (import ./libs.nix) {inherit lib config;};
-in {
+}: {
   options = {
     wine.enable = mk.opt;
     steam.enable = mk.opt; # dep wine

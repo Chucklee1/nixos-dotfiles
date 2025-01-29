@@ -1,10 +1,8 @@
 {
   lib,
-  config,
+  mk,
   ...
-}: let
-  mk = (import ./libs.nix) {inherit lib config;};
-in {
+}: {
   options = {
     laptop.enable = mk.opt;
     desktop.enable = mk.opt;
