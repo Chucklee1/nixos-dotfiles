@@ -1,48 +1,23 @@
 {
-  config,
   lib,
+  config,
   pkgs,
+  def,
   ...
 }: let
   mkConf = opt: lib.mkIf config.${opt}.enable;
 in {
-  options = {
-    nvidia.enable = lib.mkEnableOption "";
-    radeon.enable = lib.mkEnableOption "";
-    virt.enable = lib.mkEnableOption "";
-    laptop.enable = lib.mkEnableOption "";
-    desktop.enable = lib.mkEnableOption "";
-    intelWifi6.enable = lib.mkEnableOption "";
+  options = with def.mkOpt; {
+    nvidia.enable = mkOpt;
+    radeon.enable = mkOpt;
+    intelWifi6.enable = mkOpt;
+    weylus.enable = mkOpt;
+    windowsCompat = mkOpt;
   };
-
   config = lib.mkMerge [
-    (mkConf "desktop" {
-      # external options
-      nvidia.enable = true;
-      virt.enable = true;
-
-      # other drives
-      fileSystems."/media/goat/BLUE_SATA" = {
-        device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";
-        fsType = "ext4";
-      };
-
-      # windows...
-      boot = {
-        supportedFilesystems = ["ntfs"];
-        loader.grub.useOSProber = true;
-      };
-
-      networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
-      networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
-
-      # extra games
-      environment.systemPackages = with pkgs; [
-        prismlauncher
-        osu-lazer-bin
-      ];
-    })
-    (mkConf "laptop" {radeon.enable = true;})
+    # -----------------------------------------------------------
+    # gpus
+    # -----------------------------------------------------------
     (mkConf "nvidia" {
       nixpkgs.config.nvidia.acceptLicense = true;
       services.xserver.videoDrivers = ["nvidia"];
@@ -66,15 +41,18 @@ in {
           open = false;
         };
       };
-      environment.variables = {
-        LIBVA_DRIVER_NAME = "nvidia";
-        __GL_GSYNC_ALLOWED = "1";
-        __GL_VRR_ALLOWED = "1";
-        __GL_MaxFramesAllowed = "1";
-        # needed for wayland
-        GBM_BACKEND = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      };
+      environment.variables =
+        {
+          LIBVA_DRIVER_NAME = "nvidia";
+          __GL_GSYNC_ALLOWED = "1";
+          __GL_VRR_ALLOWED = "1";
+          __GL_MaxFramesAllowed = "1";
+        }
+        ++ mkConf "wayland" {
+          # needed for wayland
+          GBM_BACKEND = "nvidia-drm";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        };
     })
     (mkConf "radeon" {
       services.xserver.videoDrivers = ["amdgpu"];
@@ -89,6 +67,9 @@ in {
         ];
       };
     })
+    # -----------------------------------------------------------
+    # drivers
+    # -----------------------------------------------------------
     (mkConf "intelWifi6" {
       boot.kernelModules = [
         "iwlwifi"
@@ -105,41 +86,34 @@ in {
         "iwlwifi.lar_disable=1"
       ];
     })
-    (mkConf "virt" {
-      # virtualisation
-      programs.virt-manager.enable = true;
-      virtualisation = {
-        spiceUSBRedirection.enable = true;
-        libvirtd = {
-          onBoot = "ignore";
-          onShutdown = "shutdown";
-          enable = true;
-          qemu = {
-            package = pkgs.qemu_kvm;
-            runAsRoot = true;
-            swtpm.enable = true;
-            ovmf = {
-              enable = true;
-              packages = [
-                (pkgs.OVMF.override {
-                  secureBoot = true;
-                  tpmSupport = true;
-                })
-                .fd
-              ];
-            };
-          };
-        };
-      };
+    (mkConf "weylus" {
+      # tablet support
+      hardware.uinput.enable = true;
+      programs.weylus.enable = true;
+      services.udev.extraRules = ''
+        KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+      '';
 
-      home-manager.sharedModules = [
-        {
-          dconf.settings."org/virt-manager/virt-manager/connections" = {
-            autoconnect = ["qemu:///system"];
-            uris = ["qemu:///system"];
-          };
-        }
-      ];
+      networking.firewall = {
+        enable = true;
+        allowedTCPPorts = [1701 9001];
+        allowedUDPPortRanges = [
+          {
+            from = 4000;
+            to = 4007;
+          }
+          {
+            from = 8000;
+            to = 8010;
+          }
+        ];
+      };
+    })
+    (mkConf "windowsCompat" {
+      boot = {
+        supportedFilesystems = ["ntfs"];
+        loader.grub.useOSProber = true;
+      };
     })
   ];
 }

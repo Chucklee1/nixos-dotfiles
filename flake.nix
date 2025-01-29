@@ -22,15 +22,20 @@
             inherit host;
             wallpaper = ./assets/wallpaper.png;
             files = import ./assets/files.nix;
+            mkOpt = nixpkgs.lib.mkOption {
+              type = nixpkgs.lib.types.bool;
+              default = false;
+              description = "read";
+            };
           };
         };
         modules = [
+          ./modules/options.nix
           ./modules/hardware.nix
           ./modules/software.nix
           ./modules/system.nix
           ./modules/theming.nix
           ./modules/hosts/${host}.nix
-          ./modules/niri/default.nix
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.home-manager
           {${host}.enable = true;}
