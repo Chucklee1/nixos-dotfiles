@@ -144,6 +144,7 @@ in {
     # wayland
     # -----------------------------------------------------------
     (mkConf "niri" {
+      wayland.enable = true;
       nixpkgs.overlays = [inputs.niri.overlays.niri];
       home-manager.sharedModules = [./niri.config.nix];
 
