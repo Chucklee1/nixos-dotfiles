@@ -4,16 +4,19 @@
   pkgs,
   ...
 }: let
-  mk = import ./libs.nix {inherit config lib;};
+  modules = [
+    "gpuGlobal"
+    "nvidia"
+    "radeon"
+    "intelWifi6"
+    "weylus"
+    "ntfs"
+  ];
+
+  mk = import ./libs.nix {inherit lib modules;};
 in {
-  options = {
-    gpuGlobal.enable = mk.opt "gpuGlobal";
-    nvidia.enable = mk.opt "nvidia";
-    radeon.enable = mk.opt "radeon";
-    intelWifi6.enable = mk.opt "intelWifi6";
-    weylus.enable = mk.opt "weylus";
-    ntfs.enable = mk.opt "ntfs";
-  };
+  options = mk.opts;
+
   config = lib.mkMerge [
     # -----------------------------------------------------------
     # gpus
@@ -42,19 +45,21 @@ in {
         nvidiaSettings = true;
         open = false;
       };
-      environment.variables =
-        {
-          LIBVA_DRIVER_NAME = "nvidia";
-          __GL_GSYNC_ALLOWED = "1";
-          __GL_VRR_ALLOWED = "1";
-          __GL_MaxFramesAllowed = "1";
-        }
-        ++ lib.mkIf config.wayland.enable {
-          # needed for wayland
+      environment.variables = {
+        LIBVA_DRIVER_NAME = "nvidia";
+        __GL_GSYNC_ALLOWED = "1";
+        __GL_VRR_ALLOWED = "1";
+        __GL_MaxFramesAllowed = "1";
+      };
+    })
+    # wayland nvidia variables
+    (lib.mkIf config.nvidia.enable
+      (lib.mkIf config.wayland.enable {
+        environment.variables = {
           GBM_BACKEND = "nvidia-drm";
           __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         };
-    })
+      }))
     (lib.mkIf config.radeon.enable {
       gpuGlobal.enable = true;
       services.xserver.videoDrivers = ["amdgpu"];

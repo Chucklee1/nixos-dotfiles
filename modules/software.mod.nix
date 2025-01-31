@@ -6,15 +6,17 @@
   def,
   ...
 }: let
-  mk = import ./libs.nix {inherit config lib;};
+  modules = [
+    "nixvim"
+    "wine"
+    "steam"
+    "wayland"
+    "niri"
+  ];
+
+  mk = import ./libs.nix {inherit lib modules;};
 in {
-  options = {
-    nixvim.enable = mk.opt "nixvim";
-    wine.enable = mk.opt "wine";
-    steam.enable = mk.opt "steam";
-    wayland.enable = mk.opt "wayland";
-    niri.enable = mk.opt "niri";
-  };
+  options = mk.opts;
   config = lib.mkMerge [
     # -----------------------------------------------------------
     # global packages

@@ -7,13 +7,15 @@
   def,
   ...
 }: let
-  mk = import ./libs.nix {inherit config lib;};
+  modules = [
+    "laptop"
+    "desktop"
+    "virt"
+  ];
+
+  mk = import ./libs.nix {inherit lib modules;};
 in {
-  options = {
-    laptop.enable = mk.opt "laptop";
-    desktop.enable = mk.opt "desktop";
-    virt.enable = mk.opt "virt";
-  };
+  options = mk.opts;
   config = lib.mkMerge [
     # -----------------------------------------------------------
     # machines
