@@ -7,25 +7,21 @@
   def,
   ...
 }: let
-  modules = [
-    "laptop"
-    "desktop"
-    "virt"
-  ];
-
-  mk = import ./libs.nix {inherit lib modules;};
+  mk = import ./libs.nix {
+    inherit lib;
+    modules = [
+      "laptop"
+      "desktop"
+      "virt"
+    ];
+  };
 in {
   options = mk.opts;
+
   config = lib.mkMerge [
     # -----------------------------------------------------------
     # machines
     # -----------------------------------------------------------
-    {
-      # global options
-      nixvim.enable = true;
-      niri.enable = true; # + enable wayland
-      steam.enable = true; # + enable wine
-    }
     (lib.mkIf config.laptop.enable {
       radeon.enable = true; # + enable gpuGlobal
     })
@@ -51,8 +47,17 @@ in {
         osu-lazer-bin
       ];
     })
+
     # -----------------------------------------------------------
-    # global system options
+    # globals - modules togs
+    # -----------------------------------------------------------
+    {
+      nixvim.enable = true;
+      niri.enable = true; # + enable wayland
+      steam.enable = true; # + enable wine
+    }
+    # -----------------------------------------------------------
+    # globals - system options
     # -----------------------------------------------------------
     {
       # boot

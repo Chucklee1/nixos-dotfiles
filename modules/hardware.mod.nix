@@ -4,16 +4,17 @@
   pkgs,
   ...
 }: let
-  modules = [
-    "gpuGlobal"
-    "nvidia"
-    "radeon"
-    "intelWifi6"
-    "weylus"
-    "ntfs"
-  ];
-
-  mk = import ./libs.nix {inherit lib modules;};
+  mk = import ./libs.nix {
+    inherit lib;
+    modules = [
+      "gpuGlobal"
+      "nvidia"
+      "radeon"
+      "intelWifi6"
+      "weylus"
+      "ntfs"
+    ];
+  };
 in {
   options = mk.opts;
 
@@ -86,7 +87,6 @@ in {
       ];
     })
     (lib.mkIf config.weylus.enable {
-      # tablet support
       hardware.uinput.enable = true;
       programs.weylus.enable = true;
       services.udev.extraRules = ''

@@ -6,20 +6,22 @@
   def,
   ...
 }: let
-  modules = [
-    "nixvim"
-    "wine"
-    "steam"
-    "wayland"
-    "niri"
-  ];
-
-  mk = import ./libs.nix {inherit lib modules;};
+  mk = import ./libs.nix {
+    inherit lib;
+    modules = [
+      "nixvim"
+      "wine"
+      "steam"
+      "wayland"
+      "niri"
+    ];
+  };
 in {
   options = mk.opts;
+
   config = lib.mkMerge [
     # -----------------------------------------------------------
-    # global packages
+    # globals - packages
     # -----------------------------------------------------------
     {
       environment.systemPackages = with pkgs; [
