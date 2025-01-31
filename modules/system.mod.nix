@@ -1,16 +1,18 @@
 {
+  config,
   lib,
   pkgs,
   inputs,
   system,
   def,
   ...
-}:
-with def.mk; {
+}: let
+  mk = import ./libs.nix {inherit config lib;};
+in {
   options = {
-    laptop.enable = mk.opt;
-    desktop.enable = mk.opt;
-    virt.enable = mk.opt;
+    laptop.enable = mk.opt "laptop";
+    desktop.enable = mk.opt "desktop";
+    virt.enable = mk.opt "virt";
   };
   config = lib.mkMerge [
     # -----------------------------------------------------------
@@ -22,11 +24,11 @@ with def.mk; {
       niri.enable = true; # + enable wayland
       steam.enable = true; # + enable wine
     }
-    (mk.conf "laptop" {
+    (lib.mkIf config.laptop.enable {
       radeon.enable = true; # + enable gpuGlobal
     })
 
-    (mk.conf "desktop" {
+    (lib.mkIf config.desktop.enable {
       # external options
       nvidia.enable = true; # + enable gpuGlobal
       virt.enable = true;
@@ -153,7 +155,7 @@ with def.mk; {
     # -----------------------------------------------------------
     # virtualisation
     # -----------------------------------------------------------
-    (mk.conf "virt" {
+    (lib.mkIf config.virt.enable {
       # virtualisation
       programs.virt-manager.enable = true;
       virtualisation = {

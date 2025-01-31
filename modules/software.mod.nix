@@ -5,14 +5,15 @@
   inputs,
   def,
   ...
-}:
-with def.mk; {
+}: let
+  mk = import ./libs.nix {inherit config lib;};
+in {
   options = {
-    nixvim.enable = mk.opt;
-    wine.enable = mk.opt;
-    steam.enable = mk.opt; # dep wine
-    wayland.enable = mk.opt;
-    niri.enable = mk.opt; # dep wayland
+    nixvim.enable = mk.opt "nixvim";
+    wine.enable = mk.opt "wine";
+    steam.enable = mk.opt "steam";
+    wayland.enable = mk.opt "wayland";
+    niri.enable = mk.opt "niri";
   };
   config = lib.mkMerge [
     # -----------------------------------------------------------
@@ -23,7 +24,8 @@ with def.mk; {
         # dependancies
         libnotify
         libsecret
-        # gnu glazing
+        # development
+        python3
         gnumake
         gdb
         gcc
@@ -98,7 +100,7 @@ with def.mk; {
     # -----------------------------------------------------------
     # neovim
     # -----------------------------------------------------------
-    (mk.conf "nixvim" {
+    (lib.mkIf config.nixvim.enable {
       home-manager.sharedModules = [
         inputs.nixvim.homeManagerModules.nixvim
         {programs.nixvim = import ./neovim.config.nix;}
@@ -108,7 +110,7 @@ with def.mk; {
     # -----------------------------------------------------------
     # wine
     # -----------------------------------------------------------
-    (mk.conf "wine" {
+    (lib.mkIf config.wine.enable {
       environment.systemPackages = with pkgs; [
         zenity
         samba
@@ -123,7 +125,7 @@ with def.mk; {
     # -----------------------------------------------------------
     # steam
     # -----------------------------------------------------------
-    (mk.conf "steam" {
+    (lib.mkIf config.steam.enable {
       wine.enable = true;
       programs.steam = {
         enable = true;
@@ -137,7 +139,7 @@ with def.mk; {
     # -----------------------------------------------------------
     # wayland
     # -----------------------------------------------------------
-    (mk.conf "niri" {
+    (lib.mkIf config.niri.enable {
       wayland.enable = true;
       nixpkgs.overlays = [inputs.niri.overlays.niri];
       home-manager.sharedModules = [./niri.config.nix];
@@ -148,7 +150,7 @@ with def.mk; {
       };
     })
     # input imported this way to ensure it stays top-level
-    (mk.conf "wayland" {
+    (lib.mkIf config.wayland.enable {
       environment.systemPackages = with pkgs; [
         egl-wayland
         qt5.qtwayland
