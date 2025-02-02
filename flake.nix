@@ -15,42 +15,46 @@
     # needs to be outside of mkSystem function
     system = "x86_64-linux";
 
-    # modulalisation
-    importModList = mod: (import ./modules/${mod}.nix {inherit inputs;}) ["_system" "hardware" "niri" "nixvim"];
+    modules = let
+      # modulalisation
+      importMods = builtins.listToAttrs (map (mod: {
+        name = mod;
+        value = import ./modules/${mod}.nix {inherit inputs;};
+      }) ["_system" "hardware" "niri" "nixvim"]);
 
-    homeModWrapper = mods: [{home-manager.sharedModules = builtins.concatLists mods;}];
+      homeModWrapper = mods: [{home-manager.sharedModules = builtins.concatLists mods;}];
+    in
+      with importMods; {
+        global = builtins.concatLists [
+          _system.global
+          hardware.gpuGlobal
+          niri.base
+          (homeModWrapper [
+            niri.home
+            nixvim.merged
+          ])
+          [
+            ./modules/software.mod.nix
+            ./modules/theming.mod.nix
+            inputs.stylix.nixosModules.stylix
+            inputs.home-manager.nixosModules.home-manager
+          ]
+        ];
+        laptop = builtins.concatLists [
+          modules.global
+          hardware.radeon
+        ];
 
-    modules = with importModList; {
-      global = builtins.concatLists [
-        _system.global
-        hardware.gpuGlobal
-        niri.base
-        (homeModWrapper [
-          niri.home
-          nixvim.merged
-        ])
-        [
-          ./modules/software.mod.nix
-          ./modules/theming.mod.nix
-          inputs.stylix.nixosModules.stylix
-          inputs.home-manager.nixosModules.home-manager
-        ]
-      ];
-      laptop = builtins.concatLists [
-        modules.global
-        hardware.radeon
-      ];
-
-      desktop = builtins.concatLists [
-        modules.global
-        _system.desktop
-        _system.virt
-        hardware.nvidia
-        hardware.wayVidia
-        hardware.weylus
-        hardware.ntfs
-      ];
-    };
+        desktop = builtins.concatLists [
+          modules.global
+          _system.desktop
+          _system.virt
+          hardware.nvidia
+          hardware.wayVidia
+          hardware.weylus
+          hardware.ntfs
+        ];
+      };
 
     # mkSystem blob
     mkSystem = host:
