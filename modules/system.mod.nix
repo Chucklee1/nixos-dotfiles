@@ -22,17 +22,7 @@ in {
     # -----------------------------------------------------------
     # machines
     # -----------------------------------------------------------
-    (lib.mkIf config.laptop.enable {
-      radeon.enable = true; # + enable gpuGlobal
-    })
-
     (lib.mkIf config.desktop.enable {
-      # external options
-      nvidia.enable = true; # + enable gpuGlobal
-      virt.enable = true;
-      ntfs.enable = true;
-      weylus.enable = true;
-
       # other drives
       fileSystems."/media/goat/BLUE_SATA" = {
         device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";

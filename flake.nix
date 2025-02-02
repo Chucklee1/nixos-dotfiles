@@ -15,32 +15,34 @@
     # needs to be outside of mkSystem function
     system = "x86_64-linux";
 
-    # import fun
-    mod = {
-      nix = mod: (import ./modules/${mod}.nix {inherit inputs;});
-      home = mod: {home-manager.sharedModules = mod.nix "${mod}";};
-    };
+    # modulalisation
+    importMod = mod: (import ./modules/${mod}.nix {inherit inputs;});
+    importHomeMod = mod: [{home-manager.sharedModules = importMod mod;}];
 
-    modules = {
-      global = [
-        (mod.nix "hardware").gpuGlobal
-        (mod.nix "niri").base
-        (mod.home "niri").home
-        (mod.home "nixvim").merged
-        ./modules/software.mod.nix
-        ./modules/system.mod.nix
-        ./modules/theming.mod.nix
-        inputs.stylix.nixosModules.stylix
-        inputs.home-manager.nixosModules.home-manager
+    modules = host: {
+      global = builtins.concatLists [
+        (importMod "hardware").gpuGlobal
+        (importMod "niri").base
+        (importHomeMod "niri").home
+        (importHomeMod "nixvim").merged
+        [
+          ./modules/software.mod.nix
+          ./modules/system.mod.nix
+          ./modules/theming.mod.nix
+          inputs.stylix.nixosModules.stylix
+          inputs.home-manager.nixosModules.home-manager
+        ]
       ];
-      laptop = [
-        (mod.nix "hardware").radeon
-      ];
-      desktop = with (mod.nix "hardware"); [
-        nvidia
-        weylus
-        ntfs
-      ];
+      laptop =
+        modules.global
+        ++ (importMod "hardware").radeon;
+
+      desktop = with (importMod "hardware");
+        modules.global
+        ++ nvidia
+        ++ wayVidia
+        ++ weylus
+        ++ ntfs;
     };
 
     # mkSystem blob
@@ -55,10 +57,7 @@
             wallpaper = ./assets/wallpaper.png;
           };
         };
-        modules =
-          modules.global
-          ++ modules.${host}
-          ++ [./modules/hosts/${host}.nix];
+        modules = modules.${host} ++ [./modules/hosts/${host}.nix];
       };
 
     # mkSystem declarations
