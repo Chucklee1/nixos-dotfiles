@@ -52,8 +52,8 @@ in {
     # globals - modules togs
     # -----------------------------------------------------------
     {
+      ${def.host}.enable = true;
       nixvim.enable = true;
-      niri.enable = true; # + enable wayland
       steam.enable = true; # + enable wine
     }
     # -----------------------------------------------------------

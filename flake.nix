@@ -24,18 +24,19 @@
           };
         };
         modules = let
-          niri = (import ./modules/niri.nix).niri;
-        in [
-          ./modules/hardware.mod.nix
-          ./modules/software.mod.nix
-          ./modules/system.mod.nix
-          ./modules/theming.mod.nix
-          ./modules/hosts/${host}.nix
+          niri = (import ./modules/niri.nix {inherit inputs;}).niri;
+        in
           niri.base
-          inputs.stylix.nixosModules.stylix
-          inputs.home-manager.nixosModules.home-manager
-          {home-manager.sharedModules = [niri.home];}
-        ];
+          ++ [
+            ./modules/hardware.mod.nix
+            ./modules/software.mod.nix
+            ./modules/system.mod.nix
+            ./modules/theming.mod.nix
+            ./modules/hosts/${host}.nix
+            {home-manager.sharedModules = [niri.home];}
+            inputs.stylix.nixosModules.stylix
+            inputs.home-manager.nixosModules.home-manager
+          ];
       };
   in {
     # mkSystem declarations
