@@ -11,34 +11,43 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {nixpkgs, ...} @ inputs: let
+  outputs = {nixpkgs, ...} @ inputs: rec {
+    # needs to be outside of mkSystem function
+    system = "x86_64-linux";
+
+    # import fun
+    importMod = mod: (import ./modules/${mod}.nix {inherit inputs;}).${mod};
+    niri = importMod "niri";
+    nixvim = importMod "nixvim";
+
+    # mkSystem blob
     mkSystem = host:
-      nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
+      nixpkgs.lib.nixosSystem {
+        system = {inherit system;};
         specialArgs = {
           inherit system inputs;
           def = {
-            username = "goat";
             inherit host;
+            username = "goat";
             wallpaper = ./assets/wallpaper.png;
           };
         };
         modules = let
-          niri = (import ./modules/niri.nix {inherit inputs;}).niri;
         in
           niri.base
+          ++ nixvim.merged
           ++ [
             ./modules/hardware.mod.nix
             ./modules/software.mod.nix
             ./modules/system.mod.nix
             ./modules/theming.mod.nix
             ./modules/hosts/${host}.nix
-            {home-manager.sharedModules = [niri.home];}
             inputs.stylix.nixosModules.stylix
             inputs.home-manager.nixosModules.home-manager
+            {home-manager.sharedModules = niri.home;}
           ];
       };
-  in {
+
     # mkSystem declarations
     nixosConfigurations.desktop = mkSystem "desktop";
     nixosConfigurations.laptop = mkSystem "laptop";

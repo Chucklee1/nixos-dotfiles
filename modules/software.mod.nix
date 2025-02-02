@@ -2,14 +2,12 @@
   config,
   lib,
   pkgs,
-  inputs,
   def,
   ...
 }: let
   mk = import ./libs.nix {
     inherit lib;
     modules = [
-      "nixvim"
       "wine"
       "steam"
       "wayland"
@@ -99,16 +97,6 @@ in {
         }
       ];
     }
-
-    # -----------------------------------------------------------
-    # neovim
-    # -----------------------------------------------------------
-    (lib.mkIf config.nixvim.enable {
-      home-manager.sharedModules = [
-        inputs.nixvim.homeManagerModules.nixvim
-        {programs.nixvim = import ./neovim.config.nix;}
-      ];
-    })
 
     # -----------------------------------------------------------
     # wine
