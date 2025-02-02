@@ -19,7 +19,7 @@
     importMod = mod: (import ./modules/${mod}.nix {inherit inputs;});
     importHomeMod = mod: [{home-manager.sharedModules = importMod mod;}];
 
-    modules = host: {
+    modules = {
       global = builtins.concatLists [
         (importMod "system").global
         (importMod "hardware").gpuGlobal
@@ -33,15 +33,16 @@
           inputs.home-manager.nixosModules.home-manager
         ]
       ];
-      laptop = (importMod "hardware").radeon;
+      laptop = modules.global ++ (importMod "hardware").radeon;
 
-      desktop = with (importMod "hardware");
-        (importMod "system".desktop)
-        ++ (importMod "system".virt)
-        ++ nvidia
-        ++ wayVidia
-        ++ weylus
-        ++ ntfs;
+      desktop =
+        modules.global
+        ++ (importMod "system").desktop
+        ++ (importMod "system").virt
+        ++ (importMod "hardware").nvidia
+        ++ (importMod "hardware").wayVidia
+        ++ (importMod "hardware").weylus
+        ++ (importMod "hardware").ntfs;
     };
 
     # mkSystem blob
@@ -56,7 +57,7 @@
             wallpaper = ./assets/wallpaper.png;
           };
         };
-        modules = modules.global ++ modules.${host} ++ [./modules/hosts/${host}.nix];
+        modules = modules.${host} ++ [./modules/hosts/${host}.nix];
       };
 
     # mkSystem declarations
