@@ -1,28 +1,13 @@
 {
-  config,
-  lib,
-  pkgs,
-  inputs,
-  system,
-  def,
-  ...
-}: let
-  mk = import ./libs.nix {
-    inherit lib;
-    modules = [
-      "laptop"
-      "desktop"
-      "virt"
-    ];
-  };
-in {
-  options = mk.opts;
-
-  config = lib.mkMerge [
-    # -----------------------------------------------------------
-    # machines
-    # -----------------------------------------------------------
-    (lib.mkIf config.desktop.enable {
+  # -----------------------------------------------------------
+  # machines
+  # -----------------------------------------------------------
+  desktop = [
+    ({
+      lib,
+      pkgs,
+      ...
+    }: {
       # other drives
       fileSystems."/media/goat/BLUE_SATA" = {
         device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";
@@ -37,18 +22,21 @@ in {
         osu-lazer-bin
       ];
     })
+  ];
 
-    # -----------------------------------------------------------
-    # globals - modules togs
-    # -----------------------------------------------------------
-    {
+  # -----------------------------------------------------------
+  # globals - system options
+  # -----------------------------------------------------------
+  global = [
+    ({
+      lib,
+      inputs,
+      system,
+      def,
+      ...
+    }: {
       ${def.host}.enable = true;
       steam.enable = true; # + enable wine
-    }
-    # -----------------------------------------------------------
-    # globals - system options
-    # -----------------------------------------------------------
-    {
       # boot
       boot = {
         initrd.systemd.enable = true; # force systemd to load early
@@ -147,11 +135,14 @@ in {
         tumbler.enable = true;
         gvfs.enable = true;
       };
-    }
-    # -----------------------------------------------------------
-    # virtualisation
-    # -----------------------------------------------------------
-    (lib.mkIf config.virt.enable {
+    })
+  ];
+
+  # -----------------------------------------------------------
+  # virtualisation
+  # -----------------------------------------------------------
+  virt = [
+    ({pkgs, ...}: {
       # virtualisation
       programs.virt-manager.enable = true;
       virtualisation = {

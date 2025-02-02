@@ -21,24 +21,23 @@
 
     modules = host: {
       global = builtins.concatLists [
+        (importMod "system").global
         (importMod "hardware").gpuGlobal
         (importMod "niri").base
         (importHomeMod "niri").home
         (importHomeMod "nixvim").merged
         [
           ./modules/software.mod.nix
-          ./modules/system.mod.nix
           ./modules/theming.mod.nix
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.home-manager
         ]
       ];
-      laptop =
-        modules.global
-        ++ (importMod "hardware").radeon;
+      laptop = (importMod "hardware").radeon;
 
       desktop = with (importMod "hardware");
-        modules.global
+        (importMod "system".desktop)
+        ++ (importMod "system".virt)
         ++ nvidia
         ++ wayVidia
         ++ weylus
@@ -57,7 +56,7 @@
             wallpaper = ./assets/wallpaper.png;
           };
         };
-        modules = modules.${host} ++ [./modules/hosts/${host}.nix];
+        modules = modules.global ++ modules.${host} ++ [./modules/hosts/${host}.nix];
       };
 
     # mkSystem declarations
