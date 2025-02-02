@@ -34,8 +34,8 @@
             nixvim.merged
           ])
           [
-            ./modules/software.mod.nix
-            ./modules/theming.mod.nix
+            ./modules/software.nix
+            ./modules/theming.nix
             inputs.stylix.nixosModules.stylix
             inputs.home-manager.nixosModules.home-manager
           ]
