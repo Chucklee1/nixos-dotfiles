@@ -16,17 +16,18 @@
     system = "x86_64-linux";
 
     # modulalisation
-    importMod = mod: (import ./modules/${mod}.nix {inherit inputs;});
-    importHomeMods = mods: [{home-manager.sharedModules = builtins.concatLists mods;}];
+    importModList = mod: (import ./modules/${mod}.nix {inherit inputs;}) ["_system" "hardware" "niri" "nixvim"];
 
-    modules = {
+    homeModWrapper = mods: [{home-manager.sharedModules = builtins.concatLists mods;}];
+
+    modules = with importModList; {
       global = builtins.concatLists [
-        (importMod "system").global
-        (importMod "hardware").gpuGlobal
-        (importMod "niri").base
-        (importHomeMods [
-          (importMod "niri").home
-          (importMod "nixvim").merged
+        _system.global
+        hardware.gpuGlobal
+        niri.base
+        (homeModWrapper [
+          niri.home
+          nixvim.merged
         ])
         [
           ./modules/software.mod.nix
@@ -35,16 +36,20 @@
           inputs.home-manager.nixosModules.home-manager
         ]
       ];
-      laptop = modules.global ++ (importMod "hardware").radeon;
-
-      desktop =
+      laptop = builtins.concatLists [
         modules.global
-        ++ (importMod "system").desktop
-        ++ (importMod "system").virt
-        ++ (importMod "hardware").nvidia
-        ++ (importMod "hardware").wayVidia
-        ++ (importMod "hardware").weylus
-        ++ (importMod "hardware").ntfs;
+        hardware.radeon
+      ];
+
+      desktop = builtins.concatLists [
+        modules.global
+        _system.desktop
+        _system.virt
+        hardware.nvidia
+        hardware.wayVidia
+        hardware.weylus
+        hardware.ntfs
+      ];
     };
 
     # mkSystem blob
