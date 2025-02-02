@@ -23,17 +23,18 @@
             wallpaper = ./assets/wallpaper.png;
           };
         };
-        modules = [
-          #./modules/libs.nix
+        modules = let
+          niri = (import ./modules/niri.nix).niri;
+        in [
           ./modules/hardware.mod.nix
           ./modules/software.mod.nix
           ./modules/system.mod.nix
           ./modules/theming.mod.nix
           ./modules/hosts/${host}.nix
-          inputs.niri.nixosModules.niri
+          niri.base
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.home-manager
-          {${host}.enable = true;}
+          {home-manager.sharedModules = [niri.home];}
         ];
       };
   in {
