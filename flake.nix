@@ -17,15 +17,17 @@
 
     # modulalisation
     importMod = mod: (import ./modules/${mod}.nix {inherit inputs;});
-    importHomeMod = mod: [{home-manager.sharedModules = importMod mod;}];
+    importHomeMods = mods: [{home-manager.sharedModules = builtins.concatLists mods;}];
 
     modules = {
       global = builtins.concatLists [
         (importMod "system").global
         (importMod "hardware").gpuGlobal
         (importMod "niri").base
-        (importHomeMod "niri").home
-        (importHomeMod "nixvim").merged
+        (importHomeMods [
+          (importMod "niri").home
+          (importMod "nixvim").merged
+        ])
         [
           ./modules/software.mod.nix
           ./modules/theming.mod.nix
