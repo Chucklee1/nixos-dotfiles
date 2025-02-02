@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  niri.base = [
+  base = [
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
       wayland.enable = true;
@@ -32,7 +32,7 @@
     })
   ];
 
-  niri.home = [
+  home = [
     ({
       lib,
       config,

@@ -16,9 +16,32 @@
     system = "x86_64-linux";
 
     # import fun
-    importMod = mod: (import ./modules/${mod}.nix {inherit inputs;}).${mod};
-    niri = importMod "niri";
-    nixvim = importMod "nixvim";
+    mod = {
+      nix = mod: (import ./modules/${mod}.nix {inherit inputs;});
+      home = mod: {home-manager.sharedModules = mod.nix "${mod}";};
+    };
+
+    modules = {
+      global = [
+        (mod.nix "hardware").gpuGlobal
+        (mod.nix "niri").base
+        (mod.home "niri").home
+        (mod.home "nixvim").merged
+        ./modules/software.mod.nix
+        ./modules/system.mod.nix
+        ./modules/theming.mod.nix
+        inputs.stylix.nixosModules.stylix
+        inputs.home-manager.nixosModules.home-manager
+      ];
+      laptop = [
+        (mod.nix "hardware").radeon
+      ];
+      desktop = with (mod.nix "hardware"); [
+        nvidia
+        weylus
+        ntfs
+      ];
+    };
 
     # mkSystem blob
     mkSystem = host:
@@ -32,20 +55,10 @@
             wallpaper = ./assets/wallpaper.png;
           };
         };
-        modules = let
-        in
-          niri.base
-          ++ nixvim.merged
-          ++ [
-            ./modules/hardware.mod.nix
-            ./modules/software.mod.nix
-            ./modules/system.mod.nix
-            ./modules/theming.mod.nix
-            ./modules/hosts/${host}.nix
-            inputs.stylix.nixosModules.stylix
-            inputs.home-manager.nixosModules.home-manager
-            {home-manager.sharedModules = niri.home;}
-          ];
+        modules =
+          modules.global
+          ++ modules.${host}
+          ++ [./modules/hosts/${host}.nix];
       };
 
     # mkSystem declarations
