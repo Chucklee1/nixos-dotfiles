@@ -20,6 +20,7 @@
     system = "x86_64-linux";
 
     # module helper function
+    # TODO switch to merge same name layout
     modules = let
       recursiveImport = builtins.listToAttrs (
         map (file: {
