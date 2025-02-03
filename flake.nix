@@ -59,7 +59,6 @@
           sysConf.desktop
           sysConf.virt
           hardware.nvidia
-          hardware.wayVidia
           hardware.weylus
           hardware.ntfs
         ];
