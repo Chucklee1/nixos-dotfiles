@@ -15,18 +15,22 @@
     self,
     nixpkgs,
     ...
-  } @ inputs: rec {
+  } @ inputs: let
+    # general declarations
+    system = "x86_64-linux";
+
+    # module helper function
     modules = let
       recursiveImport = builtins.listToAttrs (
-        map (mod: {
-          name = mod;
-          value = import "${self}/modules/${mod}.nix" {inherit inputs;};
-        }) (map
-          (file: builtins.replaceStrings [".nix"] [""] file)
-          (builtins.attrNames (builtins.readDir "${self}/modules")))
+        map (file: {
+          name = builtins.replaceStrings [".nix"] [""] file;
+          value = import "${self}/modules/${file}" {inherit inputs;};
+        })
+        (builtins.attrNames (builtins.readDir "${self}/modules"))
       );
 
-      homeModWrapper = mods: [{home-manager.sharedModules = builtins.concatLists mods;}];
+      # lazy home wrapping
+      homeWrapper = modList: [{home-manager.sharedModules = builtins.concatLists modList;}];
     in
       with recursiveImport; {
         global = builtins.concatLists [
@@ -36,13 +40,12 @@
           software.steam
           hardware.gpuGlobal
           niri.base
-          (homeModWrapper [
+          theming.base
+          (homeWrapper [
             niri.home
             nixvim.merged
           ])
           [
-            ./modules/theming.nix
-            inputs.stylix.nixosModules.stylix
             inputs.home-manager.nixosModules.home-manager
           ]
         ];
@@ -61,10 +64,7 @@
           hardware.ntfs
         ];
       };
-
-    # needs to be outside of mkSystem function
-    system = "x86_64-linux";
-
+  in let
     # mkSystem blob
     mkSystem = host:
       nixpkgs.lib.nixosSystem {
@@ -74,11 +74,14 @@
           def = {
             inherit host;
             username = "goat";
-            wallpaper = ./assets/wallpaper.png;
+            wallpaper = "${self}/assets/wallpaper.png";
           };
         };
-        modules = modules.${host} ++ [./modules/${host}.gen.nix];
+        modules = modules.${host} ++ ["${self}/modules/${host}.gen.nix"];
       };
+  in {
+    # formatter
+    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
 
     # mkSystem declarations
     nixosConfigurations.desktop = mkSystem "desktop";
