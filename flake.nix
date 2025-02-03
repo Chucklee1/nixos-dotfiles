@@ -20,13 +20,10 @@
       recursiveImport = builtins.listToAttrs (
         map (mod: {
           name = mod;
-          value = import ./modules/${mod}.nix {inherit inputs;};
-        })
-        (
-          map
-          (mod: builtins.replaceStrings [".nix"] [""] mod)
-          (builtins.attrNames (builtins.readDir "${self}/modules"))
-        )
+          value = import "${self}/modules/${mod}.nix" {inherit inputs;};
+        }) (map
+          (file: builtins.replaceStrings [".nix"] [""] file)
+          (builtins.attrNames (builtins.readDir "${self}/modules")))
       );
 
       homeModWrapper = mods: [{home-manager.sharedModules = builtins.concatLists mods;}];
@@ -44,7 +41,7 @@
             nixvim.merged
           ])
           [
-            "${self}/modules/theming.nix"
+            ./modules/theming.nix
             inputs.stylix.nixosModules.stylix
             inputs.home-manager.nixosModules.home-manager
           ]
@@ -77,10 +74,10 @@
           def = {
             inherit host;
             username = "goat";
-            wallpaper = "${self}/assets/wallpaper.png";
+            wallpaper = ./assets/wallpaper.png;
           };
         };
-        modules = modules.${host} ++ ["${self}/modules/hosts/${host}.nix"];
+        modules = modules.${host} ++ [./modules/${host}.gen.nix];
       };
 
     # mkSystem declarations
