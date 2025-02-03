@@ -11,7 +11,11 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {nixpkgs, ...} @ inputs: rec {
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  } @ inputs: rec {
     modules = let
       recursiveImport = builtins.listToAttrs (
         map (mod: {
@@ -21,7 +25,7 @@
         (
           map
           (mod: builtins.replaceStrings [".nix"] [""] mod)
-          (builtins.attrNames (builtins.readDir ./modules))
+          (builtins.attrNames (builtins.readDir "${self}/modules"))
         )
       );
 
@@ -40,7 +44,7 @@
             nixvim.merged
           ])
           [
-            ./modules/theming.nix
+            "${self}/modules/theming.nix"
             inputs.stylix.nixosModules.stylix
             inputs.home-manager.nixosModules.home-manager
           ]
@@ -73,10 +77,10 @@
           def = {
             inherit host;
             username = "goat";
-            wallpaper = ./assets/wallpaper.png;
+            wallpaper = "${self}/assets/wallpaper.png";
           };
         };
-        modules = modules.${host} ++ [./modules/hosts/${host}.nix];
+        modules = modules.${host} ++ ["${self}/modules/hosts/${host}.nix"];
       };
 
     # mkSystem declarations
