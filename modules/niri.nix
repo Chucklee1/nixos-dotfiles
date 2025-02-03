@@ -2,7 +2,6 @@
   base = [
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
-      wayland.enable = true;
       nixpkgs.overlays = [inputs.niri.overlays.niri];
 
       programs.niri = {

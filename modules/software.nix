@@ -1,26 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  def,
-  ...
-}: let
-  mk = import ./libs.nix {
-    inherit lib;
-    modules = [
-      "wine"
-      "steam"
-      "wayland"
-    ];
-  };
-in {
-  options = mk.opts;
-
-  config = lib.mkMerge [
-    # -----------------------------------------------------------
-    # globals - packages
-    # -----------------------------------------------------------
-    {
+_: {
+  # -----------------------------------------------------------
+  # globals - packages
+  # -----------------------------------------------------------
+  nixPkgs = [
+    ({
+      pkgs,
+      def,
+      ...
+    }: {
       environment.systemPackages = with pkgs; [
         # dependancies
         libnotify
@@ -96,12 +83,14 @@ in {
           };
         }
       ];
-    }
+    })
+  ];
 
-    # -----------------------------------------------------------
-    # wine
-    # -----------------------------------------------------------
-    (lib.mkIf config.wine.enable {
+  # -----------------------------------------------------------
+  # wine
+  # -----------------------------------------------------------
+  wine = [
+    ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         zenity
         samba
@@ -112,12 +101,13 @@ in {
         protontricks
       ];
     })
+  ];
 
-    # -----------------------------------------------------------
-    # steam
-    # -----------------------------------------------------------
-    (lib.mkIf config.steam.enable {
-      wine.enable = true;
+  # -----------------------------------------------------------
+  # steam
+  # -----------------------------------------------------------
+  steam = [
+    {
       programs.steam = {
         enable = true;
         remotePlay.openFirewall = true;
@@ -125,6 +115,6 @@ in {
         localNetworkGameTransfers.openFirewall = true;
       };
       environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
-    })
+    }
   ];
 }

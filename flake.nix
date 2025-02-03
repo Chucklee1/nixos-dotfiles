@@ -12,21 +12,27 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: rec {
-    # needs to be outside of mkSystem function
-    system = "x86_64-linux";
-
     modules = let
-      # modulalisation
-      importMods = builtins.listToAttrs (map (mod: {
-        name = mod;
-        value = import ./modules/${mod}.nix {inherit inputs;};
-      }) ["_system" "hardware" "niri" "nixvim"]);
+      recursiveImport = builtins.listToAttrs (
+        map (mod: {
+          name = mod;
+          value = import ./modules/${mod}.nix {inherit inputs;};
+        })
+        (
+          map
+          (mod: builtins.replaceStrings [".nix"] [""] mod)
+          (builtins.attrNames (builtins.readDir ./modules))
+        )
+      );
 
       homeModWrapper = mods: [{home-manager.sharedModules = builtins.concatLists mods;}];
     in
-      with importMods; {
+      with recursiveImport; {
         global = builtins.concatLists [
-          _system.global
+          sysConf.global
+          software.nixPkgs
+          software.wine
+          software.steam
           hardware.gpuGlobal
           niri.base
           (homeModWrapper [
@@ -34,7 +40,6 @@
             nixvim.merged
           ])
           [
-            ./modules/software.nix
             ./modules/theming.nix
             inputs.stylix.nixosModules.stylix
             inputs.home-manager.nixosModules.home-manager
@@ -47,14 +52,17 @@
 
         desktop = builtins.concatLists [
           modules.global
-          _system.desktop
-          _system.virt
+          sysConf.desktop
+          sysConf.virt
           hardware.nvidia
           hardware.wayVidia
           hardware.weylus
           hardware.ntfs
         ];
       };
+
+    # needs to be outside of mkSystem function
+    system = "x86_64-linux";
 
     # mkSystem blob
     mkSystem = host:

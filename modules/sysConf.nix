@@ -35,7 +35,6 @@ _: {
       def,
       ...
     }: {
-      steam.enable = true; # + enable wine
       # boot
       boot = {
         initrd.systemd.enable = true; # force systemd to load early
