@@ -91,7 +91,9 @@
           mod = "Mod";
           mod-s = "Mod+Shift";
           mod-c = "Mod+Ctrl";
-          mod-s-c = "Mod+Shift+Ctrl";
+          mod-s-c = "${mod-s}+Ctrl";
+          mod-a = "Mod+Alt";
+          mod-s-a = "${mod-s}+Alt";
           sh = cmd: spawn "sh" "-c" "${cmd}";
         in {
           # programs
@@ -117,6 +119,7 @@
           "${mod}+Q".action = close-window;
           "Ctrl+Alt+Delete".action = quit;
           # window focus and move
+          # "${modType}+UDLR".action = ${movement}-${node}-UDLR
           "${mod}+Up".action = focus-window-up;
           "${mod}+Down".action = focus-window-down;
           "${mod}+Left".action = focus-column-left;
@@ -125,6 +128,16 @@
           "${mod-s}+Down".action = move-window-down;
           "${mod-s}+Left".action = move-column-left;
           "${mod-s}+Right".action = move-column-right;
+          # workspace and monitor move
+          "${mod-c}+left".action = focus-workspace-up;
+          "${mod-c}+right".action = focus-workspace-down;
+          "${mod-s-c}+left".action = move-window-to-workpace-up;
+          "${mod-s-c}+right".action = move-window-to-workspace-down;
+          "${mod-a}+left".action = focus-monitor-next;
+          "${mod-a}+right".action = focus-monitor-previous;
+          "${mod-s-a}+left".action = move-window-to-monitor-next;
+          "${mod-s-a}+right".action = move-window-to-monito-previous;
+
           # column width - using = since + needs shift
           "${mod}+Minus".action = set-column-width "-10%";
           "${mod}+Equal".action = set-column-width "+10%";
@@ -150,28 +163,19 @@
         input = {
           keyboard.xkb.layout = "us";
           mouse.accel-speed = 0.0;
-          touchpad = {
-            tap = true;
-            dwt = true;
-            natural-scroll = true;
-            click-method = "clickfinger";
-          };
           tablet.map-to-output = "eDP-1";
           touch.map-to-output = "eDP-1";
-        };
-        outputs."DP-2" = {
-          enable = true;
-          variable-refresh-rate = true;
-          mode = {
-            width = 1920;
-            height = 1080;
-          };
-        };
-        # layout n theming
+        }; # layout n theming
         layout = {
           gaps = 4;
           border.width = 2;
           always-center-single-column = false;
+          struts = {
+            left = 10;
+            right = 10;
+            top = 0;
+            bottom = 0;
+          };
         };
         window-rules = let
           r = 4.0;
@@ -188,5 +192,31 @@
         ];
       };
     })
+  ];
+
+  desktop = [
+    {
+      programs.niri.settings.outputs."DP-2" = {
+        enable = true;
+        variable-refresh-rate = true;
+        mode = {
+          width = 1920;
+          height = 1080;
+        };
+      };
+    }
+  ];
+
+  laptop = [
+    {
+      programs.niri.settings = {
+        inputs.touchpad = {
+          tap = true;
+          dwt = true;
+          natural-scroll = true;
+          click-method = "clickfinger";
+        };
+      };
+    }
   ];
 }
