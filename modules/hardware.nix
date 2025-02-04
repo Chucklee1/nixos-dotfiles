@@ -1,8 +1,5 @@
 _: {
-  # -----------------------------------------------------------
-  # gpus
-  # -----------------------------------------------------------
-  gpuGlobal = [
+  global = [
     ({pkgs, ...}: {
       hardware.graphics = {
         enable = true;
@@ -16,7 +13,22 @@ _: {
       };
     })
   ];
-  nvidia = [
+
+  desktop = [
+    # general hardware
+    ({lib, ...}: {
+      fileSystems."/media/goat/BLUE_SATA" = {
+        device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";
+        fsType = "ext4";
+      };
+      boot = {
+        supportedFilesystems = ["ntfs"];
+        loader.grub.useOSProber = true;
+      };
+      networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
+      networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
+    })
+    # nvidia
     ({config, ...}: {
       nixpkgs.config.nvidia.acceptLicense = true;
       services.xserver.videoDrivers = ["nvidia"];
@@ -38,36 +50,6 @@ _: {
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };
     })
-  ];
-  radeon = [
-    {
-      services.xserver.videoDrivers = ["amdgpu"];
-      hardware.amdgpu.amdvlk.enable = true;
-    }
-  ];
-
-  # -----------------------------------------------------------
-  # drivers
-  # -----------------------------------------------------------
-  intelWifi6 = [
-    {
-      boot.kernelModules = [
-        "iwlwifi"
-        "iwlmvm"
-      ];
-      boot.kernelParams = [
-        "iwlwifi.11n-disable=1"
-        "iwlwifi.swcrypto=0"
-        "iwlwifi.bt_coex_active=0"
-        "iwlwifi.power_save=0"
-        "iwlmvm.power_scheme=0"
-        "iwlwifi.d0i3_disable=1"
-        "iwlwifi.uapsd_disable=1"
-        "iwlwifi.lar_disable=1"
-      ];
-    }
-  ];
-  weylus = [
     {
       hardware.uinput.enable = true;
       programs.weylus.enable = true;
@@ -91,12 +73,11 @@ _: {
       };
     }
   ];
-  ntfs = [
+
+  laptop = [
     {
-      boot = {
-        supportedFilesystems = ["ntfs"];
-        loader.grub.useOSProber = true;
-      };
+      services.xserver.videoDrivers = ["amdgpu"];
+      hardware.amdgpu.amdvlk.enable = true;
     }
   ];
 }

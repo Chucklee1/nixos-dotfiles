@@ -20,15 +20,11 @@
     system = "x86_64-linux";
 
     # module helper function
-    # TODO switch to merge same name layout
     modules = let
-      recursiveImport = builtins.listToAttrs (
-        map (file: {
-          name = builtins.replaceStrings [".nix"] [""] file;
-          value = import "${self}/modules/${file}" {inherit inputs;};
-        })
-        (builtins.attrNames (builtins.readDir "${self}/modules"))
-      );
+      recursiveImport = builtins.listToAttrs (map (file: {
+        name = builtins.replaceStrings [".nix"] [""] file;
+        value = import "${self}/modules/${file}" {inherit inputs;};
+      }) (builtins.attrNames (builtins.readDir "${self}/modules")));
 
       # lazy home wrapping
       homeWrapper = modList: [{home-manager.sharedModules = builtins.concatLists modList;}];
@@ -36,32 +32,27 @@
       with recursiveImport; {
         global = builtins.concatLists [
           sysConf.global
-          software.nixPkgs
-          software.wine
-          software.steam
-          hardware.gpuGlobal
-          niri.base
-          theming.base
+          software.global
+          hardware.global
+          niri.global
+          theming.global
           (homeWrapper [
             niri.home
-            nixvim.merged
+            nixvim.home
           ])
-          [
-            inputs.home-manager.nixosModules.home-manager
-          ]
+          [inputs.home-manager.nixosModules.home-manager]
         ];
+
         laptop = builtins.concatLists [
           modules.global
-          hardware.radeon
+          hardware.laptop
         ];
 
         desktop = builtins.concatLists [
           modules.global
           sysConf.desktop
-          sysConf.virt
-          hardware.nvidia
-          hardware.weylus
-          hardware.ntfs
+          hardware.desktop
+          software.desktop
         ];
       };
   in let

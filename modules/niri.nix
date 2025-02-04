@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  base = [
+  global = [
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
       nixpkgs.overlays = [inputs.niri.overlays.niri];

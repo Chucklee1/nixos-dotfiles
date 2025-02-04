@@ -2,7 +2,7 @@ _: {
   # -----------------------------------------------------------
   # globals - packages
   # -----------------------------------------------------------
-  nixPkgs = [
+  global = [
     ({
       pkgs,
       def,
@@ -84,12 +84,8 @@ _: {
         }
       ];
     })
-  ];
 
-  # -----------------------------------------------------------
-  # wine
-  # -----------------------------------------------------------
-  wine = [
+    # wine
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         zenity
@@ -101,12 +97,8 @@ _: {
         protontricks
       ];
     })
-  ];
 
-  # -----------------------------------------------------------
-  # steam
-  # -----------------------------------------------------------
-  steam = [
+    # steam
     {
       programs.steam = {
         enable = true;
@@ -116,5 +108,14 @@ _: {
       };
       environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
     }
+  ];
+
+  desktop = [
+    ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        prismlauncher
+        osu-lazer-bin
+      ];
+    })
   ];
 }

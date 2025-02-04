@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  base = [
+  global = [
     inputs.stylix.nixosModules.stylix
     ({
       lib,
@@ -62,9 +62,7 @@
             };
 
             programs.oh-my-posh.settings = builtins.fromJSON (builtins.unsafeDiscardStringContext
-              /*
-              json
-              */
+              # json
               ''
                 {
                   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
@@ -246,9 +244,7 @@
                 }
               ];
               style =
-                /*
-                css
-                */
+                # css
                 ''
                   * {
                     font-family: "JetBrainsMono nerd font";

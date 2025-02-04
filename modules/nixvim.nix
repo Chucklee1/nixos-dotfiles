@@ -238,7 +238,7 @@
   };
 
   # merged plugin
-  merged = [
+  home = [
     inputs.nixvim.homeManagerModules.nixvim
     opts
     plugins

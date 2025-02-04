@@ -1,32 +1,5 @@
 _: {
-  # -----------------------------------------------------------
-  # machines
-  # -----------------------------------------------------------
-  desktop = [
-    ({
-      lib,
-      pkgs,
-      ...
-    }: {
-      # other drives
-      fileSystems."/media/goat/BLUE_SATA" = {
-        device = "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08";
-        fsType = "ext4";
-      };
-      networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
-      networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
-
-      # extra games
-      environment.systemPackages = with pkgs; [
-        prismlauncher
-        osu-lazer-bin
-      ];
-    })
-  ];
-
-  # -----------------------------------------------------------
-  # globals - system options
-  # -----------------------------------------------------------
+  # globals
   global = [
     ({
       lib,
@@ -136,10 +109,7 @@ _: {
     })
   ];
 
-  # -----------------------------------------------------------
-  # virtualisation
-  # -----------------------------------------------------------
-  virt = [
+  desktop = [
     ({pkgs, ...}: {
       # virtualisation
       programs.virt-manager.enable = true;
