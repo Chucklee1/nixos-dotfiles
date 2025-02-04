@@ -1,5 +1,10 @@
-_: {
+{
+  self,
+  def,
+  ...
+}: {
   global = [
+    "${self}/modules/${def.host}.gen.nix"
     ({pkgs, ...}: {
       hardware.graphics = {
         enable = true;

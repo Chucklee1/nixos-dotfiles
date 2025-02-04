@@ -1,6 +1,7 @@
-_: {
+{inputs, ...}: {
   # globals
   global = [
+    inputs.home-manager.nixosModules.home-manager
     ({
       lib,
       inputs,

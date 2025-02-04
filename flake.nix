@@ -40,7 +40,6 @@
             niri.home
             nixvim.home
           ])
-          [inputs.home-manager.nixosModules.home-manager]
         ];
 
         laptop = builtins.concatLists [
@@ -68,7 +67,7 @@
             wallpaper = "${self}/assets/wallpaper.png";
           };
         };
-        modules = modules.${host} ++ ["${self}/modules/${host}.gen.nix"];
+        modules = modules.${host};
       };
   in {
     # formatter
