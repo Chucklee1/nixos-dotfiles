@@ -22,43 +22,23 @@
       dir = "${self}/modules";
 
       # module helper function
-      modules = let
-        recursiveImport = listToAttrs (map (file: {
-          name = replaceStrings [".nix"] [""] file;
-          value = import "${dir}/${file}" {inherit inputs;};
-        }) (attrNames (builtins.readDir dir)));
+      recursiveImport = concatMapAttrs (file: type: {
+        ${replaceStrings [".nix"] [""] file} = import "${dir}/${file}" {inherit inputs;};
+      }) (builtins.readDir dir);
+      homeWrapper = modList: [{home-manager.sharedModules = concatLists modList;}];
 
-        # lazy home wrapping
-        homeWrapper = modList: [{home-manager.sharedModules = concatLists modList;}];
-      in
-        with recursiveImport; {
-          global = concatLists [
-            sysConf.global
-            software.global
-            hardware.global
-            niri.global
-            theming.global
-            (homeWrapper [
-              software.home
-              niri.home
-              nixvim.home
-            ])
-          ];
+      merge =
+        (foldl' (
+          acc: name:
+            acc
+            // {
+              ${name} = foldl' (a: b: a ++ b) [] (map (mod: mod.${name} or []) (attrValues attrSet));
+            }
+        ) {} ["nix" "home"])
+        recursiveImport;
 
-          laptop = concatLists [
-            modules.global
-            hardware.laptop
-            (homeWrapper [niri.laptop])
-          ];
-
-          desktop = concatLists [
-            modules.global
-            sysConf.desktop
-            hardware.desktop
-            software.desktop
-            (homeWrapper [niri.desktop])
-          ];
-        };
+      mergeMods = with merge;
+        profile: concatList [nix.global nix.${profile} (homeWrapper [home.global home.${profile}])];
     in let
       # mkSystem blob
       mkSystem = host:
@@ -71,7 +51,7 @@
               username = "goat";
             };
           };
-          modules = modules.${host} ++ ["${dir}/${host}.gen.nix"];
+          modules = (mergeMods host) ++ ["${dir}/${host}.gen.nix"];
         };
     in {
       # formatter

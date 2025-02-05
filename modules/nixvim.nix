@@ -134,13 +134,12 @@
           globals.mapleader = " ";
           globals.maplocalleader = " ";
           keymaps = let
-            mkNormalKeyMaps = us: let
-              among = splitString " : " us;
-              susOut = int: elemAt among int;
+            mkNormalKeyMaps = list: let
+              Elem = int: elemAt (splitString " : " list) int;
             in {
               mode = "n";
-              action = "<cmd>${susOut 0}<cr>";
-              key = "${susOut 1};";
+              action = "<cmd>${Elem 0}<cr>";
+              key = "${Elem 1}";
             };
           in
             # [ action key ]
