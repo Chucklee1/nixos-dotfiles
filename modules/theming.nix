@@ -3,14 +3,14 @@
     inputs.stylix.nixosModules.stylix
     ({
       pkgs,
-      def,
+      self,
       ...
     }: {
       stylix = {
         enable = true;
         autoEnable = true;
         homeManagerIntegration.autoImport = true;
-        image = def.wallpaper;
+        image = "${self}/assets/wallpaper.png";
         base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
 
         cursor.package = pkgs.bibata-cursors;

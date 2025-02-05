@@ -131,12 +131,12 @@
           # workspace and monitor move
           "${mod-c}+left".action = focus-workspace-up;
           "${mod-c}+right".action = focus-workspace-down;
-          "${mod-s-c}+left".action = move-window-to-workpace-up;
+          "${mod-s-c}+left".action = move-window-to-workspace-up;
           "${mod-s-c}+right".action = move-window-to-workspace-down;
           "${mod-a}+left".action = focus-monitor-next;
           "${mod-a}+right".action = focus-monitor-previous;
           "${mod-s-a}+left".action = move-window-to-monitor-next;
-          "${mod-s-a}+right".action = move-window-to-monito-previous;
+          "${mod-s-a}+right".action = move-window-to-monitor-previous;
 
           # column width - using = since + needs shift
           "${mod}+Minus".action = set-column-width "-10%";
@@ -324,11 +324,19 @@
   laptop = [
     {
       programs.niri.settings = {
-        inputs.touchpad = {
+        input.touchpad = {
           tap = true;
           dwt = true;
           natural-scroll = true;
           click-method = "clickfinger";
+        };
+        outputs."DP-5" = {
+          enable = true;
+          variable-refresh-rate = true;
+          position = {
+            x = 1920;
+            y = 0;
+          };
         };
       };
     }

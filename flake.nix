@@ -15,66 +15,70 @@
     self,
     nixpkgs,
     ...
-  } @ inputs: let
-    # general declarations
-    system = "x86_64-linux";
+  } @ inputs:
+    with nixpkgs.lib; let
+      # general declarations
+      system = "x86_64-linux";
+      dir = "${self}/modules";
 
-    # module helper function
-    modules = let
-      recursiveImport = builtins.listToAttrs (map (file: {
-        name = builtins.replaceStrings [".nix"] [""] file;
-        value = import "${self}/modules/${file}" {inherit inputs;};
-      }) (builtins.attrNames (builtins.readDir "${self}/modules")));
+      # module helper function
+      modules = let
+        recursiveImport = listToAttrs (map (file: {
+          name = replaceStrings [".nix"] [""] file;
+          value = import "${dir}/${file}" {inherit inputs;};
+        }) (attrNames (builtins.readDir dir)));
 
-      # lazy home wrapping
-      homeWrapper = modList: [{home-manager.sharedModules = builtins.concatLists modList;}];
-    in
-      with recursiveImport; {
-        global = builtins.concatLists [
-          sysConf.global
-          software.global
-          hardware.global
-          niri.global
-          theming.global
-          (homeWrapper [
-            niri.home
-            nixvim.home
-          ])
-        ];
+        # lazy home wrapping
+        homeWrapper = modList: [{home-manager.sharedModules = concatLists modList;}];
+      in
+        with recursiveImport; {
+          global = concatLists [
+            sysConf.global
+            software.global
+            hardware.global
+            niri.global
+            theming.global
+            (homeWrapper [
+              software.home
+              niri.home
+              nixvim.home
+            ])
+          ];
 
-        laptop = builtins.concatLists [
-          modules.global
-          hardware.laptop
-        ];
+          laptop = concatLists [
+            modules.global
+            hardware.laptop
+            (homeWrapper [niri.laptop])
+          ];
 
-        desktop = builtins.concatLists [
-          modules.global
-          sysConf.desktop
-          hardware.desktop
-          software.desktop
-        ];
-      };
-  in let
-    # mkSystem blob
-    mkSystem = host:
-      nixpkgs.lib.nixosSystem {
-        system = {inherit system;};
-        specialArgs = {
-          inherit system inputs;
-          def = {
-            inherit host;
-            username = "goat";
-            wallpaper = "${self}/assets/wallpaper.png";
-          };
+          desktop = concatLists [
+            modules.global
+            sysConf.desktop
+            hardware.desktop
+            software.desktop
+            (homeWrapper [niri.desktop])
+          ];
         };
-        modules = modules.${host};
-      };
-  in {
-    # formatter
-    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+    in let
+      # mkSystem blob
+      mkSystem = host:
+        nixpkgs.lib.nixosSystem {
+          system = {inherit system;};
+          specialArgs = {
+            inherit system inputs;
+            def = {
+              inherit host;
+              username = "goat";
+            };
+          };
+          modules = modules.${host} ++ ["${dir}/${host}.gen.nix"];
+        };
+    in {
+      # formatter
+      formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
 
-    # mkSystem declarations
-    nixosConfigurations.desktop = mkSystem "desktop";
-    nixosConfigurations.laptop = mkSystem "laptop";
-  };
+      # mkSystem declarations
+      nixosConfigurations.desktop = mkSystem "desktop";
+      nixosConfigurations.laptop = mkSystem "laptop";
+    };
 }
