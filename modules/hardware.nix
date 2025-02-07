@@ -1,5 +1,5 @@
 _: {
-  global = [
+  global.nix = [
     ({pkgs, ...}: {
       hardware.graphics = {
         enable = true;
@@ -14,7 +14,8 @@ _: {
     })
   ];
 
-  desktop = [
+  desktop.nix = [
+    ./desktop.gen.nix
     # general hardware
     ({lib, ...}: {
       fileSystems."/media/goat/BLUE_SATA" = {
@@ -74,7 +75,8 @@ _: {
     }
   ];
 
-  laptop = [
+  laptop.nix = [
+    ./laptop.gen.nix
     {
       services.xserver.videoDrivers = ["amdgpu"];
       hardware.amdgpu.amdvlk.enable = true;

@@ -17,48 +17,73 @@
     ...
   } @ inputs:
     with nixpkgs.lib; let
-      # general declarations
-      system = "x86_64-linux";
-      dir = "${self}/modules";
-
-      # module helper function
-      recursiveImport = concatMapAttrs (file: type: {
-        ${replaceStrings [".nix"] [""] file} = import "${dir}/${file}" {inherit inputs;};
-      }) (builtins.readDir dir);
-      homeWrapper = modList: [{home-manager.sharedModules = concatLists modList;}];
-
-      merge =
-        (foldl' (
-          acc: name:
-            acc
-            // {
-              ${name} = foldl' (a: b: a ++ b) [] (map (mod: mod.${name} or []) (attrValues attrSet));
-            }
-        ) {} ["nix" "home"])
-        recursiveImport;
-
-      mergeMods = with merge;
-        profile: concatList [nix.global nix.${profile} (homeWrapper [home.global home.${profile}])];
-    in let
-      # mkSystem blob
-      mkSystem = host:
-        nixpkgs.lib.nixosSystem {
-          system = {inherit system;};
-          specialArgs = {
-            inherit system inputs;
-            def = {
-              inherit host;
-              username = "goat";
+      match = flip getAttr;
+      read_dir_recursively = dir:
+        concatMapAttrs (this:
+          match {
+            directory = mapAttrs' (subpath: nameValuePair "${this}/${subpath}") (read_dir_recursively "${dir}/${this}");
+            regular = {
+              ${this} = "${dir}/${this}";
             };
-          };
-          modules = (mergeMods host) ++ ["${dir}/${host}.gen.nix"];
-        };
-    in {
-      # formatter
-      formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+            symlink = {};
+          }) (builtins.readDir dir);
 
-      # mkSystem declarations
-      nixosConfigurations.desktop = mkSystem "desktop";
-      nixosConfigurations.laptop = mkSystem "laptop";
+      params =
+        inputs
+        // {
+          configs = raw_configs;
+          elements = {
+            laptop = 7;
+            desktop = 8;
+            global = 11;
+          };
+          inherit merge extras;
+        };
+
+      read_all_modules = flip pipe [
+        read_dir_recursively
+        (filterAttrs (n: _: !hasSuffix ".gen.nix" n))
+        (mapAttrs (const import))
+        (mapAttrs (const (flip toFunction params)))
+      ];
+
+      merge = prev: this: {
+        nix = prev.nix or [] ++ this.nix or [];
+        home = prev.home or [] ++ this.home or [];
+      };
+
+      all_modules = attrValues (read_all_modules "${self}/modules");
+
+      raw_configs' = builtins.zipAttrsWith (machine:
+        if machine == "extras"
+        then mergeAttrsList
+        else builtins.foldl' merge {})
+      all_modules;
+
+      raw_configs = builtins.removeAttrs raw_configs' ["extras"];
+
+      extras = raw_configs'.extras or {};
+
+      configs = builtins.mapAttrs (const (config:
+        nixpkgs.lib.nixosSystem {
+          inherit (config) system;
+          modules =
+            config.nix
+            ++ [
+              ({
+                merge,
+                configs,
+                ...
+              }: {
+                laptop = merge configs.global configs.laptop;
+                desktop = merge configs.global configs.desktop;
+              })
+              {_module.args.home = config.home;}
+            ];
+        }))
+      raw_configs;
+    in {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+      nixosConfigurations = builtins.mapAttrs (name: configs.${name}) params.elements;
     };
 }

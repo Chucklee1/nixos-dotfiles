@@ -1,6 +1,6 @@
-{inputs, ...}: {
-  global = [
-    inputs.stylix.nixosModules.stylix
+{stylix, ...}: {
+  global.nix = [
+    stylix.nixosModules.stylix
     ({pkgs, ...}: {
       stylix = {
         enable = true;

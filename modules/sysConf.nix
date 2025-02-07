@@ -1,11 +1,9 @@
-{inputs, ...}: {
-  # globals
-  global = [
-    inputs.home-manager.nixosModules.home-manager
+{home-manager, ...}: {
+  global.nix = [
+    home-manager.nixosModules.home-manager
     ({
       lib,
-      inputs,
-      system,
+      config,
       def,
       ...
     }: {
@@ -61,11 +59,11 @@
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        extraSpecialArgs = {inherit system inputs def;};
         users.${def.username}.home = {
           stateVersion = "24.05"; # DO NOT CHANGE
           username = "${def.username}";
           homeDirectory = "/home/${def.username}";
+          imports = config._module.args.home;
         };
       };
 
@@ -110,7 +108,7 @@
     })
   ];
 
-  desktop = [
+  desktop.nix = [
     ({pkgs, ...}: {
       # virtualisation
       programs.virt-manager.enable = true;
