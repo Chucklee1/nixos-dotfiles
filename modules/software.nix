@@ -1,4 +1,4 @@
-_: {
+{
   global.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -71,11 +71,7 @@ _: {
   ];
 
   global.home = [
-    ({
-      config,
-      def,
-      ...
-    }: {
+    ({config, ...}: {
       programs = {
         # git
         git = {
@@ -97,7 +93,8 @@ _: {
           shellAliases = {
             cg = "nix-collect-garbage";
             flake = "$HOME/nixos-dotfiles/flake.nix";
-            update-flake = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#${def.host}";
+            update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
+            update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
           };
         };
         oh-my-posh = {

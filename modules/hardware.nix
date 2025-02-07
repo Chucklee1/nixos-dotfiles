@@ -1,4 +1,4 @@
-_: {
+{
   global.nix = [
     ({pkgs, ...}: {
       hardware.graphics = {

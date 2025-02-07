@@ -4,7 +4,6 @@
     ({
       lib,
       config,
-      def,
       ...
     }: {
       # boot
@@ -24,7 +23,7 @@
       system.stateVersion = "24.05";
       networking = {
         networkmanager.enable = true;
-        hostName = "${def.host}-${def.username}";
+        hostName = "goat";
       };
       i18n.defaultLocale = "en_CA.UTF-8";
       time.timeZone = "America/Vancouver";
@@ -44,7 +43,7 @@
       };
 
       # user
-      users.users.${def.username} = {
+      users.users."goat" = {
         isNormalUser = true;
         extraGroups = [
           "wheel"
@@ -59,10 +58,10 @@
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.${def.username}.home = {
+        users."goat".home = {
           stateVersion = "24.05"; # DO NOT CHANGE
-          username = "${def.username}";
-          homeDirectory = "/home/${def.username}";
+          username = "goat";
+          homeDirectory = "/home/goat";
           imports = config._module.args.home;
         };
       };

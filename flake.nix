@@ -28,6 +28,8 @@
             symlink = {};
           }) (builtins.readDir dir);
 
+      # `const` helper function is used extensively: the function is constant in regards to the name of the attribute.
+
       params =
         inputs
         // {
@@ -40,6 +42,9 @@
           inherit merge extras;
         };
 
+      # It is important to note, that when adding a new `.mod.nix` file, you need to run `git add` on the file.
+      # If you don't, the file will not be included in the flake, and the modules defined within will not be loaded.
+
       read_all_modules = flip pipe [
         read_dir_recursively
         (filterAttrs (n: _: !hasSuffix ".gen.nix" n))
@@ -47,10 +52,14 @@
         (mapAttrs (const (flip toFunction params)))
       ];
 
-      merge = prev: this: {
-        nix = prev.nix or [] ++ this.nix or [];
-        home = prev.home or [] ++ this.home or [];
-      };
+      merge = prev: this:
+        {
+          modules = prev.nix or [] ++ this.nix or [];
+          home = prev.home or [] ++ this.home or [];
+        }
+        // (optionalAttrs (prev ? system || this ? system) {
+          system = prev.system or this.system;
+        });
 
       all_modules = attrValues (read_all_modules "${self}/modules");
 
@@ -66,24 +75,18 @@
 
       configs = builtins.mapAttrs (const (config:
         nixpkgs.lib.nixosSystem {
-          inherit (config) system;
+          system = "x86_64-linux";
           modules =
-            config.nix
+            config.modules
             ++ [
-              ({
-                merge,
-                configs,
-                ...
-              }: {
-                laptop = merge configs.global configs.laptop;
-                desktop = merge configs.global configs.desktop;
-              })
-              {_module.args.home = config.home;}
+              {
+                _module.args.home = config.home;
+              }
             ];
         }))
       raw_configs;
     in {
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-      nixosConfigurations = builtins.mapAttrs (name: configs.${name}) params.elements;
+      nixosConfigurations = builtins.mapAttrs (name: const configs.${name}) params.elements;
     };
 }
