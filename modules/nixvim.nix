@@ -135,7 +135,7 @@
           globals.maplocalleader = " ";
           keymaps = let
             mkNormalKeyMaps = list: let
-              Elem = int: elemAt list int;
+              Elem = int: elemAt (splitString " : " list) int;
             in {
               mode = "n";
               action = "<cmd>${Elem 0}<cr>";
@@ -145,21 +145,21 @@
             # [ action key ]
             map mkNormalKeyMaps [
               # misc ui
-              ["Oil" "<leader>e"]
-              ["LazyGit" "<leader>gg"]
+              "Oil : <leader>e"
+              "LazyGit : <leader>gg"
 
               # Telescope bindings
-              ["Telescope live_grep" "<leader>fn"]
-              ["Telescope find_files" "<leader>f"]
-              ["Telescope git_commits" "<leader>fg"]
-              ["Telescope oldfiles" "<leader>fo"]
+              "Telescope live_grep : <leader>fn"
+              "Telescope find_files : <leader>f"
+              "Telescope git_commits : <leader>fg"
+              "Telescope oldfiles : <leader>fo"
 
               # Bufferline bindings
-              ["<Tab>" "BufferLineCycleNext"]
-              ["<S-Tab>" "BufferLineCyclePrev"]
-              ["<S-l>" "BufferLineCycleNext"]
-              ["<S-h>" "BufferLineCyclePrev"]
-              ["<leader>c" "bd"]
+              "BufferLineCycleNext : <Tab>"
+              "BufferLineCyclePrev : <S-Tab>"
+              "BufferLineCycleNext : <S-l>"
+              "BufferLineCyclePrev : <S-h>"
+              "bd : <leader>c"
             ];
         };
       })
