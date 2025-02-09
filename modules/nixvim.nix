@@ -1,6 +1,6 @@
-{nixvim, ...}: {
-  global.home = [
-    nixvim.homeManagerModules.nixvim
+{inputs, ...}: {
+  home.global = [
+    inputs.nixvim.homeManagerModules.nixvim
     {
       programs.nixvim = {
         enable = true;

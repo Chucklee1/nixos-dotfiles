@@ -1,6 +1,6 @@
-{stylix, ...}: {
-  global.nix = [
-    stylix.nixosModules.stylix
+{inputs, ...}: {
+  nix.global = [
+    inputs.stylix.nixosModules.stylix
     ({pkgs, ...}: {
       stylix = {
         enable = true;
@@ -29,29 +29,21 @@
           };
         };
       };
+    })
+  ];
 
-      home-manager.sharedModules = [
-        {
-          stylix = {
-            iconTheme = {
-              enable = true;
-              package = pkgs.papirus-icon-theme;
-              dark = "Papirus-Dark";
-            };
-            targets.waybar.enable = false;
-          };
-          gtk = {
-            enable = true;
-            gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-            gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
-          };
-          qt = {
-            enable = true;
-            style.name = "adwaita-dark";
-            platformTheme.name = "gtk3";
-          };
-        }
-      ];
+  home.global = [
+    ({pkgs, ...}: {
+      stylix = {
+        iconTheme = {
+          enable = true;
+          package = pkgs.papirus-icon-theme;
+          dark = "Papirus-Dark";
+        };
+        targets.waybar.enable = false;
+      };
+      gtk.enable = true;
+      qt.enable = true;
     })
   ];
 }

@@ -1,8 +1,8 @@
-{niri, ...}: {
-  global.nix = [
-    niri.nixosModules.niri
+{inputs, ...}: {
+  nix.global = [
+    inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
-      nixpkgs.overlays = [niri.overlays.niri];
+      nixpkgs.overlays = [inputs.niri.overlays.niri];
 
       programs.niri = {
         enable = true;
@@ -31,7 +31,7 @@
     })
   ];
 
-  global.home = [
+  home.global = [
     ({
       lib,
       config,
@@ -308,7 +308,7 @@
       })
   ];
 
-  desktop.home = [
+  home.desktop = [
     {
       programs.niri.settings.outputs."DP-2" = {
         enable = true;
@@ -321,7 +321,7 @@
     }
   ];
 
-  laptop.home = [
+  home.laptop = [
     {
       programs.niri.settings = {
         input.touchpad = {

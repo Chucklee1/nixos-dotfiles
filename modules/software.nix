@@ -1,5 +1,5 @@
 {
-  global.nix = [
+  nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # dependancies
@@ -70,7 +70,7 @@
     }
   ];
 
-  global.home = [
+  home.global = [
     ({config, ...}: {
       programs = {
         # git
@@ -203,7 +203,7 @@
     })
   ];
 
-  desktop.nix = [
+  nix.desktop = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         prismlauncher

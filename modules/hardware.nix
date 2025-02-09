@@ -1,5 +1,5 @@
 {
-  global.nix = [
+  nix.global = [
     ({pkgs, ...}: {
       hardware.graphics = {
         enable = true;
@@ -14,7 +14,7 @@
     })
   ];
 
-  desktop.nix = [
+  nix.desktop = [
     ./desktop.gen.nix
     # general hardware
     ({lib, ...}: {
@@ -75,7 +75,7 @@
     }
   ];
 
-  laptop.nix = [
+  nix.laptop = [
     ./laptop.gen.nix
     {
       services.xserver.videoDrivers = ["amdgpu"];

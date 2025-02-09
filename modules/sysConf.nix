@@ -1,6 +1,6 @@
-{home-manager, ...}: {
-  global.nix = [
-    home-manager.nixosModules.home-manager
+{inputs, ...}: {
+  nix.global = [
+    inputs.home-manager.nixosModules.home-manager
     ({
       lib,
       config,
@@ -58,11 +58,13 @@
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users."goat".home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
-          username = "goat";
-          homeDirectory = "/home/goat";
-          imports = config._module.args.home;
+        users."goat" = {
+          home = {
+            stateVersion = "24.05"; # DO NOT CHANGE
+            username = "goat";
+            homeDirectory = "/home/goat";
+          };
+          imports = config._module.args.homeMods;
         };
       };
 
@@ -107,7 +109,7 @@
     })
   ];
 
-  desktop.nix = [
+  nix.desktop = [
     ({pkgs, ...}: {
       # virtualisation
       programs.virt-manager.enable = true;
@@ -134,15 +136,15 @@
           };
         };
       };
-
-      home-manager.sharedModules = [
-        {
-          dconf.settings."org/virt-manager/virt-manager/connections" = {
-            autoconnect = ["qemu:///system"];
-            uris = ["qemu:///system"];
-          };
-        }
-      ];
     })
+  ];
+
+  home.desktop = [
+    {
+      dconf.settings."org/virt-manager/virt-manager/connections" = {
+        autoconnect = ["qemu:///system"];
+        uris = ["qemu:///system"];
+      };
+    }
   ];
 }

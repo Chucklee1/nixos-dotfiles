@@ -17,76 +17,55 @@
     ...
   } @ inputs:
     with nixpkgs.lib; let
-      match = flip getAttr;
-      read_dir_recursively = dir:
-        concatMapAttrs (this:
-          match {
-            directory = mapAttrs' (subpath: nameValuePair "${this}/${subpath}") (read_dir_recursively "${dir}/${this}");
-            regular = {
-              ${this} = "${dir}/${this}";
-            };
-            symlink = {};
-          }) (builtins.readDir dir);
+      system = "x86_64-linux";
 
-      # `const` helper function is used extensively: the function is constant in regards to the name of the attribute.
+      dir = "${self}/modules";
 
-      params =
-        inputs
-        // {
-          configs = raw_configs;
-          elements = {
-            laptop = 7;
-            desktop = 8;
-            global = 11;
-          };
-          inherit merge extras;
+      raw = let
+        # TODO: find a function like mergDeep that is not so crappy
+        mergeDeep = a: b:
+          foldl' (
+            acc: key: let
+              va = a.${key} or null;
+              vb = b.${key} or null;
+              merged =
+                if va == null
+                then vb
+                else if vb == null
+                then va
+                else if isList va && isList vb
+                then va ++ vb
+                else if isAttrs va && isAttrs vb
+                then mergeDeep va vb
+                else vb;
+            in
+              acc // {"${key}" = merged;}
+          ) {}
+          (unique (attrNames a ++ attrNames b));
+      in
+        pipe (attrNames (builtins.readDir dir)) [
+          (map (file: replaceStrings [".gen.nix"] [".IgnoreMe"] file))
+          (filter (file: hasSuffix ".nix" file))
+          (map (file: import "${dir}/${file}"))
+          (map (file:
+            if isFunction file
+            then (file {inherit inputs;})
+            else file))
+          (builtins.foldl' mergeDeep {})
+        ];
+
+      mergeMods = a: b: (genAttrs ["nix" "home"] (type: raw.${type}.${a} or [] ++ raw.${type}.${b} or []));
+
+      mkSystem = host:
+        nixosSystem {
+          inherit system;
+          modules = let
+            mod = mergeMods "global" "${host}";
+          in
+            mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
-
-      # It is important to note, that when adding a new `.mod.nix` file, you need to run `git add` on the file.
-      # If you don't, the file will not be included in the flake, and the modules defined within will not be loaded.
-
-      read_all_modules = flip pipe [
-        read_dir_recursively
-        (filterAttrs (n: _: !hasSuffix ".gen.nix" n))
-        (mapAttrs (const import))
-        (mapAttrs (const (flip toFunction params)))
-      ];
-
-      merge = prev: this:
-        {
-          modules = prev.nix or [] ++ this.nix or [];
-          home = prev.home or [] ++ this.home or [];
-        }
-        // (optionalAttrs (prev ? system || this ? system) {
-          system = prev.system or this.system;
-        });
-
-      all_modules = attrValues (read_all_modules "${self}/modules");
-
-      raw_configs' = builtins.zipAttrsWith (machine:
-        if machine == "extras"
-        then mergeAttrsList
-        else builtins.foldl' merge {})
-      all_modules;
-
-      raw_configs = builtins.removeAttrs raw_configs' ["extras"];
-
-      extras = raw_configs'.extras or {};
-
-      configs = builtins.mapAttrs (const (config:
-        nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules =
-            config.modules
-            ++ [
-              {
-                _module.args.home = config.home;
-              }
-            ];
-        }))
-      raw_configs;
     in {
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-      nixosConfigurations = builtins.mapAttrs (name: const configs.${name}) params.elements;
+      formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+      nixosConfigurations = genAttrs ["laptop" "desktop"] (mkSystem host);
     };
 }
