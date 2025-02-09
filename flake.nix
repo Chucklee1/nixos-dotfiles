@@ -66,6 +66,6 @@
         };
     in {
       formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
-      nixosConfigurations = genAttrs ["laptop" "desktop"] (mkSystem host);
+      nixosConfigurations = genAttrs ["laptop" "desktop"] (host: mkSystem host);
     };
 }
