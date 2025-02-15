@@ -1,6 +1,12 @@
 {
   nix.global = [
-    ({pkgs, ...}: {
+    ({
+      lib,
+      pkgs,
+      ...
+    }: {
+      networking.useDHCP = lib.mkDefault true;
+      hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
       hardware.graphics = {
         enable = true;
         enable32Bit = true;
@@ -77,9 +83,10 @@
 
   nix.laptop = [
     ./laptop.gen.nix
-    {
+    ({lib, ...}: {
+      networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
       services.xserver.videoDrivers = ["amdgpu"];
       hardware.amdgpu.amdvlk.enable = true;
-    }
+    })
   ];
 }
