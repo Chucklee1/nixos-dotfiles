@@ -92,6 +92,7 @@
           shellAliases = {
             cg = "nix-collect-garbage";
             flake = "$HOME/nixos-dotfiles/flake.nix";
+            update-flake = "nix flake update $HOME/nixos-dotfiles";
             update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
             update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
           };
@@ -207,6 +208,7 @@
       environment.systemPackages = with pkgs; [
         (prismlauncher.override {withWaylandGLFW = true;})
         osu-lazer-bin
+        openai
       ];
     })
   ];
