@@ -72,7 +72,7 @@
   ];
 
   home.global = [
-    ({config, ...}: {
+    ({lib, config, ...}: {
       programs = {
         # git
         git = {
@@ -86,7 +86,7 @@
           settings = {
             confirm_os_window_close = 0;
             hide_window_decorations = true;
-            extraConfig = "tab_bar_style slant";
+            tab_bar_style = lib.mkForce "slant";
           };
         };
         # shell

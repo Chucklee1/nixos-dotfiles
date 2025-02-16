@@ -13,8 +13,11 @@ in {
     ({
       lib,
       pkgs,
+      modulesPath,
       ...
-    }: {
+      }: { 
+      imports = [(modulesPath + "/installer/scan/not-detected.nix")]; 
+      swapDevices = [];
       networking.useDHCP = lib.mkDefault true;
       hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
       hardware.graphics = {
@@ -96,7 +99,6 @@ in {
     (mkFs "/boot" "/dev/disk/by-uuid/0E8B-9EFC" "vfat" ["fmask=0077" "dmask=0077"])
 
     ({lib, ...}: {
-      swapDevices = [];
       boot = {
         initrd.availableKernelModules = ["nvme" "xhci_pci" "uas" "usb_storage" "sd_mod"];
         initrd.kernelModules = [];
