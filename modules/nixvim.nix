@@ -155,18 +155,22 @@
               yamlls.enable = true;
             };
           };
-          lsp-lines.enable = true;
           lsp-format.enable = true;
+          none-ls = {
+            enable = true;
+            enableLspFormat = true;
+            sources.formatting = {
+              alejandra.enable = true;
+              stylua.enable = true;
+              prettier.enable = true;
+              shfmt.enable = true;
+            };
+            };
         };
         extraPackages = with pkgs; [
-          # servers
           asm-lsp
           lua-language-server
           nixd
-          # formatters
-          luaformatter
-          nodePackages.prettier
-          shfmt
         ];
       };
     })

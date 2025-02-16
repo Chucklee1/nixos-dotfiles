@@ -15,8 +15,8 @@ in {
       pkgs,
       modulesPath,
       ...
-      }: { 
-      imports = [(modulesPath + "/installer/scan/not-detected.nix")]; 
+    }: {
+      imports = [(modulesPath + "/installer/scan/not-detected.nix")];
       swapDevices = [];
       networking.useDHCP = lib.mkDefault true;
       hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
@@ -34,7 +34,9 @@ in {
   ];
 
   nix.desktop = [
-    ./desktop.gen.nix
+    (mkFs "/" "/dev/disk/by-uuid/96c41aaf-846f-47b1-8319-eed5a3a32294" "ext4" null)
+    (mkFs "/boot" "/dev/disk/by-uuid/75D4-A9F7" "vfat" ["fmask=0022" "dmask=0022"])
+
     # general hardware
     ({lib, ...}: {
       fileSystems."/media/goat/BLUE_SATA" = {
@@ -42,9 +44,14 @@ in {
         fsType = "ext4";
       };
       boot = {
+        initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
+        initrd.kernelModules = [];
+        kernelModules = ["kvm-amd"];
+        extraModulePackages = [];
         supportedFilesystems = ["ntfs"];
         loader.grub.useOSProber = true;
       };
+
       networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
       networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
     })

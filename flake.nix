@@ -18,7 +18,6 @@
   } @ inputs:
     with nixpkgs.lib; let
       system = "x86_64-linux";
-
       dir = "${self}/modules";
 
       raw = let
@@ -43,9 +42,9 @@
           ) {}
           (unique (attrNames a ++ attrNames b));
       in
-        pipe (attrNames (builtins.readDir dir)) [
-          (map (file: removeSuffix ".gen.nix" file))
-          (filter (file: hasSuffix ".nix" file))
+        pipe (builtins.readDir dir) [
+          (filterAttrs (file: type: hasSuffix ".nix" file && type == "regular"))
+          attrNames
           (map (file: import "${dir}/${file}"))
           (map (file:
             if isFunction file
