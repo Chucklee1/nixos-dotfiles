@@ -44,7 +44,7 @@
           (unique (attrNames a ++ attrNames b));
       in
         pipe (attrNames (builtins.readDir dir)) [
-          (map (file: replaceStrings [".gen.nix"] [".IgnoreMe"] file))
+          (map (file: removeSuffix ".gen.nix" file))
           (filter (file: hasSuffix ".nix" file))
           (map (file: import "${dir}/${file}"))
           (map (file:

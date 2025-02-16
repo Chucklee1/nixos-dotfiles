@@ -1,4 +1,14 @@
-{
+let
+  mkFs = path: device: fsType: options: {
+    fileSystems.${path} =
+      {inherit device fsType;}
+      // (
+        if options == null
+        then {}
+        else {inherit options;}
+      );
+  };
+in {
   nix.global = [
     ({
       lib,
@@ -82,8 +92,18 @@
   ];
 
   nix.laptop = [
-    ./laptop.gen.nix
+    (mkFs "/" "/dev/disk/by-uuid/5d6d6313-52a3-438e-bc02-53dc6ea56c1a" "ext4" null)
+    (mkFs "/boot" "/dev/disk/by-uuid/0E8B-9EFC" "vfat" ["fmask=0077" "dmask=0077"])
+
     ({lib, ...}: {
+      swapDevices = [];
+      boot = {
+        initrd.availableKernelModules = ["nvme" "xhci_pci" "uas" "usb_storage" "sd_mod"];
+        initrd.kernelModules = [];
+        kernelModules = ["kvm-amd"];
+        extraModulePackages = [];
+      };
+
       networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
       services.xserver.videoDrivers = ["amdgpu"];
       hardware.amdgpu.amdvlk.enable = true;

@@ -9,40 +9,36 @@
         withPerl = false;
         withRuby = false;
         opts = {
-          # lines
+          # visual opts
           number = true;
           relativenumber = true;
           signcolumn = "yes";
           cursorline = true;
           scrolloff = 5;
-          # windsplit
           splitright = true;
           splitbelow = true;
-          # tabs
+          termguicolors = true;
+          # spacing behavior
           tabstop = 2;
           shiftwidth = 2;
           softtabstop = 0;
           smarttab = true;
           expandtab = true;
-          # indents
           breakindent = true;
           autoindent = true;
           smartindent = true;
-          # cases
+          # case sensing
           ignorecase = true;
           smartcase = true;
-          # mouse
+          # idk
           mouse = "a";
-          # which key popup time
           timeoutlen = 600;
-          # read
-          termguicolors = true;
 
           # history
           clipboard = {
             providers = {
-              wl-copy.enable = true; # Wayland
-              xsel.enable = true; # For X11
+              wl-copy.enable = true; # wayland
+              xsel.enable = true; # X11
             };
             register = "unnamedplus";
           };
@@ -57,88 +53,123 @@
           WQ.command = "wq";
           W.command = "w";
         };
+        performance.byteCompileLua.enable = true;
       };
     }
 
-    {
-      programs.nixvim.plugins = {
-        # eye candy
-        web-devicons.enable = true; # icon support
-        noice.enable = true; # fancy command pop-up
-        neoscroll.enable = true; # smoother scrolling
-        illuminate = {
-          enable = true;
-          underCursor = false;
-          filetypesDenylist = [
-            "Outline"
-            "TelescopePrompt"
-            "alpha"
-            "harpoon"
-            "reason"
-          ];
-        };
-        bufferline.enable = true; # tabs
-        lualine.enable = true; # status bar
-        oil = {
-          enable = true; # better file explorer
-          settings = {
-            delete_to_trash = true;
+    ({pkgs, ...}: {
+      programs.nixvim = {
+        # dependancies
+        extraPlugins = with pkgs.vimPlugins; [
+          plenary-nvim
+        ];
+        plugins.web-devicons.enable = true;
+        extraConfigLuaPre =
+          /*
+          lua
+          */
+          ''
+            if vim.g.have_nerd_font then
+              require('nvim-web-devicons').setup {}
+            end
+          '';
+
+        # ui related
+        plugins = {
+          bufferline.enable = true;
+          lualine.enable = true;
+          noice.enable = true; # fancy cmd window
+          scrollview.enable = true;
+          # file explorer meets text editor
+          oil = {
+            enable = true;
+            settings = {
+              delete_to_trash = true;
+              view_options.show_hidden = false;
+            };
           };
-        };
-        # treesitting
-        treesitter = {
-          enable = true;
-          settings = {
-            indent.enable = true;
-            highlight.enable = true;
-          };
-          nixvimInjections = true;
         };
 
         # qol plugins
-        telescope.enable = true;
-        colorizer.enable = true;
-        which-key.enable = true;
-        wilder.enable = true;
-        chatgpt = {
-          enable = true;
-          settings.api_key_cmd = '''';
-        };
+        plugins = {
+          intellitab.enable = true;
+          # highlighting like terms
+          illuminate = {
+            enable = true;
+            underCursor = false;
+            filetypesDenylist = [
+              "Outline"
+              "TelescopePrompt"
+              "alpha"
+              "harpoon"
+              "reason"
+            ];
+          };
 
-        nix.enable = true; # nix expression
-        render-markdown.enable = true; # markdown render
-
-        # git related
-        fugitive.enable = true;
-        lazygit.enable = true;
-        gitsigns.enable = true;
-
-        # lsp servers
-        lsp = {
-          enable = true;
-          servers = {
-            marksman.enable = true; # markdown
-            yamlls.enable = true; # YAML
-            bashls.enable = true; # bash
-            nixd.enable = true; # nix
-            clangd.enable = true; # C/C++
-            asm_lsp.enable = true; # GAS/GO assembly
+          telescope.enable = true;
+          colorizer.enable = true;
+          which-key.enable = true;
+          wilder.enable = true;
+          chatgpt = {
+            enable = true;
+            settings.api_key_cmd = '''';
           };
         };
 
-        # formatting
-        lsp-format.enable = true;
-        none-ls = {
-          enable = true;
-          enableLspFormat = true;
-          sources.formatting = {
-            prettier.enable = true; # a lot
-            shfmt.enable = true; # shell
-            alejandra.enable = true; # nix
+        # tree, sitting?
+        plugins = {
+          treesitter = {
+            enable = true;
+            settings = {
+              indent.enable = true;
+              highlight.enable = true;
+            };
+            nixvimInjections = true;
           };
+          treesitter-context.enable = true;
         };
+
+        # language specific
+        plugins = {
+          nix.enable = true;
+          render-markdown.enable = true;
+          fugitive.enable = true; # remote git acess
+          lazygit.enable = true;
+          gitsigns.enable = true;
+        };
+        extraConfigLua = ''
+          require("telescope").load_extension("lazygit")
+        '';
+
+        # lsp
+        plugins = {
+          lsp = {
+            enable = true;
+            servers = {
+              asm_lsp.enable = true; # GAS/GO assembly
+              bashls.enable = true;
+              clangd.enable = true;
+              lua_ls.enable = true;
+              marksman.enable = true;
+              nixd.enable = true;
+              yamlls.enable = true;
+            };
+          };
+          lsp-lines.enable = true;
+          lsp-format.enable = true;
+        };
+        extraPackages = with pkgs; [
+          # servers
+          asm-lsp
+          lua-language-server
+          nixd
+          # formatters
+          luaformatter
+          nodePackages.prettier
+          shfmt
+        ];
       };
-    }
+    })
     ({lib, ...}:
       with lib; {
         programs.nixvim = {
@@ -174,27 +205,5 @@
             ];
         };
       })
-
-    ({pkgs, ...}: {
-      programs.nixvim = {
-        extraPackages = with pkgs; [
-          nixd
-          asm-lsp
-          nodePackages.prettier
-          shfmt
-          alejandra
-        ];
-        extraPlugins = [pkgs.vimPlugins.plenary-nvim];
-
-        extraConfigLuaPre = ''
-          if vim.g.have_nerd_font then
-            require('nvim-web-devicons').setup {}
-          end
-        '';
-        extraConfigLua = ''
-          require("telescope").load_extension("lazygit")
-        '';
-      };
-    })
   ];
 }

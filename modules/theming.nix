@@ -2,6 +2,22 @@
   nix.global = [
     inputs.stylix.nixosModules.stylix
     ({pkgs, ...}: {
+      # plymouth
+      boot = {
+        plymouth.enable = true;
+        consoleLogLevel = 0;
+        loader.timeout = 0;
+        initrd.verbose = false;
+        kernelParams = [
+          "quiet"
+          "splash"
+          "boot.shell_on_fail"
+          "loglevel=3"
+          "rd.systemd.show_status=false"
+          "rd.udev.log_level=3"
+          "udev.log_priority=3"
+        ];
+      };
       stylix = {
         enable = true;
         autoEnable = true;
@@ -40,7 +56,6 @@
           package = pkgs.papirus-icon-theme;
           dark = "Papirus-Dark";
         };
-        targets.waybar.enable = false;
       };
       gtk.enable = true;
       qt.enable = true;

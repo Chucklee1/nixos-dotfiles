@@ -198,6 +198,7 @@
       span = color: str: ''<span color="${color}" >${str}</span>'';
     in
       with colorWithHash; {
+        stylix.targets.waybar.enable = false;
         programs.waybar = {
           enable = true;
           systemd.enable = true;

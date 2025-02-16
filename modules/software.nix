@@ -6,6 +6,7 @@
         libnotify
         libsecret
         # development
+        openai
         python3
         gnumake
         gdb
@@ -27,6 +28,7 @@
         v4l-utils
         # apps
         spotify
+        prismlauncher
       ];
 
       # programs
@@ -84,6 +86,7 @@
           settings = {
             confirm_os_window_close = 0;
             hide_window_decorations = true;
+            extraConfig = "tab_bar_style slant";
           };
         };
         # shell
@@ -204,12 +207,6 @@
   ];
 
   nix.desktop = [
-    ({pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        (prismlauncher.override {withWaylandGLFW = true;})
-        osu-lazer-bin
-        openai
-      ];
-    })
+    ({pkgs, ...}: {environment.systemPackages = [pkgs.osu-lazer-bin];})
   ];
 }
