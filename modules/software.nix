@@ -26,7 +26,6 @@
         pavucontrol
         v4l-utils
         # apps
-        webcord
         spotify
       ];
 
@@ -206,7 +205,7 @@
   nix.desktop = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
-        prismlauncher
+        (prismlauncher.override {withWaylandGLFW = true;})
         osu-lazer-bin
       ];
     })
