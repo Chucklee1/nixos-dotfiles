@@ -79,8 +79,12 @@
         };
         bufferline.enable = true; # tabs
         lualine.enable = true; # status bar
-        oil.enable = true; # better file explorer
-
+        oil = {
+          enable = true; # better file explorer
+          settings = {
+            delete_to_trash = true;
+          };
+        };
         # treesitting
         treesitter = {
           enable = true;
@@ -95,12 +99,19 @@
         telescope.enable = true;
         colorizer.enable = true;
         which-key.enable = true;
+        wilder.enable = true;
+        chatgpt = {
+          enable = true;
+          settings.api_key_cmd = '''';
+        };
 
         nix.enable = true; # nix expression
         render-markdown.enable = true; # markdown render
 
-        lazygit.enable = true; # git menu
-        gitsigns.enable = true; # git changes on left
+        # git related
+        fugitive.enable = true;
+        lazygit.enable = true;
+        gitsigns.enable = true;
 
         # lsp servers
         lsp = {
