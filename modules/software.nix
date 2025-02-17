@@ -79,6 +79,7 @@
         gimp
         spotify
         prismlauncher
+        mangohud
       ];
       programs = {
         # git
