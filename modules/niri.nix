@@ -15,6 +15,7 @@
         qt6.qtwayland
         brightnessctl
         wev
+        wmenu
         xwayland
         xwayland-run
         wl-color-picker
@@ -70,6 +71,7 @@
           {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
           {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
           {command = ["wpaperd"];}
+          {command = ["systemctl" "--user" "restart" "waybar.service"];}
         ];
 
         switch-events = with config.lib.niri.actions; let
@@ -93,18 +95,14 @@
           mod-a = "Mod+Alt";
           mod-s-a = "${mod-s}+Alt";
           sh = cmd: spawn "sh" "-c" "${cmd}";
-          C = config.lib.stylix.colors.withHashtag;
         in {
           # programs
           "${mod}+Return".action = spawn "kitty";
           "${mod}+E".action = spawn "thunar";
-          "${mod}+Space".action = spawn lib.concatStringsSep " " [
-            "${pkgs.wmenu}/bin/wmenu-run"
-            "-N ${C.base00}"
-            "-n ${C.base07}"
-            "-S ${C.base0D}"
-            "-s ${C.base00}"
-          ];
+          "${mod}+Space".action = with config.lib.stylix.colors.withHashtag;
+            sh ''
+              wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"
+            '';
           "${mod-s}+L".action = spawn "swaylock";
           "${mod}+W".action = sh ''systemctl --user restart waybar.service'';
           # clipboard
@@ -199,10 +197,9 @@
     })
     # waybar
     ({config, ...}: let
-      colorWithHash = config.lib.stylix.colors.withHashtag;
       span = color: str: ''<span color="${color}" >${str}</span>'';
     in
-      with colorWithHash; {
+      with config.lib.stylix.colors.withHashtag; {
         stylix.targets.waybar.enable = false;
         programs.waybar = {
           enable = true;

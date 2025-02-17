@@ -5,17 +5,9 @@
         # dependancies
         libnotify
         libsecret
-        # development
-        openai
-        python3
-        gnumake
-        gdb
-        gcc
-        gimp
         # cli
         ripgrep
         pciutils
-        btop
         ncdu
         # web/net
         wget
@@ -26,9 +18,6 @@
         p7zip
         pavucontrol
         v4l-utils
-        # apps
-        spotify
-        prismlauncher
       ];
 
       # programs
@@ -75,8 +64,22 @@
     ({
       lib,
       config,
+      pkgs,
       ...
     }: {
+      home.packages = with pkgs; [
+        # dev tools
+        openai
+        python3
+        gnumake
+        gdb
+        gcc
+        btop
+        # apps
+        gimp
+        spotify
+        prismlauncher
+      ];
       programs = {
         # git
         git = {
