@@ -192,6 +192,10 @@
             };
             clip-to-geometry = true;
           }
+          {
+            matches = [{app-id = "^org.prismlauncher.PrismLauncher$";}];
+            open-floating = false;
+          }
         ];
       };
     })
