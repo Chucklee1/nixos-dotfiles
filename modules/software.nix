@@ -78,6 +78,7 @@
         # apps
         gimp
         spotify
+        logisim-evolution
         prismlauncher
         mangohud
       ];

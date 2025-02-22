@@ -21,8 +21,7 @@
       dir = "${self}/modules";
 
       raw = let
-        # TODO: find a function like mergDeep that is not so crappy
-        mergeDeep = a: b:
+        mergeAllRecursive = a: b:
           foldl' (
             acc: key: let
               va = a.${key} or null;
@@ -35,7 +34,7 @@
                 else if isList va && isList vb
                 then va ++ vb
                 else if isAttrs va && isAttrs vb
-                then mergeDeep va vb
+                then mergeAllRecursive va vb
                 else vb;
             in
               acc // {"${key}" = merged;}
@@ -50,10 +49,10 @@
             if isFunction file
             then (file {inherit inputs;})
             else file))
-          (builtins.foldl' mergeDeep {})
+          (builtins.foldl' mergeAllRecursive {})
         ];
 
-      mergeMods = a: b: (genAttrs ["nix" "home"] (type: raw.${type}.${a} or [] ++ raw.${type}.${b} or []));
+      mergeMods = prev: next: (genAttrs ["nix" "home"] (type: raw.${type}.${prev} or [] ++ raw.${type}.${next} or []));
 
       mkSystem = host:
         nixosSystem {

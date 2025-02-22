@@ -47,7 +47,11 @@
         };
       };
 
-      programs.niri.settings = {
+      programs.niri.settings = with config.lib.niri.actions; let
+        mod = "Mod";
+        sh = cmd: spawn "sh" "-c" "${cmd}";
+        callExe = pkg: lib.getExe pkgs.${pkg};
+      in {
         # general
         prefer-no-csd = true;
         hotkey-overlay.skip-at-startup = true;
@@ -68,15 +72,13 @@
         };
 
         spawn-at-startup = [
-          {command = ["${lib.getExe pkgs.xwayland-satellite}"];}
-          {command = ["${lib.getExe pkgs.wlsunset}" "-T" "5200"];}
+          {command = ["${callExe "xwayland-satellite"}"];}
+          {command = ["${callExe "wlsunset"}" "-T" "5200"];}
           {command = ["wpaperd"];}
           {command = ["systemctl" "--user" "restart" "waybar.service"];}
         ];
 
-        switch-events = with config.lib.niri.actions; let
-          sh = spawn "sh" "-c";
-        in {
+        switch-events = {
           tablet-mode-on.action = sh "notify-send tablet-mode-on";
           tablet-mode-off.action = sh "notify-send tablet-mode-off";
           lid-open.action = sh ''
@@ -87,33 +89,24 @@
         };
 
         # keybinds
-        binds = with config.lib.niri.actions; let
-          mod = "Mod";
-          mod-s = "Mod+Shift";
-          mod-c = "Mod+Ctrl";
-          mod-s-c = "${mod-s}+Ctrl";
-          mod-a = "Mod+Alt";
-          mod-s-a = "${mod-s}+Alt";
-          sh = cmd: spawn "sh" "-c" "${cmd}";
-        in {
+        binds = with config.lib.stylix.colors.withHashtag; {
           # programs
           "${mod}+Return".action = spawn "kitty";
           "${mod}+E".action = spawn "thunar";
-          "${mod}+Space".action = with config.lib.stylix.colors.withHashtag;
-            sh ''
-              wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"
-            '';
-          "${mod-s}+L".action = spawn "swaylock";
+          "${mod}+Space".action = sh ''
+            wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"
+          '';
+          "${mod}+Shift+L".action = spawn "swaylock";
           "${mod}+W".action = sh ''systemctl --user restart waybar.service'';
           # clipboard
-          "${mod-s}+C".action = sh "env DISPLAY=:0 xsel -ob | wl-copy";
-          "${mod-s}+V".action = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
+          "${mod}+Shift+C".action = sh "env DISPLAY=:0 xsel -ob | wl-copy";
+          "${mod}+Shift+V".action = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
           # media keys
           "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
           "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
           "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          "XF86MonBrightnessUp".action = sh "${lib.getExe pkgs.brightnessctl} set 5%+";
-          "XF86MonBrightnessDown".action = sh "${lib.getExe pkgs.brightnessctl} set 5%-";
+          "XF86MonBrightnessUp".action = sh "${callExe "brightnessctl"} set 5%+";
+          "XF86MonBrightnessDown".action = sh "${callExe "brightnessctl"} set 5%-";
           # screenshot
           "Print".action = screenshot;
           "Ctrl+Print".action = screenshot-screen;
@@ -127,38 +120,38 @@
           "${mod}+Down".action = focus-window-down;
           "${mod}+Left".action = focus-column-left;
           "${mod}+Right".action = focus-column-right;
-          "${mod-s}+Up".action = move-window-up;
-          "${mod-s}+Down".action = move-window-down;
-          "${mod-s}+Left".action = move-column-left;
-          "${mod-s}+Right".action = move-column-right;
+          "${mod}+Shift+Up".action = move-window-up;
+          "${mod}+Shift+Down".action = move-window-down;
+          "${mod}+Shift+Left".action = move-column-left;
+          "${mod}+Shift+Right".action = move-column-right;
           # workspace and monitor move
-          "${mod-c}+left".action = focus-workspace-up;
-          "${mod-c}+right".action = focus-workspace-down;
-          "${mod-s-c}+left".action = move-window-to-workspace-up;
-          "${mod-s-c}+right".action = move-window-to-workspace-down;
-          "${mod-a}+left".action = focus-monitor-next;
-          "${mod-a}+right".action = focus-monitor-previous;
-          "${mod-s-a}+left".action = move-window-to-monitor-next;
-          "${mod-s-a}+right".action = move-window-to-monitor-previous;
+          "${mod}+Ctrl+left".action = focus-workspace-up;
+          "${mod}+Ctrl+right".action = focus-workspace-down;
+          "${mod}+Shift+Ctrl+left".action = move-window-to-workspace-up;
+          "${mod}+Shift+Ctrl+right".action = move-window-to-workspace-down;
+          "${mod}+Alt+left".action = focus-monitor-next;
+          "${mod}+Alt+right".action = focus-monitor-previous;
+          "${mod}+Shift+Alt+left".action = move-window-to-monitor-next;
+          "${mod}+Shift+Alt+right".action = move-window-to-monitor-previous;
 
           # column width - using = since + needs shift
           "${mod}+Minus".action = set-column-width "-10%";
           "${mod}+Equal".action = set-column-width "+10%";
-          "${mod-s}+Minus".action = set-column-width "-1%";
-          "${mod-s}+Equal".action = set-column-width "+1%";
-          "${mod-c}+Minus".action = set-window-height "-10%";
-          "${mod-c}+Equal".action = set-window-height "+10%";
-          "${mod-s-c}+Minus".action = set-column-width "-1%";
-          "${mod-s-c}+Equal".action = set-column-width "+1%";
+          "${mod}+Shift+Minus".action = set-column-width "-1%";
+          "${mod}+Shift+Equal".action = set-column-width "+1%";
+          "${mod}+Ctrl+Minus".action = set-window-height "-10%";
+          "${mod}+Ctrl+Equal".action = set-window-height "+10%";
+          "${mod}+Shift+Ctrl+Minus".action = set-column-width "-1%";
+          "${mod}+Shift+Ctrl+Equal".action = set-column-width "+1%";
           # window presets
           "${mod}+R".action = switch-preset-column-width;
           "${mod}+M".action = maximize-column;
-          "${mod-s}+M".action = fullscreen-window;
+          "${mod}+Shift+M".action = fullscreen-window;
           "${mod}+Period".action = consume-or-expel-window-right;
           "${mod}+Comma".action = consume-or-expel-window-left;
           # floating windows
           "${mod}+f".action = switch-focus-between-floating-and-tiling;
-          "${mod-s}+f".action = toggle-window-floating;
+          "${mod}+Shift+f".action = toggle-window-floating;
           # debugging
           "Ctrl+Shift+d".action = toggle-debug-tint;
         };
