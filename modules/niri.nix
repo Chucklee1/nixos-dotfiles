@@ -224,6 +224,10 @@
                 "tray"
               ];
 
+              "niri/window" = {
+                tooltip = false;
+              };
+
               "clock#date" = {
                 format = "{:%Y-%M-%d}";
                 tooltip = false;
@@ -310,13 +314,10 @@
 
   home.desktop = [
     {
-      programs.niri.settings.outputs."DP-2" = {
-        enable = true;
-        variable-refresh-rate = true;
-        mode = {
-          width = 1920;
-          height = 1080;
-        };
+      programs.niri.settings.outputs."DP-2".mode = {
+        width = 1920;
+        height = 1080;
+        refresh = 165.001;
       };
     }
   ];
@@ -330,12 +331,15 @@
           natural-scroll = true;
           click-method = "clickfinger";
         };
-        outputs."DP-5" = {
-          enable = true;
-          variable-refresh-rate = true;
-          position = {
+        outputs = {
+          "eDP-1".position = {
             x = 1920;
             y = 0;
+          };
+          "DP-5".mode = {
+            width = 1920;
+            height = 1080;
+            refresh = 165.001;
           };
         };
       };

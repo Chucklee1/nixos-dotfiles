@@ -77,6 +77,7 @@
         btop
         # apps
         gimp
+        libreoffice
         spotify
         logisim-evolution
         prismlauncher
