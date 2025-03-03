@@ -77,6 +77,7 @@
         btop
         # apps
         gimp
+        picard
         libreoffice
         spotify
         logisim-evolution
