@@ -314,7 +314,7 @@
 
   home.desktop = [
     {
-      programs.niri.settings.outputs."DP-2".mode = {
+      programs.niri.settings.outputs."DP-1".mode = {
         width = 1920;
         height = 1080;
         refresh = 165.001;
