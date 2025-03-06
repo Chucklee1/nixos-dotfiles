@@ -46,7 +46,6 @@ in {
         kernelModules = ["kvm-amd"];
         extraModulePackages = [];
         supportedFilesystems = ["ntfs"];
-        loader.grub.useOSProber = true;
       };
 
       networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
