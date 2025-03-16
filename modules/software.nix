@@ -24,7 +24,6 @@
       programs = {
         dconf.enable = true;
         xfconf.enable = true;
-        firefox.enable = true;
         thunar = {
           enable = true;
           plugins = with pkgs.xfce; [
@@ -78,8 +77,8 @@
         # apps
         gimp
         picard
+        ungoogled-chromium
         libreoffice
-        spotify
         logisim-evolution
         prismlauncher
         mangohud

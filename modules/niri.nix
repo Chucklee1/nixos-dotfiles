@@ -139,17 +139,15 @@
             "${mod}+Shift+Ctrl+Equal".action = set-column-width "+1%";
             # window presets
             "${mod}+R".action = switch-preset-column-width;
-            # "${mod}+M".action = expand-column-to-available-width;
+            "${mod}+M".action = expand-column-to-available-width;
             "${mod}+Ctrl+M".action = maximize-column;
             "${mod}+Shift+M".action = fullscreen-window;
             "${mod}+Period".action = consume-or-expel-window-right;
             "${mod}+Comma".action = consume-or-expel-window-left;
             # floating windows
-            #"${mod}+t".action = toggle-column-tabbed-display;
+            "${mod}+t".action = toggle-column-tabbed-display;
             "${mod}+f".action = switch-focus-between-floating-and-tiling;
             "${mod}+Shift+f".action = toggle-window-floating;
-            # debugging
-            "Ctrl+Shift+d".action = toggle-debug-tint;
           };
           # input
           input = {
@@ -162,12 +160,10 @@
             gaps = 4;
             border.width = 2;
             always-center-single-column = false;
-            /*
-              tab-indicator = {
+            tab-indicator = {
               hide-when-single-tab = true;
               position = "top";
             };
-            */
           };
           window-rules = let
             r = 4.0;
