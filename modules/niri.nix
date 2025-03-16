@@ -75,7 +75,7 @@
           {command = ["${callExe "xwayland-satellite"}"];}
           {command = ["${callExe "wlsunset"}" "-T" "5200"];}
           {command = ["wpaperd"];}
-          {command = ["systemctl" "--user" "restart" "waybar.service"];}
+          {command = ["systemctl" "--user" "reset-failed" "waybar.service"];}
         ];
 
         switch-events = {
@@ -109,11 +109,11 @@
           "XF86MonBrightnessDown".action = sh "${callExe "brightnessctl"} set 5%-";
           # screenshot
           "Print".action = screenshot;
-          "Ctrl+Print".action = screenshot-screen;
           "Alt+Print".action = screenshot-window;
           # quits
           "${mod}+Q".action = close-window;
           "Ctrl+Alt+Delete".action = quit;
+          "Ctrl+Shift+Alt+Delete".action = quit {skip-confirmation = true;};
           # window focus and move
           # "${modType}+UDLR".action = ${movement}-${node}-UDLR
           "${mod}+Up".action = focus-window-up;
@@ -125,10 +125,10 @@
           "${mod}+Shift+Left".action = move-column-left;
           "${mod}+Shift+Right".action = move-column-right;
           # workspace and monitor move
-          "${mod}+Ctrl+left".action = focus-workspace-up;
-          "${mod}+Ctrl+right".action = focus-workspace-down;
-          "${mod}+Shift+Ctrl+left".action = move-window-to-workspace-up;
-          "${mod}+Shift+Ctrl+right".action = move-window-to-workspace-down;
+          "${mod}+Ctrl+up".action = focus-workspace-up;
+          "${mod}+Ctrl+down".action = focus-workspace-down;
+          "${mod}+Shift+Ctrl+up".action = move-window-to-workspace-up;
+          "${mod}+Shift+Ctrl+down".action = move-window-to-workspace-down;
           "${mod}+Alt+left".action = focus-monitor-next;
           "${mod}+Alt+right".action = focus-monitor-previous;
           "${mod}+Shift+Alt+left".action = move-window-to-monitor-next;
@@ -145,11 +145,13 @@
           "${mod}+Shift+Ctrl+Equal".action = set-column-width "+1%";
           # window presets
           "${mod}+R".action = switch-preset-column-width;
-          "${mod}+M".action = maximize-column;
+          "${mod}+M".action = expand-column-to-available-width;
+          "${mod}+Ctrl+M".action = maximize-column;
           "${mod}+Shift+M".action = fullscreen-window;
           "${mod}+Period".action = consume-or-expel-window-right;
           "${mod}+Comma".action = consume-or-expel-window-left;
           # floating windows
+          "${mod}+t".action = toggle-column-tabbed-display;
           "${mod}+f".action = switch-focus-between-floating-and-tiling;
           "${mod}+Shift+f".action = toggle-window-floating;
           # debugging
@@ -166,11 +168,9 @@
           gaps = 4;
           border.width = 2;
           always-center-single-column = false;
-          struts = {
-            left = 10;
-            right = 10;
-            top = 0;
-            bottom = 0;
+          layout.tab-indicator = {
+            hide-when-single-tab = true;
+            position = "top";
           };
         };
         window-rules = let
