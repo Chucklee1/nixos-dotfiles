@@ -55,17 +55,13 @@
         ];
       };
 
-      home-manager = {
-        useGlobalPkgs = true;
-        useUserPackages = true;
-        users."goat" = {
-          home = {
-            stateVersion = "24.05"; # DO NOT CHANGE
-            username = "goat";
-            homeDirectory = "/home/goat";
-          };
-          imports = config._module.args.homeMods;
+      home-manager.users."goat" = {
+        home = {
+          stateVersion = "24.05"; # DO NOT CHANGE
+          username = "goat";
+          homeDirectory = "/home/goat";
         };
+        imports = config._module.args.homeMods;
       };
 
       # security & polkit

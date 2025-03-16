@@ -2,7 +2,8 @@
   description = "i dont kow what im doing";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # niri or libgbm bug :(
+    nixpkgs.url = "github:NixOS/nixpkgs/2ff53fe64443980e139eaa286017f53f88336dd0?narHash=sha256-%2B/bYK3DbPxMIvSL4zArkMX0LQvS7rzBKXnDXLfKyRVc%3D";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
