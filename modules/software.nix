@@ -77,12 +77,16 @@
         # apps
         gimp
         picard
+        musescore
         ungoogled-chromium
         libreoffice
         logisim-evolution
         prismlauncher
         mangohud
       ];
+
+      services.navidrome.enable = true;
+
       programs = {
         # git
         git = {
