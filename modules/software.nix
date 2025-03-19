@@ -32,6 +32,7 @@
           ];
         };
       };
+      services.navidrome.enable = true;
     })
 
     # wine
@@ -84,8 +85,6 @@
         prismlauncher
         mangohud
       ];
-
-      services.navidrome.enable = true;
 
       programs = {
         # git
