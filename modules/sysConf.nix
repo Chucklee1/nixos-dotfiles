@@ -1,6 +1,20 @@
-{inputs, ...}: {
+{inputs, ...}: let
+  mkFs = path: device: fsType: options: {
+    fileSystems.${path} =
+      {inherit device fsType;}
+      // (
+        if options == null
+        then {}
+        else {inherit options;}
+      );
+  };
+in {
   nix.global = [
     inputs.home-manager.nixosModules.home-manager
+    ({modulesPath, ...}: {
+      imports = [(modulesPath + "/installer/scan/not-detected.nix")];
+      swapDevices = [];
+    })
     ({
       lib,
       config,
@@ -22,6 +36,7 @@
       # system options
       system.stateVersion = "24.05";
       networking = {
+        useDHCP = lib.mkDefault true;
         networkmanager.enable = true;
         hostName = "goat";
       };
@@ -48,8 +63,6 @@
         extraGroups = [
           "wheel"
           "networkmanager"
-          "uinput"
-          "libvirtd"
           "audio"
           "video"
         ];
@@ -63,84 +76,42 @@
         };
         imports = config._module.args.homeMods;
       };
-
-      # security & polkit
-      security = {
-        polkit.enable = true;
-        rtkit.enable = true; # for sound
-      };
-      services.openssh = {
-        enable = true;
-        settings = {
-          PasswordAuthentication = false;
-          PermitRootLogin = "prohibit-password";
-        };
-      };
-
-      # global drivers
-
-      # audio
-      services.pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-      };
-
-      # bluetooth
-      hardware = {
-        bluetooth.enable = true;
-        bluetooth.powerOnBoot = true;
-      };
-      services.blueman.enable = true;
-
-      # misc
-      services = {
-        displayManager.ly.enable = true;
-        printing.enable = true;
-        fstrim.enable = true;
-        tumbler.enable = true;
-        gvfs.enable = true;
-      };
     })
   ];
 
   nix.desktop = [
-    ({pkgs, ...}: {
-      # virtualisation
-      programs.virt-manager.enable = true;
-      virtualisation = {
-        spiceUSBRedirection.enable = true;
-        libvirtd = {
-          onBoot = "ignore";
-          onShutdown = "shutdown";
-          enable = true;
-          qemu = {
-            package = pkgs.qemu_kvm;
-            runAsRoot = true;
-            swtpm.enable = true;
-            ovmf = {
-              enable = true;
-              packages = [
-                (pkgs.OVMF.override {
-                  secureBoot = true;
-                  tpmSupport = true;
-                })
-                .fd
-              ];
-            };
-          };
-        };
+    (mkFs "/" "/dev/disk/by-uuid/96c41aaf-846f-47b1-8319-eed5a3a32294" "ext4" null)
+    (mkFs "/boot" "/dev/disk/by-uuid/75D4-A9F7" "vfat" ["fmask=0022" "dmask=0022"])
+    (mkFs "/media/goat/BLUE_SATA" "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08" "ext4" null)
+
+    # general hardware
+    ({lib, ...}: {
+      boot = {
+        initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
+        initrd.kernelModules = [];
+        kernelModules = ["kvm-amd"];
+        extraModulePackages = [];
+        supportedFilesystems = ["ntfs"];
       };
+
+      networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
+      networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
     })
   ];
 
-  home.desktop = [
-    {
-      dconf.settings."org/virt-manager/virt-manager/connections" = {
-        autoconnect = ["qemu:///system"];
-        uris = ["qemu:///system"];
+  nix.laptop = [
+    (mkFs "/" "/dev/disk/by-uuid/5d6d6313-52a3-438e-bc02-53dc6ea56c1a" "ext4" null)
+    (mkFs "/boot" "/dev/disk/by-uuid/0E8B-9EFC" "vfat" ["fmask=0077" "dmask=0077"])
+
+    ({lib, ...}: {
+      boot = {
+        initrd.availableKernelModules = ["nvme" "xhci_pci" "uas" "usb_storage" "sd_mod"];
+        initrd.kernelModules = [];
+        kernelModules = ["kvm-amd"];
+        extraModulePackages = [];
       };
-    }
+
+      networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+    })
   ];
 }

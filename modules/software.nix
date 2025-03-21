@@ -32,7 +32,6 @@
           ];
         };
       };
-      services.navidrome.enable = true;
     })
 
     # wine
@@ -79,7 +78,6 @@
         gimp
         picard
         musescore
-        ungoogled-chromium
         libreoffice
         logisim-evolution
         prismlauncher
@@ -87,6 +85,12 @@
       ];
 
       programs = {
+        # browser
+        chromium = {
+          enable = true;
+          package = pkgs.ungoogled-chromium;
+        };
+
         # git
         git = {
           enable = true;
