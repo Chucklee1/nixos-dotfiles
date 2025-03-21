@@ -77,6 +77,7 @@
         # apps
         gimp
         picard
+        aonsoku
         musescore
         libreoffice
         logisim-evolution

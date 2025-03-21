@@ -81,6 +81,14 @@
     {
       services.xserver.videoDrivers = ["amdgpu"];
       hardware.amdgpu.amdvlk.enable = true;
+
+      services.navidrome = {
+        enable = true;
+        settings = {
+          port = "4533";
+          address = "0.0.0.0";
+        };
+      };
     }
   ];
 
