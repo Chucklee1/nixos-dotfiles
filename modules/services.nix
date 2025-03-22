@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   #services.navidrome.enable = true;
   nix.global = [
     # general drivers
@@ -21,23 +21,6 @@
     })
     # net related
     {
-    }
-    {
-      networking.firewall = {
-        enable = true;
-        allowedTCPPorts = [1701 9001];
-        allowedUDPPortRanges = [
-          {
-            from = 4000;
-            to = 4007;
-          }
-          {
-            from = 8000;
-            to = 8010;
-          }
-        ];
-      };
-
       # polkit
       security.polkit.enable = true;
 
@@ -82,11 +65,11 @@
       services.xserver.videoDrivers = ["amdgpu"];
       hardware.amdgpu.amdvlk.enable = true;
 
-      services.navidrome = {
-        enable = true;
-        settings = {
-          port = "4533";
-          address = "0.0.0.0";
+      services = {
+        navidrome = {
+          enable = true;
+          openFirewall = true;
+          settings.MusicFolder = "/run/media/goat/T7";
         };
       };
     }

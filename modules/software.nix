@@ -77,6 +77,7 @@
         # apps
         gimp
         picard
+        pnpm
         aonsoku
         musescore
         libreoffice
@@ -113,10 +114,9 @@
           enable = true;
           shellAliases = {
             cg = "nix-collect-garbage";
-            flake = "$HOME/nixos-dotfiles/flake.nix";
             update-flake = "nix flake update $HOME/nixos-dotfiles";
-            update-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
-            update-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
+            rebuild-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
+            rebuild-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
           };
         };
         oh-my-posh = {

@@ -111,7 +111,10 @@ in {
         extraModulePackages = [];
       };
 
-      networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+      networking = {
+        domain = "nixos.laptop";
+        interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+      };
     })
   ];
 }
