@@ -9,6 +9,7 @@
         ripgrep
         pciutils
         ncdu
+        age
         # web/net
         wget
         git

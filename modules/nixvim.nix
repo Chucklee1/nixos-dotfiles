@@ -111,7 +111,7 @@
           which-key.enable = true;
           wilder.enable = true;
           chatgpt = {
-            enable = true;
+            enable = false; # TODO
             settings.api_key_cmd = '''';
           };
         };
@@ -165,7 +165,7 @@
               prettier.enable = true;
               shfmt.enable = true;
             };
-            };
+          };
         };
         extraPackages = with pkgs; [
           asm-lsp
