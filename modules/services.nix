@@ -1,5 +1,4 @@
-{inputs, ...}: {
-  #services.navidrome.enable = true;
+{
   nix.global = [
     # general drivers
     ({
@@ -66,10 +65,17 @@
       hardware.amdgpu.amdvlk.enable = true;
 
       services = {
+        tailscale = {
+          enable = true;
+          useRoutingFeatures = "server";
+        };
         navidrome = {
           enable = true;
           openFirewall = true;
-          settings.MusicFolder = "/run/media/goat/T7";
+          settings = {
+            Address = "100.98.210.96";
+            MusicFolder = "/run/media/goat/T7/music";
+          };
         };
       };
     }

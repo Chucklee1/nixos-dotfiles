@@ -7,9 +7,10 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
-    niri.url = "github:sodiboo/niri-flake";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    niri.url = "github:sodiboo/niri-flake";
+    inputs.sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = {

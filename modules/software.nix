@@ -16,6 +16,8 @@
         # media/files
         file-roller
         p7zip
+        mpv
+        yt-dlp
         pavucontrol
         v4l-utils
       ];
@@ -77,8 +79,7 @@
         # apps
         gimp
         picard
-        pnpm
-        aonsoku
+        feishin
         musescore
         libreoffice
         logisim-evolution
