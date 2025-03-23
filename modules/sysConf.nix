@@ -77,6 +77,24 @@ in {
         imports = config._module.args.homeMods;
       };
     })
+    # general drivers
+    ({
+      lib,
+      pkgs,
+      ...
+    }: {
+      hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
+      hardware.graphics = {
+        enable = true;
+        enable32Bit = true;
+        extraPackages = with pkgs; [
+          vulkan-tools
+          vulkan-loader
+          libvdpau-va-gl
+          ffmpeg
+        ];
+      };
+    })
   ];
 
   nix.desktop = [
@@ -85,7 +103,7 @@ in {
     (mkFs "/media/goat/BLUE_SATA" "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08" "ext4" null)
 
     # general hardware
-    ({lib, ...}: {
+    {
       boot = {
         initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
         initrd.kernelModules = [];
@@ -93,9 +111,24 @@ in {
         extraModulePackages = [];
         supportedFilesystems = ["ntfs"];
       };
-
-      networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
-      networking.interfaces.wlp6s0.useDHCP = lib.mkDefault true;
+    }
+    # nvidia
+    ({config, ...}: {
+      nixpkgs.config.nvidia.acceptLicense = true;
+      services.xserver.videoDrivers = ["nvidia"];
+      hardware.nvidia = {
+        modesetting.enable = true;
+        package = config.boot.kernelPackages.nvidiaPackages.beta;
+        videoAcceleration = true;
+        open = false;
+      };
+      environment.variables = {
+        LIBVA_DRIVER_NAME = "nvidia";
+        NVD_BACKEND = "direct";
+        # wayland
+        GBM_BACKEND = "nvidia-drm";
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      };
     })
   ];
 
@@ -103,7 +136,7 @@ in {
     (mkFs "/" "/dev/disk/by-uuid/5d6d6313-52a3-438e-bc02-53dc6ea56c1a" "ext4" null)
     (mkFs "/boot" "/dev/disk/by-uuid/0E8B-9EFC" "vfat" ["fmask=0077" "dmask=0077"])
 
-    ({lib, ...}: {
+    {
       boot = {
         initrd.availableKernelModules = ["nvme" "xhci_pci" "uas" "usb_storage" "sd_mod"];
         initrd.kernelModules = [];
@@ -111,10 +144,8 @@ in {
         extraModulePackages = [];
       };
 
-      networking = {
-        domain = "nixos.laptop";
-        interfaces.wlp2s0.useDHCP = lib.mkDefault true;
-      };
-    })
+      services.xserver.videoDrivers = ["amdgpu"];
+      hardware.amdgpu.amdvlk.enable = true;
+    }
   ];
 }

@@ -2,6 +2,8 @@
   home.global = [
     inputs.nixvim.homeManagerModules.nixvim
     {
+      home.sessionVariables.EDITOR = "nvim";
+
       programs.nixvim = {
         enable = true;
         defaultEditor = true;
@@ -47,6 +49,13 @@
           swapfile = false;
           undofile = true;
         };
+        autoCmd = [
+          {
+            command = "!sops secrets.yaml";
+            event = ["BufEnter"];
+            pattern = ["secrets.yaml"];
+          }
+        ];
         # command aliases
         userCommands = {
           Q.command = "q";

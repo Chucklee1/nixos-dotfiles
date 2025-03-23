@@ -1,36 +1,8 @@
 {
   nix.global = [
-    # general drivers
-    ({
-      lib,
-      pkgs,
-      ...
-    }: {
-      hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
-      hardware.graphics = {
-        enable = true;
-        enable32Bit = true;
-        extraPackages = with pkgs; [
-          vulkan-tools
-          vulkan-loader
-          libvdpau-va-gl
-          ffmpeg
-        ];
-      };
-    })
-    # net related
+    # general services
     {
-      # polkit
       security.polkit.enable = true;
-
-      # ssh
-      services.openssh = {
-        enable = true;
-        settings = {
-          PasswordAuthentication = false;
-          PermitRootLogin = "prohibit-password";
-        };
-      };
 
       # audio
       security.rtkit.enable = true;
@@ -57,16 +29,25 @@
         gvfs.enable = true;
       };
     }
+    # net related
+    {
+      # ssh
+      services.openssh = {
+        enable = true;
+        settings = {
+          PasswordAuthentication = false;
+          PermitRootLogin = "prohibit-password";
+        };
+      };
+    }
   ];
 
   nix.laptop = [
     {
-      services.xserver.videoDrivers = ["amdgpu"];
-      hardware.amdgpu.amdvlk.enable = true;
-
       services = {
         tailscale = {
           enable = true;
+          port = 3030;
           useRoutingFeatures = "server";
         };
         navidrome = {
@@ -91,24 +72,6 @@
         KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
       '';
     }
-    # nvidia
-    ({config, ...}: {
-      nixpkgs.config.nvidia.acceptLicense = true;
-      services.xserver.videoDrivers = ["nvidia"];
-      hardware.nvidia = {
-        modesetting.enable = true;
-        package = config.boot.kernelPackages.nvidiaPackages.beta;
-        videoAcceleration = true;
-        open = false;
-      };
-      environment.variables = {
-        LIBVA_DRIVER_NAME = "nvidia";
-        NVD_BACKEND = "direct";
-        # wayland
-        GBM_BACKEND = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      };
-    })
     # virtualisation
     ({pkgs, ...}: {
       users.users."goat".extraGroups = ["libvirtd"];
