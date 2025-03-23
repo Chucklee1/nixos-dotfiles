@@ -1,9 +1,12 @@
 {inputs, ...}: {
+  nix.global = [
+    {
+      environment.sessionVariables.EDITOR = "nvim";
+    }
+  ];
   home.global = [
     inputs.nixvim.homeManagerModules.nixvim
     {
-      home.sessionVariables.EDITOR = "nvim";
-
       programs.nixvim = {
         enable = true;
         defaultEditor = true;

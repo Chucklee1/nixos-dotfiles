@@ -98,7 +98,7 @@
         git = {
           enable = true;
           userEmail = "cooperkang4@gmail.com";
-          userName = "Chucklee1 - remote";
+          userName = "Chucklee1";
         };
         # terminal emulator
         kitty = {

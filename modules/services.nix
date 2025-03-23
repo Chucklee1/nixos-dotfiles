@@ -43,7 +43,7 @@
   ];
 
   nix.laptop = [
-    {
+    ({config, ...}: {
       services = {
         tailscale = {
           enable = true;
@@ -54,12 +54,16 @@
           enable = true;
           openFirewall = true;
           settings = {
-            Address = "100.98.210.96";
+            address = "localhost";
             MusicFolder = "/run/media/goat/T7/music";
+            LastFm = {
+              ApiKey = config.sops.secrets.last_fm_navidrome.api_key;
+              Secret = config.sops.secrets.last_fm_navidrome.shared_secret;
+            };
           };
         };
       };
-    }
+    })
   ];
 
   nix.desktop = [

@@ -59,6 +59,7 @@ in {
 
       # user
       users.users."goat" = {
+        name = "goat";
         isNormalUser = true;
         extraGroups = [
           "wheel"
@@ -71,7 +72,7 @@ in {
       home-manager.users."goat" = {
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
-          username = "goat";
+          username = "${config.users.users."goat".name}";
           homeDirectory = "/home/goat";
         };
         imports = config._module.args.homeMods;
