@@ -1,7 +1,7 @@
 {inputs, ...}: {
   nix.global = [
     {
-      environment.sessionVariables.EDITOR = "nvim";
+      environment.variables.EDITOR = "nvim";
     }
   ];
   home.global = [
@@ -52,13 +52,6 @@
           swapfile = false;
           undofile = true;
         };
-        autoCmd = [
-          {
-            command = "!sops secrets.yaml";
-            event = ["BufEnter"];
-            pattern = ["secrets.yaml"];
-          }
-        ];
         # command aliases
         userCommands = {
           Q.command = "q";

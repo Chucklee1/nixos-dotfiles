@@ -78,7 +78,7 @@ in {
         imports = config._module.args.homeMods;
       };
     })
-    # general drivers
+    # hardware
     ({
       lib,
       pkgs,
@@ -96,6 +96,46 @@ in {
         ];
       };
     })
+    # services
+    {
+      security.polkit.enable = true;
+
+      # audio
+      security.rtkit.enable = true;
+      services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+      };
+
+      # bluetooth
+      hardware = {
+        bluetooth.enable = true;
+        bluetooth.powerOnBoot = true;
+      };
+      services.blueman.enable = true;
+
+      # misc
+      services = {
+        displayManager.ly.enable = true;
+        printing.enable = true;
+        fstrim.enable = true;
+        tumbler.enable = true;
+        gvfs.enable = true;
+      };
+    }
+    # net related
+    {
+      # ssh
+      services.openssh = {
+        enable = true;
+        settings = {
+          PasswordAuthentication = false;
+          PermitRootLogin = "prohibit-password";
+        };
+      };
+    }
   ];
 
   nix.desktop = [
@@ -131,6 +171,15 @@ in {
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };
     })
+    # tablet support
+    {
+      users.users."goat".extraGroups = ["uinput"];
+      hardware.uinput.enable = true;
+      programs.weylus.enable = true;
+      services.udev.extraRules = ''
+        KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+      '';
+    }
   ];
 
   nix.laptop = [
