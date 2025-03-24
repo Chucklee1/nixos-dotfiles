@@ -17,6 +17,8 @@
         MusicFolder = "${root}/music";
         DataFolder = "${root}/server";
         CacheFolder = "${root}/server/cache";
+        TLSCert = "${root}/server/laptop-nixos.monkey-court.ts.net.crt";
+        TLSKey = "${root}/server/laptop-nixos.monkey-court.ts.net.key";
 
         LastFM = {
           Enabled = true;
@@ -27,8 +29,6 @@
           ID = config.sops.templates."navi-spot-client-id".path;
           Secret = config.sops.templates."navi-spot-client-secret".path;
         };
-        TLSCert = "${root}/server/laptop-nixos.monkey-court.ts.net.crt";
-        TLSKey = "${root}/server/laptop-nixos.monkey-court.ts.net.key";
       };
     in {
       services = {
