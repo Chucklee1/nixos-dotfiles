@@ -82,6 +82,7 @@
         gimp
         picard
         feishin
+        qbittorrent
         musescore
         libreoffice
         logisim-evolution
