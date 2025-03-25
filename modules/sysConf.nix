@@ -41,7 +41,7 @@ in {
         hostName = "goat";
       };
       i18n.defaultLocale = "en_CA.UTF-8";
-      time.timeZone = "America/Vancouver";
+      time.timeZone = "Asia/Seoul";
       console = {
         earlySetup = true;
         keyMap = "us";
