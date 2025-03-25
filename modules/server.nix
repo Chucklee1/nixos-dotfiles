@@ -40,7 +40,6 @@ in {
         Address = "100.98.210.96";
         Port = config.services.tailscale.port;
 
-        EnableExternalServices = true;
         EnableInsightsCollector = false;
         ArtistArtPriority = "external";
 
@@ -50,15 +49,8 @@ in {
         TLSCert = "${root}/server/laptop-nixos.monkey-court.ts.net.crt";
         TLSKey = "${root}/server/laptop-nixos.monkey-court.ts.net.key";
 
-        LastFM = {
-          Enabled = true;
-          ApiKey = config.sops.secrets."navi-lastfm-api-key".path;
-          Secret = config.sops.secrets."navi-lastfm-shared-secret".path;
-        };
-        Spotify = {
-          ID = config.sops.secrets."navi-spot-client-id".path;
-          Secret = config.sops.secrets."navi-spot-client-secret".path;
-        };
+        Spotify.ID = config.sops.secrets."navi-spot-client-id".path;
+        Spotify.Secret = config.sops.secrets."navi-spot-client-secret".path;
       };
     in {
       systemd.services.navidromee = {
