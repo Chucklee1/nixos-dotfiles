@@ -23,7 +23,7 @@ in {
     ({config, ...}: {
       services.tailscale = {
         enable = true;
-        port = 3030;
+        port = 443;
         useRoutingFeatures = "server";
         authKeyFile = config.sops.secrets."tailscale-auth-key".path;
       };
@@ -37,7 +37,6 @@ in {
       root = "/home/goat/navidrome";
 
       settings = (pkgs.formats.json {}).generate "config.json" {
-        Address = "100.98.210.96";
         Port = config.services.tailscale.port;
 
         EnableInsightsCollector = false;
@@ -46,8 +45,6 @@ in {
         MusicFolder = "${root}/music";
         DataFolder = "${root}/server";
         CacheFolder = "${root}/server/cache";
-        TLSCert = "${root}/server/laptop-nixos.monkey-court.ts.net.crt";
-        TLSKey = "${root}/server/laptop-nixos.monkey-court.ts.net.key";
 
         Spotify.ID = config.sops.secrets."navi-spot-client-id".path;
         Spotify.Secret = config.sops.secrets."navi-spot-client-secret".path;
