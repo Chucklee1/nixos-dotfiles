@@ -1,23 +1,5 @@
-{inputs, ...}: let
-  mkKey = secret: {
-    sops.secrets."${secret}" = {owner = "goat";};
-  };
-in {
+{
   nix.global = [
-    inputs.sops-nix.nixosModules.sops
-    {
-      sops = {
-        defaultSopsFile = ../secrets.yaml;
-        defaultSopsFormat = "yaml";
-        age.keyFile = "home/goat/.config/sops/age/keys.txt";
-      };
-    }
-    (mkKey "tailscale-auth-key")
-    (mkKey "navi-lastfm-api-key")
-    (mkKey "navi-lastfm-shared-secret")
-    (mkKey "navi-spot-client-id")
-    (mkKey "navi-spot-client-secret")
-
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # dependancies
@@ -68,17 +50,6 @@ in {
         protontricks
       ];
     })
-
-    # steam
-    {
-      programs.steam = {
-        enable = true;
-        remotePlay.openFirewall = true;
-        dedicatedServer.openFirewall = true;
-        localNetworkGameTransfers.openFirewall = true;
-      };
-      environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
-    }
   ];
 
   home.global = [
@@ -95,7 +66,6 @@ in {
         gnumake
         gdb
         gcc
-        btop
         # apps
         gimp
         picard
@@ -104,16 +74,18 @@ in {
         musescore
         libreoffice
         logisim-evolution
-        prismlauncher
-        mangohud
       ];
 
       programs = {
+        # diagnostics
+        btop.enable = true;
+        mangohud.enable = true;
         # browser
         chromium = {
           enable = true;
           package = pkgs.ungoogled-chromium;
         };
+        thunderbird.enable = true;
 
         # git
         git = {
@@ -248,6 +220,21 @@ in {
   ];
 
   nix.desktop = [
-    ({pkgs, ...}: {environment.systemPackages = [pkgs.osu-lazer-bin];})
+    ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        osu-lazer-bin
+
+        prismlauncher
+      ];
+    })
+    {
+      programs.steam = {
+        enable = true;
+        remotePlay.openFirewall = true;
+        dedicatedServer.openFirewall = true;
+        localNetworkGameTransfers.openFirewall = true;
+      };
+      environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
+    }
   ];
 }
