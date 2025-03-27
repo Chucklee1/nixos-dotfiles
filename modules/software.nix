@@ -85,7 +85,6 @@
           enable = true;
           package = pkgs.ungoogled-chromium;
         };
-        thunderbird.enable = true;
 
         # git
         git = {
