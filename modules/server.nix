@@ -4,6 +4,19 @@
   };
 in {
   nix.laptop = [
+    # logind
+    {
+      services.logind = {
+        lidSwitch = "ignore";
+        lidSwitchDocked = "ignore";
+        lidSwitchExternalPower = "ignore";
+        extraConfig = ''
+          IdleAction=ignore
+          HandlePowerKey=Ignore
+          HandleSuspendKey=ignore
+        '';
+      };
+    }
     # sops
     inputs.sops-nix.nixosModules.sops
     {
@@ -45,6 +58,12 @@ in {
         MusicFolder = "${root}/music";
         DataFolder = "${root}/server";
         CacheFolder = "${root}/server/cache";
+
+        Backup = {
+          Path = "/run/media/goat/T7/backup";
+          Count = 7;
+          Schedule = "0 0 * * *";
+        };
 
         Spotify.ID = config.sops.secrets."navi-spot-client-id".path;
         Spotify.Secret = config.sops.secrets."navi-spot-client-secret".path;
