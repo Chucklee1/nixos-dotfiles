@@ -151,7 +151,7 @@
           };
           # input
           input = {
-            keyboard.xkb.layout = "us";
+            keyboard.xkb.layout = "us, kr(kr104)";
             mouse.accel-speed = 0.0;
             tablet.map-to-output = "eDP-1";
             touch.map-to-output = "eDP-1";
