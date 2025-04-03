@@ -1,7 +1,7 @@
 {inputs, ...}: {
   nix.global = [
     # system
-    (lib: {
+    ({lib, ...}: {
       system.stateVersion = "24.05";
       networking = {
         useDHCP = lib.mkDefault true;
@@ -23,7 +23,7 @@
 
     # user
     inputs.home-manager.nixosModules.home-manager
-    (config: {
+    ({config, ...}: {
       users.users."goat" = {
         name = "goat";
         isNormalUser = true;

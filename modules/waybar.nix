@@ -3,7 +3,7 @@
     ({config, ...}: {
       # waybar
       stylix.targets.waybar.enable = false;
-      programs.waybar = with config.lib.niri.actions; let
+      programs.waybar = with config.lib.stylix.colors.withHashtag; let
         span = color: str: ''<span color="${color}" >${str}</span>'';
       in {
         enable = true;

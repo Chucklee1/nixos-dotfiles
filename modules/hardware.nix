@@ -12,7 +12,7 @@ let
   setCPU = cpu:
     if cpu == "amd"
     then {
-      kernelModules = ["kvm-amd"];
+      boot.kernelModules = ["kvm-amd"];
       hardware.cpu.amd.updateMicrocode = true;
     }
     else if cpu == "intel"
@@ -54,7 +54,7 @@ let
     }
     else {};
 
-  setAllLazy = swap: cpu: gpu: {inherit swap;} // (setCPU cpu) // (setGPU gpu);
+  setAllLazy = swapDevices: cpu: gpu: {inherit swapDevices;} // (setCPU cpu) // (setGPU gpu);
 in {
   nix.global = [
     ({
