@@ -1,19 +1,16 @@
 {inputs, ...}: {
   nix.global = [
-    inputs.home-manager.nixosModules.home-manager
-    ({
-      lib,
-      config,
-      ...
-    }: {
-      # system options
+    # system
+    (lib: {
       system.stateVersion = "24.05";
       networking = {
         useDHCP = lib.mkDefault true;
         networkmanager.enable = true;
         hostName = "goat";
       };
-      # nix options
+      i18n.defaultLocale = "en_CA.UTF-8";
+
+      # nix
       nixpkgs = {
         hostPlatform = lib.mkDefault "x86_64-linux";
         config.allowUnfree = true;
@@ -22,8 +19,11 @@
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
       };
+    })
 
-      # user
+    # user
+    inputs.home-manager.nixosModules.home-manager
+    (config: {
       users.users."goat" = {
         name = "goat";
         isNormalUser = true;
@@ -44,19 +44,5 @@
         imports = config._module.args.homeMods;
       };
     })
-
-    # language/time
-    {
-      i18n = {
-        defaultLocale = "en_CA.UTF-8";
-        supportedLocales = ["all"];
-        inputMethod = {
-          enable = true;
-          type = "fcitx5";
-          fcitx5.waylandFrontend = true;
-        };
-      };
-      services.automatic-timezoned.enable = true;
-    }
   ];
 }

@@ -3,20 +3,10 @@
     sops.secrets."${secret}" = {owner = "goat";};
   };
 in {
+  nix.global = [
+  ];
+
   nix.laptop = [
-    # logind
-    {
-      services.logind = {
-        lidSwitch = "ignore";
-        lidSwitchDocked = "ignore";
-        lidSwitchExternalPower = "ignore";
-        extraConfig = ''
-          IdleAction=ignore
-          HandlePowerKey=Ignore
-          HandleSuspendKey=ignore
-        '';
-      };
-    }
     # sops
     inputs.sops-nix.nixosModules.sops
     {
