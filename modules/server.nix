@@ -16,9 +16,6 @@ in {
         age.keyFile = "home/goat/.config/sops/age/keys.txt";
       };
     }
-    (mkKey "tailscale-auth-key")
-    (mkKey "navi-lastfm-api-key")
-    (mkKey "navi-lastfm-shared-secret")
     (mkKey "navi-spot-client-id")
     (mkKey "navi-spot-client-secret")
 
@@ -50,7 +47,7 @@ in {
         CacheFolder = "${root}/server/cache";
 
         Backup = {
-          Path = "/run/media/goat/T7/backup";
+          Path = "/run/media/goat/T71/backup";
           Count = 7;
           Schedule = "0 0 * * *";
         };

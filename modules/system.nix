@@ -24,7 +24,7 @@
     # user
     inputs.home-manager.nixosModules.home-manager
     ({config, ...}: {
-      users.users."goat" = {
+      users.users.main = {
         name = "goat";
         isNormalUser = true;
         extraGroups = [
@@ -35,10 +35,10 @@
         ];
       };
 
-      home-manager.users."goat" = {
+      home-manager.users.main = {
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
-          username = "${config.users.users."goat".name}";
+          username = "${config.users.users.main.name}";
           homeDirectory = "/home/goat";
         };
         imports = config._module.args.homeMods;

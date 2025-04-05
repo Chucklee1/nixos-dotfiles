@@ -54,7 +54,8 @@
       services.displayManager.ly.enable = true;
 
       # auto-timezone:
-      services.automatic-timezoned.enable = true;
+      #services.automatic-timezoned.enable = true;
+      time.timeZone = "America/Vancouver";
     }
   ];
 

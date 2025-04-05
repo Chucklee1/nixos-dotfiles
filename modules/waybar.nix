@@ -71,7 +71,7 @@
               format-disconnected = "disconnected ⚠";
               format-ethernet = "{ipaddr}/{cidr}";
               format-wifi = "{essid} ({signalStrength}%) ";
-              on-click = "nmtui";
+              on-click = "kitty -e nmtui";
               tooltip-format = "{ifname} via {gwaddr}";
             };
             backlight = {
