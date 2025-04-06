@@ -2,7 +2,6 @@
   nix.desktop = [
     # virtualisation
     ({pkgs, ...}: {
-      users.users."goat".extraGroups = ["libvirtd"];
       programs.virt-manager.enable = true;
       virtualisation = {
         spiceUSBRedirection.enable = true;

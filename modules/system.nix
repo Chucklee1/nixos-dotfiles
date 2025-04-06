@@ -6,9 +6,10 @@
       networking = {
         useDHCP = lib.mkDefault true;
         networkmanager.enable = true;
-        hostName = "goat";
       };
       i18n.defaultLocale = "en_CA.UTF-8";
+      # auto-timezone:
+      services.automatic-timezoned.enable = true;
 
       # nix
       nixpkgs = {
@@ -32,6 +33,7 @@
           "networkmanager"
           "audio"
           "video"
+          "libvirtd"
         ];
       };
 
@@ -39,10 +41,17 @@
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
           username = "${config.users.users.main.name}";
-          homeDirectory = "/home/goat";
+          homeDirectory = "/home/${config.users.users.main.name}";
         };
         imports = config._module.args.homeMods;
       };
+    })
+  ];
+  nix.desktop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-desktop";})];
+  nix.laptop = [
+    ({config, ...}: {
+      users.users.main.initialPassword = "1";
+      networking.hostName = "${config.users.users.main.name}-laptop";
     })
   ];
 }

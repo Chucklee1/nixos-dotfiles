@@ -8,9 +8,6 @@
         # cli
         ripgrep
         pciutils
-        ncdu
-        sops
-        age
         # web/net
         wget
         git
@@ -19,7 +16,6 @@
         file-roller
         p7zip
         mpv
-        yt-dlp
         pavucontrol
         v4l-utils
       ];
@@ -66,6 +62,7 @@
         gdb
         gcc
         # apps
+        tenacity
         gimp
         picard
         feishin
@@ -88,7 +85,7 @@
         # git
         git = {
           enable = true;
-          userEmail = "cooperkang4@gmail.com";
+          userEmail = "kermitthefrog@kakao.com";
           userName = "Chucklee1";
         };
         # terminal emulator
