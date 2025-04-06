@@ -54,8 +54,9 @@
           "Pictures"
           "Documents"
           ".ssh"
-          ".config/thunar"
+          ".config/sops/age"
           ".config/chromium"
+          ".cache/chromium"
           ".local/share/keyrings"
         ];
         allowOther = true;

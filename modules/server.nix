@@ -34,7 +34,7 @@
         EnableInsightsCollector = false;
         ArtistArtPriority = "external";
 
-        MusicFolder = "/home/goat/music";
+        MusicFolder = "/home/goat/Music";
         DataFolder = "${root}/server";
         CacheFolder = "${root}/server/cache";
       };
