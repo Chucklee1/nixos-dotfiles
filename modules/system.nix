@@ -50,7 +50,9 @@
   nix.desktop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-desktop";})];
   nix.laptop = [
     ({config, ...}: {
-      users.users.main.initialPassword = "1";
+      users.users.main = {
+        hashedPasswordFile = config.sops.secrets.laptop.path;
+      };
       networking.hostName = "${config.users.users.main.name}-laptop";
     })
   ];

@@ -56,7 +56,6 @@
           ".ssh"
           ".config/thunar"
           ".config/chromium"
-          ".config/sops/age"
           ".local/share/keyrings"
         ];
         allowOther = true;
