@@ -1,10 +1,6 @@
 {
   nix.global = [
     ({pkgs, ...}: {
-      # cpu
-      boot.kernelModules = ["kvm-amd"];
-      hardware.cpu.amd.updateMicrocode = true;
-
       # gpu
       hardware.graphics = {
         enable = true;

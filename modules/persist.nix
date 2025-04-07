@@ -1,6 +1,6 @@
 {inputs}: {
-  nix.laptop = [
-    inputs.impermanence.nixosModules.impermanence
+  nix.macbook = [
+    #inputs.impermanence.nixosModules.impermanence
     ({lib, ...}: {
       boot.initrd.postDeviceCommands = lib.mkAfter ''
         mkdir /btrfs_tmp
@@ -27,7 +27,7 @@
         umount /btrfs_tmp
       '';
 
-      fileSystems."/persist".neededForBoot = true;
+      /*fileSystems."/persist".neededForBoot = true;
       environment.persistence."/persist/system" = {
         hideMounts = true;
         directories = [
@@ -39,10 +39,10 @@
         ];
       };
 
-      programs.fuse.userAllowOther = true;
+      programs.fuse.userAllowOther = true;*/
     })
   ];
-  home.laptop = [
+  /*home.laptop = [
     inputs.impermanence.nixosModules.home-manager.impermanence
     {
       home.persistence."/persist/home" = {
@@ -62,5 +62,5 @@
         allowOther = true;
       };
     }
-  ];
+  ];*/
 }

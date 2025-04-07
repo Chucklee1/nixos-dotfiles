@@ -25,17 +25,31 @@ in {
         initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
         initrd.kernelModules = [];
         extraModulePackages = [];
+        kernelModules = ["kvm-amd"];
         supportedFilesystems = ["ntfs"];
       };
+      hardware.cpu.amd.updateMicrocode = true;
     }
   ];
 
   nix.laptop = [
+    {
+      boot = { 
+        initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
+        initrd.kernelModules = [];
+        kernelModules = ["kvm-amd"];
+        extraModulePackages = [];
+      };
+      hardware.cpu.amd.updateMicrocode = true;
+    }
+  ];
+
+  nix.macbook = [
     inputs.disko.nixosModules.default
     {
       disko.devices = {
         disk.main = {
-          device = "/dev/nvme0n1";
+          device = "/dev/sda";
           type = "disk";
           content = {
             type = "gpt";
@@ -98,10 +112,16 @@ in {
         };
       };
     }
-    {
-      boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
-      boot.initrd.kernelModules = [];
-      boot.extraModulePackages = [];
-    }
+    ({modulesPath, ... }: {
+      imports = [(modulesPath + "/hardware/network/broadcom-43xx.nix")];
+
+      boot = {
+        initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+        initrd.kernelModules = [ "dm-snapshot" ];
+        kernelModules = [ "kvm-intel" ];
+        extraModulePackages = [ ];
+      };
+      hardware.cpu.intel.updateMicrocode = true;
+    })
   ];
 }
