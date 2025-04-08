@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  nix.macbook = [
+  nix.laptop = [
     inputs.sops-nix.nixosModules.sops
     {
       sops = {

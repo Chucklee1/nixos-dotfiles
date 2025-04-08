@@ -48,12 +48,11 @@
     })
   ];
   nix.desktop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-desktop";})];
-  nix.laptop = [
+  nix.laptop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-laptop";})];
+  nix.macbook = [
     ({config, ...}: {
-      users.users.main = {
-        hashedPasswordFile = config.sops.secrets.laptop.path;
-      };
-      networking.hostName = "${config.users.users.main.name}-laptop";
+      users.users.main.hashedPasswordFile = "/persist/passwdgen/key.txt";
+      networking.hostName = "${config.users.users.main.name}-macbook";
     })
   ];
 }
