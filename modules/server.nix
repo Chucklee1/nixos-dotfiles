@@ -11,19 +11,7 @@
     }
   ];
 
-  nix.laptop = [
-    inputs.sops-nix.nixosModules.sops
-    {
-      sops = {
-        defaultSopsFile = ../secrets.yaml;
-        defaultSopsFormat = "yaml";
-
-        age.keyFile = "/home/goat/.config/sops/age/key.txt";
-        secrets = {
-          laptop.neededForUsers = true;
-        };
-      };
-    }
+  nix.macbook = [
     # tailscale
     {
       services.tailscale = {
@@ -47,8 +35,8 @@
         ArtistArtPriority = "external";
 
         MusicFolder = "/home/goat/Music";
-        DataFolder = "${root}/server";
-        CacheFolder = "${root}/server/cache";
+        DataFolder = "${root}/Data";
+        CacheFolder = "${root}/cache";
       };
     in {
       systemd.services.navidromee = {

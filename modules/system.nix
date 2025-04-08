@@ -55,13 +55,5 @@
       };
       networking.hostName = "${config.users.users.main.name}-laptop";
     })
-  ];  
-  nix.macbook = [
-    ({config, ...}: {
-      users.users.main = {
-        initialPassword = "1";
-      };
-      networking.hostName = "${config.users.users.main.name}-macbook";
-    })
   ];
 }
