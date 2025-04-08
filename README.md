@@ -14,8 +14,10 @@
 
 # **TODO**
 
-- make server profile
-- setup multi-user comp. for sops
-- setup disko btrfs drive for backups
-- rework current module system to be more flexible
-- set up special arg settings hub in flake
+- overhaul module system split into the following:
+  config (module definitions)
+  profiles (machine declaration of configs) - only moving things around, recursive import
+  and profiles will stay the same
+- re-add api support back to navidrome service
+- get sops to work with desktop and laptop profiles
+- find a way to sync ungoogled chromium profiles
