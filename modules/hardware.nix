@@ -77,16 +77,13 @@ in {
       };
     };
   }
-    }
-    ({modulesPath, ... }: {
-  imports = [ (modulesPath + "/hardware/network/broadcom-43xx.nix")];
-
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "uas" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
-  hardware.cpu.intel.updateMicrocode = true;
-}
-
+  ({modulesPath, ... }: {
+      imports = [ (modulesPath + "/hardware/network/broadcom-43xx.nix")];
+      boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "uas" "sd_mod" ];
+      boot.initrd.kernelModules = [ ];
+      boot.kernelModules = [ "kvm-intel" ];
+      boot.extraModulePackages = [ ];
+      hardware.cpu.intel.updateMicrocode = true;
     })
+  ];
 }
