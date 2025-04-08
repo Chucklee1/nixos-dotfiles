@@ -104,8 +104,9 @@
           shellAliases = {
             cg = "nix-collect-garbage";
             update-flake = "nix flake update $HOME/nixos-dotfiles";
-            rebuild-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
             rebuild-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
+            rebuild-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
+            rebuild-macbook = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#macbook";
           };
         };
       };

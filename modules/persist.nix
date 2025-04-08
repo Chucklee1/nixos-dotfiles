@@ -1,6 +1,6 @@
 {inputs}: {
   nix.macbook = [
-    #inputs.impermanence.nixosModules.impermanence
+    inputs.impermanence.nixosModules.impermanence
     ({lib, ...}: {
       boot.initrd.postDeviceCommands = lib.mkAfter ''
         mkdir /btrfs_tmp
@@ -27,7 +27,7 @@
         umount /btrfs_tmp
       '';
 
-      /*fileSystems."/persist".neededForBoot = true;
+      fileSystems."/persist".neededForBoot = true;
       environment.persistence."/persist/system" = {
         hideMounts = true;
         directories = [
@@ -39,13 +39,14 @@
         ];
       };
 
-      programs.fuse.userAllowOther = true;*/
+      programs.fuse.userAllowOther = true;
     })
   ];
-  /*home.laptop = [
+  home.macbook = [
     inputs.impermanence.nixosModules.home-manager.impermanence
     {
       home.persistence."/persist/home" = {
+        allowOther = true;
         directories = [
           "nixos-dotfiles"
           "Navidrome"
@@ -59,8 +60,7 @@
           ".cache/chromium"
           ".local/share/keyrings"
         ];
-        allowOther = true;
       };
     }
-  ];*/
+  ];
 }
