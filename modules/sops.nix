@@ -6,7 +6,7 @@
         defaultSopsFile = ../secrets.yaml;
         defaultSopsFormat = "yaml";
 
-        age.keyFile = "/home/goat/.ssh/sops.age.key.txt";
+        age.keyFile = "/persist/sops/age/keys.txt";
         secrets = {
           super-secret-password.neededForUsers = true;
         };
@@ -14,7 +14,6 @@
     }
     ({config, ...}: {
       users.users.main = {
-        initialPassword = "1";
         hashedPasswordFile = config.sops.secrets.super-secret-password.path;
       };
       networking.hostName = "${config.users.users.main.name}-macbook";
