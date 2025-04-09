@@ -116,10 +116,6 @@
           colorizer.enable = true;
           which-key.enable = true;
           wilder.enable = true;
-          chatgpt = {
-            enable = false; # TODO
-            settings.api_key_cmd = '''';
-          };
         };
 
         # tree, sitting?
@@ -167,7 +163,6 @@
             enableLspFormat = true;
             sources.formatting = {
               alejandra.enable = true;
-              stylua.enable = true;
               prettier.enable = true;
               shfmt.enable = true;
             };
@@ -212,6 +207,7 @@
               "BufferLineCycleNext : <S-l>"
               "BufferLineCyclePrev : <S-h>"
               "bd : <leader>c"
+              "bd! : <leader-S-c>"
             ];
         };
       })

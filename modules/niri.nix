@@ -72,7 +72,8 @@
             {command = ["${callExe "xwayland-satellite"}"];}
             {command = ["${callExe "wlsunset"}" "-T" "5200"];}
             {command = ["${callExe "swaybg"}" "-m" "fill" "-i" "${config.stylix.image}"];}
-            {command = ["systemctl" "--user" "reset-failed" "waybar.service"];}
+            {command = ["brightnessctl" "s" "50%"];}
+            {command = ["wpctl" "set-sink-volume" "@DEFAULT_SINK@" "50%"];}
           ];
 
           switch-events = {
