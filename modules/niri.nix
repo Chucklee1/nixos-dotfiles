@@ -109,8 +109,8 @@
             "Alt+Print".action = screenshot-window;
             # quits
             "${mod}+Q".action = close-window;
-            "Ctrl+Alt+Delete".action = quit;
-            "Ctrl+Shift+Alt+Delete".action = quit {skip-confirmation = true;};
+            "Ctrl+Alt+D".action = quit;
+            "Ctrl+Shift+Alt+D".action = quit {skip-confirmation = true;};
             # window focus and move
             # "${modType}+UDLR".action = ${movement}-${node}-UDLR
             "${mod}+Up".action = focus-window-up;

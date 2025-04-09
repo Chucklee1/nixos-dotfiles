@@ -33,19 +33,6 @@
         };
       };
     })
-
-    # wine
-    ({pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        zenity
-        samba
-        wine
-        wineWowPackages.stagingFull
-        winetricks
-        protonup-qt
-        protontricks
-      ];
-    })
   ];
 
   home.global = [
@@ -129,5 +116,17 @@
       };
       environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
     }
+    # wine
+    ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        zenity
+        samba
+        wine
+        wineWowPackages.stagingFull
+        winetricks
+        protonup-qt
+        protontricks
+      ];
+    })
   ];
 }
