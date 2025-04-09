@@ -73,7 +73,7 @@
             {command = ["${callExe "wlsunset"}" "-T" "5200"];}
             {command = ["${callExe "swaybg"}" "-m" "fill" "-i" "${config.stylix.image}"];}
             {command = ["brightnessctl" "s" "50%"];}
-            {command = ["wpctl" "set-sink-volume" "@DEFAULT_SINK@" "50%"];}
+            {command = ["wpctl" "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "1"];}
           ];
 
           switch-events = {

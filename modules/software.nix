@@ -51,6 +51,7 @@
         # apps
         tenacity
         gimp
+        spotdl
         picard
         feishin
         qbittorrent

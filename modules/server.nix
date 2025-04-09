@@ -21,8 +21,7 @@
       };
     }
     # navidrome
-    /*
-      ({
+    ({
       config,
       pkgs,
       ...
@@ -36,7 +35,7 @@
         ArtistArtPriority = "external";
 
         MusicFolder = "/home/goat/Music";
-        DataFolder = "${root}/Data";
+        DataFolder = "${root}/data";
         CacheFolder = "${root}/cache";
       };
     in {
@@ -50,6 +49,5 @@
         };
       };
     })
-    */
   ];
 }
