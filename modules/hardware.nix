@@ -82,6 +82,7 @@ in {
       boot.initrd.kernelModules = [];
       boot.kernelModules = ["kvm-intel"];
       boot.extraModulePackages = [];
+      networking.enableB43Firmware = true;      
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
     }
