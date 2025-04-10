@@ -1,4 +1,4 @@
-{inputs}: let
+{inputs, ...}: let
   mkFs = path: device: fsType: options: {
     fileSystems.${path} =
       {inherit device fsType;}
@@ -45,7 +45,7 @@ in {
   ];
 
   nix.nimbus = [
-    disko.nixosModules.default
+    inputs.disko.nixosModules.default
     (import ../assets/btrfs.nix {device = "/dev/sdb";})
     {  
       boot = {
