@@ -14,13 +14,10 @@
 
 # **TODO**
 
-- overhaul module system split into the following:
-  config (module definitions)
-  profiles (machine declaration of configs) - only moving things around, recursive import
-  and profiles will stay the same
-- re-add api support back to navidrome service
-- get sops to work with desktop and laptop profiles
-- find a way to sync ungoogled chromium profiles
+- change names to cool fun ones:
+- desktop -> kaldorn
+- laptop -> yggdrasil
+- numbus -> vandrok
 
 # **CMD cheatsheet**
 - sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix --arg device '"/dev/vda"'
