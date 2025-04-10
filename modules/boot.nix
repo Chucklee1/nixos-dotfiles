@@ -8,10 +8,12 @@
           efiSupport = true;
           device = "nodev";
         };
-      # display manager
-      services.displayManager.ly.enable = true;
+        # display manager
+        services.displayManager.ly.enable = true;
+      };
     }
   ];
+
   nix.nimbus = [
     {
       boot.loader.grub.efiInstallAsRemovable = true;
