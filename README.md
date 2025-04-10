@@ -17,7 +17,7 @@
 - change names to cool fun ones:
 - desktop -> kaldorn
 - laptop -> yggdrasil
-- numbus -> vandrok
+- darwin -> verdkyn
 
 # **CMD cheatsheet**
 - sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix --arg device '"/dev/vda"'

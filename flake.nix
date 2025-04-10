@@ -3,8 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager"    
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";;
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -18,6 +19,7 @@
   outputs = {
     self,
     nixpkgs,
+    nix-darwin,
     ...
   } @ inputs:
     with nixpkgs.lib; let
@@ -58,7 +60,6 @@
         ];
 
       mergeMods = prev: next: (genAttrs ["nix" "home"] (type: raw.${type}.${prev} or [] ++ raw.${type}.${next} or []));
-
       mkSystem = host:
         nixosSystem {
           inherit system;
@@ -70,6 +71,10 @@
     in {
       formatter.${system} = pkgs.alejandra;
       packages.${system} = import ./pkgs nixpkgs.legacyPackages.${system};
-      nixosConfigurations = genAttrs ["laptop" "desktop" "nimbus"] (host: mkSystem host);
+      nixosConfigurations = genAttrs ["laptop" "desktop"] (host: mkSystem host);
+    
+      darwinConfigurations."verdkyn" = nix-darwin.lib.darwinSystem {
+      	modules = [./darwin/config.nix];
+      };
     };
 }
