@@ -5,4 +5,5 @@
   };
   nix.settings.experimental-features = ["nix-command" "flakes"];
   environmnent.systemPackages = with pkgs; [neovim git];
+  services.nix-deamon.enable = true;
 }
