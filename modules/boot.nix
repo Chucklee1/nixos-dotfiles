@@ -19,7 +19,6 @@
   nix.nimbus = [
     ({lib, ...}: {
       boot.loader.grub.efiInstallAsRemovable = lib.mkDefault true;
-      boot.loader.generic-extlinux-compatible.enable = lib.mkDefault true;
       
       users.users.main = {
         initialPassword = "password";
