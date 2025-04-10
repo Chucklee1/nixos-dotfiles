@@ -44,47 +44,8 @@ in {
     }
   ];
 
-  nix.macbook = [
-    inputs.disko.nixosModules.default
-    {
-      disko.devices = {
-        disk.main = {
-          device = "/dev/sda";
-          type = "disk";
-          content = {
-            type = "gpt";
-            partitions = {
-              ESP = {
-                type = "EF00";
-                size = "500M";
-                content = {
-                  type = "filesystem";
-                  format = "vfat";
-                  mountpoint = "/boot";
-                  mountOptions = ["umask=0077"];
-                };
-              };
-              root = {
-                size = "100%";
-                content = {
-                  type = "filesystem";
-                  format = "ext4";
-                  mountpoint = "/";
-                };
-              };
-            };
-          };
-        };
-      };
-    }
-    {
-      boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "uas" "sd_mod"];
-      boot.initrd.kernelModules = [];
-      boot.kernelModules = ["kvm-intel"];
-      boot.extraModulePackages = [];
-      networking.enableB43Firmware = true;      
-      hardware.enableRedistributableFirmware = true;
-      hardware.cpu.intel.updateMicrocode = true;
-    }
+  nix.nimbus = [
+    disko.nixosModules.default
+    (import ../assets/btrfs.nix {device = "/dev/sdb";})
   ];
 }

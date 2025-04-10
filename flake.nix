@@ -70,6 +70,6 @@
     in {
       formatter.${system} = pkgs.alejandra;
       packages.${system} = import ./pkgs nixpkgs.legacyPackages.${system};
-      nixosConfigurations = genAttrs ["laptop" "desktop" "macbook"] (host: mkSystem host);
+      nixosConfigurations = genAttrs ["laptop" "desktop" "nimbus"] (host: mkSystem host);
     };
 }

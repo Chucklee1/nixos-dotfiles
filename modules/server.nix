@@ -11,7 +11,7 @@
     }
   ];
 
-  nix.macbook = [
+  nix.laptop = [
     # tailscale
     {
       services.tailscale = {

@@ -49,5 +49,5 @@
   ];
   nix.desktop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-desktop";})];
   nix.laptop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-laptop";})];
-  nix.macbook = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-macbook";})];
+  nix.nimbus = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-nimbus";})];
 }
