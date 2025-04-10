@@ -68,8 +68,8 @@
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
     in {
-      formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
-      packages = import ./pkgs/onetagger.nix pkgs;
+      formatter.${system} = pkgs.alejandra;
+      packages.${system} = import ./pkgs nixpkgs.legacyPackages.${system};
       nixosConfigurations = genAttrs ["laptop" "desktop" "macbook"] (host: mkSystem host);
     };
 }

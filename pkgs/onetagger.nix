@@ -1,4 +1,4 @@
-{pkgs ? import <nixpkgs> {}}:
+{pkgs, ...}:
 pkgs.stdenv.mkDerivation {
   pname = "onetagger";
   version = "1.7.0";
