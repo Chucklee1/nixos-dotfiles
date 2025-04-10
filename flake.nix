@@ -23,6 +23,7 @@
     with nixpkgs.lib; let
       system = "x86_64-linux";
       dir = "${self}/modules";
+      pkgs = nixpkgs.legacyPackages.${system};
 
       raw = let
         mergeAllRecursive = a: b:
@@ -68,6 +69,7 @@
         };
     in {
       formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+      packages = import ./pkgs/onetagger.nix pkgs;
       nixosConfigurations = genAttrs ["laptop" "desktop" "macbook"] (host: mkSystem host);
     };
 }
