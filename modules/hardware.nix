@@ -47,5 +47,15 @@ in {
   nix.nimbus = [
     disko.nixosModules.default
     (import ../assets/btrfs.nix {device = "/dev/sdb";})
+    {  
+      boot = {
+        initrd.availableKernelModules = [ "nvme" "xhci_pci" "uas" "usb_storage" "sd_mod" ];
+        initrd.kernelModules = [ "dm-snapshot" ];
+        # kernelModules = [ ];
+        # extraModulePackages = [ ];
+        supportedFilesystems = ["ntfs" "btrfs" ];
+        hardware.enableRedistributableFirmware = true;
+      };
+    }
   ];
 }
