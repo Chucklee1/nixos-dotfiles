@@ -15,7 +15,7 @@
   ];
 
   nix.nimbus = [
-    {
+    ({lib, ...}: {
       boot.loader.grub.efiInstallAsRemovable = true;
       boot.loader.generic-extlinux-compatible.enable = true;
       
@@ -67,6 +67,6 @@
       };*/
 
       programs.fuse.userAllowOther = true;  
-    }
+    })
   ];
 }
