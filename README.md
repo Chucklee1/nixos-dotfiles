@@ -21,3 +21,6 @@
 - re-add api support back to navidrome service
 - get sops to work with desktop and laptop profiles
 - find a way to sync ungoogled chromium profiles
+
+# **CMD cheatsheet**
+- sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix --arg device '"/dev/vda"'
