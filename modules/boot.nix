@@ -2,7 +2,6 @@
   nix.global = [
     {
       boot = {
-        loader.efi.canTouchEfiVariables = true;
         loader.grub = {
           enable = true;
           efiSupport = true;
@@ -13,6 +12,9 @@
       services.displayManager.ly.enable = true;
     }
   ];
+  
+  nix.desktop = [{boot.loader.efi.canTouchEfiVariables = true;}];
+  nix.laptop = [{boot.loader.efi.canTouchEfiVariables = true;}];
 
   nix.nimbus = [
     ({lib, ...}: {
