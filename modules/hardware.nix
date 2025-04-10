@@ -54,8 +54,8 @@ in {
         # kernelModules = [ ];
         # extraModulePackages = [ ];
         supportedFilesystems = ["ntfs" "btrfs" ];
-        hardware.enableRedistributableFirmware = true;
       };
+      hardware.enableRedistributableFirmware = true;
     }
   ];
 }
