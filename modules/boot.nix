@@ -8,9 +8,9 @@
           efiSupport = true;
           device = "nodev";
         };
-        # display manager
-        services.displayManager.ly.enable = true;
       };
+      # display manager
+      services.displayManager.ly.enable = true;
     }
   ];
 
