@@ -17,7 +17,7 @@
     })
   ];
 
-  nix.desktop = [{boot.loader.efi.canTouchEfiVariables = true;}];
+  nix.yggdrasil = [{boot.loader.efi.canTouchEfiVariables = true;}];
 
   nix.nimbus = [
     inputs.impermanence.nixosModules.impermanence

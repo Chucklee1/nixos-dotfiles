@@ -92,16 +92,14 @@
           shellAliases = {
             cg = "nix-collect-garbage";
             update-flake = "nix flake update $HOME/nixos-dotfiles";
-            rebuild-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
-            rebuild-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
-            rebuild-macbook = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#macbook";
+            rebuild-nixos = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#${host.machine}";
           };
         };
       };
     })
   ];
 
-  nix.desktop = [
+  nix.yggdrasil = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         osu-lazer-bin

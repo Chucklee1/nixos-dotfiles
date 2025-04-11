@@ -45,7 +45,7 @@
       };
     })
   ];
-  nix.desktop = [
+  nix.yggdrasil = [
     # gpu
     ({config, ...}: {
       nixpkgs.config.nvidia.acceptLicense = true;

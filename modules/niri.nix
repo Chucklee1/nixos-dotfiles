@@ -194,7 +194,7 @@
       })
   ];
 
-  home.desktop = [
+  home.yggdrasil = [
     {
       programs.niri.settings.outputs."DP-1".mode = {
         width = 1920;

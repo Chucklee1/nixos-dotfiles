@@ -9,8 +9,8 @@
     if-statement hell function in flake
   - module system:
     - module-name then module-type (nix or home)
-    - current module names: global, laptop, desktop
-    - global is merged with laptop & desktop
+    - current module names: global, laptop, yggdrasil
+    - global is merged with laptop & yggdrasil
 
 # **TODO**
 

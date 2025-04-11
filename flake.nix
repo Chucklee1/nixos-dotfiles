@@ -61,7 +61,7 @@
       mergeProfiles = lists: unique (concatLists lists);
 
       profiles = {
-        desktop = mergeProfiles raw."global" raw."nixos" raw."desktop";
+        yggdrasil = mergeProfiles raw."global" raw."nixos" raw."yggdrasil";
         laptop = mergeProfiles raw."global" raw."nixos" raw."laptop";
         darwin = mergeProfiles raw."global" raw."darwin";
       };
@@ -82,7 +82,7 @@
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
       nixosConfigurations =
-        genAttrs ["desktop" "nimbus"]
+        genAttrs ["yggdrasil" "nimbus"]
         (host: nixosSystem {modules = mkMods host;});
 
       darwinConfigurations."darwin" =

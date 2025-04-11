@@ -1,5 +1,5 @@
 {
-  nix.desktop = [
+  nix.yggdrasil = [
     # virtualisation
     ({pkgs, ...}: {
       programs.virt-manager.enable = true;
@@ -29,7 +29,7 @@
     })
   ];
 
-  home.desktop = [
+  home.yggdrasil = [
     {
       dconf.settings."org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
