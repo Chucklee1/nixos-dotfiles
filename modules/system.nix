@@ -3,8 +3,8 @@
     # host option
     ({lib, ...}: {
       options.host = {
-        machine = lib.mkoption {type = lib.types.string;};
-        user = lib.mkoption {type = lib.types.string;};
+        machine = lib.mkOption {type = lib.types.string;};
+        user = lib.mkOption {type = lib.types.string;};
       };
     })
     ({
