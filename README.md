@@ -14,7 +14,11 @@
 
 # **TODO**
 
-- change names to cool fun ones:
+- remove profiles
+- keep nix/home seperations
+
+# **host**
+
 - desktop -> yggdrasil
 - laptop -> nimbus
 - MacBook Pro -> darwin
