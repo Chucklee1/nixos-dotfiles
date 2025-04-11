@@ -81,6 +81,6 @@
         genAttrs ["yggdrasil" "nimbus"]
         (host: nixosSystem (mkSystem host));
 
-      darwinConfigurations."darwin" = nix-darwin.lib.darwinSystem (mkSystem "darwin"));
+      darwinConfigurations."darwin" = nix-darwin.lib.darwinSystem (mkSystem "darwin");
     };
 }
