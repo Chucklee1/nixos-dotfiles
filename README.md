@@ -17,7 +17,8 @@
 - change names to cool fun ones:
 - desktop -> yggdrasil
 - laptop -> nimbus
-- darwin -> darwin is cool already
+- MacBook Pro -> darwin
 
 # **CMD cheatsheet**
+
 - sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix --arg device '"/dev/vda"'

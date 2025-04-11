@@ -3,9 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";   
+    home-manager.url = "github:nix-community/home-manager";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";;
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -23,58 +23,56 @@
     ...
   } @ inputs:
     with nixpkgs.lib; let
-      system = "x86_64-linux";
+      systems = ["x86_64-linux" "x86_64-darwin"];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
       dir = "${self}/modules";
-      pkgs = nixpkgs.legacyPackages.${system};
 
-      raw = let
-        mergeAllRecursive = a: b:
-          foldl' (
-            acc: key: let
-              va = a.${key} or null;
-              vb = b.${key} or null;
-              merged =
-                if va == null
-                then vb
-                else if vb == null
-                then va
-                else if isList va && isList vb
-                then va ++ vb
-                else if isAttrs va && isAttrs vb
-                then mergeAllRecursive va vb
-                else vb;
-            in
-              acc // {"${key}" = merged;}
-          ) {}
-          (unique (attrNames a ++ attrNames b));
-      in
-        pipe (builtins.readDir dir) [
-          (filterAttrs (file: type: hasSuffix ".nix" file && type == "regular"))
-          attrNames
-          (map (file: import "${dir}/${file}"))
-          (map (file:
-            if isFunction file
-            then (file {inherit inputs;})
-            else file))
-          (builtins.foldl' mergeAllRecursive {})
-        ];
+      mergeAllRecursive = a: b:
+        foldl' (
+          acc: key: let
+            va = a.${key} or null;
+            vb = b.${key} or null;
+            merged =
+              if va == null
+              then vb
+              else if vb == null
+              then va
+              else if isList va && isList vb
+              then va ++ vb
+              else if isAttrs va && isAttrs vb
+              then mergeAllRecursive va vb
+              else vb;
+          in
+            acc // {"${key}" = merged;}
+        ) {}
+        (unique (attrNames a ++ attrNames b));
+
+      raw = pipe (builtins.readDir dir) [
+        (filterAttrs (file: type: hasSuffix ".nix" file && type == "regular"))
+        attrNames
+        (map (file: import "${dir}/${file}"))
+        (map (file:
+          if isFunction file
+          then (file {inherit inputs;})
+          else file))
+        (builtins.foldl' mergeAllRecursive {})
+      ];
 
       mergeMods = prev: next: (genAttrs ["nix" "home"] (type: raw.${type}.${prev} or [] ++ raw.${type}.${next} or []));
-      mkSystem = host:
-        nixosSystem {
-          inherit system;
-          modules = let
-            mod = mergeMods "global" "${host}";
-          in
-            mod.nix ++ [{_module.args.homeMods = mod.home;}];
-        };
+
+      mkMods = host:
+        (mergeMods "global" "${host}").nix
+        ++ [{_module.args.homeMods = (mergeMods "global" "${host}").home;}];
     in {
-      formatter.${system} = pkgs.alejandra;
-      packages.${system} = import ./pkgs nixpkgs.legacyPackages.${system};
-      nixosConfigurations = genAttrs ["laptop" "desktop"] (host: mkSystem host);
-    
-      darwinConfigurations."verdkyn" = nix-darwin.lib.darwinSystem {
-      	modules = [./darwin/config.nix];
-      };
+      #packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+
+      nixosConfigurations =
+        genAttrs ["desktop" "nimbus"]
+        (host: nixosSystem {modules = mkMods host;} host);
+
+      darwinConfigurations."darwin" =
+        nix-darwin.lib.darwinSystem
+        {modules = modules "darwin";};
     };
 }
