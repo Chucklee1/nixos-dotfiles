@@ -9,7 +9,7 @@
       );
   };
 in {
-  nix.global = [
+  nix.nixos = [
     ({modulesPath, ...}: {
       imports = [(modulesPath + "/installer/scan/not-detected.nix")];
     })

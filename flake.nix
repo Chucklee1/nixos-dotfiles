@@ -58,14 +58,23 @@
         (builtins.foldl' mergeAllRecursive {})
       ];
 
-      mergeMods = prev: next: (genAttrs ["nix" "home"] (type: raw.${type}.${prev} or [] ++ raw.${type}.${next} or []));
+      mergeProfiles = lists: unique (concatLists lists);
 
-      mkMods = host:
-        (mergeMods "global" "${host}").nix
+      profiles = {
+        desktop = mergeProfiles raw."global" raw."nixos" raw."desktop";
+        laptop = mergeProfiles raw."global" raw."nixos" raw."laptop";
+        darwin = mergeProfiles raw."global" raw."darwin";
+      };
+
+      mkMods = host: let
+        mod = profiles.${host};
+      in
+        mod.nix
         ++ [
           {
-            host.machine = "${host}";
-            _module.args.homeMods = (mergeMods "global" "${host}").home;
+            user = "goat";
+            machine = host;
+            _module.args.homeMods = mod.home;
           }
         ];
     in {
@@ -78,6 +87,6 @@
 
       darwinConfigurations."darwin" =
         nix-darwin.lib.darwinSystem
-        {modules = modules "darwin";};
+        {modules = mkMods "darwin";};
     };
 }

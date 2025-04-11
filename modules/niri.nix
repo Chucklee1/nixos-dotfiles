@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  nix.global = [
+  nix.nixos = [
     inputs.niri.nixosModules.niri
     ({
       lib,
@@ -38,7 +38,7 @@
     })
   ];
 
-  home.global = [
+  home.nixos = [
     ({
       lib,
       config,

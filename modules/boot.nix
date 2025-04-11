@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  nix.global = [
+  nix.nixos = [
     ({
       lib,
       config,

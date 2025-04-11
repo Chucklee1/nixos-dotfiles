@@ -1,5 +1,5 @@
 {
-  nix.global = [
+  nix.nixos = [
     ({
       lib,
       config,
@@ -41,13 +41,11 @@
           fstrim.enable = true;
         };
       };
-    })
-    {
       services = {
         tumbler.enable = true;
         gvfs.enable = true;
       };
-    }
+    })
   ];
   nix.desktop = [
     # gpu
@@ -83,13 +81,6 @@
       services.udev.extraRules = ''
         KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
       '';
-    }
-  ];
-  nix.laptop = [
-    # gpu
-    {
-      services.xserver.videoDrivers = ["amdgpu"];
-      hardware.amdgpu.amdvlk.enable = true;
     }
   ];
 }

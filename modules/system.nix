@@ -7,27 +7,6 @@
         user = lib.mkOption {type = lib.types.string;};
       };
     })
-    ({
-      lib,
-      config,
-      ...
-    }: {
-      config =
-        lib.mkIf (config.host.machine != "darwin")
-        {
-          nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-          networking = {
-            useDHCP = lib.mkDefault true;
-            networkmanager.enable = true;
-          };
-          home-manager.users.main.home.homeDirectory = "/home/${config.host.user}";
-        }
-        // lib.mkIf (config.host.machine == "darwin")
-        {
-          nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
-          home-manager.users.main.home.homeDirectory = "/users/${config.host.user}";
-        };
-    })
     # system options
     ({config, ...}: {
       # custom option
@@ -68,6 +47,30 @@
         };
         imports = config._module.args.homeMods;
       };
+    })
+  ];
+  nix.nixos = [
+    ({
+      lib,
+      config,
+      ...
+    }: {
+      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+      networking = {
+        useDHCP = lib.mkDefault true;
+        networkmanager.enable = true;
+      };
+      home-manager.users.main.home.homeDirectory = "/home/${config.host.user}";
+    })
+  ];
+  nix.darwin = [
+    ({
+      lib,
+      config,
+      ...
+    }: {
+      nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
+      home-manager.users.main.home.homeDirectory = "/users/${config.host.user}";
     })
   ];
 }

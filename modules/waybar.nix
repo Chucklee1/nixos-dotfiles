@@ -1,5 +1,5 @@
 {
-  home.global = [
+  home.nixos = [
     ({
       lib,
       config,
