@@ -70,6 +70,11 @@
         mod = profiles.${host};
       in
         mod.nix ++ [{_module.args.homeMods = mod.home;}];
+
+    specialArgs.host = {
+      machine = host;
+      user = "goat";
+    };
     in {
       #packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
@@ -77,14 +82,13 @@
       nixosConfigurations =
         genAttrs ["yggdrasil" "nimbus"]
         (host: nixosSystem {
-          specialArgs.host = {
-            machine = host;
-            user = "goat";
-          };
-          modules = mkMods host;});
+          inherit specialArgs;          
+          modules = mkMods host;
+        });
 
-      darwinConfigurations."darwin" =
-        nix-darwin.lib.darwinSystem
-        {modules = mkMods "darwin";};
+      darwinConfigurations."darwin" = nix-darwin.lib.darwinSystem {
+        inherit specialArgs;          
+        modules = mkMods "darwin";
+      };
     };
 }
