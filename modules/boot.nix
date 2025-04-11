@@ -5,7 +5,7 @@
       config,
       ...
     }: {
-      config = (lib.mkIf config.host.machine != "darwin") {
+      config = lib.mkIf (config.host.machine != "darwin") {
         boot = {
           loader.grub = {
             enable = true;

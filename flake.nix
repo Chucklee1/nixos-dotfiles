@@ -74,7 +74,7 @@
 
       nixosConfigurations =
         genAttrs ["desktop" "nimbus"]
-        (host: nixosSystem {modules = mkMods host;} host);
+        (host: nixosSystem {modules = mkMods host;});
 
       darwinConfigurations."darwin" =
         nix-darwin.lib.darwinSystem

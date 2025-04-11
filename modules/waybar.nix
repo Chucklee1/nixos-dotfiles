@@ -5,7 +5,7 @@
       config,
       ...
     }: {
-      config = (lib.mkIf config.host.machine != "darwin") {
+      config = lib.mkIf (config.host.machine != "darwin") {
         stylix.targets.waybar.enable = false;
         programs.waybar = with config.lib.stylix.colors.withHashtag; let
           span = color: str: ''<span color="${color}" >${str}</span>'';

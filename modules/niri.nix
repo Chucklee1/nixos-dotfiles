@@ -7,7 +7,7 @@
       pkgs,
       ...
     }: {
-      config = (lib.mkIf (config.host.machine != "darwin")) {
+      config = lib.mkIf (config.host.machine != "darwin") {
         nixpkgs.overlays = [inputs.niri.overlays.niri];
 
         programs.niri = {
@@ -46,7 +46,7 @@
       ...
     }:
       with config.lib.stylix.colors.withHashtag; {
-        config = (lib.mkIf (config.host.machine != "darwin")) {
+        config = lib.mkIf (config.host.machine != "darwin") {
           programs.swaylock = {
             enable = true;
             package = pkgs.swaylock-effects;

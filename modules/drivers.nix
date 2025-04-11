@@ -6,7 +6,7 @@
       pkgs,
       ...
     }: {
-      config = (lib.mkIf config.host.machine != "darwin") {
+      config = lib.mkIf (config.host.machine != "darwin") {
         # gpu
         hardware.graphics = {
           enable = true;

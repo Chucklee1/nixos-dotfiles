@@ -13,7 +13,7 @@
       ...
     }: {
       config =
-        (lib.mkIf config.host.machine != "darwin")
+        lib.mkIf (config.host.machine != "darwin")
         {
           nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
           networking = {
