@@ -2,8 +2,6 @@
   nix.global = [
     # system options
     ({config, ...}: {
-      # custom option
-      host.user = "goat";
       # the rest
       system.stateVersion = "24.05";
       networking.hostName = "${config.host.user}-${config.host.machine}";
