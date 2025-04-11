@@ -41,7 +41,7 @@ in {
         initrd.kernelModules = ["dm-snapshot"];
         # kernelModules = [ ];
         # extraModulePackages = [ ];
-        supportedFilesystems = ["ntfs" "btrfs"];
+        supportedFilesystems = ["ntfs" "btrfs" "apfs"];
       };
       hardware.enableRedistributableFirmware = true;
     }
