@@ -22,18 +22,14 @@
           };
           home-manager.users.main.home.homeDirectory = "/home/${config.host.user}";
         }
-        // (lib.mkIf config.host.machine == "darwin")
+        // lib.mkIf (config.host.machine == "darwin")
         {
           nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
           home-manager.users.main.home.homeDirectory = "/users/${config.host.user}";
         };
     })
     # system options
-    ({
-      lib,
-      config,
-      ...
-    }: {
+    ({config, ...}: {
       # custom option
       host.user = "goat";
       # the rest
