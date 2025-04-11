@@ -58,7 +58,7 @@
         (builtins.foldl' mergeAllRecursive {})
       ];
 
-      mergeProfiles = lists: unique (concatLists raw.nix.${lists} or [] raw.home.${list} or []);
+      mergeProfiles = lists: unique (concatLists raw.nix.${lists} or [] raw.home.${lists} or []);
 
       profiles = {
         yggdrasil = mergeProfiles ["global" "nixos" "yggdrasil"];
