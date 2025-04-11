@@ -40,6 +40,7 @@
           };
           imports = config._module.args.homeMods;
         };
+      };
     })
   ];
   nix.nixos = [
