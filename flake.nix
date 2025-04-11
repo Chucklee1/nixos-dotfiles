@@ -69,29 +69,19 @@
       mkMods = host: let
         mod = profiles.${host};
       in
-        mod.nix
-        ++ [
-          ({lib, ...}: {
-            options.host = {
-              machine = lib.mkOption {
-                type = lib.types.string;
-                default = host;
-              };
-              user = lib.mkOption {
-                type = lib.types.string;
-                default = "goat";
-              };
-            };
-            _module.args.homeMods = mod.home;
-          })
-        ];
+        mod.nix ++ [{_module.args.homeMods = mod.home;}];
     in {
       #packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
       nixosConfigurations =
         genAttrs ["yggdrasil" "nimbus"]
-        (host: nixosSystem {modules = mkMods host;});
+        (host: nixosSystem {
+          specialArgs.host = {
+            machine = host;
+            user = "goat";
+          };
+          modules = mkMods host;});
 
       darwinConfigurations."darwin" =
         nix-darwin.lib.darwinSystem
