@@ -5,17 +5,15 @@
       config,
       ...
     }: {
-      config = lib.mkIf (config.host.machine != "darwin") {
-        boot = {
-          loader.grub = {
-            enable = true;
-            efiSupport = true;
-            device = "nodev";
-          };
+      boot = {
+        loader.grub = {
+          enable = true;
+          efiSupport = true;
+          device = "nodev";
         };
-        # display manager
-        services.displayManager.ly.enable = true;
       };
+      # display manager
+      services.displayManager.ly.enable = true;
     })
   ];
 

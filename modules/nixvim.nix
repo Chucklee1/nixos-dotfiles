@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  nix.global = [
+  nix.nixos = [
     {
       environment.variables.EDITOR = "nvim";
     }

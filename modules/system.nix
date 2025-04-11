@@ -70,7 +70,7 @@
       ...
     }: {
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
-      home-manager.users.main.home.homeDirectory = "/users/${config.host.user}";
+      home-manager.users.main.home.homeDirectory = "/Users/${config.host.user}";
     })
   ];
 }

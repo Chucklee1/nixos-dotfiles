@@ -6,40 +6,38 @@
       pkgs,
       ...
     }: {
-      config = lib.mkIf (config.host.machine != "darwin") {
-        # gpu
-        hardware.graphics = {
-          enable = true;
-          enable32Bit = true;
-          extraPackages = with pkgs; [
-            vulkan-tools
-            vulkan-loader
-            libvdpau-va-gl
-            ffmpeg
-          ];
-        };
+      # gpu
+      hardware.graphics = {
+        enable = true;
+        enable32Bit = true;
+        extraPackages = with pkgs; [
+          vulkan-tools
+          vulkan-loader
+          libvdpau-va-gl
+          ffmpeg
+        ];
+      };
 
-        # audio
-        security.rtkit.enable = true;
-        services.pipewire = {
-          enable = true;
-          alsa.enable = true;
-          alsa.support32Bit = true;
-          pulse.enable = true;
-        };
+      # audio
+      security.rtkit.enable = true;
+      services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+      };
 
-        # bluetooth
-        hardware = {
-          bluetooth.enable = true;
-          bluetooth.powerOnBoot = true;
-        };
-        services.blueman.enable = true;
+      # bluetooth
+      hardware = {
+        bluetooth.enable = true;
+        bluetooth.powerOnBoot = true;
+      };
+      services.blueman.enable = true;
 
-        # misc
-        services = {
-          printing.enable = true;
-          fstrim.enable = true;
-        };
+      # misc
+      services = {
+        printing.enable = true;
+        fstrim.enable = true;
       };
       services = {
         tumbler.enable = true;
