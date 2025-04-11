@@ -1,4 +1,4 @@
-{host, ...}: {
+{
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -39,6 +39,7 @@
     ({
       lib,
       pkgs,
+      host,
       ...
     }: {
       home.packages = with pkgs; [

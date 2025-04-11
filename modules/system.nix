@@ -31,13 +31,15 @@
         ];
       };
 
-      home-manager.users.main = {
-        home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
-          username = "${host.user}";
+      home-manager = {
+        extraSpecialArgs = {inherit host;};
+        users.main = {
+          home = {
+            stateVersion = "24.05"; # DO NOT CHANGE
+            username = "${host.user}";
+          };
+          imports = config._module.args.homeMods;
         };
-        imports = config._module.args.homeMods;
-      };
     })
   ];
   nix.nixos = [
