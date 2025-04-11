@@ -61,9 +61,9 @@
       mergeProfiles = lists: unique (concatLists lists);
 
       profiles = {
-        yggdrasil = mergeProfiles raw."global" raw."nixos" raw."yggdrasil";
-        laptop = mergeProfiles raw."global" raw."nixos" raw."laptop";
-        darwin = mergeProfiles raw."global" raw."darwin";
+        yggdrasil = mergeProfiles ["global" "nixos" "yggdrasil"];
+        laptop = mergeProfiles ["global" "nixos" "laptop"];
+        darwin = mergeProfiles ["global" "darwin"];
       };
 
     mkSystem = host: {
