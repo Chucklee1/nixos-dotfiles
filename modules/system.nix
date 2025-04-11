@@ -1,12 +1,5 @@
 {inputs, ...}: {
   nix.global = [
-    # host option
-    ({lib, ...}: {
-      options.host = {
-        machine = lib.mkOption {type = lib.types.string;};
-        user = lib.mkOption {type = lib.types.string;};
-      };
-    })
     # system options
     ({config, ...}: {
       # custom option

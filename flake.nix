@@ -71,11 +71,19 @@
       in
         mod.nix
         ++ [
-          {
-            user = "goat";
-            machine = host;
+          ({lib, ...}: {
+            options.host = {
+              machine = lib.mkOption {
+                type = lib.types.string;
+                default = host;
+              };
+              user = lib.mkOption {
+                type = lib.types.string;
+                default = "goat";
+              };
+            };
             _module.args.homeMods = mod.home;
-          }
+          })
         ];
     in {
       #packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
