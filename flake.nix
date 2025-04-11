@@ -62,7 +62,12 @@
 
       mkMods = host:
         (mergeMods "global" "${host}").nix
-        ++ [{_module.args.homeMods = (mergeMods "global" "${host}").home;}];
+        ++ [
+          {
+            host.machine = "${host}";
+            _module.args.homeMods = (mergeMods "global" "${host}").home;
+          }
+        ];
     in {
       #packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);

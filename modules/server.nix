@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{
   nix.global = [
     {
       services.openssh = {
@@ -11,7 +11,7 @@
     }
   ];
 
-  nix.laptop = [
+  nix.nimbus = [
     # tailscale
     {
       services.tailscale = {
@@ -21,7 +21,8 @@
       };
     }
     # navidrome
-    ({
+    /*
+      ({
       config,
       pkgs,
       ...
@@ -49,5 +50,6 @@
         };
       };
     })
+    */
   ];
 }

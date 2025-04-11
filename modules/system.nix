@@ -1,21 +1,49 @@
 {inputs, ...}: {
   nix.global = [
-    # system
+    # host option
     ({lib, ...}: {
-      system.stateVersion = "24.05";
-      networking = {
-        useDHCP = lib.mkDefault true;
-        networkmanager.enable = true;
+      options.host = {
+        machine = lib.mkoption {type = lib.types.string;};
+        user = lib.mkoption {type = lib.types.string;};
       };
+    })
+    ({
+      lib,
+      config,
+      ...
+    }: {
+      config =
+        (lib.mkIf config.host.machine != "darwin")
+        {
+          nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+          networking = {
+            useDHCP = lib.mkDefault true;
+            networkmanager.enable = true;
+          };
+          home-manager.users.main.home.homeDirectory = "/home/${config.host.user}";
+        }
+        // (lib.mkIf config.host.machine == "darwin")
+        {
+          nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
+          home-manager.users.main.home.homeDirectory = "/users/${config.host.user}";
+        };
+    })
+    # system options
+    ({
+      lib,
+      config,
+      ...
+    }: {
+      # custom option
+      host.user = "goat";
+      # the rest
+      system.stateVersion = "24.05";
+      networking.hostName = "${config.host.user}-${config.host.machine}";
       i18n.defaultLocale = "en_CA.UTF-8";
-      # auto-timezone:
-      services.automatic-timezoned.enable = true;
+      time.timeZone = "America/Vancouver";
 
       # nix
-      nixpkgs = {
-        hostPlatform = lib.mkDefault "x86_64-linux";
-        config.allowUnfree = true;
-      };
+      nixpkgs.config.allowUnfree = true;
       nix.settings = {
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
@@ -26,7 +54,7 @@
     inputs.home-manager.nixosModules.home-manager
     ({config, ...}: {
       users.users.main = {
-        name = "goat";
+        name = config.host.user;
         isNormalUser = true;
         extraGroups = [
           "wheel"
@@ -40,14 +68,10 @@
       home-manager.users.main = {
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
-          username = "${config.users.users.main.name}";
-          homeDirectory = "/home/${config.users.users.main.name}";
+          username = "${config.host.user}";
         };
         imports = config._module.args.homeMods;
       };
     })
   ];
-  nix.desktop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-desktop";})];
-  nix.laptop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-laptop";})];
-  nix.nimbus = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-nimbus";})];
 }

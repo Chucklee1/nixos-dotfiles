@@ -1,26 +1,31 @@
 {inputs, ...}: {
   nix.global = [
-    {
-      boot = {
-        loader.grub = {
-          enable = true;
-          efiSupport = true;
-          device = "nodev";
+    ({
+      lib,
+      config,
+      ...
+    }: {
+      config = (lib.mkIf config.host.machine != "darwin") {
+        boot = {
+          loader.grub = {
+            enable = true;
+            efiSupport = true;
+            device = "nodev";
+          };
         };
+        # display manager
+        services.displayManager.ly.enable = true;
       };
-      # display manager
-      services.displayManager.ly.enable = true;
-    }
+    })
   ];
-  
+
   nix.desktop = [{boot.loader.efi.canTouchEfiVariables = true;}];
-  nix.laptop = [{boot.loader.efi.canTouchEfiVariables = true;}];
 
   nix.nimbus = [
-     inputs.impermanence.nixosModules.impermanence
+    inputs.impermanence.nixosModules.impermanence
     ({lib, ...}: {
       boot.loader.grub.efiInstallAsRemovable = lib.mkDefault true;
-      
+
       users.users.main = {
         initialPassword = "password";
       };
@@ -60,15 +65,37 @@
           "/var/lib/nixos"
           "/var/lib/systemd/coredump"
           "/etc/NetworkManager/system-connections"
+          "/etc/ssh"
           #{ directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
         ];
         files = [
           "/etc/machine-id"
           #{ file = "/var/keys/secret_file"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
         ];
+        users.main = {
+          directories = [
+            "Downloads"
+            "Music"
+            "Pictures"
+            "Documents"
+            "Navidrome"
+            {
+              directory = ".ssh";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/keyrings";
+              mode = "0700";
+            }
+            ".local/share/direnv"
+          ];
+          #files = [
+          #  ".screenrc"
+          #];
+        };
       };
 
-      programs.fuse.userAllowOther = true;  
+      programs.fuse.userAllowOther = true;
     })
   ];
 }
