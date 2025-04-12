@@ -1,16 +1,19 @@
 {
   inputs,
-  username,
+  ops,
   ...
 }: {
   home-manager = {
-    extraSpecialArgs = {inherit inputs username;};
+    extraSpecialArgs = {inherit inputs ops;};
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${username} = {
+    users.${ops.user} = {
       imports = [
-        ./nixvim.nix
-        ./software.nix
+        ./home/bash.nix
+        ./home/git.nix
+        ./home/kitty.nix
+        ./home/nixvim.nix
+        ./stylix/home.nix
       ];
       home.stateVersion = "24.05";
     };

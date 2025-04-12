@@ -17,16 +17,19 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = {
-    self,
-    nix-darwin,
-    nixpkgs,
-    ...
-  } @ inputs:
+  outputs = {nixpkgs, ...} @ inputs:
     with nixpkgs.lib; let
-      dir = "${self}/modules";
-
-      raw = let
+      #dir = "${self}/nixos";
+      specialArgs = {
+        inherit inputs;
+        ops = {
+          user = "goat";
+          userName = "Chucklee1";
+          userEmail = "kermitthefrog@kakao.com";
+        };
+      };
+      /*
+        raw = let
         mergeAllRecursive = a: b:
           foldl' (
             acc: key: let
@@ -60,8 +63,6 @@
 
       mergeMods = prev: next: (genAttrs ["nix" "home"] (type: raw.${type}.${prev} or [] ++ raw.${type}.${next} or []));
 
-      specialArgs = {inherit inputs;};
-
       mkSystem = host:
         nixosSystem {
           system = "x86_64-linux";
@@ -70,12 +71,18 @@
           in
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
+      */
     in {
       nixosConfigurations = genAttrs ["desktop" "nimbus"] (host: mkSystem host);
-      darwinConfigurations.macbookpro = nix-darwin.lib.darwinSystem {
+      darwinConfigurations.macbook = inputs.nix-darwin.lib.darwinSystem {
         inherit specialArgs;
         system = "x86_64-darwin";
-        modules = [./darwin/system.nix];
+        modules = [
+          ./darwin/system.nix
+          ./common
+          inputs.home-manager.darwinModules.home-manager
+          inputs.stylix.darwinModules.stylix
+        ];
       };
     };
 }

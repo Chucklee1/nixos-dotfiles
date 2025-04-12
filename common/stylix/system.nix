@@ -1,15 +1,11 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
-  imports = [inputs.stylix.darwinModules.stylix];
+{pkgs, ...}: {
   stylix = {
     enable = true;
     autoEnable = true;
     homeManagerIntegration.autoImport = true;
     image = ../assets/wallpaper.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
+    polarity = "dark";
 
     fonts = {
       monospace.package = pkgs.nerd-fonts.jetbrains-mono;

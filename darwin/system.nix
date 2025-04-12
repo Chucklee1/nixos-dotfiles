@@ -21,7 +21,7 @@
   users.users.goat = {
     name = "${username}";
     home = "/Users/${username}";
-    shell = pkgs.bashInteractive;
+    shell = pkgs.bash;
   };
 
   # system - macos
@@ -51,10 +51,9 @@
   homebrew = {
     enable = true;
 
-    /*
-      casks = [
+    casks = [
+      "kitty"
     ];
-    */
 
     /*
       masApps = {
