@@ -67,7 +67,7 @@
       };
 
     mkSystem = host: {
-      specialArgs.host = {
+      specialArgs = {
         machine = host;
         user = "goat";
       };

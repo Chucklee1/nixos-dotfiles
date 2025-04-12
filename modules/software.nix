@@ -93,7 +93,7 @@
           shellAliases = {
             cg = "nix-collect-garbage";
             update-flake = "nix flake update $HOME/nixos-dotfiles";
-            rebuild-nixos = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#${host.machine}";
+            rebuild-nixos = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#${machine}";
           };
         };
       };
