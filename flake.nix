@@ -61,7 +61,7 @@
       mergeProfiles = lists: (concatLists raw.nix.${lists} or [] raw.home.${lists} or []);
 
       profiles = {
-        yggdrasil = mergeProfiles "global" "nixos" "yggdrasil"];
+        yggdrasil = mergeProfiles ["global" "nixos" "yggdrasil"];
         laptop = mergeProfiles ["global" "nixos" "laptop"];
         darwin = mergeProfiles ["global" "darwin"];
       };
