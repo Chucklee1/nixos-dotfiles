@@ -6,6 +6,7 @@
 }: {
   imports = [inputs.nixvim.homeManagerModules.nixvim];
   programs.nixvim = {
+    # ----- OPTIONS -----
     enable = true;
     defaultEditor = true;
     viAlias = true;
@@ -60,6 +61,7 @@
     performance.byteCompileLua.enable = true;
   };
 
+  # ----- PLUGINS -----
   programs.nixvim = {
     # dependancies
     extraPlugins = with pkgs.vimPlugins; [
@@ -170,6 +172,8 @@
       nixd
     ];
   };
+
+  # ----- KEYMAPS -----
   programs.nixvim = {
     globals.mapleader = " ";
     globals.maplocalleader = " ";

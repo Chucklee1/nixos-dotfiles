@@ -1,16 +1,10 @@
 {
   lib,
   pkgs,
-  inputs,
+  username,
   ...
-}: let
-  username = "goat";
-in {
-  imports = [
-    ./theming.nix
-    inputs.home-manager.darwinModules.home-manager
-  ];
-
+}: {
+  # system - nix
   system.stateVersion = 6;
 
   nixpkgs = {
@@ -23,22 +17,14 @@ in {
     settings.experimental-features = ["nix-command" "flakes"];
   };
 
+  # system - user
   users.users.goat = {
     name = "${username}";
     home = "/Users/${username}";
     shell = pkgs.bashInteractive;
   };
 
-  home-manager = {
-    extraSpecialArgs = {inherit inputs;};
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    users.${username} = {
-      imports = [./nixvim.nix];
-      home.stateVersion = "24.05";
-    };
-  };
-
+  # system - macos
   system.defaults = {
     dock = {
       autohide = true;
@@ -58,8 +44,10 @@ in {
     };
   };
 
+  # programs - nix
   programs.bash.enable = true;
 
+  # programs - homebrew
   homebrew = {
     enable = true;
 
