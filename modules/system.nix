@@ -1,10 +1,9 @@
-{inputs, user, machine, ...}: {
+{inputs, ...}: {
   nix.global = [
     # system options
     ({config, ...}: {
       # the rest
       system.stateVersion = "24.05";
-      networking.hostName = "${user}-${machine}";
       i18n.defaultLocale = "en_CA.UTF-8";
       time.timeZone = "America/Vancouver";
 
@@ -20,7 +19,6 @@
     inputs.home-manager.nixosModules.home-manager
     ({config, ...}: {
       users.users.main = {
-        name = user;
         isNormalUser = true;
         extraGroups = [
           "wheel"
@@ -31,15 +29,12 @@
         ];
       };
 
-      home-manager = {
-        extraSpecialArgs = {inherit user machine;};
-        users.main = {
-          home = {
-            stateVersion = "24.05"; # DO NOT CHANGE
-            username = "${user}";
-          };
-          imports = config._module.args.homeMods;
+      home-manager.users.main = {
+        home = {
+          stateVersion = "24.05"; # DO NOT CHANGE
+          username = "${config.users.users.main.name}";
         };
+        imports = config._module.args.homeMods;
       };
     })
   ];
@@ -54,7 +49,7 @@
         useDHCP = lib.mkDefault true;
         networkmanager.enable = true;
       };
-      home-manager.users.main.home.homeDirectory = "/home/${user}";
+      home-manager.users.main.home.homeDirectory = "/home/${config.users.users.main.name}";
     })
   ];
   nix.darwin = [
@@ -64,7 +59,7 @@
       ...
     }: {
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
-      home-manager.users.main.home.homeDirectory = "/Users/${user}";
+      home-manager.users.main.home.homeDirectory = "/Users/${config.users.users.main.name}";
     })
   ];
 }

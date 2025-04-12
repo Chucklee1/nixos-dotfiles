@@ -67,14 +67,14 @@
       };
 
     mkSystem = host: {
-      specialArgs = {
-        machine = host;
-        user = "goat";
-      };
-      modules = profiles.${host}.nix ++ [{_module.args.homeMods = profiles.${host}.home;}];
+      modules = profiles.${host}.nix ++ [({config, ...}: {
+        users.users.main.name = "goat";
+        networking.hostName = "${config.users.users.main.name}-${host}";
+        _module.args.homeMods = profiles.${host}.home;
+      })];
     };
     in {
-      #packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
       nixosConfigurations =
