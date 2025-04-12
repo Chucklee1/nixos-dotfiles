@@ -19,6 +19,7 @@
 
   outputs = {
     self,
+    nix-darwin,
     nixpkgs,
     ...
   } @ inputs:
@@ -70,14 +71,13 @@
     in {
       nixosConfigurations = genAttrs ["desktop" "nimbus"] (host: mkSystem host);
       darwinConfigurations.darwin = nix-darwin.lib.darwinSystem {
-        system = "x86_64-linux";
+        system = "x86_64-darwin";
         specialArgs = {inherit inputs;};
         modules = [
           ./darwin/system.nix
           inputs.home-manager.darwinModules.home-manager
           inputs.stylix.darwinModules.stylix
           {
-            nixpkgs = nixpkgsConfig;
             home-manager.extraSpecialArgs = {inherit inputs;};
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
