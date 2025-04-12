@@ -81,14 +81,13 @@
         genAttrs ["yggdrasil" "nimbus"]
         (host: nixosSystem {modules = mkMods host;});
 
-      darwinConfigurations."darwin" = nix-darwin.lib.darwinSystem {modules = mkMods "darwin" ++ [
-        ({
-          lib,
-          config,
-          ...
-        }: {
-          nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
-          home-manager.users.main.home.homeDirectory = "/Users/${users.users.main.name}";
+      darwinConfigurations."darwin" = nix-darwin.lib.darwinSystem {modules = raw.global.nix ++ [
+        ({lib, config, ...}: {
+        users.users.main.name = "goat";
+        networking.hostName = "${config.users.users.main.name}-darwin";
+        _module.args.homeMods = raw.global.home;
+        nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
+        home-manager.users.main.home.homeDirectory = "/Users/goat";
         })
       ];};
     };
