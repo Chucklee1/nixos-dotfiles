@@ -1,9 +1,18 @@
 {
   lib,
   pkgs,
+  inputs,
+  user,
+  userName,
+  userMail,
   ...
-}: {
-  imports = [./theming.nix];
+}: let
+  username = user;
+in {
+  imports = [
+    ./theming.nix
+    inputs.home-manager.darwinModules.home-manager
+  ];
 
   system.stateVersion = 6;
 
@@ -12,7 +21,23 @@
     config.allowUnfree = true;
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = ["nix-command" "flakes"];
+  };
+
+  users.users.goat = {
+    name = "${username}";
+    home = "/Users/${username}";
+    shell = pkgs.bashInteractive;
+  };
+
+  home-manager = {
+    extraSpecialArgs = {inherit inputs userName userMail;};
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.${user}.home.stateVersion = "24.05";
+  };
 
   system.defaults = {
     dock = {
@@ -23,6 +48,7 @@
     };
     finder = {
       AppleShowAllExtensions = true;
+      AppleShowAllFiles = true;
       ShowPathbar = true;
       FXEnableExtensionChangeWarning = false;
     };
@@ -32,13 +58,18 @@
     };
   };
 
+  programs.bash.enable = true;
+
   homebrew = {
     enable = true;
 
     /*
-      casks = [];
+      casks = [
+    ];
+    */
 
-    masApps = {
+    /*
+      masApps = {
       "Drafts" = 1435957248;
       "Reeder" = 1529448980;
       "Things" = 904280696;

@@ -1,8 +1,13 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [inputs.stylix.darwinModules.stylix];
   stylix = {
     enable = true;
     autoEnable = true;
-    #homeManagerIntegration.autoImport = true;
+    homeManagerIntegration.autoImport = true;
     image = ../assets/wallpaper.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
 

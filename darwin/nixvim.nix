@@ -4,6 +4,7 @@
   inputs,
   ...
 }: {
+  imports = [inputs.nixvim.homeManagerModules.stylix];
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
