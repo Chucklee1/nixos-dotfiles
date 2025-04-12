@@ -158,6 +158,12 @@
             mouse.accel-speed = 0.0;
             tablet.map-to-output = "eDP-1";
             touch.map-to-output = "eDP-1";
+            touchpad = {
+              tap = true;
+              dwt = true;
+              natural-scroll = true;
+              click-method = "clickfinger";
+            };
           }; # layout n theming
           layout = {
             gaps = 4;
@@ -202,12 +208,6 @@
   home.laptop = [
     {
       programs.niri.settings = {
-        input.touchpad = {
-          tap = true;
-          dwt = true;
-          natural-scroll = true;
-          click-method = "clickfinger";
-        };
         outputs = {
           "eDP-1".position = {
             x = 1920;

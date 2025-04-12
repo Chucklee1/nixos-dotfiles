@@ -12,12 +12,6 @@
     - current module names: global, laptop, desktop
     - global is merged with laptop & desktop
 
-# **TODO**
-
-- change names to cool fun ones:
-- desktop -> kaldorn
-- laptop -> yggdrasil
-- numbus -> vandrok
-
 # **CMD cheatsheet**
+
 - sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix --arg device '"/dev/vda"'

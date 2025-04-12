@@ -5,6 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -21,9 +23,7 @@
     ...
   } @ inputs:
     with nixpkgs.lib; let
-      system = "x86_64-linux";
       dir = "${self}/modules";
-      pkgs = nixpkgs.legacyPackages.${system};
 
       raw = let
         mergeAllRecursive = a: b:
@@ -61,15 +61,27 @@
 
       mkSystem = host:
         nixosSystem {
-          inherit system;
+          system = "x86_64-linux";
           modules = let
             mod = mergeMods "global" "${host}";
           in
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
     in {
-      formatter.${system} = pkgs.alejandra;
-      packages.${system} = import ./pkgs nixpkgs.legacyPackages.${system};
-      nixosConfigurations = genAttrs ["laptop" "desktop" "nimbus"] (host: mkSystem host);
+      nixosConfigurations = genAttrs ["desktop" "nimbus"] (host: mkSystem host);
+      darwinConfigurations.darwin = nix-darwin.lib.darwinSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./darwin/system.nix
+          inputs.home-manager.darwinModules.home-manager
+          {
+            nixpkgs = nixpkgsConfig;
+            home-manager.extraSpecialArgs = {inherit inputs;};
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+        ];
+      };
     };
 }
