@@ -1,8 +1,12 @@
 {
   lib,
   pkgs,
+  inputs,
   ...
 }: {
+  imports = [inputs.nixvim.homeManagerModules.nixvim];
+  stateVersion = "24.05"; # DO NOT CHANGE
+  username = "goat";
   programs = {
     btop.enable = true;
 
@@ -32,4 +36,5 @@
       };
     };
   };
+  homeDirectory = "/Users/goat";
 }

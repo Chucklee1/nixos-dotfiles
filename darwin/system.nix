@@ -3,11 +3,7 @@
   pkgs,
   ...
 }: {
-  imports = [
-    #./software.nix
-    ./theming.nix
-    #./nixvim.nix
-  ];
+  imports = [./theming.nix];
 
   system.stateVersion = 6;
 
@@ -17,14 +13,6 @@
   };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  /*
-    home-manager.users.main.home = {
-    stateVersion = "24.05"; # DO NOT CHANGE
-    username = "goat";
-    homeDirectory = "/Users/goat";
-  };
-  */
 
   system.defaults = {
     dock = {
