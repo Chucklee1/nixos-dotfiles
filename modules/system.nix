@@ -1,4 +1,4 @@
-{inputs, host, ...}: {
+{inputs, user, machine, ...}: {
   nix.global = [
     # system options
     ({config, ...}: {

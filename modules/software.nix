@@ -39,7 +39,7 @@
     ({
       lib,
       pkgs,
-      host,
+      machine,
       ...
     }: {
       home.packages = with pkgs; [
