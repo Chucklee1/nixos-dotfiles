@@ -60,12 +60,7 @@
 
       mergeMods = prev: next: (genAttrs ["nix" "home"] (type: raw.${type}.${prev} or [] ++ raw.${type}.${next} or []));
 
-      specialArgs = {
-        inherit inputs;
-        user = "goat";
-        userName = "Chucklee1";
-        userMail = "kermitthefrog@kakao.com";
-      };
+      specialArgs = {inherit inputs;};
 
       mkSystem = host:
         nixosSystem {
@@ -78,8 +73,8 @@
     in {
       nixosConfigurations = genAttrs ["desktop" "nimbus"] (host: mkSystem host);
       darwinConfigurations.macbookpro = nix-darwin.lib.darwinSystem {
+        inherit specialArgs;
         system = "x86_64-darwin";
-        specialArgs = {inherit specialArgs;};
         modules = [./darwin/system.nix];
       };
     };

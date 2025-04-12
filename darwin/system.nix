@@ -2,12 +2,9 @@
   lib,
   pkgs,
   inputs,
-  user,
-  userName,
-  userMail,
   ...
 }: let
-  username = user;
+  username = "goat";
 in {
   imports = [
     ./theming.nix
@@ -33,10 +30,13 @@ in {
   };
 
   home-manager = {
-    extraSpecialArgs = {inherit inputs userName userMail;};
+    extraSpecialArgs = {inherit inputs;};
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${user}.home.stateVersion = "24.05";
+    users.${username} = {
+      imports = [./nixvim.nix];
+      home.stateVersion = "24.05";
+    };
   };
 
   system.defaults = {
