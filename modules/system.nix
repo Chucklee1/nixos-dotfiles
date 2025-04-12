@@ -32,7 +32,7 @@
       };
 
       home-manager = {
-        extraSpecialArgs = {inherit host;};
+        extraSpecialArgs = {inherit user machine;};
         users.main = {
           home = {
             stateVersion = "24.05"; # DO NOT CHANGE
