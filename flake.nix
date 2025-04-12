@@ -58,7 +58,9 @@
         (builtins.foldl' mergeAllRecursive {})
       ];
 
-      mergeProfiles = profiles: map (list: concatLists raw.nix.${profile} or [] raw.home.${profile} or []) profiles;
+      mergeProfiles = profiles: concatLists (map (profile: 
+        (getAttr profile raw.nix or []) ++ (getAttr profile raw.home or [])
+      ) profiles);
 
       profiles = {
         yggdrasil = mergeProfiles ["global" "nixos" "yggdrasil"];

@@ -7,6 +7,6 @@ pkgs.writeShellApplication {
     if [SYSTEM != "darwin"]; then
       sudo nixos-rebuild switch --impure --show-trace --flake "$HOME/nixos-dotfiles#$SYSTEM"
     else then
-      sudo nixos-darwin switch --impure --show-trace --flake $HOME/nixos-dotfiles#darwin
+      darwin-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#darwin
   '';
 }
