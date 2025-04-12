@@ -19,75 +19,31 @@
   outputs = {
     self,
     nixpkgs,
+    home-manager,
     nix-darwin,
     ...
-  } @ inputs:
-    with nixpkgs.lib; let
-      systems = ["x86_64-linux" "x86_64-darwin"];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
-      dir = "${self}/modules";
-
-      mergeAllRecursive = a: b:
-        foldl' (
-          acc: key: let
-            va = a.${key} or null;
-            vb = b.${key} or null;
-            merged =
-              if va == null
-              then vb
-              else if vb == null
-              then va
-              else if isList va && isList vb
-              then va ++ vb
-              else if isAttrs va && isAttrs vb
-              then mergeAllRecursive va vb
-              else vb;
-          in
-            acc // {"${key}" = merged;}
-        ) {}
-        (unique (attrNames a ++ attrNames b));
-
-      raw = pipe (builtins.readDir dir) [
-        (filterAttrs (file: type: hasSuffix ".nix" file && type == "regular"))
-        attrNames
-        (map (file: import "${dir}/${file}"))
-        (map (file:
-          if isFunction file
-          then (file {inherit inputs;})
-          else file))
-        (builtins.foldl' mergeAllRecursive {})
-      ];
-
-      mergeProfiles = profiles: concatLists (map (profile: 
-        (getAttr profile raw.nix or []) ++ (getAttr profile raw.home or [])
-      ) profiles);
-
-      profiles = {
-        yggdrasil = mergeProfiles ["global" "nixos" "yggdrasil"];
-        laptop = mergeProfiles ["global" "nixos" "laptop"];
-        darwin = "global";
-      };
-
-    mkMods = host: (profiles.${host}.nix ++ [({config, ...}: {
-        users.users.main.name = "goat";
-        networking.hostName = "${config.users.users.main.name}-${host}";
-        _module.args.homeMods = profiles.${host}.home;
-      })]);
-    in {
+  } @ inputs: let 
+    systems = ["x86_64-linux" "x86-64-darwin"];
+    forAllSystems = nixpkgs.lib.genAttrs systems;
+  in {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
-      nixosConfigurations =
-        genAttrs ["yggdrasil" "nimbus"]
-        (host: nixosSystem {modules = mkMods host;});
+      /*nixosConfigurations.nimbus = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;};
+        modules = [];
+      };*/
 
-      darwinConfigurations."darwin" = nix-darwin.lib.darwinSystem {modules = raw.global.nix ++ [
-        ({lib, config, ...}: {
-        users.users.main.name = "goat";
-        _module.args.homeMods = raw.global.home;
-        nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
-        home-manager.users.main.home.homeDirectory = "/Users/goat";
-        })
-      ];};
-    };
+      darwinConfigurations.darwin = nix-darwin.lib.darwinSystem {
+        system = "x86_64-darwin";
+        specialArgs = {inherit inputs;};
+        modules = [./modules/darwin]; 
+      };
+
+      homeConfigurations.darwin = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages."x86_64-darwin"; 
+          extraSpecialArgs = {inherit specialArgs;};
+          modules = [./modules/home];
+        };
+  };
 }
