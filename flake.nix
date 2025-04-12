@@ -65,24 +65,31 @@
       profiles = {
         yggdrasil = mergeProfiles ["global" "nixos" "yggdrasil"];
         laptop = mergeProfiles ["global" "nixos" "laptop"];
-        darwin = mergeProfiles ["global" "darwin"];
+        darwin = "global";
       };
 
-    mkSystem = host: {
-      modules = profiles.${host}.nix ++ [({config, ...}: {
+    mkMods = host: (profiles.${host}.nix ++ [({config, ...}: {
         users.users.main.name = "goat";
         networking.hostName = "${config.users.users.main.name}-${host}";
         _module.args.homeMods = profiles.${host}.home;
-      })];
-    };
+      })]);
     in {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
       nixosConfigurations =
         genAttrs ["yggdrasil" "nimbus"]
-        (host: nixosSystem (mkSystem host));
+        (host: nixosSystem {modules = mkMods host;});
 
-      darwinConfigurations."darwin" = nix-darwin.lib.darwinSystem (mkSystem "darwin");
+      darwinConfigurations."darwin" = nix-darwin.lib.darwinSystem {modules = mkMods "darwin" ++ [
+        ({
+          lib,
+          config,
+          ...
+        }: {
+          nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
+          home-manager.users.main.home.homeDirectory = "/Users/${users.users.main.name}";
+        })
+      ];};
     };
 }

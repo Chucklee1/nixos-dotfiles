@@ -1,9 +1,10 @@
-{inputs, ...}: {
+{inputs, user, machine, ...}: {
   nix.global = [
     # system options
     ({config, ...}: {
       # the rest
       system.stateVersion = "24.05";
+      networking.hostName = "${user}-${machine}";
       i18n.defaultLocale = "en_CA.UTF-8";
       time.timeZone = "America/Vancouver";
 
@@ -32,7 +33,7 @@
       home-manager.users.main = {
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
-          username = "${config.users.users.main.name}";
+          username = "${user}";
         };
         imports = config._module.args.homeMods;
       };
@@ -49,17 +50,7 @@
         useDHCP = lib.mkDefault true;
         networkmanager.enable = true;
       };
-      home-manager.users.main.home.homeDirectory = "/home/${config.users.users.main.name}";
-    })
-  ];
-  nix.darwin = [
-    ({
-      lib,
-      config,
-      ...
-    }: {
-      nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
-      home-manager.users.main.home.homeDirectory = "/Users/${config.users.users.main.name}";
+      home-manager.users.main.home.homeDirectory = "/home/${users.users.main.name}";
     })
   ];
 }
