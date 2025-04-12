@@ -3,18 +3,40 @@
     inputs.stylix.nixosModules.stylix
     ({pkgs, ...}: {
       stylix = {
-        # re-defined here since darwin does not have these options on system level
         cursor.package = pkgs.bibata-cursors;
         cursor.name = "Bibata-Modern-Classic";
         cursor.size = 24;
 
-        fonts.sizes = {
-          applications = 12;
-          terminal = 12;
-          desktop = 11;
-          popups = 12;
+        fonts = {
+          monospace.package = pkgs.nerd-fonts.jetbrains-mono;
+          monospace.name = "JetBrainsMono Nerd Font Mono";
+          sansSerif.package = pkgs.noto-fonts-cjk-sans;
+          sansSerif.name = "Noto Sans CJK";
+          serif.package = pkgs.noto-fonts-cjk-serif;
+          serif.name = "Noto Serif CJK";
+
+          sizes = {
+            applications = 12;
+            terminal = 12;
+            desktop = 11;
+            popups = 12;
+          };
         };
       };
+    })
+  ];
+
+  home.global = [
+    ({pkgs, ...}: {
+      stylix = {
+        iconTheme = {
+          enable = true;
+          package = pkgs.papirus-icon-theme;
+          dark = "Papirus-Dark";
+        };
+      };
+      gtk.enable = true;
+      qt.enable = true;
     })
   ];
 }

@@ -1,7 +1,7 @@
 {
   lib,
   pkgs,
-  username,
+  ops,
   ...
 }: {
   # system - nix
@@ -19,8 +19,8 @@
 
   # system - user
   users.users.goat = {
-    name = "${username}";
-    home = "/Users/${username}";
+    name = "${ops.user}";
+    home = "/Users/${ops.user}";
     shell = pkgs.bash;
   };
 

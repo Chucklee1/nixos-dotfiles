@@ -1,6 +1,6 @@
 {
   imports = [
-    ./stylix/system.nix
+    ./stylix.nix
     ./home.nix # needs to be imported, home man >:(
   ];
 }
