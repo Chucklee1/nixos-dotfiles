@@ -75,6 +75,7 @@
         modules = [
           ./darwin/system.nix
           inputs.home-manager.darwinModules.home-manager
+          inputs.stylix.darwinModules.stylix
           {
             nixpkgs = nixpkgsConfig;
             home-manager.extraSpecialArgs = {inherit inputs;};
