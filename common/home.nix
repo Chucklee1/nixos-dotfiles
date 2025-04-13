@@ -13,7 +13,6 @@
         ./home/git.nix
         ./home/kitty.nix
         ./home/nixvim.nix
-        ./stylix/home.nix
       ];
       home.stateVersion = "24.05";
     };

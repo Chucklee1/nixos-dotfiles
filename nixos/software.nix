@@ -58,14 +58,13 @@
 
       programs = {
         # diagnostics
+        btop.enable = true;
         mangohud.enable = true;
         # browser
         chromium = {
           enable = true;
           package = pkgs.ungoogled-chromium;
         };
-        # terminal emulator
-        kitty.enable = true;
       };
     })
   ];

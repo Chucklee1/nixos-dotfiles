@@ -15,7 +15,7 @@
     oh-my-posh = {
       enable = true;
       enableBashIntegration = true;
-      useTheme = "https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/themes/pure.omp.json";
+      useTheme = "pure.omp.json";
     };
   };
 }
