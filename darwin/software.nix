@@ -7,7 +7,7 @@
   services.tailscale.enable = true;
   programs.bash = {
     enable = true;
-    bashinteractiveShellInit =
+    interactiveShellInit =
       #bash
       ''
         alias cg='nix-collect-garbage'
@@ -21,6 +21,7 @@
   # homebrew
   homebrew = {
     enable = true;
+    brews = ["navidrome"];
     casks = [
       "kitty"
       "raycast"
@@ -40,10 +41,6 @@
     */
   };
 
-  fonts.fonts = [
-    pkgs.nerd-fonts.jetbrains-mono
-  ];
-
   # nix
   environment.systemPackages = with pkgs; [
     # dev
@@ -51,8 +48,6 @@
     gnumake
     gdb
     gcc
-    # server
-    navidrome
   ];
 
   # home manager
