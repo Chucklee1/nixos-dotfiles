@@ -36,7 +36,11 @@
   ];
 
   home.global = [
-    ({pkgs, ...}: {
+    ({
+      lib,
+      pkgs,
+      ...
+    }: {
       home.packages = with pkgs; [
         # dev tools
         openai
@@ -60,10 +64,43 @@
         # diagnostics
         btop.enable = true;
         mangohud.enable = true;
+        #git
+        git = {
+          enable = true;
+          userEmail = "kermitthefrog@kakao.com";
+          userName = "Chucklee1";
+        };
+
         # browser
         chromium = {
           enable = true;
           package = pkgs.ungoogled-chromium;
+        };
+
+        # shell
+        kitty = {
+          enable = true;
+          settings = {
+            confirm_os_window_close = 0;
+            hide_window_decorations = true;
+            tab_bar_edge = "top";
+            tab_bar_style = lib.mkForce "slant";
+          };
+        };
+
+        bash = {
+          enable = true;
+          shellAliases = {
+            cg = "nix-collect-garbage";
+            update-flake = "nix flake update $HOME/nixos-dotfiles";
+            rebuild-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
+            rebuild-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
+          };
+        };
+        oh-my-posh = {
+          enable = true;
+          enableBashIntegration = true;
+          useTheme = "pure";
         };
       };
     })

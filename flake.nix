@@ -20,14 +20,7 @@
   outputs = {nixpkgs, ...} @ inputs:
     with nixpkgs.lib; let
       #dir = "${self}/nixos";
-      specialArgs = {
-        inherit inputs;
-        ops = {
-          user = "goat";
-          userName = "Chucklee1";
-          userEmail = "kermitthefrog@kakao.com";
-        };
-      };
+      specialArgs = {inherit inputs;};
       /*
         raw = let
         mergeAllRecursive = a: b:
@@ -74,15 +67,10 @@
       */
     in {
       nixosConfigurations = genAttrs ["desktop" "nimbus"] (host: mkSystem host);
-      darwinConfigurations.macbook = inputs.nix-darwin.lib.darwinSystem {
+      darwinConfigurations.macbookpro = inputs.nix-darwin.lib.darwinSystem {
         inherit specialArgs;
         system = "x86_64-darwin";
-        modules = [
-          ./darwin/system.nix
-          ./common
-          inputs.home-manager.darwinModules.home-manager
-          inputs.stylix.darwinModules.stylix
-        ];
+        modules = [./darwin];
       };
     };
 }

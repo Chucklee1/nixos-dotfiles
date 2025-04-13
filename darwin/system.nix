@@ -1,7 +1,7 @@
 {
   lib,
   pkgs,
-  ops,
+  inputs,
   ...
 }: {
   # system - nix
@@ -16,14 +16,22 @@
     package = pkgs.nix;
     settings.experimental-features = ["nix-command" "flakes"];
   };
-
   # system - user
   users.users.goat = {
-    name = "${ops.user}";
-    home = "/Users/${ops.user}";
-    shell = pkgs.bash;
+    name = "goat";
+    home = "/Users/goat";
   };
 
+  imports = [inputs.home-manager.darwinModules.home-manager];
+  home-manager = {
+    extraSpecialArgs = {inherit inputs;};
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.goat = {
+      imports = [../nixos/nixvim.nix];
+      home.stateVersion = "24.05";
+    };
+  };
   # system - macos
   system.defaults = {
     dock = {
@@ -43,27 +51,4 @@
       "com.apple.keyboard.fnState" = true;
     };
   };
-
-  # programs - nix
-  programs.bash.enable = true;
-
-  # programs - homebrew
-  homebrew = {
-    enable = true;
-
-    casks = [
-      "kitty"
-    ];
-
-    /*
-      masApps = {
-      "Drafts" = 1435957248;
-      "Reeder" = 1529448980;
-      "Things" = 904280696;
-      "Timery" = 1425368544;
-    };
-    */
-  };
-
-  #fonts.fonts = [];
 }
