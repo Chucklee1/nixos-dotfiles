@@ -1,27 +1,30 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # darwin
   services.tailscale.enable = true;
-  programs.bash = {
-    enable = true;
-    interactiveShellInit =
+
+  environment = {
+    etc."bashrc".text =
       #bash
       ''
         alias cg='nix-collect-garbage'
         alias update-flake='nix-flake-update'
-        alias rebuild-macbook='darwin-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#macbookpro'
+        alias rebuild-macbook='darwin-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#macbook'
 
         eval "$(${pkgs.oh-my-posh}/bin/oh-my-posh init bash --config ${pkgs.oh-my-posh}/themes/pure.omp.json)"
       '';
+    shells = [pkgs.bash pkgs.bashInteractive];
+    systemPackages = with pkgs; [
+      # dev
+      python3
+      gnumake
+      gdb
+      gcc
+    ];
   };
 
   # homebrew
   homebrew = {
     enable = true;
-    brews = ["navidrome"];
     casks = [
       "kitty"
       "raycast"
@@ -30,27 +33,10 @@
       "submariner"
       "logisim-evolution"
     ];
-
-    /*
-      masApps = {
-      "Drafts" = 1435957248;
-      "Reeder" = 1529448980;
-      "Things" = 904280696;
-      "Timery" = 1425368544;
-    };
-    */
   };
 
-  # nix
-  environment.systemPackages = with pkgs; [
-    # dev
-    python3
-    gnumake
-    gdb
-    gcc
-  ];
-
-  # home manager
+  /*
+    # home manager
   home-manager.users.goat.programs = {
     btop.enable = true;
     git = {
@@ -68,4 +54,5 @@
       };
     };
   };
+  */
 }
