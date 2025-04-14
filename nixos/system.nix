@@ -12,7 +12,7 @@
         networkmanager.enable = true;
       };
       i18n.defaultLocale = "en_CA.UTF-8";
-      timeZone.time = "America/Vancouver";
+      time.timeZone = "America/Vancouver";
 
       # nix
       nixpkgs = {

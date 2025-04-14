@@ -38,6 +38,7 @@
   home.global = [
     ({
       lib,
+      config,
       pkgs,
       ...
     }: {
@@ -90,11 +91,29 @@
 
         bash = {
           enable = true;
-          shellAliases = {
+          shellAliases = let
+            flake = "--impure --show-trace --flake github:Chucklee1/nixos-dotfiles";
+          in {
+            # nix - system installation
+            show-hardware = "sudo nixos-generate-config ${flake}";
+            install-mnt = "sudo nixos-install --root /mnt ${flake}";
+            # nix - general
             cg = "nix-collect-garbage";
             update-flake = "nix flake update $HOME/nixos-dotfiles";
-            rebuild-desktop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#desktop";
-            rebuild-laptop = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#laptop";
+            rebuild-desktop = "sudo nixos-rebuild switch ${flake}";
+            rebuild-laptop = "sudo nixos-rebuild switch  ${flake}";
+            # git
+            sshkey-init = "ssh-keygen -t ed25519 -C ${config.programs.git.userEmail}";
+            open-sops = ''nix-shell -p sops --run "sops $HOME/nixos-dotfiles/secrets.yaml"'';
+            clone-flake = ''
+              if [ -e /home/goat/.ssh/id_ed25519.pub ]; then
+                echo "found ssh key, cloning with ssh..."
+                git clone git@github.com:Chucklee1/nixos-dotfiles
+              else
+                echo "no ssh key found, trying tls..."
+                git clone https://github.com/Chucklee1/nixos-dotfiles
+              fi
+            '';
           };
         };
         oh-my-posh = {
