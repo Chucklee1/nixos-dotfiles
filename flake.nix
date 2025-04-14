@@ -71,7 +71,7 @@
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
     in {
-      nixosConfigurations = genAttrs ["desktop" "nimbus"] (host: mkSystem host);
+      nixosConfigurations = genAttrs ["desktop" "laptop" "nimbus"] (host: mkSystem host);
       darwinConfigurations.macbookpro = inputs.nix-darwin.lib.darwinSystem {
         inherit specialArgs;
         system = "x86_64-darwin";
