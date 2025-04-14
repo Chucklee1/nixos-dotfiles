@@ -14,4 +14,4 @@
 
 # **CMD cheatsheet**
 
-- sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix --arg device '"/dev/vda"'
+- sudo tar czvf navidrome-backup.tar.gz folder/\*

@@ -95,6 +95,7 @@
             flake = "--impure --show-trace --flake github:Chucklee1/nixos-dotfiles";
           in {
             # nix - system installation
+            disko-generate = ''sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix'';
             show-hardware = "sudo nixos-generate-config ${flake}";
             install-mnt = "sudo nixos-install --root /mnt ${flake}";
             # nix - general
