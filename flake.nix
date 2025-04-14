@@ -19,10 +19,9 @@
 
   outputs = {nixpkgs, ...} @ inputs:
     with nixpkgs.lib; let
-      #dir = "${self}/nixos";
+      dir = "${self}/nixos";
       specialArgs = {inherit inputs;};
-      /*
-        raw = let
+      raw = let
         mergeAllRecursive = a: b:
           foldl' (
             acc: key: let
@@ -64,7 +63,6 @@
           in
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
-      */
     in {
       nixosConfigurations = genAttrs ["desktop" "nimbus"] (host: mkSystem host);
       darwinConfigurations.macbookpro = inputs.nix-darwin.lib.darwinSystem {
