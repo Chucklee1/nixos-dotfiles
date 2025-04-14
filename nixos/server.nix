@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{
   nix.global = [
     {
       services.openssh = {
@@ -11,7 +11,8 @@
     }
   ];
 
-  nix.laptop = [
+  /*
+    nix.laptop = [
     # tailscale
     {
       services.tailscale = {
@@ -50,4 +51,5 @@
       };
     })
   ];
+  */
 }

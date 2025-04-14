@@ -32,28 +32,16 @@ in {
     }
   ];
 
-  nix.laptop = [
-    {
-      boot = {
-        initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
-        initrd.kernelModules = [];
-        kernelModules = ["kvm-amd"];
-        extraModulePackages = [];
-      };
-      hardware.cpu.amd.updateMicrocode = true;
-    }
-  ];
-
   nix.nimbus = [
     inputs.disko.nixosModules.default
     (import ../assets/btrfs.nix {device = "/dev/sdb";})
-    {  
+    {
       boot = {
-        initrd.availableKernelModules = [ "nvme" "xhci_pci" "uas" "usb_storage" "sd_mod" ];
-        initrd.kernelModules = [ "dm-snapshot" ];
+        initrd.availableKernelModules = ["nvme" "xhci_pci" "uas" "usb_storage" "sd_mod"];
+        initrd.kernelModules = ["dm-snapshot"];
         # kernelModules = [ ];
         # extraModulePackages = [ ];
-        supportedFilesystems = ["ntfs" "btrfs" ];
+        supportedFilesystems = ["ntfs" "btrfs" "apfs"];
       };
       hardware.enableRedistributableFirmware = true;
     }

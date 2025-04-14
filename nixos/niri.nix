@@ -204,22 +204,4 @@
       };
     }
   ];
-
-  home.laptop = [
-    {
-      programs.niri.settings = {
-        outputs = {
-          "eDP-1".position = {
-            x = 1920;
-            y = 0;
-          };
-          "DP-5".mode = {
-            width = 1920;
-            height = 1080;
-            refresh = 165.001;
-          };
-        };
-      };
-    }
-  ];
 }

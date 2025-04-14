@@ -12,15 +12,14 @@
       services.displayManager.ly.enable = true;
     }
   ];
-  
+
   nix.desktop = [{boot.loader.efi.canTouchEfiVariables = true;}];
-  nix.laptop = [{boot.loader.efi.canTouchEfiVariables = true;}];
 
   nix.nimbus = [
-     inputs.impermanence.nixosModules.impermanence
+    inputs.impermanence.nixosModules.impermanence
     ({lib, ...}: {
       boot.loader.grub.efiInstallAsRemovable = lib.mkDefault true;
-      
+
       users.users.main = {
         initialPassword = "password";
       };
@@ -68,7 +67,7 @@
         ];
       };
 
-      programs.fuse.userAllowOther = true;  
+      programs.fuse.userAllowOther = true;
     })
   ];
 }

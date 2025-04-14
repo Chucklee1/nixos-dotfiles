@@ -74,11 +74,4 @@
       '';
     }
   ];
-  nix.laptop = [
-    # gpu
-    {
-      services.xserver.videoDrivers = ["amdgpu"];
-      hardware.amdgpu.amdvlk.enable = true;
-    }
-  ];
 }
