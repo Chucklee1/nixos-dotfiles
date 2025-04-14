@@ -17,7 +17,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = {nixpkgs, ...} @ inputs:
+  outputs = {self, nixpkgs, ...} @ inputs:
     with nixpkgs.lib; let
       dir = "${self}/nixos";
       specialArgs = {inherit inputs;};
