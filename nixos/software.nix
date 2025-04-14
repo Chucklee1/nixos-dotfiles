@@ -101,8 +101,8 @@
             # nix - general
             cg = "nix-collect-garbage";
             update-flake = "nix flake update $HOME/nixos-dotfiles";
-            rebuild-desktop = "sudo nixos-rebuild switch ${flake}";
-            rebuild-laptop = "sudo nixos-rebuild switch  ${flake}";
+            rebuild-desktop = "sudo nixos-rebuild switch ${flake}#desktop";
+            rebuild-laptop = "sudo nixos-rebuild switch  ${flake}#laptop";
             # git
             sshkey-init = "ssh-keygen -t ed25519 -C ${config.programs.git.userEmail}";
             open-sops = ''nix-shell -p sops --run "sops $HOME/nixos-dotfiles/secrets.yaml"'';

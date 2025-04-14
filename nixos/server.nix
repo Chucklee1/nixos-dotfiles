@@ -1,17 +1,5 @@
-{
-  nix.global = [
-    {
-      services.openssh = {
-        enable = true;
-        settings = {
-          PasswordAuthentication = false;
-          PermitRootLogin = "prohibit-password";
-        };
-      };
-    }
-  ];
-
-  nix.laptop = [
+let
+  navidrome = [
     # tailscale
     {
       services.tailscale = {
@@ -49,4 +37,19 @@
       };
     })
   ];
+in {
+  nix.global = [
+    {
+      services.openssh = {
+        enable = true;
+        settings = {
+          PasswordAuthentication = false;
+          PermitRootLogin = "prohibit-password";
+        };
+      };
+    }
+  ];
+
+  nix.laptop = navidrome;
+  nix.desktop = navidrome;
 }

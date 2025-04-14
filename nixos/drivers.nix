@@ -59,7 +59,7 @@
       config,
       ...
     }: {
-      environment.variables = (lib.mkIf config.programs.niri.enable == true) {
+      environment.variables = lib.mkIf (config.programs.niri.enable == true) {
         GBM_BACKEND = "nvidia-drm";
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };
