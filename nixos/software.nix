@@ -36,7 +36,6 @@
   ];
 
   home.global = [
-    ../assets/nixvim.nix
     ({
       lib,
       pkgs,

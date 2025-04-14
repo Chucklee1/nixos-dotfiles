@@ -28,7 +28,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     users.goat = {
-      imports = [../assets/nixvim.nix];
+      imports = [(import ../assets/nixvim.nix {inherit inputs;}).home.global];
       home.stateVersion = "24.05";
     };
   };

@@ -3,9 +3,18 @@
     inputs.stylix.nixosModules.stylix
     ({pkgs, ...}: {
       stylix = {
-        cursor.package = pkgs.bibata-cursors;
-        cursor.name = "Bibata-Modern-Classic";
-        cursor.size = 24;
+        enable = true;
+        autoEnable = true;
+        homeManagerIntegration.autoImport = true;
+        image = ../assets/wallpaper.png;
+        base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
+        polarity = "dark";
+
+        cursor = {
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Classic";
+          size = 24;
+        };
 
         fonts = {
           monospace.package = pkgs.nerd-fonts.jetbrains-mono;

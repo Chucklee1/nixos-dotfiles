@@ -62,9 +62,29 @@
           #{ directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
         ];
         files = [
-          "/etc/machine-id"
           #{ file = "/var/keys/secret_file"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
         ];
+        users.talyz = {
+          directories = [
+            "Downloads"
+            "Music"
+            "Pictures"
+            "Documents"
+            "nixos-dotfiles"
+            {
+              directory = ".ssh";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/keyrings";
+              mode = "0700";
+            }
+            ".local/share/direnv"
+          ];
+          files = [
+            #".screenrc"
+          ];
+        };
       };
 
       programs.fuse.userAllowOther = true;
