@@ -20,10 +20,6 @@
     ({lib, ...}: {
       boot.loader.grub.efiInstallAsRemovable = lib.mkDefault true;
 
-      users.users.main = {
-        initialPassword = "password";
-      };
-
       boot.initrd.postDeviceCommands = lib.mkAfter ''
         mkdir /btrfs_tmp
         mount /dev/root_vg/root /btrfs_tmp

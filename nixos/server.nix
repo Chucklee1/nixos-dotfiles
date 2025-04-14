@@ -11,8 +11,7 @@
     }
   ];
 
-  /*
-    nix.laptop = [
+  nix.laptop = [
     # tailscale
     {
       services.tailscale = {
@@ -33,7 +32,6 @@
         Port = config.services.tailscale.port;
 
         EnableInsightsCollector = false;
-        ArtistArtPriority = "external";
 
         MusicFolder = "/home/goat/Music";
         DataFolder = "${root}/data";
@@ -51,5 +49,4 @@
       };
     })
   ];
-  */
 }

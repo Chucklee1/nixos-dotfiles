@@ -66,7 +66,6 @@
     })
     # tablet support
     {
-      users.users.main.extraGroups = ["uinput"];
       hardware.uinput.enable = true;
       programs.weylus.enable = true;
       services.udev.extraRules = ''

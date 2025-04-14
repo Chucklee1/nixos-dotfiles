@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{inputs, user, ...}: {
   nix.laptop = [
     inputs.sops-nix.nixosModules.sops
     {
@@ -13,10 +13,10 @@
       };
     }
     ({config, ...}: {
-      users.users.main = {
+      users.users.${goat} = {
         hashedPasswordFile = config.sops.secrets.super-secret-password.path;
       };
-      networking.hostName = "${config.users.users.main.name}-macbook";
+      networking.hostName = "${user}-macbook";
     })
   ];
 }

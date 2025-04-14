@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  user,
+  ...
+}: {
   nix.global = [
     # system
     ({lib, ...}: {
@@ -8,8 +12,7 @@
         networkmanager.enable = true;
       };
       i18n.defaultLocale = "en_CA.UTF-8";
-      # auto-timezone:
-      services.automatic-timezoned.enable = true;
+      timeZone.time = "America/Vancouver";
 
       # nix
       nixpkgs = {
@@ -25,7 +28,7 @@
     # user
     inputs.home-manager.nixosModules.home-manager
     ({config, ...}: {
-      users.users.main = {
+      users.users.${user} = {
         name = "goat";
         isNormalUser = true;
         extraGroups = [
@@ -37,16 +40,16 @@
         ];
       };
 
-      home-manager.users.main = {
+      home-manager.users.${user} = {
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
-          username = "${config.users.users.main.name}";
-          homeDirectory = "/home/${config.users.users.main.name}";
+          username = "${config.users.users.${user}.name}";
+          homeDirectory = "/home/${config.users.users.${user}.name}";
         };
         imports = config._module.args.homeMods;
       };
     })
   ];
-  nix.desktop = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-desktop";})];
-  nix.nimbus = [({config, ...}: {networking.hostName = "${config.users.users.main.name}-nimbus";})];
+  nix.desktop = [({config, ...}: {networking.hostName = "${config.users.users.${user}.name}-desktop";})];
+  nix.nimbus = [({config, ...}: {networking.hostName = "${config.users.users.${user}.name}-nimbus";})];
 }
