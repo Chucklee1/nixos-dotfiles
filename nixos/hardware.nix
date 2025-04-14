@@ -31,8 +31,8 @@ in {
     inputs.disko.nixosModules.default
     (import ../assets/ext4.nix {device = "/dev/nvme0n1";})
     {
-      boot.initrd = {
-        availableKernelModules = ["nvme" "xhci_pci"];
+      boot = {
+        initrd.availableKernelModules = ["nvme" "xhci_pci"];
         initrd.kernelModules = [];
         kernelModules = ["kvm-amd"];
         extraModulePackages = [];
