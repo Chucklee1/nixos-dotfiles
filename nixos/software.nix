@@ -34,7 +34,6 @@
       };
     })
   ];
-
   home.global = [
     ({
       lib,
@@ -42,6 +41,7 @@
       pkgs,
       ...
     }: {
+      nixpkgs.config.allowUnfree = true;
       home.packages = with pkgs; [
         # dev tools
         openai
@@ -57,6 +57,7 @@
         feishin
         qbittorrent
         musescore
+        muse-sounds-manager
         libreoffice
         logisim-evolution
       ];
@@ -100,7 +101,7 @@
             install-mnt = "sudo nixos-install --root /mnt ${flake}";
             # nix - general
             cg = "nix-collect-garbage";
-            update-flake = "nix flake update $HOME/nixos-dotfiles";
+            update-flake = "nix flake update --flake $HOME/nixos-dotfiles";
             rebuild-desktop = "sudo nixos-rebuild switch ${flake}#desktop";
             rebuild-laptop = "sudo nixos-rebuild switch  ${flake}#laptop";
             # git
