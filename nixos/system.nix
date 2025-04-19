@@ -4,8 +4,13 @@
   ...
 }: {
   nix.global = [
+    inputs.home-manager.nixosModules.home-manager
     # system
-    ({lib, ...}: {
+    ({
+      lib,
+      config,
+      ...
+    }: {
       system.stateVersion = "24.05";
       networking = {
         useDHCP = lib.mkDefault true;
@@ -23,11 +28,8 @@
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
       };
-    })
 
-    # user
-    inputs.home-manager.nixosModules.home-manager
-    ({config, ...}: {
+      # user
       users.users.${user} = {
         name = "goat";
         isNormalUser = true;
@@ -41,6 +43,7 @@
       };
 
       home-manager.users.${user} = {
+        nixpkgs.config.allowUnfree = true;
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
           username = "${config.users.users.${user}.name}";
