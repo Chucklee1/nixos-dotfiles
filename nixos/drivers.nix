@@ -9,7 +9,6 @@
           vulkan-tools
           vulkan-loader
           libvdpau-va-gl
-          ffmpeg
         ];
       };
 

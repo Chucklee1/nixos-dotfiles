@@ -16,6 +16,7 @@
         file-roller
         p7zip
         mpv
+        ffmpeg
         pavucontrol
         v4l-utils
       ];
@@ -28,6 +29,7 @@
           enable = true;
           plugins = with pkgs.xfce; [
             thunar-archive-plugin
+            thunar-media-tags-plugin
             thunar-volman
           ];
         };
@@ -51,13 +53,11 @@
         # apps
         tenacity
         gimp
-        spotdl
         picard
         feishin
         qbittorrent
         musescore
         muse-sounds-manager
-        libreoffice
         logisim-evolution
       ];
 
