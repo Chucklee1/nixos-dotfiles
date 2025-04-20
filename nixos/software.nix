@@ -92,7 +92,7 @@
         bash = {
           enable = true;
           shellAliases = let
-            flake = "--impure --show-trace --flake github:Chucklee1/nixos-dotfiles";
+            flake = "--impure --show-trace --flake $HOME/nixos-dotfiles";
           in {
             # nix - system installation
             disko-generate = ''sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix'';
