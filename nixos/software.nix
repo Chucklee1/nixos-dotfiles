@@ -54,7 +54,6 @@
         tenacity
         gimp
         picard
-        feishin
         qbittorrent
         musescore
         muse-sounds-manager
@@ -102,9 +101,10 @@
             cg = "nix-collect-garbage";
             update-flake = "nix flake update --flake $HOME/nixos-dotfiles";
             rebuild-desktop = "sudo nixos-rebuild switch ${flake}#desktop";
-            rebuild-laptop = "sudo nixos-rebuild switch  ${flake}#laptop";
-            # git
+            rebuild-macbook = "sudo nixos-rebuild switch  ${flake}#macbook";  
+            # tools - git
             sshkey-init = "ssh-keygen -t ed25519 -C ${config.programs.git.userEmail}";
+            age-keygen = ''nix-shell -p age --run "age-keygen $HOME/keys.txt"'';
             open-sops = ''nix-shell -p sops --run "sops $HOME/nixos-dotfiles/secrets.yaml"'';
             clone-flake = ''
               if [ -e /home/goat/.ssh/id_ed25519.pub ]; then
@@ -114,7 +114,12 @@
                 echo "no ssh key found, trying tls..."
                 git clone https://github.com/Chucklee1/nixos-dotfiles
               fi
-            '';
+              '';
+              # tools - ffmpeg
+              wav-to-flac = '' 
+                for i in *.wav; do ffmpeg -i "$i" -c:a flac "${i%.*}.flac"; done
+                for i in *.wav; do rm "$i"; done
+              '';
           };
         };
         oh-my-posh = {
@@ -127,21 +132,23 @@
   ];
 
   nix.desktop = [
+    # games
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         osu-lazer-bin
         prismlauncher
       ];
-    })
-    {
       programs.steam = {
         enable = true;
+        protonTricks.enable = true;
+        gamescopeSession.enable = true;
+        extraCompatPackages = [pkgs.proton-ge-bin];
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
       };
-      environment.variables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools..d";
-    }
+    })
+
     # wine
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -150,8 +157,6 @@
         wine
         wineWowPackages.stagingFull
         winetricks
-        protonup-qt
-        protontricks
       ];
     })
   ];
