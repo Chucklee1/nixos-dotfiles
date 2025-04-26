@@ -61,15 +61,12 @@ in
       hardware.cpu.amd.updateMicrocode = true;
     }
   ];
-  nix.nimbus = [
+  nix.macbook = [
     inputs.disko.nixosModules.default
-    (import ../assets/btrfs.nix {device = "/dev/sdb";})
+    (import ../assets/btrfs.nix {device = "/dev/sda";})
     {
       boot = {
-        initrd.availableKernelModules = ["nvme" "xhci_pci" "uas" "usb_storage" "sd_mod"];
-        initrd.kernelModules = ["dm-snapshot"];
-        # kernelModules = [ ];
-        # extraModulePackages = [ ];
+        # TODO
         supportedFilesystems = ["ntfs" "btrfs" "apfs"];
       };
       hardware.enableRedistributableFirmware = true;

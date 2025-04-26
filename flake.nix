@@ -5,8 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -67,12 +65,5 @@
           in
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
-    in {
-      nixosConfigurations = genAttrs ["desktop" "laptop" "nimbus"] (host: mkSystem host);
-      darwinConfigurations.macbookpro = inputs.nix-darwin.lib.darwinSystem {
-        inherit specialArgs;
-        system = "x86_64-darwin";
-        modules = [./darwin];
-      };
-    };
+    in {nixosConfigurations = genAttrs ["desktop" "laptop" "macbook"] (host: mkSystem host);};
 }

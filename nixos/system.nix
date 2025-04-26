@@ -53,6 +53,4 @@
       };
     })
   ];
-  nix.desktop = [({config, ...}: {networking.hostName = "${config.users.users.${user}.name}-desktop";})];
-  nix.nimbus = [({config, ...}: {networking.hostName = "${config.users.users.${user}.name}-nimbus";})];
 }
