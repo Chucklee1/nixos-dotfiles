@@ -21,7 +21,7 @@
     ...
   } @ inputs:
     with nixpkgs.lib; let
-      dir = "${self}/nixos";
+      dir = "${self}/modules";
       user = "goat";
       raw = let
         mergeAllRecursive = a: b:
@@ -50,7 +50,7 @@
           (map (file: import "${dir}/${file}"))
           (map (file:
             if isFunction file
-            then (file {inherit inputs user;})
+            then (file {inherit inputs self user;})
             else file))
           (builtins.foldl' mergeAllRecursive {})
         ];

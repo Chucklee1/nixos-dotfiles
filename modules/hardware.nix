@@ -50,7 +50,7 @@ in
   ];
   nix.laptop = [
     inputs.disko.nixosModules.default
-    (import ../assets/ext4.nix {device = "/dev/nvme0n1";})
+    (import ../assets/disko/ext4.nix {device = "/dev/nvme0n1";})
     {
       boot = {
         initrd.availableKernelModules = ["nvme" "xhci_pci"];
@@ -63,7 +63,7 @@ in
   ];
   nix.macbook = [
     inputs.disko.nixosModules.default
-    (import ../assets/btrfs.nix {device = "/dev/sda";})
+    (import ../assets/disko/btrfs.nix {device = "/dev/sda";})
     {
       boot = {
         # TODO

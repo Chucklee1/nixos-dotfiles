@@ -6,7 +6,7 @@
         enable = true;
         autoEnable = true;
         homeManagerIntegration.autoImport = true;
-        image = ../assets/wallpaper.png;
+        image = ../assets/wallpapers/wallpaper.png;
         base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
         polarity = "dark";
 

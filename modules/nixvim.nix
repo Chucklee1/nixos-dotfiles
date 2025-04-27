@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
   home.global = [
     inputs.nixvim.homeManagerModules.nixvim
     ({
@@ -177,7 +181,7 @@
           };
           fromSnipmate = [
             {
-              paths = ./vim-snippets/snippets/markdown.snippets;
+              paths = "${self}/assets/snippets/nix.snippets";
               include = ["nix"];
             }
           ];
