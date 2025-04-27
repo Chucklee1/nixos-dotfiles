@@ -101,7 +101,7 @@
             cg = "nix-collect-garbage";
             update-flake = "nix flake update --flake $HOME/nixos-dotfiles";
             rebuild-desktop = "sudo nixos-rebuild switch ${flake}#desktop";
-            rebuild-macbook = "sudo nixos-rebuild switch  ${flake}#macbook";  
+            rebuild-macbook = "sudo nixos-rebuild switch  ${flake}#macbook";
             # tools - git
             sshkey-init = "ssh-keygen -t ed25519 -C ${config.programs.git.userEmail}";
             age-keygen = ''nix-shell -p age --run "age-keygen $HOME/keys.txt"'';
@@ -114,12 +114,12 @@
                 echo "no ssh key found, trying tls..."
                 git clone https://github.com/Chucklee1/nixos-dotfiles
               fi
-              '';
-              # tools - ffmpeg
-              wav-to-flac = '' 
-                for i in *.wav; do ffmpeg -i "$i" -c:a flac "${i%.*}.flac"; done
-                for i in *.wav; do rm "$i"; done
-              '';
+            '';
+            # tools - ffmpeg
+            wav-to-flac = ''
+              for i in *.wav; do ffmpeg -i "$i" -c:a flac "$i%.*.flac"; done
+              for i in *.wav; do rm "$i"; done
+            '';
           };
         };
         oh-my-posh = {
@@ -140,7 +140,7 @@
       ];
       programs.steam = {
         enable = true;
-        protonTricks.enable = true;
+        protontricks.enable = true;
         gamescopeSession.enable = true;
         extraCompatPackages = [pkgs.proton-ge-bin];
         remotePlay.openFirewall = true;
