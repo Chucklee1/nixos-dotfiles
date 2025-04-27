@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
   nix.global = [
     inputs.stylix.nixosModules.stylix
     ({pkgs, ...}: {
@@ -6,7 +10,7 @@
         enable = true;
         autoEnable = true;
         homeManagerIntegration.autoImport = true;
-        image = ../assets/wallpapers/wallpaper.png;
+        image = "${self}/assets/wallpapers/wallpaper.png";
         base16Scheme = "${pkgs.base16-schemes}/share/themes/classic-dark.yaml";
         polarity = "dark";
 

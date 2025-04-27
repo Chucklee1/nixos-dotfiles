@@ -1,18 +1,8 @@
-{inputs, ...}:
-/*
-                 let
-  mkFs = path: device: fsType: options: {
-    fileSystems.${path} =
-      {inherit device fsType;}
-      // (
-        if options == null
-        then {}
-        else {inherit options;}
-      );
-  };
-in
-*/
 {
+  inputs,
+  self,
+  ...
+}: {
   nix.global = [
     ({modulesPath, ...}: {
       imports = [(modulesPath + "/installer/scan/not-detected.nix")];
@@ -50,7 +40,7 @@ in
   ];
   nix.laptop = [
     inputs.disko.nixosModules.default
-    (import ../assets/disko/ext4.nix {device = "/dev/nvme0n1";})
+    (import "${self}/assets/disko/ext4.nix" {device = "/dev/nvme0n1";})
     {
       boot = {
         initrd.availableKernelModules = ["nvme" "xhci_pci"];
@@ -63,7 +53,7 @@ in
   ];
   nix.macbook = [
     inputs.disko.nixosModules.default
-    (import ../assets/disko/btrfs.nix {device = "/dev/sda";})
+    (import "${self}/assets/disko/btrfs.nix" {device = "/dev/sda";})
     {
       boot = {
         # TODO
