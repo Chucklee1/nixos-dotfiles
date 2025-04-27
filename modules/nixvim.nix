@@ -172,8 +172,9 @@
           };
         };
 
-        # code snippits
-        plugins.luasnip = {
+        # TODO code snippits
+        /*
+          plugins.luasnip = {
           enable = true;
           settings = {
             enable_autosnippets = true;
@@ -186,6 +187,7 @@
             }
           ];
         };
+        */
         extraPackages = with pkgs; [
           asm-lsp
           lua-language-server
