@@ -167,6 +167,21 @@
             };
           };
         };
+
+        # code snippits
+        plugins.luasnip = {
+          enable = true;
+          settings = {
+            enable_autosnippets = true;
+            store_selection_keys = "<Tab>";
+          };
+          fromSnipmate = [
+            {
+              paths = ./vim-snippets/snippets/markdown.snippets;
+              include = ["nix"];
+            }
+          ];
+        };
         extraPackages = with pkgs; [
           asm-lsp
           lua-language-server
