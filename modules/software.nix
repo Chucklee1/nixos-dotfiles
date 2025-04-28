@@ -1,4 +1,4 @@
-{
+{user, ...}: {
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -72,9 +72,28 @@
         };
 
         # browser
-        chromium = {
+        firefox = {
           enable = true;
-          package = pkgs.ungoogled-chromium;
+          enableGnomeExtensions = true;
+          policies = {
+            enableTrackingProtection = {
+              Value = true;
+              Locked = true;
+              Cryptomining = true;
+              Fingerprinting = true;
+            };
+            DisableTelemetry = true;
+            DisablePocket = true;
+            DisableFirefoxStudies = true;
+            DisableFirefoxAccounts = true;
+            DisableFirefoxScreenshots = true;
+            DisableSafeMode = true;
+          };
+          profiles.${user} = {
+            name = user;
+            search.default = "ddg";
+            settings."browser.startup.homepage" = "";
+          };
         };
 
         # shell
