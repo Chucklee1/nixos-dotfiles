@@ -4,17 +4,14 @@
   ...
 }: {
   nix.global = [
-    ({modulesPath, ...}: {
+    ({
+      lib,
+      modulesPath,
+      ...
+    }: {
       imports = [(modulesPath + "/installer/scan/not-detected.nix")];
-      boot.loader = {
-        efi.canTouchEfiVariables = true;
-        grub = {
-          enable = true;
-          efiSupport = true;
-          device = "nodev";
-        };
-      };
-      services.displayManager.ly.enable = true;
+      useDHCP = lib.mkDefault true;
+      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
     })
   ];
 

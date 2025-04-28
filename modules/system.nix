@@ -6,24 +6,26 @@
   nix.global = [
     inputs.home-manager.nixosModules.home-manager
     # system
-    ({
-      lib,
-      config,
-      ...
-    }: {
-      system.stateVersion = "24.05";
-      networking = {
-        useDHCP = lib.mkDefault true;
-        networkmanager.enable = true;
+    ({config, ...}: {
+      # boot
+      boot.loader = {
+        efi.canTouchEfiVariables = true;
+        grub = {
+          enable = true;
+          efiSupport = true;
+          device = "nodev";
+        };
       };
+      services.displayManager.ly.enable = true;
+
+      # general
+      system.stateVersion = "24.05";
+      networking.networkmanager.enable = true;
       i18n.defaultLocale = "en_CA.UTF-8";
       time.timeZone = "America/Vancouver";
 
       # nix
-      nixpkgs = {
-        hostPlatform = lib.mkDefault "x86_64-linux";
-        config.allowUnfree = true;
-      };
+      nixpkgs.config.allowUnfree = true;
       nix.settings = {
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
@@ -31,7 +33,7 @@
 
       # user
       users.users.${user} = {
-        name = "goat";
+        name = "${user}";
         isNormalUser = true;
         extraGroups = [
           "wheel"
