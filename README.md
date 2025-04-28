@@ -9,9 +9,9 @@
     if-statement hell function in flake
   - module system:
     - module-name then module-type (nix or home)
-    - current module names: global, laptop, desktop
-    - global is merged with laptop & desktop
+    - current module names: global, desktop, and macbook
+    - global is merged with macbook & desktop
 
 # **CMD cheatsheet**
 
-- sudo tar czvf navidrome-backup.tar.gz folder/\*
+- sudo tar czvf name.tar.gz folder/\*

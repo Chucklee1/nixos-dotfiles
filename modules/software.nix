@@ -103,9 +103,6 @@
             rebuild-desktop = "sudo nixos-rebuild switch ${flake}#desktop";
             rebuild-macbook = "sudo nixos-rebuild switch  ${flake}#macbook";
             # tools - git
-            sshkey-init = "ssh-keygen -t ed25519 -C ${config.programs.git.userEmail}";
-            age-keygen = ''nix-shell -p age --run "age-keygen $HOME/keys.txt"'';
-            open-sops = ''nix-shell -p sops --run "sops $HOME/nixos-dotfiles/secrets.yaml"'';
             clone-flake = ''
               if [ -e /home/goat/.ssh/id_ed25519.pub ]; then
                 echo "found ssh key, cloning with ssh..."
