@@ -65,5 +65,5 @@
           in
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
-    in {nixosConfigurations = genAttrs ["desktop" "laptop" "macbook"] (host: mkSystem host);};
+    in {nixosConfigurations = genAttrs ["desktop" "macbook"] (host: mkSystem host);};
 }
