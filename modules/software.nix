@@ -1,4 +1,4 @@
-{user, ...}: {
+{self, ...}: {
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -39,7 +39,6 @@
   home.global = [
     ({
       lib,
-      config,
       pkgs,
       ...
     }: {
@@ -60,6 +59,7 @@
         logisim-evolution
       ];
 
+      stylix.targets.firefox.profileNames = ["default"];
       programs = {
         # diagnostics
         btop.enable = true;
@@ -74,7 +74,6 @@
         # browser
         firefox = {
           enable = true;
-          enableGnomeExtensions = true;
           policies = {
             enableTrackingProtection = {
               Value = true;
@@ -89,10 +88,59 @@
             DisableFirefoxScreenshots = true;
             DisableSafeMode = true;
           };
-          profiles.${user} = {
-            name = user;
-            search.default = "ddg";
-            settings."browser.startup.homepage" = "";
+          profiles.default = {
+            name = "default";
+            settings = {
+              "browser.startup.homepage" = "";
+              "ui.prefersReducedMotion" = "true";
+            };
+            userChrome = ''${builtins.readFile "${self}/assets/personal/chrome.css}"}'';
+            bookmarks = {
+              force = true;
+              configFile = ''${builtins.readFile "${self}/assets/personal/bookmarks.html}"}'';
+            };
+
+            search = {
+              default = "ddg";
+              engines = {
+                nix-packages = {
+                  name = "Nix Packages";
+                  urls = [
+                    {
+                      template = "https://search.nixos.org/packages";
+                      params = [
+                        {
+                          name = "type";
+                          value = "packages";
+                        }
+                        {
+                          name = "query";
+                          value = "{searchTerms}";
+                        }
+                      ];
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = ["@np"];
+                };
+                my-nixos = {
+                  name = "my nixos";
+                  urls = [
+                    {
+                      template = "https://mynixos.com/search";
+                      params = [
+                        {
+                          name = "q";
+                          value = "{searchTerms}";
+                        }
+                      ];
+                    }
+                  ];
+                  definedAliases = ["@mp"];
+                };
+              };
+            };
           };
         };
 
@@ -119,7 +167,7 @@
             # nix - general
             cg = "nix-collect-garbage";
             update-flake = "nix flake update --flake $HOME/nixos-dotfiles";
-            rebuild-desktop = "sudo nixos-rebuild switch ${flake}#desktop";
+            rebuild-desktop = "rm -rf $HOME/.mozilla && sudo nixos-rebuild switch ${flake}#desktop";
             rebuild-macbook = "sudo nixos-rebuild switch  ${flake}#macbook";
             # tools - git
             clone-flake = ''

@@ -55,7 +55,4 @@
       };
     })
   ];
-  nix.desktop = [
-    {users.users.${user}.hashedPasswordFile = "/media/${user}/BLUE_SATA/super-secret.password";}
-  ];
 }
