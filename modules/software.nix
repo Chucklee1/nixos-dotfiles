@@ -1,4 +1,4 @@
-{self, ...}: {
+{inputs, ...}: {
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -94,10 +94,10 @@
               "browser.startup.homepage" = "";
               "ui.prefersReducedMotion" = "true";
             };
-            userChrome = ''${builtins.readFile "${self}/assets/personal/chrome.css}"}'';
+            userChrome = ''${builtins.readFile "${inputs.personal}/chrome.css}"}'';
             bookmarks = {
               force = true;
-              configFile = ''${builtins.readFile "${self}/assets/personal/bookmarks.html}"}'';
+              configFile = ''${builtins.readFile "${inputs.personal}/bookmarks.html}"}'';
             };
 
             search = {

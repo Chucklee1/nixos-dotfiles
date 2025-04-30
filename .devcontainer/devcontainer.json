@@ -1,7 +1,0 @@
-{
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "features": {
-    "ghcr.io/devcontainer-community/devcontainer-features/nixos.org:1": {},
-    "ghcr.io/devcontainers/features/nix:1": {}
-  }
-}
