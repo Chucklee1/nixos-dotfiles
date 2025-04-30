@@ -36,19 +36,23 @@
     }
   ];
   nix.macbook = [
-    inputs.nixos-hardware.nixosModules.apple-macbook-pro-12-1
     inputs.disko.nixosModules.default
-    (import "${self}/assets/disko/btrfs.nix" {device = "/dev/sda";})
-    {
+    (import "${self}/assets/disko/ext4.nix" {device = "/dev/sda";})
+    ({
+      lib,
+      config,
+      ...
+    }: {
       boot = {
         initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
         initrd.kernelModules = [];
-        kernelModules = ["kvm-intel"];
-        extraModulePackages = [];
+        kernelModules = ["kvm-intel" "wl"];
+        extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
+        blacklistedKernelModules = lib.mkForce ["b43" "bcma"];
         supportedFilesystems = ["ntfs" "btrfs" "apfs"];
       };
       networking.hostName = "goat-macbook";
       hardware.enableRedistributableFirmware = true;
-    }
+    })
   ];
 }
