@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -72,78 +72,9 @@
         };
 
         # browser
-        firefox = {
+        chromium = {
           enable = true;
-          policies = {
-            enableTrackingProtection = {
-              Value = true;
-              Locked = true;
-              Cryptomining = true;
-              Fingerprinting = true;
-            };
-            DisableTelemetry = true;
-            DisablePocket = true;
-            DisableFirefoxStudies = true;
-            DisableFirefoxAccounts = true;
-            DisableFirefoxScreenshots = true;
-            DisableSafeMode = true;
-          };
-          profiles.default = {
-            name = "default";
-            settings = {
-              "browser.startup.homepage" = "";
-              "ui.prefersReducedMotion" = "true";
-            };
-            userChrome = ''${builtins.readFile "${inputs.personal}/chrome.css}"}'';
-            bookmarks = {
-              force = true;
-              configFile = ''${builtins.readFile "${inputs.personal}/bookmarks.html}"}'';
-            };
-
-            search = {
-              default = "ddg";
-              engines = {
-                nix-packages = {
-                  name = "Nix Packages";
-                  urls = [
-                    {
-                      template = "https://search.nixos.org/packages";
-                      params = [
-                        {
-                          name = "type";
-                          value = "packages";
-                        }
-                        {
-                          name = "query";
-                          value = "{searchTerms}";
-                        }
-                      ];
-                    }
-                  ];
-
-                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                  definedAliases = ["@np"];
-                };
-                my-nixos = {
-                  name = "my nixos";
-                  urls = [
-                    {
-                      template = "https://mynixos.com/search";
-                      params = [
-                        {
-                          name = "q";
-                          value = "{searchTerms}";
-                        }
-                      ];
-                    }
-                  ];
-                  definedAliases = ["@mp"];
-                };
-              };
-            };
-          };
         };
-
         # shell
         kitty = {
           enable = true;

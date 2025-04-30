@@ -41,7 +41,10 @@
     (import "${self}/assets/disko/btrfs.nix" {device = "/dev/sda";})
     {
       boot = {
-        # TODO
+        initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
+        initrd.kernelModules = [];
+        kernelModules = ["kvm-intel"];
+        extraModulePackages = [];
         supportedFilesystems = ["ntfs" "btrfs" "apfs"];
       };
       networking.hostName = "goat-macbook";
