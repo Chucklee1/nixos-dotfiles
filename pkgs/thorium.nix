@@ -1,83 +1,50 @@
-{
-  lib,
-  mkChromiumDerivation,
-  chromiumVersionAtLeast,
-  enableWideVine,
-  ungoogled,
-}:
-mkChromiumDerivation (base: rec {
-  name = "chromium-browser";
-  packageName = "chromium";
-  buildTargets = [
-    "run_mksnapshot_default"
-    "chrome_sandbox"
-    "chrome"
-  ];
+{pkgs, ...}:
+with pkgs;
+  stdenv.mkDerivation rec {
+    pname = "thorium-browser";
+    version = "0";
 
-  outputs = [
-    "out"
-    "sandbox"
-  ];
+    src = {
+      depot_tools = builtins.fetchGit {
+        url = "https://chromium.googlesource.com/chromium/tools/depot_tools.git";
+        rev = "a7805fb7daaf664604d90f801f5d828593aab239";
+      };
+      thorium = builtins.fetchGit {
+        url = "https://github.com/Alex313031/thorium.git";
+        rev = "21f54da5e8ba83ca096be88998cd95f90ba29bdb";
+        submodules = true;
+      };
+    };
 
-  sandboxExecutableName = "__chromium-suid-sandbox";
+    nativeBuildInputs = [ninja gn];
 
-  installPhase = ''
-    mkdir -p "$libExecPath"
-    cp -v "$buildPath/"*.so "$buildPath/"*.pak "$buildPath/"*.bin "$libExecPath/"
-    cp -v "$buildPath/libvulkan.so.1" "$libExecPath/"
-    cp -v "$buildPath/vk_swiftshader_icd.json" "$libExecPath/"
-    cp -v "$buildPath/icudtl.dat" "$libExecPath/"
-    cp -vLR "$buildPath/locales" "$buildPath/resources" "$libExecPath/"
-    cp -v "$buildPath/chrome_crashpad_handler" "$libExecPath/"
-    cp -v "$buildPath/chrome" "$libExecPath/$packageName"
+    buildPhase = ''
+      # setup
+      cd $out
+      mkdir -p dev_tools chromium thorium
+      cp -r ${src.depot_tools}/* depot_tools
+      cp -r ${src.thorium}/* thorium
 
-    # Swiftshader
-    # See https://stackoverflow.com/a/4264351/263061 for the find invocation.
-    if [ -n "$(find "$buildPath/swiftshader/" -maxdepth 1 -name '*.so' -print -quit)" ]; then
-      echo "Swiftshader files found; installing"
-      mkdir -p "$libExecPath/swiftshader"
-      cp -v "$buildPath/swiftshader/"*.so "$libExecPath/swiftshader/"
-    else
-      echo "Swiftshader files not found"
-    fi
+      export PATH="$out/depot_tools:$PATH"
 
-    mkdir -p "$sandbox/bin"
-    cp -v "$buildPath/chrome_sandbox" "$sandbox/bin/${sandboxExecutableName}"
+      # chromium
+      cd chromium
+      fetch --nohooks chromium
+      cd ./src
+      ./build/install-build-deps.sh --no-nacl
+      gclient runhooks
+      cd $out
 
-    mkdir -vp "$out/share/man/man1"
-    cp -v "$buildPath/chrome.1" "$out/share/man/man1/$packageName.1"
+      #thorium
+      cd thorium
+      ./trunk.sh # rebase/sync chromium
+      #./version.sh
 
-    for icon_file in chrome/app/theme/chromium/product_logo_*[0-9].png; do
-      num_and_suffix="''${icon_file##*logo_}"
-      icon_size="''${num_and_suffix%.*}"
-      expr "$icon_size" : "^[0-9][0-9]*$" || continue
-      logo_output_prefix="$out/share/icons/hicolor"
-      logo_output_path="$logo_output_prefix/''${icon_size}x''${icon_size}/apps"
-      mkdir -vp "$logo_output_path"
-      cp -v "$icon_file" "$logo_output_path/$packageName.png"
-    done
+      # install
+      ./build.sh 4
 
-    # Install Desktop Entry
-    install -D chrome/installer/linux/common/desktop.template \
-      $out/share/applications/chromium-browser.desktop
+      # cleanup
+      clean.sh
 
-    substituteInPlace $out/share/applications/chromium-browser.desktop \
-      --replace "@@MENUNAME@@" "Chromium" \
-      --replace "@@PACKAGE@@" "chromium" \
-      --replace "Exec=/usr/bin/@@USR_BIN_SYMLINK_NAME@@" "Exec=chromium"
-
-    # Append more mime types to the end
-    sed -i '/^MimeType=/ s,$,x-scheme-handler/webcal;x-scheme-handler/mailto;x-scheme-handler/about;x-scheme-handler/unknown,' \
-      $out/share/applications/chromium-browser.desktop
-
-    # See https://github.com/NixOS/nixpkgs/issues/12433
-    sed -i \
-      -e '/\[Desktop Entry\]/a\' \
-      -e 'StartupWMClass=chromium-browser' \
-      $out/share/applications/chromium-browser.desktop
-  '';
-
-  passthru = {inherit sandboxExecutableName;};
-
-  requiredSystemFeatures = ["big-parallel"];
-})
+    '';
+  }

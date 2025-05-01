@@ -21,6 +21,9 @@
     with nixpkgs.lib; let
       dir = "${self}/modules";
       user = "goat";
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {inherit system;};
+
       raw = let
         mergeAllRecursive = a: b:
           foldl' (
@@ -57,11 +60,16 @@
 
       mkSystem = host:
         nixosSystem {
-          system = "x86_64-linux";
+          inherit system;
           modules = let
             mod = mergeMods "global" "${host}";
           in
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
-    in {nixosConfigurations = genAttrs ["desktop" "macbook"] (host: mkSystem host);};
+    in {
+      packages.${system} = {
+        thorium = import "${self}/pkgs/thorium.nix" {inherit pkgs;};
+      };
+      nixosConfigurations = genAttrs ["desktop" "macbook"] (host: mkSystem host);
+    };
 }
