@@ -67,9 +67,8 @@
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
     in {
-      packages.${system} = {
-        thorium = import "${self}/pkgs/thorium.nix" {inherit pkgs;};
-      };
+      #packages.${system} = import "${self}/pkgs" {inherit pkgs;};
+
       nixosConfigurations = genAttrs ["desktop" "macbook"] (host: mkSystem host);
     };
 }
