@@ -20,50 +20,58 @@
     ...
   } @ inputs:
     with nixpkgs.lib; let
+      # CUSTOM ARGS HERE
       dir = "${self}/modules";
       user = "goat";
       system = "x86_64-linux";
-      pkgs = import nixpkgs {inherit system;};
+      #pkgs = import nixpkgs {inherit system;};
 
-      raw = let
-        mergeAllRecursive = a: b:
-          foldl' (
-            acc: key: let
-              va = a.${key} or null;
-              vb = b.${key} or null;
-              merged =
-                if va == null
-                then vb
-                else if vb == null
-                then va
-                else if isList va && isList vb
-                then va ++ vb
-                else if isAttrs va && isAttrs vb
-                then mergeAllRecursive va vb
-                else vb;
-            in
-              acc // {"${key}" = merged;}
-          ) {}
-          (unique (attrNames a ++ attrNames b));
-      in
-        pipe (builtins.readDir dir) [
-          (filterAttrs (file: type: hasSuffix ".nix" file && type == "regular"))
-          attrNames
-          (map (file: import "${dir}/${file}"))
-          (map (file:
-            if isFunction file
-            then (file {inherit inputs self user;})
-            else file))
-          (builtins.foldl' mergeAllRecursive {})
-        ];
+      # horrid deepMerge that works and idk why
+      mergeAllRecursive = a: b:
+        foldl' (
+          acc: key: let
+            va = a.${key} or null;
+            vb = b.${key} or null;
+            merged =
+              if va == null
+              then vb
+              else if vb == null
+              then va
+              else if isList va && isList vb
+              then va ++ vb
+              else if isAttrs va && isAttrs vb
+              then mergeAllRecursive va vb
+              else vb;
+          in
+            acc // {"${key}" = merged;}
+        ) {}
+        (unique (attrNames a ++ attrNames b));
 
-      mergeMods = prev: next: (genAttrs ["nix" "home"] (type: raw.${type}.${prev} or [] ++ raw.${type}.${next} or []));
+      # main module creation function
+      raw = args: (pipe (builtins.readDir dir) [
+        (filterAttrs (file: type: hasSuffix ".nix" file && type == "regular"))
+        attrNames
+        (map (file: let
+          file' = import "${dir}/${file}";
+        in
+          if isFunction file'
+          then file' args
+          else file'))
+        (builtins.foldl' mergeAllRecursive {})
+      ]);
+
+      # additional step for merging different profiles
+      mergeMods = mod: prev: next: (genAttrs ["nix" "home"] (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
 
       mkSystem = host:
         nixosSystem {
           inherit system;
           modules = let
-            mod = mergeMods "global" "${host}";
+            raw' = raw {
+              inherit inputs self user;
+              machine = host;
+            };
+            mod = mergeMods raw' "global" "${host}";
           in
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };

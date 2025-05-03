@@ -6,15 +6,34 @@
   nix.global = [
     ({
       lib,
-      modulesPath,
+      pkgs,
       ...
     }: {
-      imports = [(modulesPath + "/installer/scan/not-detected.nix")];
+      hardware.enableRedistributableFirmware = lib.mkDefault true;
       networking.useDHCP = lib.mkDefault true;
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+      # boot theming
+      boot = {
+        plymouth = {
+          enable = true;
+          theme = "mc";
+          themePackages = [pkgs.minecraft-plymouth];
+        };
+        consoleLogLevel = 3;
+        initrd.verbose = false;
+        initrd.systemd.enable = true;
+        kernelParams = [
+          "quiet"
+          "splash"
+          "boot.shell_on_fail"
+          "udev.log_priority=3"
+          "rd.systemd.show_status=auto"
+        ];
+        loader.timeout = 0;
+      };
     })
   ];
-
   nix.desktop = [
     inputs.disko.nixosModules.default
     (import "${self}/assets/disko/ext4.nix" {device = "/dev/sda";})
@@ -49,36 +68,15 @@
 
       boot = {
         initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
-        initrd.kernelModules = [];
+        # wl and following 2 lines are a fix to broadcom 43 wifi drivers issues
         kernelModules = ["kvm-intel" "wl"];
         extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
         blacklistedKernelModules = lib.mkForce ["b43" "bcma"];
         supportedFilesystems = ["ntfs" "btrfs" "apfs"];
+        # settings for goofy 6:10 macbookpro-12-1 screen
         loader.grub.gfxmodeEfi = "2560x1600";
-
-        plymouth = {
-          enable = true;
-          theme = "mc";
-          themePackages = [pkgs.minecraft-plymouth];
-        };
-
-        # Enable "Silent boot"
-        consoleLogLevel = 3;
-        initrd.verbose = false;
-        kernelParams = [
-          "quiet"
-          "splash"
-          "boot.shell_on_fail"
-          "udev.log_priority=3"
-          "rd.systemd.show_status=auto"
-        ];
-        # Hide the OS choice for bootloaders.
-        # It's still possible to open the bootloader list by pressing any key
-        # It will just not appear on screen unless a key is pressed
-        loader.timeout = 0;
       };
       networking.hostName = "goat-macbook";
-      hardware.enableRedistributableFirmware = true;
     })
   ];
 }
