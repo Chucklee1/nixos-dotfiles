@@ -41,34 +41,16 @@ with inputs; {
     # ---- boot minecraft theme... hehehe ----
     minegrub-theme.nixosModules.default
     minesddm.nixosModules.default
-    minecraft-plymouth.default
     ({pkgs, ...}: {
-      nixpkgs.overlays = [(_: _: {minecraft-plymouth = inputs.minecraft-plymouth.defaultPackage.x86_64-linux;})];
-      stylix.targets.plymouth.enable = false;
-      boot = {
-        # grub
-        loader.grub.minegrub-theme = {
-          enable = true;
-          splash = "100% Flakes!";
-          background = "background_options/1.8  - [Classic Minecraft].png";
-          boot-options-count = 4;
-        };
-        # loading screen
-        plymouth = {
-          enable = true;
-          themePackages = [pkgs.minecraft-plymouth];
-        };
-        consoleLogLevel = 3;
-        initrd.verbose = false;
-        initrd.systemd.enable = true;
-        kernelParams = [
-          "quiet"
-          "splash"
-          "boot.shell_on_fail"
-          "udev.log_priority=3"
-          "rd.systemd.show_status=auto"
-        ];
-        loader.timeout = 0;
+      stylix.targets = {
+        grub.enable = false;
+      };
+      # grub
+      boot.loader.grub.minegrub-theme = {
+        enable = true;
+        splash = "100% Flakes!";
+        background = "background_options/1.8  - [Classic Minecraft].png";
+        boot-options-count = 4;
       };
       services.displayManager.sddm = {
         enable = true;

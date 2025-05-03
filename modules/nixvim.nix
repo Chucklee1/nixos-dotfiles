@@ -1,8 +1,4 @@
-{
-  inputs,
-  self,
-  ...
-}: {
+{inputs, ...}: {
   home.global = [
     inputs.nixvim.homeManagerModules.nixvim
     ({
@@ -10,6 +6,17 @@
       pkgs,
       ...
     }: {
+      programs.neovide = {
+        enable = true;
+        settings = {
+          tabs = true;
+          font = {
+            edging = "antialias";
+            size = 14;
+            normal = "JetBrainsMono Nerd Font";
+          };
+        };
+      };
       programs.nixvim = {
         # ----- OPTIONS -----
         enable = true;
@@ -85,7 +92,7 @@
 
         # ui related
         plugins = {
-          bufferline.enable = true;
+          #bufferline.enable = true;
           lualine.enable = true;
           noice.enable = true; # fancy cmd window
           scrollview.enable = true;
@@ -221,12 +228,14 @@
             "Telescope oldfiles : <leader>fo"
 
             # Bufferline bindings
-            "BufferLineCycleNext : <Tab>"
+            /*
+              "BufferLineCycleNext : <Tab>"
             "BufferLineCyclePrev : <S-Tab>"
             "BufferLineCycleNext : <S-l>"
             "BufferLineCyclePrev : <S-h>"
             "bd : <leader>c"
             "bd! : <leader-S-c>"
+            */
           ];
       };
     })

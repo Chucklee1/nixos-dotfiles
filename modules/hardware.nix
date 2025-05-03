@@ -25,6 +25,7 @@
         extraModulePackages = [];
         kernelModules = ["kvm-amd"];
         supportedFilesystems = ["ntfs"];
+        loader.grub.gfxmodeEfi = "1920x1080x30,auto";
       };
       networking.hostName = "goat-desktop";
       hardware.cpu.amd.updateMicrocode = true;
