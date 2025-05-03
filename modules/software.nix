@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -32,6 +32,15 @@
             thunar-media-tags-plugin
             thunar-volman
           ];
+        };
+        chromium = {
+          enable = true;
+          extraOpts = {
+            "BrowserSignin" = 0;
+            "SyncDisabled" = true;
+            "PasswordManagerEnabled" = false;
+            "DefaultGeolocationSetting" = 2;
+          };
         };
       };
     })
@@ -69,11 +78,6 @@
           enable = true;
           userEmail = "kermitthefrog@kakao.com";
           userName = "Chucklee1";
-        };
-
-        # browser
-        chromium = {
-          enable = true;
         };
         # shell
         kitty = {

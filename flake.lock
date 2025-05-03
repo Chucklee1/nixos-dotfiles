@@ -350,11 +350,29 @@
         "type": "github"
       }
     },
+    "minecraft-plymouth": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1746093952,
+        "narHash": "sha256-iZRpVeLk0mATVPjZlJPTcniu7U3PqaSV4kf5zNl6Gf4=",
+        "owner": "nikp123",
+        "repo": "minecraft-plymouth-theme",
+        "rev": "627ab3801752ad9e738bceda72be442c5ac40351",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nikp123",
+        "repo": "minecraft-plymouth-theme",
+        "type": "github"
+      }
+    },
     "niri": {
       "inputs": {
         "niri-stable": "niri-stable",
         "niri-unstable": "niri-unstable",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable",
         "xwayland-satellite-stable": "xwayland-satellite-stable",
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
@@ -408,18 +426,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1745526057,
-        "narHash": "sha256-ITSpPDwvLBZBnPRS2bUcHY3gZSwis/uTe255QgMtTLA=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "f771eb401a46846c1aebd20552521b233dd7e18b",
-        "type": "github"
+        "lastModified": 1718208800,
+        "narHash": "sha256-US1tAChvPxT52RV8GksWZS415tTS7PV42KTc2PNDBmc=",
+        "path": "/nix/store/aa0zsahvyqnvzkicsh29jirm9hwv95pg-source",
+        "rev": "cc54fb41d13736e92229c21627ea4f22199fee6b",
+        "type": "path"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "id": "nixpkgs",
+        "type": "indirect"
       }
     },
     "nixpkgs-stable": {
@@ -455,6 +470,22 @@
       }
     },
     "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1745526057,
+        "narHash": "sha256-ITSpPDwvLBZBnPRS2bUcHY3gZSwis/uTe255QgMtTLA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f771eb401a46846c1aebd20552521b233dd7e18b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1745234285,
         "narHash": "sha256-GfpyMzxwkfgRVN0cTGQSkTC0OHhEkv3Jf6Tcjm//qZ0=",
@@ -542,8 +573,9 @@
       "inputs": {
         "disko": "disko",
         "home-manager": "home-manager",
+        "minecraft-plymouth": "minecraft-plymouth",
         "niri": "niri",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "nixvim": "nixvim",
         "stylix": "stylix"
       }
@@ -560,7 +592,7 @@
         "git-hooks": "git-hooks",
         "gnome-shell": "gnome-shell",
         "home-manager": "home-manager_2",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_4",
         "nur": "nur",
         "systems": "systems_2",
         "tinted-foot": "tinted-foot",

@@ -11,6 +11,7 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     niri.url = "github:sodiboo/niri-flake";
+    minecraft-plymouth.url = "github:nikp123/minecraft-plymouth-theme";
   };
 
   outputs = {

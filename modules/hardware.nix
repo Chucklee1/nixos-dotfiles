@@ -41,8 +41,12 @@
     ({
       lib,
       config,
+      pkgs,
       ...
     }: {
+      nixpkgs.overlays = [(_: _: {minecraft-plymouth = inputs.minecraft-plymouth.defaultPackage.x86_64-linux;})];
+      stylix.targets.plymouth.enable = false;
+
       boot = {
         initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
         initrd.kernelModules = [];
@@ -50,6 +54,28 @@
         extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
         blacklistedKernelModules = lib.mkForce ["b43" "bcma"];
         supportedFilesystems = ["ntfs" "btrfs" "apfs"];
+        loader.grub.gfxmodeEfi = "2560x1600";
+
+        plymouth = {
+          enable = true;
+          theme = "mc";
+          themePackages = [pkgs.minecraft-plymouth];
+        };
+
+        # Enable "Silent boot"
+        consoleLogLevel = 3;
+        initrd.verbose = false;
+        kernelParams = [
+          "quiet"
+          "splash"
+          "boot.shell_on_fail"
+          "udev.log_priority=3"
+          "rd.systemd.show_status=auto"
+        ];
+        # Hide the OS choice for bootloaders.
+        # It's still possible to open the bootloader list by pressing any key
+        # It will just not appear on screen unless a key is pressed
+        loader.timeout = 0;
       };
       networking.hostName = "goat-macbook";
       hardware.enableRedistributableFirmware = true;
