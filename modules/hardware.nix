@@ -4,34 +4,10 @@
   ...
 }: {
   nix.global = [
-    ({
-      lib,
-      pkgs,
-      ...
-    }: {
+    ({lib, ...}: {
       hardware.enableRedistributableFirmware = lib.mkDefault true;
       networking.useDHCP = lib.mkDefault true;
-      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
-      # boot theming
-      boot = {
-        plymouth = {
-          enable = true;
-          theme = "mc";
-          themePackages = [pkgs.minecraft-plymouth];
-        };
-        consoleLogLevel = 3;
-        initrd.verbose = false;
-        initrd.systemd.enable = true;
-        kernelParams = [
-          "quiet"
-          "splash"
-          "boot.shell_on_fail"
-          "udev.log_priority=3"
-          "rd.systemd.show_status=auto"
-        ];
-        loader.timeout = 0;
-      };
+      nixpkgs.hostPlatform = "x86_64-linux";
     })
   ];
   nix.desktop = [
@@ -60,12 +36,8 @@
     ({
       lib,
       config,
-      pkgs,
       ...
     }: {
-      nixpkgs.overlays = [(_: _: {minecraft-plymouth = inputs.minecraft-plymouth.defaultPackage.x86_64-linux;})];
-      stylix.targets.plymouth.enable = false;
-
       boot = {
         initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
         # wl and following 2 lines are a fix to broadcom 43 wifi drivers issues

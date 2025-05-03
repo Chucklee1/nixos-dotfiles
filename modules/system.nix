@@ -16,7 +16,7 @@
           device = "nodev";
         };
       };
-      services.displayManager.ly.enable = true;
+      #services.displayManager.ly.enable = true;
 
       # general
       system.stateVersion = "24.05";

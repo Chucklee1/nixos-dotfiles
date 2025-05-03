@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -33,15 +33,6 @@
             thunar-volman
           ];
         };
-        chromium = {
-          enable = true;
-          extraOpts = {
-            "BrowserSignin" = 0;
-            "SyncDisabled" = true;
-            "PasswordManagerEnabled" = false;
-            "DefaultGeolocationSetting" = 2;
-          };
-        };
       };
     })
   ];
@@ -68,11 +59,14 @@
         logisim-evolution
       ];
 
-      stylix.targets.firefox.profileNames = ["default"];
       programs = {
         # diagnostics
         btop.enable = true;
         mangohud.enable = true;
+        chromium = {
+          enable = true;
+          package = pkgs.ungoogled-chromium;
+        };
         #git
         git = {
           enable = true;

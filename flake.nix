@@ -12,6 +12,8 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     niri.url = "github:sodiboo/niri-flake";
     minecraft-plymouth.url = "github:nikp123/minecraft-plymouth-theme";
+    minesddm.url = "github:Davi-S/sddm-theme-minesddm";
+    minesddm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
