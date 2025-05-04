@@ -83,6 +83,9 @@
             tab_bar_style = lib.mkForce "slant";
           };
         };
+        wezterm = {
+          enable = true;
+        };
 
         bash = {
           enable = true;

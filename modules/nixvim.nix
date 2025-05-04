@@ -6,17 +6,6 @@
       pkgs,
       ...
     }: {
-      programs.neovide = {
-        enable = true;
-        settings = {
-          tabs = true;
-          font = {
-            edging = "antialias";
-            size = 14;
-            normal = "JetBrainsMono Nerd Font";
-          };
-        };
-      };
       programs.nixvim = {
         # ----- OPTIONS -----
         enable = true;
