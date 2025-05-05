@@ -1,11 +1,7 @@
 {inputs, ...}: {
   home.global = [
     inputs.nixvim.homeManagerModules.nixvim
-    ({
-      lib,
-      pkgs,
-      ...
-    }: {
+    ({lib, ...}: {
       programs.nixvim = {
         # ----- OPTIONS -----
         enable = true;

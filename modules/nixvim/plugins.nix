@@ -18,7 +18,7 @@
 
     # ui related
     plugins = {
-      #bufferline.enable = true;
+      bufferline.enable = true;
       lualine.enable = true;
       noice.enable = true; # fancy cmd window
       scrollview.enable = true;
