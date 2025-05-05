@@ -28,7 +28,15 @@
       user = "goat";
       system = "x86_64-linux";
       #pkgs = import nixpkgs {inherit system;};
-
+      readDirRecursive = dir:
+        concatMapAttrs (this:
+          flip getAttr {
+            directory = mapAttrs' (subpath: nameValuePair "${this}/${subpath}") (read_dir_recursively "${dir}/${this}");
+            regular = {
+              ${this} = "${dir}/${this}";
+            };
+            symlink = {};
+          }) (builtins.readDir dir);
       # horrid deepMerge that works and idk why
       mergeAllRecursive = a: b:
         foldl' (
@@ -51,7 +59,7 @@
         (unique (attrNames a ++ attrNames b));
 
       # main module creation function
-      raw = args: (pipe (builtins.readDir dir) [
+      raw = args: (pipe (readDirRecursive dir) [
         (filterAttrs (file: type: hasSuffix ".nix" file && type == "regular"))
         attrNames
         (map (file: let
