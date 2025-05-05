@@ -28,15 +28,6 @@
       user = "goat";
       system = "x86_64-linux";
       #pkgs = import nixpkgs {inherit system;};
-      readDirRecursive = dir:
-        concatMapAttrs (this:
-          flip getAttr {
-            directory = mapAttrs' (subpath: nameValuePair "${this}/${subpath}") (read_dir_recursively "${dir}/${this}");
-            regular = {
-              ${this} = "${dir}/${this}";
-            };
-            symlink = {};
-          }) (builtins.readDir dir);
       # horrid deepMerge that works and idk why
       mergeAllRecursive = a: b:
         foldl' (
@@ -58,16 +49,23 @@
         ) {}
         (unique (attrNames a ++ attrNames b));
 
+      readDirRecursive = dir:
+        concatMapAttrs (file:
+          flip getAttr {
+            directory = mapAttrs' (subpath: nameValuePair "${file}/${subpath}") (readDirRecursive "${dir}/${file}");
+            regular = {
+              ${file} = "${dir}/${file}";
+            };
+            symlink = {};
+          }) (builtins.readDir dir);
+
       # main module creation function
-      raw = args: (pipe (readDirRecursive dir) [
-        (filterAttrs (file: type: hasSuffix ".nix" file && type == "regular"))
-        attrNames
-        (map (file: let
-          file' = import "${dir}/${file}";
-        in
-          if isFunction file'
-          then file' args
-          else file'))
+      raw = args: (pipe dir [
+        readDirRecursive
+        (filterAttrs (flip (const (hasSuffix ".nix"))))
+        (mapAttrs (const import))
+        (mapAttrs (const (flip toFunction args)))
+        attrValues
         (builtins.foldl' mergeAllRecursive {})
       ]);
 
