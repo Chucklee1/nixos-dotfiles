@@ -1,7 +1,7 @@
 {
   home.global = [
     {
-      plugins = {
+      programs.nixvim.plugins = {
         bufferline.enable = true;
         lualine.enable = true;
         noice.enable = true; # fancy cmd window

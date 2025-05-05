@@ -19,17 +19,17 @@
           lazygit.enable = true;
           gitsigns.enable = true;
         };
-      };
 
-      # lua cfg
-      extraConfigLuaPre = ''
-        if vim.g.have_nerd_font then
-          require('nvim-web-devicons').setup {}
-        end
-      '';
-      extraConfigLua = ''
-        require("telescope").load_extension("lazygit")
-      '';
+        # lua cfg
+        extraConfigLuaPre = ''
+          if vim.g.have_nerd_font then
+            require('nvim-web-devicons').setup {}
+          end
+        '';
+        extraConfigLua = ''
+          require("telescope").load_extension("lazygit")
+        '';
+      };
     }
   ];
 }
