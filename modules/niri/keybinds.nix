@@ -3,7 +3,7 @@
     ({config, ...}:
       with config.lib.niri.actions;
       with config.lib.stylix.colors.withHashtag; {
-        binds = let
+        programs.niri.settings.binds = let
           mod = "Mod";
           sh = cmd: spawn "sh" "-c" "${cmd}";
         in {
