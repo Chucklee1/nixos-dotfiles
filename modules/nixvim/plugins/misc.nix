@@ -7,8 +7,6 @@
           intellitab.enable = true;
           telescope.enable = true;
           colorizer.enable = true;
-          which-key.enable = true;
-          wilder.enable = true;
         };
 
         # language specific
@@ -16,6 +14,7 @@
           nix.enable = true;
           render-markdown.enable = true;
           fugitive.enable = true; # remote git acess
+          lazygit.enable = true;
           gitsigns.enable = true;
         };
 
