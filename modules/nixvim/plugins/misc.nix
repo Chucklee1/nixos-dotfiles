@@ -16,7 +16,6 @@
           nix.enable = true;
           render-markdown.enable = true;
           fugitive.enable = true; # remote git acess
-          lazygit.enable = true;
           gitsigns.enable = true;
         };
 

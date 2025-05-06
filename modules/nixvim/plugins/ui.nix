@@ -14,18 +14,6 @@
             view_options.show_hidden = false;
           };
         };
-        # highlighting like terms
-        illuminate = {
-          enable = true;
-          underCursor = false;
-          filetypesDenylist = [
-            "Outline"
-            "TelescopePrompt"
-            "alpha"
-            "harpoon"
-            "reason"
-          ];
-        };
       };
     }
   ];
