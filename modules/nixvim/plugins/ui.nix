@@ -3,7 +3,21 @@
     {
       programs.nixvim.plugins = {
         bufferline.enable = true;
-        lualine.enable = true;
+        lualine = {
+          enable = true;
+          settings = {
+            options = {
+              component_separators = {
+                left = "";
+                right = "";
+              };
+              section_separators = {
+                left = "";
+                right = "";
+              };
+            };
+          };
+        };
         noice.enable = true; # fancy cmd window
         scrollview.enable = true;
         # file explorer meets text editor
