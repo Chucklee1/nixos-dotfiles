@@ -11,7 +11,7 @@
           enable = true;
           settings = {
             delete_to_trash = true;
-            view_options.show_hidden = false;
+            view_options.show_hidden = true;
           };
         };
       };
