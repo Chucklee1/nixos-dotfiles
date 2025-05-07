@@ -5,17 +5,16 @@
         # qol plugins
         plugins = {
           intellitab.enable = true;
-          telescope.enable = true;
-          colorizer.enable = true;
+          colorizer = {
+            enable = true;
+            settings.user_default_options.names = false;
+          };
         };
 
         # language specific
         plugins = {
           nix.enable = true;
           render-markdown.enable = true;
-          fugitive.enable = true; # remote git acess
-          lazygit.enable = true;
-          gitsigns.enable = true;
         };
 
         # lua cfg
