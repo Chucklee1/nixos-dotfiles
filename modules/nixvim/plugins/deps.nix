@@ -7,7 +7,7 @@
         ];
         extraPackages = with pkgs; [
           chafa
-          ImageMagick
+          imagemagick
           fd
           poppler_utils
           ffmpegthumbnailer

@@ -6,7 +6,11 @@
 with inputs; {
   nix.global = [
     stylix.nixosModules.stylix
-    ({pkgs, ...}: let
+    ({
+      config,
+      pkgs,
+      ...
+    }: let
       classic-dark = {
         name = "Classic Dark";
         author = "Jason Heeris (http://heeris.id.au)";
@@ -53,7 +57,7 @@ with inputs; {
         autoEnable = true;
         homeManagerIntegration.autoImport = true;
         image = "${self}/assets/wallpapers/wallpaper.png";
-        base16Scheme = config.lib.base16.mkSchemeAttrs nordic;
+        base16Scheme = nordic;
         polarity = "dark";
 
         cursor = {

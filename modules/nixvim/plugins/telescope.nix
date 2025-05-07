@@ -1,7 +1,7 @@
 {
   home.global = [
     {
-      programs.nixvim.telescope = {
+      programs.nixvim.plugins.telescope = {
         enable = true;
         extensions = {
           media-files = {
