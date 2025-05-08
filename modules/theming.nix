@@ -6,11 +6,7 @@
 with inputs; {
   nix.global = [
     stylix.nixosModules.stylix
-    ({
-      config,
-      pkgs,
-      ...
-    }: let
+    ({pkgs, ...}: let
       classic-dark = {
         name = "Classic Dark";
         author = "Jason Heeris (http://heeris.id.au)";
@@ -81,15 +77,17 @@ with inputs; {
             popups = 12;
           };
         };
+
+        # system targets
+        stylix.targets = {
+          grub.enable = false;
+        };
       };
     })
     # ---- boot minecraft theme... hehehe ----
     minegrub-theme.nixosModules.default
     minesddm.nixosModules.default
-    ({pkgs, ...}: {
-      stylix.targets = {
-        grub.enable = false;
-      };
+    {
       # grub
       boot.loader.grub.minegrub-theme = {
         enable = true;
@@ -102,7 +100,7 @@ with inputs; {
         wayland.enable = true;
         theme = "minesddm";
       };
-    })
+    }
   ];
 
   home.global = [
@@ -112,6 +110,12 @@ with inputs; {
           enable = true;
           package = pkgs.papirus-icon-theme;
           dark = "Papirus-Dark";
+        };
+
+        # home targets
+        targets = {
+          waybar.enable = false;
+          nixvim.enable = false;
         };
       };
       gtk.enable = true;

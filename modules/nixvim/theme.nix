@@ -1,7 +1,6 @@
 {inputs, ...}: {
   home.global = [
     ({pkgs, ...}: {
-      stylix.targets.nixvim.enable = false;
       programs.nixvim = {
         extraPlugins = [
           (pkgs.vimUtils.buildVimPlugin {

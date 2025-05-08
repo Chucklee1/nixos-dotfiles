@@ -1,12 +1,17 @@
 {
   inputs,
   self,
+  user,
+  machine,
   ...
 }: {
   nix.global = [
     ({lib, ...}: {
       hardware.enableRedistributableFirmware = lib.mkDefault true;
-      networking.useDHCP = lib.mkDefault true;
+      networking = {
+        useDHCP = lib.mkDefault true;
+        hostName = "${user}-${machine}";
+      };
       nixpkgs.hostPlatform = "x86_64-linux";
     })
   ];
@@ -27,7 +32,6 @@
         supportedFilesystems = ["ntfs"];
         loader.grub.gfxmodeEfi = "1920x1080x30,auto";
       };
-      networking.hostName = "goat-desktop";
       hardware.cpu.amd.updateMicrocode = true;
     }
   ];
@@ -49,7 +53,6 @@
         # settings for goofy 6:10 macbookpro-12-1 screen
         loader.grub.gfxmodeEfi = "2560x1600";
       };
-      networking.hostName = "goat-macbook";
     })
   ];
 }

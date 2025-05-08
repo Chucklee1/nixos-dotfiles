@@ -2,7 +2,6 @@
   home.global = [
     ({config, ...}: {
       # waybar
-      stylix.targets.waybar.enable = false;
       programs.waybar = with config.lib.stylix.colors.withHashtag; let
         span = color: str: ''<span color="${color}" >${str}</span>'';
       in {

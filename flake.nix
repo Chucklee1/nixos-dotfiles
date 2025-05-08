@@ -30,8 +30,9 @@
       user = "goat";
       system = "x86_64-linux";
       #pkgs = import nixpkgs {inherit system;};
+
       # horrid deepMerge that works and idk why
-      mergeAllRecursive = a: b:
+      mergeAllRecursive' = a: b:
         foldl' (
           acc: key: let
             va = a.${key} or null;
@@ -61,28 +62,43 @@
             symlink = {};
           }) (builtins.readDir dir);
 
+      mergeAllRecursive = a: b: let
+        mergeTwo = builtins.zipAttrsWith (
+          key: values: let
+            item = filter (v: v != null) values;
+          in
+            if all isAttrs item
+            then mergeTwo (head item) (last item)
+            else if all isList item
+            then concatLists item
+            else last item
+        ) [a b];
+      in
+        items: foldl' mergeTwo {} items;
+
       # main module creation function
-      raw = args: (pipe dir [
+      mergeModules = args: (pipe dir [
         readDirRecursive
         (filterAttrs (flip (const (hasSuffix ".nix"))))
         (mapAttrs (const import))
         (mapAttrs (const (flip toFunction args)))
         attrValues
-        (builtins.foldl' mergeAllRecursive {})
+        mergeAllRecursive
       ]);
 
       # additional step for merging different profiles
-      mergeMods = mod: prev: next: (genAttrs ["nix" "home"] (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
+      mergeProfiles = mod: prev: next: (genAttrs ["nix" "home"] (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
 
       mkSystem = host:
         nixosSystem {
           inherit system;
           modules = let
-            raw' = raw {
+            # passing args here to inherit host
+            mod' = mergeModules {
               inherit inputs self user;
               machine = host;
             };
-            mod = mergeMods raw' "global" "${host}";
+            mod = mergeProfiles mod' "global" "${host}";
           in
             mod.nix ++ [{_module.args.homeMods = mod.home;}];
         };
