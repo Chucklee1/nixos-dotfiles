@@ -1,8 +1,4 @@
-{
-  inputs,
-  system,
-  ...
-}: {
+{nixvim, ...}: {
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -62,7 +58,7 @@
         muse-sounds-manager
         logisim-evolution
         # nixvim
-        inputs.packages.${system}.nixvim
+        nixvim
       ];
 
       programs = {

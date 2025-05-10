@@ -22,35 +22,34 @@
     nixpkgs,
     ...
   } @ inputs: let
-    # CUSTOM ARGS HERE
-    user = "goat";
+    # NOTE: FLAKE ARGS HERE
     system = "x86_64-linux";
     nixvim' = inputs.nixvim.legacyPackages.${system};
     lib = nixpkgs.lib;
+    pkgs = import nixpkgs {inherit system;};
     mylib = import "${self}/utils.nix" {inherit nixpkgs;};
+
+    # ---- custom pkgs ----
+    nixvim = nixvim'.makeNixvimWithModule {
+      module = mylib.mergeModules "${self}/nixvim" {inherit lib pkgs;};
+    };
 
     # ---- system  ----
     mkSystem = host:
       lib.nixosSystem {
         inherit system;
         modules = let
-          # passing args here to inherit host
           mod' = mylib.mergeModules "${self}/modules" {
-            inherit inputs self user system;
+            # NOTE: SYSTEM CFG ARGS HERE
+            inherit inputs self system nixvim;
+            user = "goat";
             machine = host;
           };
           mod = mylib.mergeProfiles mod' "global" "${host}";
         in
           mod.nix ++ [{_module.args.homeMods = mod.home;}];
       };
-
-    # ---- custom pkgs ----
-    nixvim = nixvim'.makeNixvimWithModule {
-      module.imports = mylib.mergeModules "${self}/nixvim" {};
-    };
   in {
-    packages.${system} = {inherit nixvim;};
-
     nixosConfigurations = lib.genAttrs ["desktop" "macbook"] (host: mkSystem host);
   };
 }

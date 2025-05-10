@@ -1,5 +1,5 @@
 {nixpkgs, ...}:
-with nixpkgs.lib; {
+with nixpkgs.lib; rec {
   # horrid deepMerge that works
   mergeAllRecursive = a: b:
     foldl' (
