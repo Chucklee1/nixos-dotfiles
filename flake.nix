@@ -50,7 +50,7 @@
           mod.nix ++ [{_module.args.homeMods = mod.home;}];
       };
   in {
-    devShells.${system}.nixvim = {inherit nixvim;};
+    devShells.${system} = {nixvim = pkgs.mkShell {packages = [nixvim];};};
     nixosConfigurations = lib.genAttrs ["desktop" "macbook"] (host: mkSystem host);
   };
 }
