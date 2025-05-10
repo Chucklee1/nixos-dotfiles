@@ -1,7 +1,6 @@
 {
   # qol plugins
   plugins = {
-    intellitab.enable = true;
     colorizer = {
       enable = true;
       settings.user_default_options.names = false;

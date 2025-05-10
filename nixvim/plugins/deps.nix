@@ -10,6 +10,8 @@
     ffmpegthumbnailer
     epub-thumbnailer
     fontpreview
+    stylua
+    alejandra
   ];
   plugins.web-devicons.enable = true;
 }
