@@ -596,6 +596,22 @@
         "type": "github"
       }
     },
+    "nordic-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1744698596,
+        "narHash": "sha256-NY4kjeq01sMTg1PZeVVa2Vle4KpLwWEv4y34cDQ6JMU=",
+        "owner": "AlexvZyl",
+        "repo": "nordic.nvim",
+        "rev": "6afe957722fb1b0ec7ca5fbea5a651bcca55f3e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AlexvZyl",
+        "repo": "nordic.nvim",
+        "type": "github"
+      }
+    },
     "nur": {
       "inputs": {
         "flake-parts": "flake-parts_2",
@@ -652,6 +668,7 @@
         "niri": "niri",
         "nixpkgs": "nixpkgs_4",
         "nixvim": "nixvim",
+        "nordic-nvim": "nordic-nvim",
         "stylix": "stylix"
       }
     },

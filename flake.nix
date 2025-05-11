@@ -15,7 +15,8 @@
     minecraft-plymouth.url = "github:nikp123/minecraft-plymouth-theme";
     minesddm.url = "github:Davi-S/sddm-theme-minesddm";
     minesddm.inputs.nixpkgs.follows = "nixpkgs";
-    nordic-nvim.url = "github.com/AlexvZyl/nordic.nvim";
+    nordic-nvim.url = "github:AlexvZyl/nordic.nvim";
+    nordic-nvim.flake = false;
   };
 
   outputs = {
