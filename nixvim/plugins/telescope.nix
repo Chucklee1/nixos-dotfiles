@@ -16,8 +16,8 @@
         ];
       };
     };
-    extraConfigLua = ''
-      require("telescope").load_extension("lazygit")
-    '';
   };
+  extraConfigLua = ''
+    require("telescope").load_extension("lazygit")
+  '';
 }

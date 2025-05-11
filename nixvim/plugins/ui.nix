@@ -23,7 +23,7 @@
       enable = true;
       autoLoad = true;
       settings = {
-        theme = "hyper";
+        theme = "doom";
         config = {
           footer = ["sus"];
           header = [
@@ -41,25 +41,23 @@
             "⠀⠀⠀⠀⠀⠀⠀⠻⣿⣦⣄⣀⣀⣀⣀⣠⣿⣷⣄⣀⣀⣀⣀⣼⣿⠁⠀"
             "⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠛⠛⠛⠛⠛⠛⠋⠛⠛⠛⠛⠛⠛⠛⠁⠀⠀"
           ];
-          packages.enable = true;
-          shortcut = [
+          center = [
             {
               action = "Oil";
-              desc = "(o)il 😏";
+              desc = "Oil";
               group = "Label";
-              icon = "";
               icon_hl = "@variable";
               key = "o";
             }
             {
               action = "LazyGit";
-              desc = "lazy(g)it";
+              desc = "lazyGit";
               group = "DiagnosticHint";
               key = "g";
             }
             {
               action = "e $HOME/nixos-dotfiles/flake.nix";
-              desc = " (n)ixos dotfiles";
+              desc = "Dotfiles";
               group = "Number";
               key = "n";
             }
