@@ -91,18 +91,20 @@
 
         bash = {
           enable = true;
-          shellAliases = let
-            flake = "--impure --show-trace --flake $HOME/nixos-dotfiles";
-          in {
+          shellAliases = {
             # nix - system installation
             disko-generate = ''sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix'';
-            show-hardware = "sudo nixos-generate-config ${flake}";
-            install-mnt = "sudo nixos-install --root /mnt ${flake}";
+            show-hardware = "sudo nixos-generate-config --show-hardware-config";
+            install-mnt = "sudo nixos-install --root /mnt github:Chucklee1/nixos-dotfiles";
             # nix - general
             cg = "nix-collect-garbage";
             update-flake = "nix flake update --flake $HOME/nixos-dotfiles";
-            rebuild-desktop = "rm -rf $HOME/.mozilla && sudo nixos-rebuild switch ${flake}#desktop";
-            rebuild-macbook = "sudo nixos-rebuild switch  ${flake}#macbook";
+            rebuild-desktop = "sudo nixos-rebuild switch --show-trace --flake $HOME/nixos-dotfiles#desktop";
+            rebuild-macbook = "sudo nixos-rebuild switch --show-trace --flake $HOME/nixos-dotfiles#macbook";
+            # nvim aliases
+            v = "nvim";
+            vi = "nvim";
+            vim = "nvim";
             # tools - git
             clone-flake = ''
               if [ -e /home/goat/.ssh/id_ed25519.pub ]; then
