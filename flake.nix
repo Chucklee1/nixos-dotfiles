@@ -2,21 +2,48 @@
   description = "i dont kow what im doing";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.url = "github:danth/stylix";
-    nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    niri.url = "github:sodiboo/niri-flake";
-    minegrub-theme.url = "github:Lxtharia/minegrub-theme";
-    minecraft-plymouth.url = "github:nikp123/minecraft-plymouth-theme";
-    minesddm.url = "github:Davi-S/sddm-theme-minesddm";
-    minesddm.inputs.nixpkgs.follows = "nixpkgs";
-    nordic-nvim.url = "github:AlexvZyl/nordic.nvim";
-    nordic-nvim.flake = false;
+    # main repos
+    nixpkgs = {
+      url = "github:NixOS/nixpkgs/nixos-unstable";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # theming
+    stylix = {
+      url = "github:danth/stylix";
+    };
+    minegrub-theme = {
+      url = "github:Lxtharia/minegrub-theme";
+    };
+    minecraft-plymouth = {
+      url = "github:nikp123/minecraft-plymouth-theme";
+    };
+    minesddm = {
+      url = "github:Davi-S/sddm-theme-minesddm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # neovim
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nordic-nvim = {
+      url = "github:AlexvZyl/nordic.nvim";
+      flake = false;
+    };
+    # wayland
+    niri = {
+      url = "github:sodiboo/niri-flake";
+    };
+    waybar = {
+      url = "github:Alexays/Waybar/master";
+    };
   };
 
   outputs = {
@@ -24,16 +51,19 @@
     nixpkgs,
     ...
   } @ inputs: let
-    # NOTE: FLAKE ARGS HERE
+    # global system
     system = "x86_64-linux";
+
+    # nixpkgs dependant args after declaration of nixpkgs
     nixvim' = inputs.nixvim.legacyPackages.${system};
     lib = nixpkgs.lib;
     pkgs = import nixpkgs {inherit system;};
     mylib = import "${self}/utils.nix" {inherit nixpkgs;};
 
-    # ---- custom pkgs ----
     nixvim = nixvim'.makeNixvimWithModule {
-      module = mylib.mergeModules "${self}/nixvim" {inherit lib pkgs inputs;};
+      module = mylib.mergeModules "${self}/nixvim" {
+        inherit lib pkgs inputs;
+      };
     };
 
     # ---- system  ----
@@ -52,6 +82,7 @@
           mod.nix ++ [{_module.args.homeMods = mod.home;}];
       };
   in {
+    # devshell mainly for remotes
     devShells.${system} = {nixvim = pkgs.mkShell {packages = [nixvim];};};
     nixosConfigurations = lib.genAttrs ["desktop" "macbook"] (host: mkSystem host);
   };

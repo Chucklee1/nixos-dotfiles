@@ -1,11 +1,22 @@
 {
+  inputs,
+  system,
+  ...
+}: {
   home.global = [
-    ({config, ...}: {
+    ({
+      pkgs,
+      config,
+      ...
+    }: {
       # waybar
+      nixpkgs.overlays = [(_: _: {waybar_git = inputs.waybar.packages.${system}.waybar;})];
+      stylix.targets.waybar.enable = false;
       programs.waybar = with config.lib.stylix.colors.withHashtag; let
         span = color: str: ''<span color="${color}" >${str}</span>'';
       in {
         enable = true;
+        package = pkgs.waybar_git;
         systemd.enable = true;
         settings = [
           {

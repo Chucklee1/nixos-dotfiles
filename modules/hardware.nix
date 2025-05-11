@@ -1,12 +1,13 @@
 {
   inputs,
   self,
+  system,
   ...
 }: {
   nix.global = [
     ({lib, ...}: {
       hardware.enableRedistributableFirmware = lib.mkDefault true;
-      nixpkgs.hostPlatform = "x86_64-linux";
+      nixpkgs.hostPlatform = "${system}";
     })
   ];
   nix.desktop = [
@@ -45,7 +46,7 @@
         blacklistedKernelModules = lib.mkForce ["b43" "bcma"];
         supportedFilesystems = ["ntfs" "btrfs" "apfs"];
         # settings for goofy 6:10 macbookpro-12-1 screen
-        loader.grub.gfxmodeEfi = "2560x1600";
+        loader.grub.gfxmodeEfi = "2560x1600x20";
       };
     })
   ];

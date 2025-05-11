@@ -1,5 +1,6 @@
 {
   inputs,
+  system,
   user,
   machine,
   ...
@@ -33,7 +34,10 @@
       time.timeZone = "America/Vancouver";
 
       # nix
-      nixpkgs.config.allowUnfree = true;
+      nixpkgs = {
+        inherit system;
+        config.allowUnfree = true;
+      };
       nix.settings = {
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
@@ -53,12 +57,12 @@
       };
 
       home-manager.users.${user} = {
-        nixpkgs.config.allowUnfree = true;
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
           username = "${config.users.users.${user}.name}";
           homeDirectory = "/home/${config.users.users.${user}.name}";
         };
+        nixpkgs.config.allowUnfree = true;
         imports = config._module.args.homeMods;
       };
     })

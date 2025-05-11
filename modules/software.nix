@@ -57,7 +57,7 @@
         musescore
         muse-sounds-manager
         logisim-evolution
-        # nixvim
+        (ungoogled-chromium.override {enableWideVine = true;})
         nixvim
       ];
 
@@ -65,10 +65,6 @@
         # diagnostics
         btop.enable = true;
         mangohud.enable = true;
-        chromium = {
-          enable = true;
-          package = pkgs.ungoogled-chromium;
-        };
         #git
         git = {
           enable = true;
@@ -84,9 +80,6 @@
             tab_bar_edge = "top";
             tab_bar_style = lib.mkForce "slant";
           };
-        };
-        wezterm = {
-          enable = true;
         };
 
         bash = {
