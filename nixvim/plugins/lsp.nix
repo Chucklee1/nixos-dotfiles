@@ -28,22 +28,23 @@
       enable = true;
       autoEnableSources = true;
     };
-  };
 
-  # TODO code snippits
-  /*
-    plugins.luasnip = {
-    enable = true;
-    settings = {
-      enable_autosnippets = true;
-      store_selection_keys = "<Tab>";
+    # language qol
+
+    # color preview
+    colorizer = {
+      enable = true;
+      settings.user_default_options.names = false;
     };
-    fromSnipmate = [
-      {
-        paths = "${self}/assets/snippets/nix.snippets";
-        include = ["nix"];
-      }
-    ];
+
+    # nice keybinds for pairs
+    sandwich.enable = true;
+
+    # nix tools
+    nix.enable = true;
+    nix-develop.enable = true;
+
+    # neat md previewer
+    render-markdown.enable = true;
   };
-  */
 }

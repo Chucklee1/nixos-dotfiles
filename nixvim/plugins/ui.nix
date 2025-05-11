@@ -27,7 +27,15 @@
       };
     };
     # git
-    lazygit.enable = true;
+    lazygit = {
+      enable = true;
+      lazyLoad = {
+        settings = {
+          cmd = "LazyGit";
+          keys = ["<leader>gg"];
+        };
+      };
+    };
     gitsigns.enable = true;
   };
 }

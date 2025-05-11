@@ -3,6 +3,7 @@
     enable = true;
     extensions = {
       media-files = {
+        enable = true;
         settings.filetypes = [
           "png"
           "jpg"
@@ -15,5 +16,8 @@
         ];
       };
     };
+    extraConfigLua = ''
+      require("telescope").load_extension("lazygit")
+    '';
   };
 }
