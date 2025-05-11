@@ -9,18 +9,34 @@
         package = pkgs.niri-unstable;
       };
 
-      environment.systemPackages = with pkgs; [
-        egl-wayland
-        qt5.qtwayland
-        qt6.qtwayland
-        brightnessctl
-        wev
-        wmenu
-        xwayland
-        xwayland-run
-        wl-color-picker
-        wl-clipboard
-      ];
+      environment = {
+        systemPackages = with pkgs; [
+          egl-wayland
+          qt5.qtwayland
+          qt6.qtwayland
+          brightnessctl
+          wev
+          wmenu
+          xwayland
+          xwayland-run
+          wl-color-picker
+          wl-clipboard
+        ];
+
+        variables = {
+          XDG_CURRENT_DESKTOP = "niri";
+          XDG_SESSION_DESKTOP = "niri";
+          NIXOS_OZONE_WL = "1";
+          MOZ_ENABLE_WAYLAND = "1";
+          DISPLAY = ":0";
+          _JAVA_AWT_WM_NONREPARENTING = "1";
+          SDL_VIDEODRIVER = "x11";
+          GDK_BACKEND = "wayland,x11";
+          QT_QPA_PLATFORM = "wayland;xcb";
+          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+          QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+        };
+      };
 
       # polkit n portals
       security.polkit.enable = true;

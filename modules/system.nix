@@ -102,7 +102,11 @@
   ];
   nix.desktop = [
     # gpu
-    ({config, ...}: {
+    ({
+      lib,
+      config,
+      ...
+    }: {
       nixpkgs.config.nvidia.acceptLicense = true;
       services.xserver.videoDrivers = ["nvidia"];
       hardware.nvidia = {
@@ -111,6 +115,15 @@
         videoAcceleration = true;
         open = false;
       };
+      environment.variables =
+        {
+          LIBVA_DRIVER_NAME = "nvidia";
+          NVD_BACKEND = "direct";
+        }
+        // (lib.mkIf config.niri.enable == true) {
+          GBM_BACKEND = "nvidia-drm";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        };
     })
     # tablet support
     {

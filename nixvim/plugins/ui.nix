@@ -73,7 +73,7 @@
     };
     navbuddy = {
       enable = true;
-      settings.lsp.autoAttach = true;
+      lsp.autoAttach = true;
     };
     noice.enable = true; # fancy cmd window
     # file explorer meets text editor
