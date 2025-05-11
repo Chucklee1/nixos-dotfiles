@@ -120,7 +120,7 @@
           LIBVA_DRIVER_NAME = "nvidia";
           NVD_BACKEND = "direct";
         }
-        // (lib.mkIf config.niri.enable == true) {
+        // lib.mkIf (config.programs.niri.enable == true) {
           GBM_BACKEND = "nvidia-drm";
           __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         };
