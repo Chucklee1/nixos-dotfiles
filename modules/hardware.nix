@@ -1,17 +1,11 @@
 {
   inputs,
   self,
-  user,
-  machine,
   ...
 }: {
   nix.global = [
     ({lib, ...}: {
       hardware.enableRedistributableFirmware = lib.mkDefault true;
-      networking = {
-        useDHCP = lib.mkDefault true;
-        hostName = "${user}-${machine}";
-      };
       nixpkgs.hostPlatform = "x86_64-linux";
     })
   ];

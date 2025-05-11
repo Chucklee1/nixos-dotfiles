@@ -8,6 +8,5 @@
       };
       nixvimInjections = true;
     };
-    treesitter-context.enable = true;
   };
 }

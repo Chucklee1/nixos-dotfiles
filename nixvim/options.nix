@@ -46,6 +46,7 @@
     Wq.command = "wq";
     WQ.command = "wq";
     W.command = "w";
+    Ex.command = "Oil";
   };
   performance.byteCompileLua.enable = true;
 }

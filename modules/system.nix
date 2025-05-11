@@ -1,12 +1,17 @@
 {
   inputs,
   user,
+  machine,
   ...
 }: {
   nix.global = [
     # ---- system ----
     inputs.home-manager.nixosModules.home-manager
-    ({config, ...}: {
+    ({
+      lib,
+      config,
+      ...
+    }: {
       # boot
       boot.loader = {
         efi.canTouchEfiVariables = true;
@@ -16,11 +21,14 @@
           device = "nodev";
         };
       };
-      #services.displayManager.ly.enable = true;
 
       # general
       system.stateVersion = "24.05";
-      networking.networkmanager.enable = true;
+      networking = {
+        useDHCP = lib.mkDefault true;
+        hostName = "${user}-${machine}";
+        networkmanager.enable = true;
+      };
       i18n.defaultLocale = "en_CA.UTF-8";
       time.timeZone = "America/Vancouver";
 
@@ -102,20 +110,6 @@
         package = config.boot.kernelPackages.nvidiaPackages.beta;
         videoAcceleration = true;
         open = false;
-      };
-      environment.variables = {
-        LIBVA_DRIVER_NAME = "nvidia";
-        NVD_BACKEND = "direct";
-      };
-    })
-    ({
-      lib,
-      config,
-      ...
-    }: {
-      environment.variables = lib.mkIf (config.programs.niri.enable == true) {
-        GBM_BACKEND = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };
     })
     # tablet support

@@ -1,23 +1,6 @@
 {
   plugins = {
     bufferline.enable = true;
-    lualine = {
-      enable = true;
-      settings = {
-        options = {
-          component_separators = {
-            left = "";
-            right = "";
-          };
-          section_separators = {
-            left = "";
-            right = "";
-          };
-        };
-      };
-    };
-    noice.enable = true; # fancy cmd window
-    scrollview.enable = true;
     # startup menu
     dashboard = {
       enable = true;
@@ -65,6 +48,34 @@
         };
       };
     };
+    # git
+    gitsigns.enable = true;
+    lazygit.enable = true;
+    lualine = {
+      enable = true;
+      settings = {
+        options = {
+          component_separators = {
+            left = "";
+            right = "";
+          };
+          section_separators = {
+            left = "";
+            right = "";
+          };
+        };
+      };
+    };
+    # symbol overview
+    navic = {
+      enable = true;
+      settings.lsp.auto_attach = true;
+    };
+    navbuddy = {
+      enable = true;
+      settings.lsp.autoAttach = true;
+    };
+    noice.enable = true; # fancy cmd window
     # file explorer meets text editor
     oil = {
       enable = true;
@@ -73,8 +84,6 @@
         view_options.show_hidden = true;
       };
     };
-    # git
-    lazygit.enable = true;
-    gitsigns.enable = true;
+    scrollview.enable = true;
   };
 }
