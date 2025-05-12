@@ -24,6 +24,8 @@
           "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
           "XF86MonBrightnessUp".action = sh "brightnessctl set 5%+";
           "XF86MonBrightnessDown".action = sh "brightnessctl set 5%-";
+          "XF86KbdBrightnessUp".action = sh "brightnessctl --device=smc::kbd_backlight set 10%+";
+          "XF86KbdBrightnessDown".action = sh "brightnessctl --device=smc::kbd_backlight set 10%-";
           # screenshot
           "Print".action = screenshot;
           "Alt+Print".action = screenshot-window;
