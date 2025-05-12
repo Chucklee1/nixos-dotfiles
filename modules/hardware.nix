@@ -40,8 +40,8 @@
         supportedFilesystems = ["ntfs" "btrfs" "apfs"];
         # settings for goofy 6:10 macbookpro-12-1 screen
         loader.grub.gfxmodeEfi = "2560x1600x40";
-        hardware.cpu.intel.updateMicrocode = true;
       };
+      hardware.cpu.intel.updateMicrocode = true;
     })
   ];
 }
