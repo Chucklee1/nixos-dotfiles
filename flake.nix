@@ -59,7 +59,6 @@
     # custom
     nixvim' = inputs.nixvim.legacyPackages.${system};
     mylib = import "${self}/lib/merging.nix" {inherit nixpkgs;};
-    wallpaper = "${self}/wallpapers/wallpaper.png";
     nixvim = nixvim'.makeNixvimWithModule {
       module = mylib.mergeModules "${self}/nixvim" {
         inherit lib pkgs inputs;
@@ -73,7 +72,7 @@
         modules = let
           mod' = mylib.mergeModules "${self}/modules" {
             # NOTE: SYSTEM CFG ARGS HERE
-            inherit inputs self system wallpaper nixvim;
+            inherit inputs self system nixvim;
             user = "goat";
             machine = host;
           };

@@ -1,12 +1,12 @@
-{
-  inputs,
-  wallpaper,
-  ...
-}:
+{inputs, ...}:
 with inputs; {
   nix.global = [
     stylix.nixosModules.stylix
-    ({pkgs, ...}: let
+    ({
+      lib,
+      pkgs,
+      ...
+    }: let
       classic-dark = {
         name = "Classic Dark";
         author = "Jason Heeris (http://heeris.id.au)";
@@ -27,32 +27,24 @@ with inputs; {
         base0E = "AA759F";
         base0F = "8F5536";
       };
-      nordic = {
-        scheme = "Nordic";
-        author = "goat, based on arcticicestudio";
-        base00 = "191D24";
-        base01 = "242933";
-        base02 = "3B4252";
-        base03 = "4C566A";
-        base04 = "D8DEE9";
-        base05 = "E5E9F0";
-        base06 = "ECEFF4";
-        base07 = "8FBCBB";
-        base08 = "BF616A";
-        base09 = "D08770";
-        base0A = "EBCB8B";
-        base0B = "A3BE8C";
-        base0C = "88C0D0";
-        base0D = "81A1C1";
-        base0E = "B48EAD";
-        base0F = "C0C8D8";
+      cosmic = {
+        url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
+        hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
       };
+      pastel = {
+        url = "https://w.wallhaven.cc/full/6d/wallhaven-6d97m6.png";
+        hash = "sha256-HBeTpOzsNJqgXKIBpqKoCOW5114hNLLRibkaweuuEM0=";
+      };
+      setWallpaper = wallpaper: (pkgs.fetchurl {
+        url = wallpaper.url;
+        hash = wallpaper.hash;
+      });
     in {
       stylix = {
         enable = true;
         autoEnable = true;
         homeManagerIntegration.autoImport = true;
-        image = "${wallpaper}";
+        image = setWallpaper cosmic;
         base16Scheme = classic-dark;
         polarity = "dark";
 
@@ -89,12 +81,6 @@ with inputs; {
           enable = true;
           package = pkgs.papirus-icon-theme;
           dark = "Papirus-Dark";
-        };
-
-        # home targets
-        targets = {
-          waybar.enable = false;
-          nixvim.enable = true;
         };
       };
       gtk.enable = true;
