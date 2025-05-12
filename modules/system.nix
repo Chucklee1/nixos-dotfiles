@@ -13,16 +13,6 @@
       config,
       ...
     }: {
-      # boot
-      boot.loader = {
-        efi.canTouchEfiVariables = true;
-        grub = {
-          enable = true;
-          efiSupport = true;
-          device = "nodev";
-        };
-      };
-
       # general
       system.stateVersion = "24.05";
       networking = {
@@ -36,6 +26,7 @@
       # nix
       nixpkgs = {
         inherit system;
+        hostPlatform = "${system}";
         config.allowUnfree = true;
       };
       nix.settings = {

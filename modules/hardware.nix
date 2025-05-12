@@ -1,15 +1,10 @@
 {
   inputs,
   self,
-  system,
   ...
 }: {
-  nix.global = [
-    ({lib, ...}: {
-      hardware.enableRedistributableFirmware = lib.mkDefault true;
-      nixpkgs.hostPlatform = "${system}";
-    })
-  ];
+  nix.global = [{hardware.enableRedistributableFirmware = true;}];
+
   nix.desktop = [
     inputs.disko.nixosModules.default
     (import "${self}/assets/disko/ext4.nix" {device = "/dev/sda";})
@@ -21,8 +16,6 @@
 
       boot = {
         initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-        initrd.kernelModules = [];
-        extraModulePackages = [];
         kernelModules = ["kvm-amd"];
         supportedFilesystems = ["ntfs"];
         loader.grub.gfxmodeEfi = "1920x1080x30,auto";
@@ -46,7 +39,8 @@
         blacklistedKernelModules = lib.mkForce ["b43" "bcma"];
         supportedFilesystems = ["ntfs" "btrfs" "apfs"];
         # settings for goofy 6:10 macbookpro-12-1 screen
-        loader.grub.gfxmodeEfi = "2560x1600x20";
+        loader.grub.gfxmodeEfi = "2560x1600x40";
+        hardware.cpu.intel.updateMicrocode = true;
       };
     })
   ];

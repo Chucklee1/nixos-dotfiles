@@ -1,6 +1,6 @@
 {
   inputs,
-  self,
+  wallpaper,
   ...
 }:
 with inputs; {
@@ -52,7 +52,7 @@ with inputs; {
         enable = true;
         autoEnable = true;
         homeManagerIntegration.autoImport = true;
-        image = "${self}/assets/wallpapers/wallpaper.png";
+        image = "${wallpaper}";
         base16Scheme = classic-dark;
         polarity = "dark";
 
@@ -77,30 +77,9 @@ with inputs; {
             popups = 12;
           };
         };
-
-        # system targets
-        targets = {
-          grub.enable = false;
-        };
+        targets.grub.enable = false;
       };
     })
-    # ---- boot minecraft theme... hehehe ----
-    minegrub-theme.nixosModules.default
-    minesddm.nixosModules.default
-    {
-      # grub
-      boot.loader.grub.minegrub-theme = {
-        enable = true;
-        splash = "100% Flakes!";
-        background = "background_options/1.8  - [Classic Minecraft].png";
-        boot-options-count = 4;
-      };
-      services.displayManager.sddm = {
-        enable = true;
-        wayland.enable = true;
-        theme = "minesddm";
-      };
-    }
   ];
 
   home.global = [

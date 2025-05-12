@@ -51,15 +51,15 @@
     nixpkgs,
     ...
   } @ inputs: let
-    # global system
+    # nixpkgs
     system = "x86_64-linux";
-
-    # nixpkgs dependant args after declaration of nixpkgs
-    nixvim' = inputs.nixvim.legacyPackages.${system};
     lib = nixpkgs.lib;
     pkgs = import nixpkgs {inherit system;};
-    mylib = import "${self}/utils.nix" {inherit nixpkgs;};
 
+    # custom
+    nixvim' = inputs.nixvim.legacyPackages.${system};
+    mylib = import "${self}/lib/merging.nix" {inherit nixpkgs;};
+    wallpaper = "${self}/wallpapers/wallpaper.png";
     nixvim = nixvim'.makeNixvimWithModule {
       module = mylib.mergeModules "${self}/nixvim" {
         inherit lib pkgs inputs;
@@ -67,24 +67,24 @@
     };
 
     # ---- system  ----
-    mkSystem = host:
+    profiles = ["desktop" "laptop" "macbook"];
+    nixosConfigurations = lib.genAttrs profiles (host:
       lib.nixosSystem {
-        inherit system;
         modules = let
           mod' = mylib.mergeModules "${self}/modules" {
             # NOTE: SYSTEM CFG ARGS HERE
-            inherit inputs self system nixvim;
+            inherit inputs self system wallpaper nixvim;
             user = "goat";
             machine = host;
           };
           mod = mylib.mergeProfiles mod' "global" "${host}";
         in
           mod.nix ++ [{_module.args.homeMods = mod.home;}];
-      };
+      });
   in {
+    inherit nixosConfigurations;
     # devshell mainly for remotes
-    devShells.${system} = {nixvim = pkgs.mkShell {packages = [nixvim];};};
     packages.${system} = {inherit nixvim;};
-    nixosConfigurations = lib.genAttrs ["desktop" "macbook"] (host: mkSystem host);
+    devShells.${system} = {nixvim = pkgs.mkShell {packages = [nixvim];};};
   };
 }

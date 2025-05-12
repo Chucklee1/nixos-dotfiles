@@ -1,4 +1,8 @@
-{nixvim, ...}: {
+{
+  nixvim,
+  machine,
+  ...
+}: {
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -92,8 +96,7 @@
             # nix - general
             cg = "nix-collect-garbage";
             update-flake = "nix flake update --flake $HOME/nixos-dotfiles";
-            rebuild-desktop = "sudo nixos-rebuild switch --show-trace --flake $HOME/nixos-dotfiles#desktop";
-            rebuild-macbook = "sudo nixos-rebuild switch --show-trace --flake $HOME/nixos-dotfiles#macbook";
+            "rebuild-${machine}" = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#${machine}";
             # nvim aliases
             v = "nvim";
             vi = "nvim";
