@@ -5,8 +5,9 @@
 }: {
   home.global = [
     ({
-      pkgs,
+      lib,
       config,
+      pkgs,
       ...
     }: {
       # waybar
@@ -107,12 +108,24 @@
           }
         ];
         style =
-          # css
+          lib.mkAfter # css
+          
           ''
             * {
               font-family: "JetBrainsMono nerd font";
               font-size: 12px;
             }
+
+            #modules-left,
+            #modules-center,
+            #modules-right {
+              padding:2px;
+              margin:10 0 5 10;
+              border-radius:5px;
+              background: @base03;
+              box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
+            }
+
             #window {
               padding-left: 2px;
             }
