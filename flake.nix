@@ -84,6 +84,7 @@
   in {
     # devshell mainly for remotes
     devShells.${system} = {nixvim = pkgs.mkShell {packages = [nixvim];};};
+    packages.${system} = {inherit nixvim};
     nixosConfigurations = lib.genAttrs ["desktop" "macbook"] (host: mkSystem host);
   };
 }
