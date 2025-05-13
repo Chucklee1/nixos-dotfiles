@@ -1,6 +1,6 @@
 |personal dotfiles for my machines|
 
-# **notes**
+# notes
 
 - these notes are mostly here for my own sake
 - default order parameters -> { lib, config, pkgs, inputs, specialArgs, ... }
@@ -12,6 +12,9 @@
     - current module names: global, desktop, and macbook
     - global is merged with macbook & desktop
 
-# **CMD cheatsheet**
+# cheatsheet
 
-- sudo tar czvf name.tar.gz folder/\*
+- tar czvf [name].tar.gz [folder]/\*
+- ## CSS
+  - margin: [TOP]px [RIGHT]px [BOTTOM]px [LEFT]px;
+  - margin: [TOP]px [LEFT & RIGHT]px [BOTTOM]px;
