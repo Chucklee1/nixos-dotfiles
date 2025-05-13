@@ -35,6 +35,7 @@
             modules-right = [
               "idle_inhibitor"
               "pulseaudio"
+              "custom/tailscale"
               "network"
               "backlight"
               "battery"
@@ -48,6 +49,7 @@
 
             "clock" = {
               format = "{:%Y-%M-%d | %H:%M:%S}";
+              interval = 1;
               tooltip = false;
             };
 
@@ -68,11 +70,9 @@
               format-source-muted = span base08 "M ";
               tooltip = false;
             };
-            "custom/tailscale" = let
-              waybar-tailscale = builtins.readFile "${self}/assets/waybar-tailscale.sh";
-            in {
-              exec = "exec ${waybar-tailscale} --status";
-              on-click = "exec ${waybar-tailscale} --toggle";
+            "custom/tailscale" = {
+              exec = "exec ${self}/assets/waybar-tailscale.sh --status";
+              on-click = "exec ${self}/assets/waybar-tailscale.sh --toggle";
               exec-on-event = true;
               format = "VPN: {icon}";
               format-icons = {
