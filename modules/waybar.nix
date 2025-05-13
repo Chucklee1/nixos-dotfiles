@@ -107,24 +107,29 @@
             };
           }
         ];
-        style =
-          lib.mkAfter # css
-          
+        style = let
+          module = ''
+            {
+              padding:2px;
+              margin:1 0 1 1;
+              border-radius:5px;
+              background: #505050;
+              box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
+            }
+
+          '';
+        in
+          lib.mkAfter
+          # css
           ''
             * {
               font-family: "JetBrainsMono nerd font";
               font-size: 12px;
             }
 
-            #modules-left,
-            #modules-center,
-            #modules-right {
-              padding:2px;
-              margin:10 0 5 10;
-              border-radius:5px;
-              background: @base03;
-              box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
-            }
+            .modules-left ${module}
+            .modules-center ${module}
+            .modules-right ${module}
 
             #window {
               padding-left: 2px;

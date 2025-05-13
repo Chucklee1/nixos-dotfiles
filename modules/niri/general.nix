@@ -104,7 +104,8 @@
           always-center-single-column = false;
           tab-indicator = {
             hide-when-single-tab = true;
-            position = "top";
+            place-within-column = true;
+            width = 8.0;
           };
         };
         window-rules = let
