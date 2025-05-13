@@ -1,6 +1,7 @@
 {
   inputs,
   system,
+  self,
   ...
 }: {
   home.global = [
@@ -29,9 +30,7 @@
               "niri/window"
             ];
             modules-center = [
-              "clock#date"
-              "custom/seperator"
-              "clock#time"
+              "clock"
             ];
             modules-right = [
               "idle_inhibitor"
@@ -44,19 +43,11 @@
 
             "niri/window" = {
               tooltip = false;
+              format = "{app_id}";
             };
 
-            "clock#date" = {
-              format = "{:%Y-%M-%d}";
-              tooltip = false;
-            };
-            "custom/seperator" = {
-              format = " | ";
-              tooltip = false;
-            };
-            "clock#time" = {
-              format = "{:%H:%M:%S}";
-              interval = 1;
+            "clock" = {
+              format = "{:%Y-%M-%d | %H:%M:%S}";
               tooltip = false;
             };
 
@@ -75,15 +66,28 @@
               format-muted = span base08 "M ";
               format-source = "{volume}% ";
               format-source-muted = span base08 "M ";
-              on-click = "pavucontrol";
               tooltip = false;
             };
+            "custom/tailscale" = let
+              waybar-tailscale = builtins.readFile "${self}/assets/waybar-tailscale.sh";
+            in {
+              exec = "exec ${waybar-tailscale} --status";
+              on-click = "exec ${waybar-tailscale} --toggle";
+              exec-on-event = true;
+              format = "VPN: {icon}";
+              format-icons = {
+                connected = "on";
+                stopped = "off";
+              };
+              tooltip = true;
+              return-type = "json";
+              interval = 3;
+            };
             network = {
-              format-disconnected = "disconnected ⚠";
+              format-disconnected = "nah ⚠";
               format-ethernet = "{ipaddr}/{cidr}";
               format-wifi = "{essid} ({signalStrength}%) ";
-              on-click = "kitty -e nmtui";
-              tooltip-format = "{ifname} via {gwaddr}";
+              tooltip = false;
             };
             backlight = {
               format = ''{percent}% ${span base0A "{icon}"}'';
@@ -107,18 +111,7 @@
             };
           }
         ];
-        style = let
-          module = ''
-            {
-              padding:2px;
-              margin:1 0 1 1;
-              border-radius:5px;
-              background: #505050;
-              box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
-            }
-
-          '';
-        in
+        style =
           lib.mkAfter
           # css
           ''
@@ -127,12 +120,8 @@
               font-size: 12px;
             }
 
-            .modules-left ${module}
-            .modules-center ${module}
-            .modules-right ${module}
-
             #window {
-              padding-left: 2px;
+              padding-left: 2;
             }
 
             #idle_inhibitor,
@@ -140,7 +129,7 @@
             #network,
             #backlight,
             #battery {
-              padding: 0 10px 0 10px;
+              padding: 0 10 0 10;
             }
           '';
       };
