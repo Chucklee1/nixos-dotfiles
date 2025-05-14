@@ -49,4 +49,12 @@
     Ex.command = "Oil";
   };
   performance.byteCompileLua.enable = true;
+
+  # ---- THEME ----
+
+  colorschemes.nightfox = {
+    enable = true;
+    flavor = "nordfox";
+    settings.options.transparent = true;
+  };
 }
