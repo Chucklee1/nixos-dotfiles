@@ -42,7 +42,7 @@ with inputs; {
         image = setWallpaper cosmic;
         base16Scheme = nordic;
         polarity = "dark";
-        opacity.terminal = 0.7;
+        opacity.terminal = 0.8;
 
         cursor = {
           package = pkgs.bibata-cursors;
