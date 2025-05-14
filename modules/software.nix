@@ -98,7 +98,7 @@
               # nix - general
               cg = "nix-collect-garbage";
               update-flake = "nix flake update --flake $HOME/nixos-dotfiles";
-              "rebuild-flake" = "sudo nixos-rebuild switch --impure --show-trace --flake $HOME/nixos-dotfiles#${machine}";
+              "rebuild-flake" = "sudo nixos-rebuild switch -L --impure --show-trace --flake $HOME/nixos-dotfiles#${machine}";
               # tools - git
               clone-flake = ''
                 if [ -e /home/goat/.ssh/id_ed25519.pub ]; then
