@@ -1,4 +1,18 @@
-{inputs, ...}: {
+{inputs, ...}: let
+  environmentVariables = {
+    XDG_CURRENT_DESKTOP = "niri";
+    XDG_SESSION_DESKTOP = "niri";
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    DISPLAY = ":0";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    SDL_VIDEODRIVER = "x11";
+    GDK_BACKEND = "wayland,x11";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+  };
+in {
   nix.global = [
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
@@ -10,6 +24,7 @@
       };
 
       environment = {
+        variables = environmentVariables;
         systemPackages = with pkgs; [
           egl-wayland
           qt5.qtwayland
@@ -22,20 +37,6 @@
           wl-color-picker
           wl-clipboard
         ];
-
-        variables = {
-          XDG_CURRENT_DESKTOP = "niri";
-          XDG_SESSION_DESKTOP = "niri";
-          NIXOS_OZONE_WL = "1";
-          MOZ_ENABLE_WAYLAND = "1";
-          DISPLAY = ":0";
-          _JAVA_AWT_WM_NONREPARENTING = "1";
-          SDL_VIDEODRIVER = "x11";
-          GDK_BACKEND = "wayland,x11";
-          QT_QPA_PLATFORM = "wayland;xcb";
-          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-          QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-        };
       };
 
       # polkit n portals
@@ -59,33 +60,24 @@
         package = pkgs.swaylock-effects;
       };
 
-      programs.niri.settings = with config.lib.niri.actions; let
-        sh = cmd: spawn "sh" "-c" "${cmd}";
-        callExe = pkg: lib.getExe pkgs.${pkg};
-      in {
+      programs.niri.settings = {
         # general
+        environment = environmentVariables;
         prefer-no-csd = true;
         hotkey-overlay.skip-at-startup = true;
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
 
-        spawn-at-startup = [
-          {command = ["${callExe "xwayland-satellite"}"];}
-          {command = ["${callExe "wlsunset"}" "-T" "5200"];}
-          {command = ["${callExe "swaybg"}" "-m" "fill" "-i" "${config.stylix.image}"];}
-          {command = ["brightnessctl" "s" "50%"];}
-          {command = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "1"];}
+        spawn-at-startup = let
+          sh = ''"sh" "-c"'';
+          get = pkg: lib.getExe pkgs.${pkg};
+        in [
+          {command = [sh "${get "xwayland-satellite"}"];}
+          {command = [sh "${get "wlsunset"} -T 5200"];}
+          {command = [sh "${get "swaybg"} -m fill -i ${config.stylix.image}"];}
+          {command = [sh "brightnessctl s 50%"];}
+          {command = [sh "systemctl --user reset-failed waybar.service"];}
+          {command = [sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ 1"];}
         ];
-
-        switch-events = {
-          tablet-mode-on.action = sh "notify-send tablet-mode-on";
-          tablet-mode-off.action = sh "notify-send tablet-mode-off";
-          lid-open.action = sh ''
-            niri msg action power-on-monitors
-            swaylock
-          '';
-          lid-close.action = sh "niri msg action power-off-monitors";
-        };
-
         # input
         input = {
           mouse.accel-speed = 0.0;
@@ -97,7 +89,8 @@
             natural-scroll = true;
             click-method = "clickfinger";
           };
-        }; # layout n theming
+        };
+        # layout n theming
         layout = {
           gaps = 4;
           border.width = 2;
