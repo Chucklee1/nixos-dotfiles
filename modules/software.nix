@@ -20,7 +20,7 @@
         file-roller
         p7zip
         mpv
-        ffmpeg
+        ffmpeg-full
         pavucontrol
         v4l-utils
       ];
