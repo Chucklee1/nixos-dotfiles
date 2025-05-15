@@ -29,9 +29,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # neovim
-    nordic-nvim = {
-      url = "github:AlexvZyl/nordic.nvim";
-      flake = false;
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # wayland
     niri = {
