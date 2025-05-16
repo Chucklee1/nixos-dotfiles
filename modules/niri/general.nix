@@ -68,15 +68,14 @@ in {
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
 
         spawn-at-startup = let
-          sh = ''"sh" "-c"'';
           get = pkg: lib.getExe pkgs.${pkg};
         in [
-          {command = [sh "${get "xwayland-satellite"}"];}
-          {command = [sh "${get "wlsunset"} -T 5200"];}
-          {command = [sh "${get "swaybg"} -m fill -i ${config.stylix.image}"];}
-          {command = [sh "brightnessctl s 50%"];}
-          {command = [sh "systemctl --user reset-failed waybar.service"];}
-          {command = [sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ 1"];}
+          {command = ["${get "xwayland-satellite"}"];}
+          {command = ["${get "wlsunset"}" "-T" "5200"];}
+          {command = ["${get "swaybg"}" "-m" "fill" "-i" "${config.stylix.image}"];}
+          {command = ["brightnessctl" "s" "50%"];}
+          {command = ["systemctl" "--user" "reset-failed" "waybar.service"];}
+          {command = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "1"];}
         ];
         # input
         input = {
