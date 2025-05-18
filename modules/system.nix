@@ -13,6 +13,16 @@
       config,
       ...
     }: {
+      # boot
+      boot.loader = {
+        efi.canTouchEfiVariables = true;
+        grub = {
+          enable = true;
+          efiSupport = true;
+          device = "nodev";
+        };
+      };
+
       # general
       system.stateVersion = "24.05";
       networking = {
@@ -82,7 +92,7 @@
       # bluetooth
       hardware = {
         bluetooth.enable = true;
-        bluetooth.powerOnBoot = true;
+        bluetooth.powerOnBoot = false;
       };
       services.blueman.enable = true;
 
