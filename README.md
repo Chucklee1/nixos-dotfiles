@@ -1,20 +1,20 @@
-|personal dotfiles for my machines|
+# personal dotfiles for my machines
 
-# notes
+## machines:
 
-- these notes are mostly here for my own sake
-- default order parameters -> { lib, config, pkgs, inputs, specialArgs, ... }
-- **general module layout:**
-  - everything under self/modules is recursivly imported from  
-    if-statement hell function in flake
-  - module system:
-    - module-name then module-type (nix or home)
-    - current module names: global, desktop, and macbook
-    - global is merged with macbook & desktop
+- desktop: desktop
+- macbook: macbook
+- umbra: vm profile _(see todo)_
 
-# cheatsheet
+## TODO:
 
-- tar czvf [name].tar.gz [folder]/\*
-- ## CSS
-  - margin: [TOP]px [RIGHT]px [BOTTOM]px [LEFT]px;
-  - margin: [TOP]px [LEFT & RIGHT]px [BOTTOM]px;
+- [x] continue to be as indecisive as possible
+- [ ] rename random variables in functions in config just to be confusing
+- [ ] vm profile
+- [ ] find replacement for horrid recursiveMerge in libs.nix
+
+## functions _~stolen~_ taken from sodiboos config at github.com:sodiboo/system:
+
+- readDirRecursive(ly) in libs.nix
+- other functions in libs.nix may be derived from other concepts
+- fileSystems and fs.type in modules/hardware.nix
