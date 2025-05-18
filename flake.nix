@@ -54,7 +54,7 @@
 
     # ---- libs & helpers ----
     lib = nixpkgs.lib;
-    mylib = import "${self}/lib" {inherit nixpkgs;};
+    mylib = import "${self}/lib.nix" {inherit nixpkgs;};
 
     # ---- nixvim ----
     nixvim = nixvimpkgs.makeNixvimWithModule {
@@ -64,28 +64,26 @@
     };
 
     # ---- system  ----
-    metal = host:
-      lib.pipe [
-        (mylib.mergeModules "${self}/modules" {
-          # NOTE: SYSTEM CFG ARGS HERE
-          inherit inputs self system nixvim;
-          host = "goat";
-          machine = "${host}";
-        })
-        (out: mylib.mergeProfiles out."global" out."${host}")
-      ];
+    metal = host: (mylib.mergeModules "${self}/modules" {
+      # NOTE: SYSTEM CFG ARGS HERE
+      inherit inputs self system nixvim;
+      host = "goat";
+      machine = "${host}";
+    });
     profiles = {
-      desktop = metal "desktop";
-      macbook = metal "macbook";
+      desktop = mylib.mergeProfiles (metal "desktop") "global" "desktop";
+      macbook = mylib.mergeProfiles (metal "macbook") "global" "macbook";
       umbra = "umbra";
     };
   in {
     nixosConfigurations =
       lib.genAttrs
       (lib.attrNames profiles)
-      (host:
+      (host: let
+        mod = profiles.${host};
+      in
         lib.nixosSystem {
-          modules = profiles.${host}.nix ++ [{_module.args.homeMods = profiles.${host}.home;}];
+          modules = mod.nix ++ [{_module.args.homeMods = mod.home;}];
         });
     # devshell mainly for remotes
     packages.${system} = {inherit nixvim;};
