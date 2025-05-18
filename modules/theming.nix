@@ -93,7 +93,11 @@ with inputs; {
     # boot theme
     inputs.minegrub-theme.nixosModules.default
     inputs.minesddm.nixosModules.default
-    ({config}: {
+    ({
+      pkgs,
+      config,
+      ...
+    }: {
       # ---- grub theme ----
       boot.loader.grub.minegrub-theme = {
         enable = true;
