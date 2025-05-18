@@ -100,6 +100,8 @@ in {
             width = 8.0;
           };
         };
+        # disable annoying hot-corners
+        gestures.hot-corners.enable = false;
         window-rules = let
           r = 4.0;
         in [
