@@ -47,39 +47,48 @@
     nixpkgs,
     ...
   } @ inputs: let
-    # nixpkgs
+    # ---- pkgs ----
     system = "x86_64-linux";
-    lib = nixpkgs.lib;
     pkgs = import nixpkgs {inherit system;};
+    nixvimpkgs = inputs.nixvim.legacyPackages.${system};
 
-    # custom
-    nixvim' = inputs.nixvim.legacyPackages.${system};
-    mylib = import "${self}/lib/merging.nix" {inherit nixpkgs;};
-    nixvim = nixvim'.makeNixvimWithModule {
+    # ---- libs & helpers ----
+    lib = nixpkgs.lib;
+    mylib = import "${self}/lib" {inherit nixpkgs;};
+
+    # ---- nixvim ----
+    nixvim = nixvimpkgs.makeNixvimWithModule {
       module = mylib.mergeModules "${self}/nixvim" {
         inherit lib pkgs inputs;
       };
     };
 
     # ---- system  ----
-    profiles = ["desktop" "laptop" "macbook"];
-    nixosConfigurations = lib.genAttrs profiles (host:
-      lib.nixosSystem {
-        modules = let
-          mod' = mylib.mergeModules "${self}/modules" {
-            # NOTE: SYSTEM CFG ARGS HERE
-            inherit inputs self system nixvim;
-            user = "goat";
-            machine = host;
-          };
-          mod = mylib.mergeProfiles mod' "global" "${host}";
-        in
-          mod.nix ++ [{_module.args.homeMods = mod.home;}];
-      });
+    metal = host:
+      lib.pipe [
+        (mylib.mergeModules "${self}/modules" {
+          # NOTE: SYSTEM CFG ARGS HERE
+          inherit inputs self system nixvim;
+          host = "goat";
+          machine = "${host}";
+        })
+        (out: mylib.mergeProfiles out."global" out."${host}")
+      ];
+    profiles = {
+      desktop = metal "desktop";
+      macbook = metal "macbook";
+      umbra = "umbra";
+    };
   in {
-    inherit nixosConfigurations;
+    nixosConfigurations =
+      lib.genAttrs
+      (lib.attrNames profiles)
+      (host:
+        lib.nixosSystem {
+          modules = profiles.${host}.nix ++ [{_module.args.homeMods = profiles.${host}.home;}];
+        });
     # devshell mainly for remotes
     packages.${system} = {inherit nixvim;};
-    devShells.${system} = {nixvim = pkgs.mkShell {packages = [nixvim];};};
+    devShells.${system} = mylib.wrapPkgInShell nixvim;
   };
 }
