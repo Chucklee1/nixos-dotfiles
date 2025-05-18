@@ -18,6 +18,9 @@
   - codec name, duh
   - common codecs:
     - aac for media like .m4a
+    - mpeg layers mp1 mp3 mp3 mp4
+    - flac for optimized lossless
+    - wav for pure uncompressed lossless
 
 ## misc:
 
