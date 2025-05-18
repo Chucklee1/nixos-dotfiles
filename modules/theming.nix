@@ -55,7 +55,7 @@ with inputs; {
         url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
         hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
       };
-      kanagawa = ../assets/wallpaper.png;
+      kanagawaWaves = ../assets/wallpaper.png;
     in {
       stylix = {
         enable = true;
@@ -109,7 +109,7 @@ with inputs; {
         settings.Theme = {
           current = "minesddm";
           CursorTheme = "${config.stylix.cursor.name}";
-          CursorSize = "${config.stylix.cursor.size}";
+          CursorSize = config.stylix.cursor.size;
         };
       };
       # deps for sddm theme

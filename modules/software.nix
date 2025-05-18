@@ -49,6 +49,7 @@
       home.packages = with pkgs; [
         # dev tools
         openai
+        rclone
         python3
         gnumake
         gdb
@@ -109,13 +110,6 @@
                   git clone https://github.com/Chucklee1/nixos-dotfiles
                 fi
               '';
-              /*
-                 tools - ffmpeg
-              wav-to-flac = ''
-                for i in *.wav; do ffmpeg -i "$i" -c:a flac "$i%.*.flac"; done
-                for i in *.wav; do rm "$i"; done
-              '';
-              */
             };
         };
         oh-my-posh = {
