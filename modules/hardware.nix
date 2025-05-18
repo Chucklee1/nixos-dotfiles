@@ -20,7 +20,7 @@
 in {
   nix.global = [{hardware.enableRedistributableFirmware = true;}];
   nix.desktop = [
-    (fs.ext4 "ext4" "/media/goat/BLUE_SATA" "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08" null)
+    (fs.ext4 "/media/goat/BLUE_SATA" "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08" null)
     inputs.disko.nixosModules.default
     (import "${self}/assets/disko/ext4.nix" {device = "/dev/sda";})
     {

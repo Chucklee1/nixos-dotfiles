@@ -36,6 +36,7 @@
     # wayland
     niri = {
       url = "github:sodiboo/niri-flake";
+      rev = "0b760b1c11049c52d95b4371b249adae5f56e70a";
     };
     waybar = {
       url = "github:Alexays/Waybar/master";
