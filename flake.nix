@@ -1,5 +1,5 @@
 {
-  description = "i dont kow what im doing";
+  description = "Never let them know your next move";
 
   inputs = {
     # main repos
@@ -54,7 +54,7 @@
 
     # ---- libs & helpers ----
     lib = nixpkgs.lib;
-    mylib = import "${self}/lib.nix" {inherit nixpkgs;};
+    mylib = import "${self}/libs.nix" {inherit nixpkgs;};
 
     # ---- nixvim ----
     nixvim = nixvimpkgs.makeNixvimWithModule {
@@ -67,7 +67,7 @@
     metal = host: (mylib.mergeModules "${self}/modules" {
       # NOTE: SYSTEM CFG ARGS HERE
       inherit inputs self system nixvim;
-      host = "goat";
+      user = "goat";
       machine = "${host}";
     });
     profiles = {
