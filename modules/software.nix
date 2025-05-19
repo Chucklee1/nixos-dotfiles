@@ -147,6 +147,7 @@
         wine
         wineWowPackages.stagingFull
         winetricks
+        limo
       ];
     })
   ];
