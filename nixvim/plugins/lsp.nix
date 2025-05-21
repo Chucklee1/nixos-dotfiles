@@ -6,6 +6,7 @@
         asm_lsp.enable = true; # GAS/GO assembly
         bashls.enable = true;
         clangd.enable = true;
+        html.enable = true;
         lua_ls.enable = true;
         marksman.enable = true;
         nixd.enable = true;
@@ -46,5 +47,15 @@
 
     # neat md previewer
     render-markdown.enable = true;
+
+    # math equations
+    nabla.enable = true;
   };
+  # nabla keybind
+  keymaps = [
+    {
+      key = "<leader>p";
+      action.__raw = "require('nabla').popup";
+    }
+  ];
 }
