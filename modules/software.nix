@@ -51,9 +51,6 @@
         openai
         rclone
         python3
-        gnumake
-        gdb
-        gcc
         # apps
         tenacity
         gimp
@@ -117,6 +114,13 @@
           enableBashIntegration = true;
           useTheme = "pure";
         };
+
+        # direnv
+        direnv = {
+          enable = true;
+          enableBashIntegration = true; # see note on other shells below
+          #nix-direnv.enable = true;
+        };
       };
     })
   ];
@@ -147,7 +151,6 @@
         wine
         wineWowPackages.stagingFull
         winetricks
-        limo
       ];
     })
   ];

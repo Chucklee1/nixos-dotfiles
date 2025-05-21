@@ -50,7 +50,4 @@ with nixpkgs.lib; rec {
 
   # concats profiles from singular module (subattrs under nix & home, eg desktop)
   mergeProfiles = mod: prev: next: (genAttrs ["nix" "home"] (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
-
-  # shell wrapper for single pkg
-  wrapPkgInShell = program: {program = nixpkgs.mkShell {packages = [program];};};
 }
