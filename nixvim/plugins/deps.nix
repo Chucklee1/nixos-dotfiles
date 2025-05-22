@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: {
-  dependancies =
+  dependencies =
     lib.genAttrs
     [
       "chafa"
@@ -20,6 +20,10 @@
   ];
   extraPackages = with pkgs; [
     fd
+    mermaid-cli
+    python312Packages.pylatexenc # latex2text
+    tectonic
+    pdflatex
     stylua
     alejandra
   ];
