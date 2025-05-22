@@ -66,15 +66,6 @@
         };
       };
     };
-    # symbol overview
-    navic = {
-      enable = true;
-      settings.lsp.auto_attach = true;
-    };
-    navbuddy = {
-      enable = true;
-      lsp.autoAttach = true;
-    };
     noice.enable = true; # fancy cmd window
     # file explorer meets text editor
     oil = {

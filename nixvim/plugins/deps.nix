@@ -1,14 +1,25 @@
-{pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
+  dependancies =
+    lib.genAttrs
+    [
+      "chafa"
+      "epub-thumbnailer"
+      "ffmpegthumbnailer"
+      "fzf"
+      "lazygit"
+      "poppler-utils"
+      "tree-sitter"
+    ]
+    (_: {enable = true;});
   extraPlugins = with pkgs.vimPlugins; [
     plenary-nvim
   ];
   extraPackages = with pkgs; [
-    chafa
     fd
-    poppler_utils
-    ffmpegthumbnailer
-    #epub-thumbnailer
-    #fontpreview
     stylua
     alejandra
   ];

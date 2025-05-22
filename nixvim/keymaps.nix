@@ -23,8 +23,6 @@
       "Telescope oldfiles : <leader>fo"
 
       # Bufferline bindings
-      "BufferLineCycleNext : <Tab>"
-      "BufferLineCyclePrev : <S-Tab>"
       "BufferLineCycleNext : <S-l>"
       "BufferLineCyclePrev : <S-h>"
       "bd : <leader>c"

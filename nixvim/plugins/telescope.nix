@@ -13,6 +13,7 @@
           "mov"
           "mkv"
           "pdf"
+          "epub"
         ];
       };
     };

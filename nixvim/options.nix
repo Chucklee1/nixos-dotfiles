@@ -3,30 +3,49 @@
   withPerl = false;
   withRuby = false;
   opts = {
-    # visual opts
+    # numbers/general
     number = true;
     relativenumber = true;
     signcolumn = "yes";
-    cursorline = true;
-    scrolloff = 5;
+    showmode = false; # uneeded
+    wrap = true;
+
+    # mouse mode
+    mouse = "a";
+
+    # time
+    timeoutlen = 800;
+    updatetime = 50; # faster completion (4000ms default)
+
+    # cursor
+    cursorline = false;
+    termguicolors = true; # 24 bit
     splitright = true;
     splitbelow = true;
-    termguicolors = true;
-    # spacing behavior
+
+    # ui spacing
+    cmdheight = 2;
+    scrolloff = 5;
+    pumheight = 0;
+
+    # tabs
     tabstop = 2;
-    shiftwidth = 2;
-    softtabstop = 0;
-    smarttab = true;
+    softtabstop = 2;
+    showtabline = 2;
     expandtab = true;
-    breakindent = true;
-    autoindent = true;
+
+    # indentation
     smartindent = true;
-    # case sensing
+    shiftwidth = 2;
+    breakindent = true;
+
+    # search
+    hlsearch = true;
+    incsearch = true;
     ignorecase = true;
-    smartcase = true;
-    # idk
-    mouse = "a";
-    timeoutlen = 600;
+    smartcase = true; # Don't ignore case with capitals
+    grepprg = "rg --vimgrep";
+    grepformat = "%f:%l:%c:%m";
 
     # history
     clipboard = {
@@ -36,9 +55,24 @@
       };
       register = "unnamedplus";
     };
-    backup = false;
     swapfile = false;
+    backup = false;
     undofile = true;
+
+    # completeopt for cmp
+    completeopt = [
+      "menuone"
+      "noselect"
+      "noinsert"
+    ];
+
+    # folding
+    foldcolumn = "0";
+    foldlevel = 99;
+    foldlevelstart = 99;
+    foldenable = true;
+    foldmethod = "expr";
+    foldexpr = "v:lua.vim.treesitter.foldexpr()";
   };
   # command aliases
   userCommands = {
@@ -47,8 +81,8 @@
     WQ.command = "wq";
     W.command = "w";
     Ex.command = "Oil";
+    #texopen.command = "TeXpresso";
   };
-  performance.byteCompileLua.enable = true;
 
   # ---- THEME ----
 
