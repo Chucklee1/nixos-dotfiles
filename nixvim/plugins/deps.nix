@@ -23,7 +23,6 @@
     mermaid-cli
     python312Packages.pylatexenc # latex2text
     tectonic
-    pdflatex
     stylua
     alejandra
   ];
