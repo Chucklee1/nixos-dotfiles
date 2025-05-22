@@ -70,19 +70,6 @@
               format-source-muted = span base08 "M ";
               tooltip = false;
             };
-            "custom/tailscale" = {
-              exec = "exec ${self}/assets/waybar-tailscale.sh --status";
-              on-click = "exec ${self}/assets/waybar-tailscale.sh --toggle";
-              exec-on-event = true;
-              format = "VPN: {icon}";
-              format-icons = {
-                connected = "on";
-                stopped = "off";
-              };
-              tooltip = true;
-              return-type = "json";
-              interval = 3;
-            };
             network = {
               format-disconnected = "nah ⚠";
               format-ethernet = "{ipaddr}/{cidr}";
