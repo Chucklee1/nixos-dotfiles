@@ -33,7 +33,7 @@
     # wayland
     niri = {
       # using pull req fork until hot-corner feature is merged into main branch
-      url = "github:sodiboo/niri-flake/0b760b1c11049c52d95b4371b249adae5f56e70a";
+      url = "github:sodiboo/niri-flake";
     };
     waybar = {
       url = "github:Alexays/Waybar/master";
