@@ -40,7 +40,6 @@
     };
 
     # breadcrumbs
-    lspkind.enable = true;
     lspsaga.enable = true;
     cmp = {
       enable = true;
@@ -67,7 +66,6 @@
     nix-develop.enable = true;
 
     # document tools
-    texpresso.enable = true; # cmd :TeXpresso
     render-markdown.enable = true;
   };
 }

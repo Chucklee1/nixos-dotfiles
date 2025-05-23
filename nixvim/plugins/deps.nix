@@ -7,8 +7,6 @@
     lib.genAttrs
     [
       "chafa"
-      "epub-thumbnailer"
-      "ffmpegthumbnailer"
       "fzf"
       "lazygit"
       "poppler-utils"
@@ -20,9 +18,6 @@
   ];
   extraPackages = with pkgs; [
     fd
-    mermaid-cli
-    python312Packages.pylatexenc # latex2text
-    tectonic
     stylua
     alejandra
   ];
