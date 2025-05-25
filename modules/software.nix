@@ -131,6 +131,10 @@
       environment.systemPackages = with pkgs; [
         osu-lazer-bin
         prismlauncher
+        ryubing
+        cemu
+        joycond
+        joycond-cemuhook
       ];
       programs.steam = {
         enable = true;
@@ -152,6 +156,16 @@
         wineWowPackages.stagingFull
         winetricks
       ];
+
+      programs.nix-ld = {
+        enable = true;
+        libraries = with pkgs; [
+          jq
+          unzip
+          python313
+          python313Packages.pip
+        ];
+      };
     })
   ];
 }
