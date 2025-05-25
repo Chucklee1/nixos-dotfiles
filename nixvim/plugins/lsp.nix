@@ -25,22 +25,14 @@
       };
     };
 
-    # linting
-    lint = {
+    # breadcrumbs
+    lspsaga = {
       enable = true;
-      lintersByFt = {
-        c = ["cpplint"];
-        cpp = ["cpplint"];
-        nix = ["statix"];
-        lua = ["selene"];
-        python = ["flake8"];
-        json = ["jsonlint"];
-        bash = ["shellcheck"];
+      lightbulb = {
+        enable = false;
+        virtualText = false;
       };
     };
-
-    # breadcrumbs
-    lspsaga.enable = true;
     cmp = {
       enable = true;
       autoEnableSources = true;
@@ -67,5 +59,16 @@
 
     # document tools
     render-markdown.enable = true;
+    vimtex = {
+      enable = true;
+      settings.view_method = "zathura";
+    };
   };
+  extraConfigLuaPre = ''
+    vim.g.vimtex_compiler_latexmk = {
+      aux_dir = ".build" -- you can set here whatever name you desire
+    }
+    vim.g.vimtex_quickfix_ignore_filters = { 'warning' }
+    vim.g.vimtex_quickfix_open_on_warning = 0
+  '';
 }

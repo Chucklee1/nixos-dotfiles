@@ -6,10 +6,8 @@
   dependencies =
     lib.genAttrs
     [
-      "chafa"
       "fzf"
       "lazygit"
-      "poppler-utils"
       "tree-sitter"
     ]
     (_: {enable = true;});

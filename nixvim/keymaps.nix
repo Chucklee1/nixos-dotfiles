@@ -10,7 +10,6 @@
       key = "${Elem 1}";
     };
   in
-    # [ action key ]
     map mkNormalKeyMaps [
       # misc ui
       "Oil : <leader>e"

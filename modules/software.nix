@@ -12,32 +12,13 @@
         # cli
         ripgrep
         pciutils
-        # web/net
         wget
         git
         curl
-        # media/files
-        file-roller
-        p7zip
-        mpv
-        ffmpeg-full
-        pavucontrol
-        v4l-utils
       ];
 
       # programs
-      programs = {
-        dconf.enable = true;
-        xfconf.enable = true;
-        thunar = {
-          enable = true;
-          plugins = with pkgs.xfce; [
-            thunar-archive-plugin
-            thunar-media-tags-plugin
-            thunar-volman
-          ];
-        };
-      };
+      programs.dconf.enable = true;
     })
   ];
   home.global = [
@@ -52,21 +33,17 @@
         rclone
         python3
         # apps
-        tenacity
-        gimp
-        picard
         qbittorrent
-        musescore
         muse-sounds-manager
-        logisim-evolution
         (ungoogled-chromium.override {enableWideVine = true;})
+        logisim-evolution
+        musescore
         nixvim
       ];
 
       programs = {
         # diagnostics
         btop.enable = true;
-        mangohud.enable = true;
         #git
         git = {
           enable = true;
@@ -114,57 +91,6 @@
           enableBashIntegration = true;
           useTheme = "pure";
         };
-
-        # direnv
-        direnv = {
-          enable = true;
-          enableBashIntegration = true; # see note on other shells below
-          #nix-direnv.enable = true;
-        };
-      };
-    })
-  ];
-
-  nix.desktop = [
-    # games
-    ({pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        osu-lazer-bin
-        prismlauncher
-        ryubing
-        cemu
-        joycond
-        joycond-cemuhook
-      ];
-      programs.steam = {
-        enable = true;
-        protontricks.enable = true;
-        gamescopeSession.enable = true;
-        extraCompatPackages = [pkgs.proton-ge-bin];
-        remotePlay.openFirewall = true;
-        dedicatedServer.openFirewall = true;
-        localNetworkGameTransfers.openFirewall = true;
-      };
-    })
-
-    # wine
-    ({pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        zenity
-        samba
-        wine
-        wineWowPackages.stagingFull
-        winetricks
-      ];
-
-      programs.nix-ld = {
-        enable = true;
-        libraries = with pkgs; [
-          jq
-          unzip
-          python313
-          python313Packages.pip
-        ];
       };
     })
   ];

@@ -65,14 +65,6 @@
       "noselect"
       "noinsert"
     ];
-
-    # folding
-    foldcolumn = "0";
-    foldlevel = 99;
-    foldlevelstart = 99;
-    foldenable = true;
-    foldmethod = "expr";
-    foldexpr = "v:lua.vim.treesitter.foldexpr()";
   };
   # command aliases
   userCommands = {
@@ -81,7 +73,6 @@
     WQ.command = "wq";
     W.command = "w";
     Ex.command = "Oil";
-    #texopen.command = "TeXpresso";
   };
 
   # ---- THEME ----
