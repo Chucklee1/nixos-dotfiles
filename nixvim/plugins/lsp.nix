@@ -59,16 +59,6 @@
 
     # document tools
     render-markdown.enable = true;
-    vimtex = {
-      enable = true;
-      settings.view_method = "zathura";
-    };
+    texpresso.enable = true;
   };
-  extraConfigLuaPre = ''
-    vim.g.vimtex_compiler_latexmk = {
-      aux_dir = ".build" -- you can set here whatever name you desire
-    }
-    vim.g.vimtex_quickfix_ignore_filters = { 'warning' }
-    vim.g.vimtex_quickfix_open_on_warning = 0
-  '';
 }

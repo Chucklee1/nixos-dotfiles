@@ -1,12 +1,18 @@
 {
   home.global = [
-    {
-      direnv = {
+    ({pkgs, ...}: {
+      home.packages = with pkgs; [
+        # dev tools
+        openai
+        rclone
+        python3
+      ];
+      programs.direnv = {
         enable = true;
         enableBashIntegration = true; # see note on other shells below
         #nix-direnv.enable = true;
       };
-    }
+    })
   ];
   nix.desktop = [
     ({pkgs, ...}: {

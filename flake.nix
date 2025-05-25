@@ -56,9 +56,11 @@
 
     # ---- nixvim ----
     nixvim = nixvimpkgs.makeNixvimWithModule {
-      module = mylib.mergeModules "${self}/nixvim" {
-        inherit lib pkgs inputs;
-      };
+      module.imports = [
+        (mylib.mergeModules "${self}/nixvim" {
+          inherit lib pkgs inputs;
+        })
+      ];
     };
 
     # ---- system  ----
