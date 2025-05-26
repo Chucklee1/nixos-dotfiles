@@ -1,4 +1,4 @@
-{
+{machine, ...}: {
   home.global = [
     ({lib, ...}: {
       programs = {
