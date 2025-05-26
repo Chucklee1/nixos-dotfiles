@@ -37,24 +37,27 @@
         CacheFolder = "${ND}/cache";
       };
     in {
-      # navidrome
-      systemd.services.navidromee = {
-        description = "Navidrome Media Server";
-        after = ["network.target"];
-        wantedBy = ["multi-user.target"];
-        serviceConfig = {
-          ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
-          UMask = "0066";
+      systemd.services = {
+        # navidrome
+        navidromee = {
+          description = "Navidrome Media Server";
+          after = ["network.target"];
+          wantedBy = ["multi-user.target"];
+          serviceConfig = {
+            ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
+            UMask = "0066";
+          };
         };
-      };
-      # audiobookshelf
-      systemd.services.audiobookshelff = {
-        description = "AudioBookShelf audiobook server";
-        after = ["network.target"];
-        wantedBy = ["multi-user.target"];
-        serviceConfig = {
-          ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --host 100.92.147.60 --port 200 --metadata ${ABS} --config ${ABS}'';
-          UMask = "0066";
+        # audiobookshelf
+        audiobookshelff = {
+          description = "AudioBookShelf audiobook server";
+          after = ["network.target"];
+          wantedBy = ["multi-user.target"];
+          serviceConfig = {
+            # vpn ip, not doxing myself lol
+            ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --host 100.92.147.60 --port 200 --metadata ${ABS} --config ${ABS}'';
+            UMask = "0066";
+          };
         };
       };
     })
