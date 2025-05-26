@@ -24,7 +24,7 @@
       ...
     }: let
       MEDIA = "/media/goat/BLUE_SATA/home/server/Media";
-      ND = "/goat/home/server/Navidrome";
+      ND = "/home/goat/server/Navidrome";
       ABS = "/media/goat/BLUE_SATA/home/server/AudioBookshelf";
 
       settings = (pkgs.formats.json {}).generate "config.json" {
