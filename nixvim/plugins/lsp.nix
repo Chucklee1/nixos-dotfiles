@@ -1,18 +1,24 @@
 {
+  pkgs,
+  lib,
+  ...
+}: {
   plugins = {
     lsp = {
       enable = true;
-      servers = {
-        asm_lsp.enable = true; # GAS/GO assembly
-        bashls.enable = true;
-        clangd.enable = true;
-        html.enable = true;
-        lua_ls.enable = true;
-        marksman.enable = true;
-        nixd.enable = true;
-        texlab.enable = true;
-        yamlls.enable = true;
-      };
+      servers =
+        lib.genAttrs
+        [
+          "asm_lsp" # GAS/GO assembly
+          "bashls"
+          "clangd"
+          "html"
+          "lua_ls"
+          "marksman"
+          "nixd"
+          "texlab"
+          "yamlls"
+        ] (_: {enable = true;});
     };
     lsp-format.enable = true;
     none-ls = {
@@ -59,6 +65,16 @@
 
     # document tools
     render-markdown.enable = true;
-    texpresso.enable = true;
+    vimtex = {
+      enable = true;
+      settings.view_method = "zathura";
+    };
   };
+  extraConfigLuaPre = ''
+    vim.g.vimtex_compiler_latexmk = {
+      aux_dir = ".build"
+    }
+    vim.g.vimtex_quickfix_ignore_filters = { 'warning' }
+    vim.g.vimtex_quickfix_open_on_warning = 0
+  '';
 }

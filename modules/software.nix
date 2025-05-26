@@ -45,8 +45,7 @@
         # images
         imagemagick
         # latex
-        texpresso
-        tectonic-unwrapped
+        texlive.combined.scheme-full
         # apps
         tenacity
         gimp

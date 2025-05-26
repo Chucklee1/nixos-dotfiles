@@ -24,27 +24,6 @@
             "⠀⠀⠀⠀⠀⠀⠀⠻⣿⣦⣄⣀⣀⣀⣀⣠⣿⣷⣄⣀⣀⣀⣀⣼⣿⠁⠀"
             "⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠛⠛⠛⠛⠛⠛⠋⠛⠛⠛⠛⠛⠛⠛⠁⠀⠀"
           ];
-          center = [
-            {
-              action = "Oil";
-              desc = "Oil";
-              group = "Label";
-              icon_hl = "@variable";
-              key = "o";
-            }
-            {
-              action = "LazyGit";
-              desc = "lazyGit";
-              group = "DiagnosticHint";
-              key = "g";
-            }
-            {
-              action = "e $HOME/nixos-dotfiles/flake.nix";
-              desc = "Dotfiles";
-              group = "Number";
-              key = "n";
-            }
-          ];
         };
       };
     };

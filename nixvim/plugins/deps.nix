@@ -8,6 +8,7 @@
     [
       "fzf"
       "lazygit"
+      "poppler-utils"
       "tree-sitter"
     ]
     (_: {enable = true;});
