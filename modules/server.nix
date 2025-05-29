@@ -9,6 +9,8 @@
         };
       };
     }
+  ];
+  nix.desktop = [
     # tailscale
     {
       services.tailscale = {
@@ -18,11 +20,7 @@
       };
     }
     # self-hosting
-    ({
-      config,
-      pkgs,
-      ...
-    }: let
+    ({pkgs, ...}: let
       MEDIA = "/media/goat/BLUE_SATA/home/server/Media";
       ND = "/home/goat/server/Navidrome";
       ABS = "/media/goat/BLUE_SATA/home/server/AudioBookshelf";
