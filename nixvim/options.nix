@@ -2,6 +2,7 @@
   # ----- OPTIONS -----
   withPerl = false;
   withRuby = false;
+  wrapRc = true;
   opts = {
     # numbers/general
     number = true;
