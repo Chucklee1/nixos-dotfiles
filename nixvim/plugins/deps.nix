@@ -1,21 +1,11 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
-  dependencies =
-    lib.genAttrs
-    [
-      "fzf"
-      "lazygit"
-      "poppler-utils"
-      "tree-sitter"
-    ]
-    (_: {enable = true;});
+{pkgs, ...}: {
   extraPlugins = with pkgs.vimPlugins; [
     plenary-nvim
   ];
   extraPackages = with pkgs; [
+    poppler-utils
+    tree-sitter
+    fzf
     fd
     stylua
     alejandra

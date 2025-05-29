@@ -3,6 +3,12 @@
   lib,
   ...
 }: {
+  diagnostic.settings = {
+    virtual_text = true;
+    signs = true;
+    underline = true;
+    update_in_insert = false;
+  };
   plugins = {
     lsp = {
       enable = true;
@@ -41,6 +47,16 @@
     };
     cmp = {
       enable = true;
+      settings.mapping = {
+        __raw = ''
+          cmp.mapping.preset.insert({
+            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-c>'] = cmp.mapping.abort(),
+            ['<C-CR>'] = cmp.mapping.confirm({ select = true }),
+          })
+        '';
+      };
       autoEnableSources = true;
       settings.sources = [
         {name = "buffer";}
@@ -67,14 +83,9 @@
     render-markdown.enable = true;
     vimtex = {
       enable = true;
+      texlivePackage = pkgs.texlive.combined.scheme-full;
       settings.view_method = "zathura";
     };
   };
-  extraConfigLuaPre = ''
-    vim.g.vimtex_compiler_latexmk = {
-      aux_dir = ".build"
-    }
-    vim.g.vimtex_quickfix_ignore_filters = { 'warning' }
-    vim.g.vimtex_quickfix_open_on_warning = 0
-  '';
+  globals.vimtex_compiler_latexmk.aux_dir = ".build";
 }

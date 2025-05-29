@@ -3,11 +3,15 @@
     treesitter = {
       enable = true;
       settings = {
-        indent.enable = true;
-        highlight.enable = true;
-        folding.enable = true;
+        highlight = {
+          enable = true;
+          disable = [
+            "latex"
+            "markdown"
+          ];
+        };
+        incremental_selection.enable = true;
       };
-      nixvimInjections = true;
     };
   };
 }
