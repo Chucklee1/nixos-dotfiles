@@ -84,8 +84,21 @@
     vimtex = {
       enable = true;
       texlivePackage = pkgs.texlive.combined.scheme-full;
-      settings.view_method = "zathura";
+      settings = {
+        quickfix_ignore_filters = ["warning"];
+        quickfix_open_on_warning = 0;
+        view_method = "zathura";
+        compiler_latexmk = {
+          aux_dir = ".build";
+          options = [
+            "-pdf"
+            "-verbose"
+            "-file-line-error"
+            "-synctex=1"
+            "-interaction=nonstopmode"
+          ];
+        };
+      };
     };
   };
-  globals.vimtex_compiler_latexmk.aux_dir = ".build";
 }
