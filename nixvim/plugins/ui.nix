@@ -1,6 +1,9 @@
 {
   plugins = {
     bufferline.enable = true;
+    noice.enable = true; # fancy cmd window
+    scrollview.enable = true;
+    which-key.enable = true;
     # startup menu
     startify = {
       enable = true;
@@ -59,7 +62,6 @@
       };
     };
 
-    noice.enable = true; # fancy cmd window
     # file explorer meets text editor
     oil = {
       enable = true;
@@ -68,7 +70,5 @@
         view_options.show_hidden = true;
       };
     };
-    scrollview.enable = true;
-    which-key.enable = true;
   };
 }
