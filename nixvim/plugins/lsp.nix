@@ -5,9 +5,7 @@
 }: {
   diagnostic.settings = {
     virtual_text = true;
-    signs = true;
     underline = true;
-    update_in_insert = false;
   };
   plugins = {
     lsp = {
@@ -26,14 +24,20 @@
           "yamlls"
         ] (_: {enable = true;});
     };
+    lsp-lines.enable = true;
     lsp-format.enable = true;
     none-ls = {
       enable = true;
       enableLspFormat = true;
-      sources.formatting = {
-        alejandra.enable = true;
-        prettier.enable = true;
-        shfmt.enable = true;
+      sources = {
+        code_actions = {
+          ts_node_action.enable = true;
+        };
+        formatting = {
+          alejandra.enable = true;
+          prettier.enable = true;
+          shfmt.enable = true;
+        };
       };
     };
 
@@ -47,15 +51,27 @@
     };
     cmp = {
       enable = true;
-      settings.mapping = {
-        __raw = ''
-          cmp.mapping.preset.insert({
-            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            ['<C-c>'] = cmp.mapping.abort(),
-            ['<C-CR>'] = cmp.mapping.confirm({ select = true }),
-          })
-        '';
+      settings = {
+        completion.border = [
+          "╭"
+          "─"
+          "╮"
+          "│"
+          "╯"
+          "─"
+          "╰"
+          "│"
+        ];
+        mapping = {
+          __raw = ''
+            cmp.mapping.preset.insert({
+              ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+              ['<C-f>'] = cmp.mapping.scroll_docs(4),
+              ['<C-c>'] = cmp.mapping.abort(),
+              ['<C-CR>'] = cmp.mapping.confirm({ select = true }),
+            })
+          '';
+        };
       };
       autoEnableSources = true;
       settings.sources = [
@@ -81,11 +97,13 @@
 
     # document tools
     render-markdown.enable = true;
+    ltex-extra.enable = true;
     vimtex = {
       enable = true;
       texlivePackage = pkgs.texlive.combined.scheme-full;
+      zathuraPackage = pkgs.zathura;
       settings = {
-        quickfix_ignore_filters = ["warning"];
+        quickfix_ignore_filters = ["error"];
         quickfix_open_on_warning = 0;
         view_method = "zathura";
         compiler_latexmk = {
