@@ -1,7 +1,6 @@
 {
   inputs,
   system,
-  self,
   ...
 }: {
   home.global = [
