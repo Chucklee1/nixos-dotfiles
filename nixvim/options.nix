@@ -78,6 +78,7 @@
     W.command = "w";
     Ex.command = "Oil";
   };
+  performance.byteCompileLua.enable = true;
 
   # ---- DIAGNOSTICS ----
   diagnostic.settings = {

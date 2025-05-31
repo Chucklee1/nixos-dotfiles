@@ -10,23 +10,8 @@
     };
 
     # completion
-
-    blink-cmp = {
-      enable = true;
-      lazyLoad.settings.event = [
-        "InsertEnter"
-        "CmdlineEnter"
-      ];
-    };
-    blink-cmp-dictionary.enable = true;
-    blink-cmp-git.enable = true;
-    blink-cmp-spell.enable = true;
-    blink-copilot.enable = true;
-    blink-emoji.enable = true;
-    blink-ripgrep.enable = true;
-
     cmp = {
-      enable = false;
+      enable = true;
       settings = {
         mapping = {
           __raw = ''
@@ -45,21 +30,19 @@
       };
       autoEnableSources = true;
       settings.sources = [
+        {name = "async-path";}
         {name = "buffer";}
-        {name = "nvim_lsp";}
-        {name = "path";}
+        {name = "emoji";}
         {name = "latex-symbols";}
+        {name = "nvim_lsp";}
+        {name = "spell";}
         {name = "treesitter";}
+        {name = "vimtex";}
       ];
     };
   };
-  extraPlugins = with pkgs.vimPlugins; [
-    blink-cmp-conventional-commits
-    blink-nerdfont-nvim
-  ];
 
   extraPackages = with pkgs; [
-    gh
     wordnet
   ];
 }

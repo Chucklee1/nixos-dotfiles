@@ -25,6 +25,7 @@
         "clangd"
         "html"
         "lua_ls"
+        "ltex"
         "marksman"
         "nixd"
         "texlab"
