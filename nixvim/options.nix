@@ -2,7 +2,6 @@
   # ----- OPTIONS -----
   withPerl = false;
   withRuby = false;
-  wrapRc = true;
   opts = {
     # numbers/general
     number = true;
@@ -48,6 +47,10 @@
     grepprg = "rg --vimgrep";
     grepformat = "%f:%l:%c:%m";
 
+    # spelling
+    spelllang = ["en_us"]; # Spell check languages
+    spell = true; # Highlight spelling mistakes (local to window)
+
     # history
     clipboard = {
       providers = {
@@ -74,6 +77,16 @@
     WQ.command = "wq";
     W.command = "w";
     Ex.command = "Oil";
+  };
+
+  # ---- DIAGNOSTICS ----
+  diagnostic.settings = {
+    update_in_insert = true;
+    severity_sort = true;
+    virtual_text = false;
+    virtual_lines.current_line = true;
+    float.border = "rounded";
+    jump.severity.__raw = "vim.diagnostic.severity.WARN";
   };
 
   # ---- THEME ----
