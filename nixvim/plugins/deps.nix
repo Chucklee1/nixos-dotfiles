@@ -3,10 +3,13 @@
     plenary-nvim
   ];
   extraPackages = with pkgs; [
-    poppler-utils
+    # needed
     tree-sitter
     fzf
+    # qol
     fd
+    poppler-utils
+    # formatters
     stylua
     alejandra
   ];

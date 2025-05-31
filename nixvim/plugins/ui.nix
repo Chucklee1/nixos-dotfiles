@@ -1,7 +1,15 @@
 {
   plugins = {
     bufferline.enable = true;
-    noice.enable = true; # fancy cmd window
+    noice = {
+      enable = true; # fancy cmd window
+      lazyLoad.settings.event = "DeferredUIEnter";
+
+      settings = {
+        # Hides the title above noice boxes
+        cmdline.format.cmdline.opts.border.text.top = "Cmd";
+      };
+    };
     scrollview.enable = true;
     which-key.enable = true;
     # startup menu
@@ -38,6 +46,7 @@
     # git
     gitsigns.enable = true;
     lazygit.enable = true;
+    # lualine
     lualine = {
       enable = true;
       settings = {
@@ -53,6 +62,7 @@
         };
       };
     };
+    # bundle
     snacks = {
       enable = true;
       settings = {
