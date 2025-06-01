@@ -84,23 +84,6 @@
           modules = mod.nix ++ [{_module.args.homeMods = mod.home;}];
         });
     # devshell mainly for remotes
-    packages.${system} = {inherit nixvim;};
-    devShells.${system} = {
-      nixvim = pkgs.mkShell {packages = [nixvim];};
-      gnu = pkgs.mkShell {
-        packages = with pkgs; [
-          gnumake
-          gdb
-          gcc
-        ];
-        shellHook = ''
-          export ROOT="$PWD/.nix-env"
-          export HOME="$ROOT/home"
-          export XDG_CACHE_HOME="$ROOT/cache"
-          export TMPDIR="$ROOT/tmp"
-          mkdir -p $HOME $XDG_CACHE_HOME $TMPDIR
-        '';
-      };
-    };
+    devShells.${system}.nixvim = pkgs.mkShell {packages = [nixvim];};
   };
 }

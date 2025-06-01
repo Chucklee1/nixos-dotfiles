@@ -6,11 +6,13 @@
         openai
         rclone
         python3
+        gnumake
+        gcc
+        gdb # GNU Project debugger
       ];
       programs.direnv = {
         enable = true;
         enableBashIntegration = true; # see note on other shells below
-        #nix-direnv.enable = true;
       };
     })
   ];
