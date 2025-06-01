@@ -51,27 +51,27 @@
 
     # ---- libs & helpers ----
     lib = nixpkgs.lib;
-    mylib = import "${self}/libs.nix" {inherit nixpkgs;};
+    extlib = import "${self}/libs.nix" {inherit nixpkgs;};
 
     # ---- nixvim ----
     nixvim = nixvimpkgs.makeNixvimWithModule {
       module.imports = [
-        (mylib.mergeModules "${self}/nixvim" {
+        (extlib.mergeModules "${self}/nixvim" {
           inherit lib pkgs inputs;
         })
       ];
     };
 
     # ---- system  ----
-    metal = host: (mylib.mergeModules "${self}/modules" {
+    metal = host: (extlib.mergeModules "${self}/modules" {
       # NOTE: SYSTEM CFG ARGS HERE
       inherit inputs self system nixvim;
       user = "goat";
       machine = "${host}";
     });
     profiles = {
-      desktop = mylib.mergeProfiles (metal "desktop") "global" "desktop";
-      macbook = mylib.mergeProfiles (metal "macbook") "global" "macbook";
+      desktop = extlib.mergeProfiles (metal "desktop") "global" "desktop";
+      macbook = extlib.mergeProfiles (metal "macbook") "global" "macbook";
     };
   in {
     nixosConfigurations =
