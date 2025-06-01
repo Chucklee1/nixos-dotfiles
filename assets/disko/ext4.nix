@@ -1,4 +1,4 @@
-{device ? throw "Set this to your disk device, e.g. /dev/sda", ...}: {
+{device ? throw "error: proper argument is --arg device /dev/diskName (with single then double wrapped qoutes for device arg /dev/diskName)", ...}: {
   disko.devices = {
     disk.main = {
       inherit device;
