@@ -63,22 +63,18 @@
     };
 
     # ---- system  ----
-    metal = host: (extlib.mergeModules "${self}/modules" {
-      # NOTE: SYSTEM CFG ARGS HERE
-      inherit inputs self system nixvim;
-      user = "goat";
-      machine = "${host}";
-    });
-    profiles = {
-      desktop = extlib.mergeProfiles (metal "desktop") "global" "desktop";
-      macbook = extlib.mergeProfiles (metal "macbook") "global" "macbook";
-    };
+    profiles = ["desktop" "laptop" "macbook"];
+    mkMod = host: (extlib.mergeProfiles (extlib.mergeModules "${self}/modules" {
+        inherit inputs self system nixvim;
+        user = "goat";
+        machine = "${host}";
+      }) "global"
+      host);
   in {
     nixosConfigurations =
-      lib.genAttrs
-      (lib.attrNames profiles)
+      lib.genAttrs profiles
       (host: let
-        mod = profiles.${host};
+        mod = mkMod host;
       in
         lib.nixosSystem {
           modules = mod.nix ++ [{_module.args.homeMods = mod.home;}];
