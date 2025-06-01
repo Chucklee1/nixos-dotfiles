@@ -4,7 +4,7 @@
   ...
 }: let
   # from sodiboos config
-  filesystem = fsType: path: device: options: {
+  mkFs = fsType: path: device: options: {
     fileSystems.${path} =
       {inherit device fsType;}
       // (
@@ -13,14 +13,10 @@
         else {inherit options;}
       );
   };
-  #fs.btrfs = filesystem "btrfs";
-  #fs.ntfs = filesystem "ntfs-3g";
-  fs.ext4 = filesystem "ext4";
-  #fs.vfat = filesystem "vfat";
 in {
   nix.global = [{hardware.enableRedistributableFirmware = true;}];
   nix.desktop = [
-    (fs.ext4 "/media/goat/BLUE_SATA" "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08" null)
+    (mkFs "ext4" "/media/goat/BLUE_SATA" "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08" null)
     inputs.disko.nixosModules.default
     (import "${self}/assets/disko/ext4.nix" {device = "/dev/sda";})
     {
