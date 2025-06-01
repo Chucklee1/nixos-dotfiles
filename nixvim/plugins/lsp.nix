@@ -39,7 +39,7 @@
       enable = true;
       enableLspFormat = true;
       sources = {
-        code_actions.ts_node_action.enable = true;
+        diagnostics.statix.enable = true;
         formatting = {
           alejandra.enable = true;
           prettier.enable = true;
@@ -61,6 +61,8 @@
     nix-develop.enable = true;
 
     # document tools
-    render-markdown.enable = true;
+    render-markdown = {
+      enable = true;
+    };
   };
 }
