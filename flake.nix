@@ -32,7 +32,6 @@
     };
     # wayland
     niri = {
-      # using pull req fork until hot-corner feature is merged into main branch
       url = "github:sodiboo/niri-flake";
     };
     waybar = {
@@ -73,7 +72,6 @@
     profiles = {
       desktop = mylib.mergeProfiles (metal "desktop") "global" "desktop";
       macbook = mylib.mergeProfiles (metal "macbook") "global" "macbook";
-      umbra = "umbra";
     };
   in {
     nixosConfigurations =
