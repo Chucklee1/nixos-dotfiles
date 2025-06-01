@@ -14,11 +14,13 @@
       );
   };
 in {
-  nix.global = [{hardware.enableRedistributableFirmware = true;}];
+  nix.global = [
+    inputs.disko.nixosModules.default
+    {hardware.enableRedistributableFirmware = true;}
+  ];
   nix.desktop = [
     (mkFs "ext4" "/media/goat/BLUE_SATA" "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08" null)
-    inputs.disko.nixosModules.default
-    (import "${self}/assets/disko/ext4.nix" {device = "/dev/sda";})
+    (import "${self}/assets/disko/ext4.nix" {device = "/dev/nvme0n1";})
     {
       boot = {
         initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
@@ -29,8 +31,18 @@ in {
       hardware.cpu.amd.updateMicrocode = true;
     }
   ];
+  nix.laptop = [
+    (import "${self}/assets/disko/ext4.nix" {device = "/dev/nvme0n1";})
+    {
+      boot = {
+        initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
+        kernelModules = ["kvm-amd"];
+        loader.grub.gfxmodeEfi = "1920x1080x30,auto";
+      };
+      hardware.cpu.amd.updateMicrocode = true;
+    }
+  ];
   nix.macbook = [
-    inputs.disko.nixosModules.default
     (import "${self}/assets/disko/ext4.nix" {device = "/dev/sda";})
     ({
       lib,
