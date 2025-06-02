@@ -3,6 +3,7 @@
 ## machines:
 
 - desktop: desktop
+- laptop: laptop
 - macbook: macbook
 - umbra: vm profile _(see todo)_
 
