@@ -63,7 +63,7 @@
     };
 
     # ---- system  ----
-    profiles = ["desktop" "laptop" "macbook"];
+    profiles = ["desktop" "laptop" "umbra"];
     mkMod = host: (extlib.mergeProfiles (extlib.mergeModules "${self}/modules" {
         inherit inputs self system nixvim;
         user = "goat";

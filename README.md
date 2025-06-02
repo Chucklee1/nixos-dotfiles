@@ -5,13 +5,13 @@
 - desktop: desktop
 - laptop: laptop
 - macbook: macbook
-- umbra: vm profile _(see todo)_
+- umbra: usb profile _(see todo)_
 
 ## TODO:
 
 - [x] continue to be as indecisive as possible
-- [ ] rename random variables in functions in config just to be confusing
-- [ ] vm profile
+- [ ] setup nginx with ddns
+- [ ] make nixvim notifications shut up
 - [ ] find replacement for horrid recursiveMerge in libs.nix
 
 ## functions _~stolen~_ taken from sodiboos config at github.com:sodiboo/system:

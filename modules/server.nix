@@ -8,10 +8,7 @@
           PermitRootLogin = "prohibit-password";
         };
       };
-    }
-  ];
-  nix.desktop = [
-    # tailscale
+    } # tailscale
     {
       services.tailscale = {
         enable = true;
@@ -19,6 +16,8 @@
         useRoutingFeatures = "server";
       };
     }
+  ];
+  nix.desktop = [
     # self-hosting
     ({pkgs, ...}: let
       MEDIA = "/media/goat/BLUE_SATA/home/server/Media";
