@@ -1,6 +1,5 @@
-{
-  nix.global = [
-    # virtualisation
+let
+  nixvirt = [
     ({pkgs, ...}: {
       programs.virt-manager.enable = true;
       virtualisation = {
@@ -28,8 +27,7 @@
       };
     })
   ];
-
-  home.global = [
+  homevirt = [
     {
       dconf.settings."org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
@@ -37,4 +35,10 @@
       };
     }
   ];
+in {
+  nix.desktop = nixvirt;
+  nix.laptop = nixvirt;
+
+  home.desktop = homevirt;
+  home.laptop = homevirt;
 }
