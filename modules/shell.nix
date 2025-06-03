@@ -26,10 +26,6 @@
           shellAliases =
             (lib.genAttrs ["v" "vi" "vm" "vim" "neovim"] (_: "nvim"))
             // {
-              # nix - system installation
-              disko-generate = ''sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko /tmp/disko.nix'';
-              show-hardware = "sudo nixos-generate-config --show-hardware-config";
-              install-mnt = "sudo nixos-install --root /mnt github:Chucklee1/nixos-dotfiles";
               # nix - general
               cg = "nix-collect-garbage";
               update-flake = "nix flake update --flake $HOME/nixos-dotfiles";
