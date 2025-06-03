@@ -1,7 +1,7 @@
 {
   home.global = [
     {
-      file = {
+      home.file = {
         ".latexmkrc".text =
           #sh
           ''
