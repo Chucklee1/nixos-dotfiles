@@ -1,0 +1,9 @@
+keys:
+  - &master age10yrq8vc8e38r2wst08qap776np66z7ke34ze3z8kssr8hzex4gfqygcadm
+  - &desktop age1llw6styhhfjyq4rgzmvn5qe8ads6g685z299zh54d8yrse2q4s9q64gw95
+creation_rules:
+  -path_regex: sus.yaml
+  key_groups:
+    age:
+      - *master
+      - *desktop
