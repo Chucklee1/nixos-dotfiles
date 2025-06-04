@@ -102,6 +102,12 @@
       };
     })
   ];
+  nix.laptop = [
+{networking.networkmanager.wifi = {
+backend = "iwd";
+macAddress = "random";
+};
+}  ];
   nix.desktop = [
     # gpu
     ({
