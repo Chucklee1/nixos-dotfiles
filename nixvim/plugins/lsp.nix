@@ -3,19 +3,17 @@
   plugins.lsp.enable = true;
   lsp.servers =
     {
-      "*" = {
-        settings = {
-          capabilities = {
-            textDocument = {
-              semanticTokens = {
-                multilineTokenSupport = true;
-              };
+      "*".settings = {
+        capabilities = {
+          textDocument = {
+            semanticTokens = {
+              multilineTokenSupport = true;
             };
           };
-          root_markers = [
-            ".git"
-          ];
         };
+        root_markers = [
+          ".git"
+        ];
       };
     }
     // (lib.genAttrs
@@ -25,10 +23,8 @@
         "clangd"
         "html"
         "lua_ls"
-        "ltex"
         "marksman"
         "nixd"
-        "texlab"
         "yamlls"
       ] (_: {enable = true;}));
 

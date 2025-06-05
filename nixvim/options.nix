@@ -84,8 +84,7 @@
   diagnostic.settings = {
     update_in_insert = true;
     severity_sort = true;
-    virtual_text = false;
-    virtual_lines.current_line = true;
+    virtual_text.current_line = true;
     float.border = "rounded";
     jump.severity.__raw = "vim.diagnostic.severity.WARN";
   };
