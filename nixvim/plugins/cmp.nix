@@ -32,7 +32,9 @@
       settings.sources = [
         {name = "async-path";}
         {name = "buffer";}
+        {name = "dictionary";}
         {name = "emoji";}
+        {name = "luasnip";}
         {name = "latex-symbols";}
         {name = "nvim_lsp";}
         {name = "spell";}
@@ -40,9 +42,10 @@
         {name = "vimtex";}
       ];
     };
-  };
 
-  extraPackages = with pkgs; [
-    wordnet
-  ];
+    # snippets
+    nvim-snippets.enable = true;
+    friendly-snippets.enable = true;
+  };
+  extraPackages = with pkgs; [wordnet];
 }
