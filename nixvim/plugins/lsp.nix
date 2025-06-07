@@ -1,32 +1,16 @@
 {lib, ...}: {
   # ---- LSP ----
   plugins.lsp.enable = true;
-  lsp.servers =
-    {
-      "*".settings = {
-        capabilities = {
-          textDocument = {
-            semanticTokens = {
-              multilineTokenSupport = true;
-            };
-          };
-        };
-        root_markers = [
-          ".git"
-        ];
-      };
-    }
-    // (lib.genAttrs
-      [
-        "asm_lsp" # GAS/GO assembly
-        "bashls"
-        "clangd"
-        "html"
-        "lua_ls"
-        "marksman"
-        "nixd"
-        "yamlls"
-      ] (_: {enable = true;}));
+  lsp.servers = {
+    asm_lsp.enable = true; # GAS/GO assembly
+    bashls.enable = true;
+    clangd.enable = true;
+    html.enable = true;
+    lua_ls.enable = true;
+    marksman.enable = true;
+    nixd.enable = true;
+    yamlls.enable = true;
+  };
 
   # ---- FORMATTING ----
   plugins = {
@@ -57,8 +41,6 @@
     nix-develop.enable = true;
 
     # document tools
-    render-markdown = {
-      enable = true;
-    };
+    render-markdown.enable = true;
   };
 }
