@@ -42,5 +42,8 @@
 
     # document tools
     render-markdown.enable = true;
+
+    # smart indenting
+    sleuth.enable = true;
   };
 }

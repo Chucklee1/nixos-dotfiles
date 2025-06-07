@@ -1,9 +1,7 @@
 {
   plugins = {
-    bufferline = {
-      enable = true;
-      options.pin_icon = "";
-    };
+    bufferline.enable = true;
+    trouble.enable = true;
     scrollview.enable = true;
     which-key.enable = true;
     # git
@@ -13,7 +11,10 @@
     snacks = {
       enable = true;
       settings = {
+        bigfile.enabled = true;
         indent.enabled = true;
+        notifier.enabled = true;
+        quickfile.enabled = true;
         scroll.enabled = true;
         words.enabled = true;
       };
@@ -28,18 +29,10 @@
     };
     noice = {
       enable = true; # fancy cmd window
-      settings = {
-        notify.enabled = true;
-        lsp.override = {
-          "cmp.entry.get_documentation" = true;
-          "vim.lsp.util.stylize_markdown" = true;
-          "vim.lsp.util.convert_input_to_markdown_lines" = true;
-        };
-        presets = {
-          bottom_search = true; # use a classic bottom cmdline for search
-          command_palette = true; # position the cmdline and popupmenu together
-          long_message_to_split = true; #- long messages will be sent to a split
-        };
+      settings.presets = {
+        bottom_search = true; # use a classic bottom cmdline for search
+        command_palette = true; # position the cmdline and popupmenu together
+        long_message_to_split = true; #- long messages will be sent to a split
       };
     };
     # startup menu
@@ -70,6 +63,8 @@
 
         skiplist = [
           "flake.lock"
+          ".build"
+          "result"
         ];
       };
     };
@@ -90,4 +85,9 @@
       };
     };
   };
+  extraConfigLuaPre = ''
+    if vim.g.have_nerd_font then
+      require('nvim-web-devicons').setup {}
+    end
+  '';
 }

@@ -28,15 +28,8 @@
     scrolloff = 5;
     pumheight = 0;
 
-    # tabs
-    tabstop = 2;
-    softtabstop = 2;
-    showtabline = 2;
-    expandtab = true;
-
     # indentation
     smartindent = true;
-    shiftwidth = 2;
     breakindent = true;
 
     # search
@@ -49,7 +42,6 @@
 
     # spelling
     spelllang = ["en_us"]; # Spell check languages
-    spell = true; # Highlight spelling mistakes (local to window)
 
     # history
     clipboard = {
@@ -91,9 +83,30 @@
 
   # ---- THEME ----
 
-  colorschemes.nightfox = {
-    enable = true;
-    flavor = "nordfox";
-    settings.options.transparent = true;
+  colorschemes = {
+    nightfox = {
+      enable = false;
+      flavor = "nordfox";
+      settings.options.transparent = true;
+      catppuccin = {
+        enable = true;
+        settings = {
+          flavor = "Frappe";
+          transparent_background = true;
+          default_integrations = true;
+          integrations = {
+            noice = true;
+            lsp_trouble = true;
+            which_key = true;
+          };
+        };
+      };
+    };
   };
+
+  extraConfigLuaPost = ''
+    require("bufferline").setup {
+      highlights = require("catppuccin.groups.integrations.bufferline").get()
+    }
+  '';
 }
