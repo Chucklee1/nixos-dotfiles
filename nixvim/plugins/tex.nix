@@ -19,7 +19,7 @@
           ];
         };
         # formatter
-        indent_latexindent_options = ''-y=${pkgs.writeText "latexindent.yaml" "defaultIndent: '  '"}'';
+        indent_latexindent_options = ''-y=${pkgs.writeText "latexindent.yaml" "defaultIndent: '    '"}'';
       };
     };
   };
