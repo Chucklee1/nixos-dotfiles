@@ -36,9 +36,12 @@
           ["Telescope git_commits" "<leader>fg"]
           ["Telescope oldfiles" "<leader>fo"]
 
-          # Bufferline bindings
-          ["BufferLineCycleNext" "<S-l>"]
-          ["BufferLineCyclePrev" "<S-h>"]
+          # Buffer
+          ["bn" "<S-l>"]
+          ["bp" "<S-h>"]
+          ["Telescope Buffer" "<leader>bb"]
+          ["bd" "<leader>bc"]
+          ["bd!" "<leader>bC"]
 
           # force it
           ["w!" "<leader>W"]

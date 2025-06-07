@@ -1,7 +1,19 @@
 {
   plugins.telescope = {
     enable = true;
+    settings = {
+      defaults.mappings = {
+        i = {
+          "<C-d>".__raw = "require('telescope.actions').delete_buffer";
+        };
+      };
+      n = {
+        "<C-d>".__raw = "require('telescope.actions').delete_buffer";
+      };
+    };
     extensions = {
+      manix.enable = true;
+      fzf-native.enable = true;
       media-files = {
         enable = true;
         settings.filetypes = [

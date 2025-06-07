@@ -85,28 +85,22 @@
 
   colorschemes = {
     nightfox = {
-      enable = false;
-      flavor = "nordfox";
+      enable = true;
+      flavor = "duskfox";
       settings.options.transparent = true;
-      catppuccin = {
-        enable = true;
-        settings = {
-          flavor = "Frappe";
-          transparent_background = true;
-          default_integrations = true;
-          integrations = {
-            noice = true;
-            lsp_trouble = true;
-            which_key = true;
-          };
+    };
+    catppuccin = {
+      enable = false;
+      settings = {
+        flavor = "Frappe";
+        transparent_background = true;
+        default_integrations = true;
+        integrations = {
+          noice = true;
+          lsp_trouble = true;
+          which_key = true;
         };
       };
     };
   };
-
-  extraConfigLuaPost = ''
-    require("bufferline").setup {
-      highlights = require("catppuccin.groups.integrations.bufferline").get()
-    }
-  '';
 }

@@ -1,6 +1,5 @@
 {
   plugins = {
-    bufferline.enable = true;
     trouble.enable = true;
     scrollview.enable = true;
     which-key.enable = true;
@@ -13,7 +12,10 @@
       settings = {
         bigfile.enabled = true;
         indent.enabled = true;
-        notifier.enabled = true;
+        notifier = {
+          enabled = true;
+          top_down = false;
+        };
         quickfile.enabled = true;
         scroll.enabled = true;
         words.enabled = true;
