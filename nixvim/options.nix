@@ -79,18 +79,24 @@
     virtual_text.current_line = true;
     float.border = "rounded";
     jump.severity.__raw = "vim.diagnostic.severity.WARN";
+    signs.text = {
+      "__rawKey__vim.diagnostic.severity.ERROR" = "";
+      "__rawKey__vim.diagnostic.severity.WARN" = "";
+      "__rawKey__vim.diagnostic.severity.HINT" = "󰌵";
+      "__rawKey__vim.diagnostic.severity.INFO" = "";
+    };
   };
 
   # ---- THEME ----
 
   colorschemes = {
     nightfox = {
-      enable = true;
-      flavor = "duskfox";
+      enable = false;
+      flavor = "nordfox";
       settings.options.transparent = true;
     };
     catppuccin = {
-      enable = false;
+      enable = true;
       settings = {
         flavor = "Frappe";
         transparent_background = true;

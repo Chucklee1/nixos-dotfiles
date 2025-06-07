@@ -39,7 +39,7 @@
           # Buffer
           ["bn" "<S-l>"]
           ["bp" "<S-h>"]
-          ["Telescope Buffer" "<leader>bb"]
+          ["Telescope Buffers" "<leader>bb"]
           ["bd" "<leader>bc"]
           ["bd!" "<leader>bC"]
 
