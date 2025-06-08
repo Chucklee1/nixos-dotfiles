@@ -57,7 +57,7 @@
         nixvim
       ];
       # programs
-      program = {
+      programs = {
         btop.enable = true;
       };
     })
