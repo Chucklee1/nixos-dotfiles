@@ -88,15 +88,14 @@
   };
 
   # ---- THEME ----
-
   colorschemes = {
     nightfox = {
-      enable = false;
+      enable = true;
       flavor = "nordfox";
       settings.options.transparent = true;
     };
     catppuccin = {
-      enable = true;
+      enable = false;
       settings = {
         flavor = "Frappe";
         transparent_background = true;
