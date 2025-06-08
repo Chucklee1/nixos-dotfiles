@@ -27,11 +27,7 @@
     }
   ];
   nix.desktop = [
-    ({
-      lib,
-      pkgs,
-      ...
-    }: let
+    ({pkgs, ...}: let
       # folders
       MEDIA = "/media/goat/BLUE_SATA/home/server/Media";
       ND = "/home/goat/server/Navidrome";

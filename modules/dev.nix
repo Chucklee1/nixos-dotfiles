@@ -10,10 +10,7 @@
         gcc
         gdb # GNU Project debugger
       ];
-      programs.direnv = {
-        enable = true;
-        enableBashIntegration = true; # see note on other shells below
-      };
+      programs.direnv.enable = true;
     })
   ];
   nix.desktop = [

@@ -1,5 +1,4 @@
 {
-  inputs,
   system,
   user,
   machine,
@@ -7,7 +6,6 @@
 }: {
   nix.global = [
     # ---- system ----
-    inputs.home-manager.nixosModules.home-manager
     ({
       lib,
       config,
@@ -56,16 +54,6 @@
           "libvirtd"
         ];
       };
-
-      home-manager.users.${user} = {
-        home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
-          username = "${config.users.users.${user}.name}";
-          homeDirectory = "/home/${config.users.users.${user}.name}";
-        };
-        nixpkgs.config.allowUnfree = true;
-        imports = config._module.args.homeMods;
-      };
     })
     # ---- higher-level drivers ----
     ({pkgs, ...}: {
@@ -103,11 +91,13 @@
     })
   ];
   nix.laptop = [
-{networking.networkmanager.wifi = {
-backend = "iwd";
-macAddress = "random";
-};
-}  ];
+    {
+      networking.networkmanager.wifi = {
+        backend = "iwd";
+        macAddress = "random";
+      };
+    }
+  ];
   nix.desktop = [
     # gpu
     ({
@@ -128,7 +118,7 @@ macAddress = "random";
           LIBVA_DRIVER_NAME = "nvidia";
           NVD_BACKEND = "direct";
         }
-        // lib.mkIf (config.programs.niri.enable == true) {
+        // lib.mkIf config.programs.niri.enable {
           GBM_BACKEND = "nvidia-drm";
           __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         };

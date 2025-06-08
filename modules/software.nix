@@ -56,6 +56,10 @@
         musescore
         nixvim
       ];
+      # programs
+      program = {
+        btop.enable = true;
+      };
     })
   ];
 }
