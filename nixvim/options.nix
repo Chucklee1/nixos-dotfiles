@@ -42,6 +42,7 @@
 
     # spelling
     spelllang = ["en_us"]; # Spell check languages
+    spell = false;
 
     # history
     clipboard = {
@@ -71,6 +72,15 @@
     Ex.command = "Oil";
   };
   performance.byteCompileLua.enable = true;
+
+  # ---- AUTOCMDS ----
+  autoCmd = [
+    {
+      event = ["FileType"];
+      pattern = ["latex" "html" "markdown" "text"];
+      callback.__raw = ''function() vim.opt_local.spell = true end'';
+    }
+  ];
 
   # ---- DIAGNOSTICS ----
   diagnostic.settings = {

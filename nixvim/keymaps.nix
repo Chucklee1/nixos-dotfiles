@@ -31,17 +31,17 @@
           ["noh" "<esc>"]
 
           # Telescope binding
+          ["Telescope find_files" "<leader>ff"]
           ["Telescope live_grep" "<leader>fn"]
-          ["Telescope find_files" "<leader>f"]
           ["Telescope git_commits" "<leader>fg"]
-          ["Telescope oldfiles" "<leader>fo"]
+          ["Telescope buffers" "<leader>fb"]
 
           # Buffer
           ["bn" "<S-l>"]
           ["bp" "<S-h>"]
-          ["Telescope buffers" "<leader>bb"]
-          ["bd" "<leader>bc"]
-          ["bd!" "<leader>bC"]
+          ["bd" "<leader>c"]
+          ["bd!" "<leader>C"]
+          ["Neotree toggle" "<leader>b"]
 
           # force it
           ["w!" "<leader>W"]
@@ -49,6 +49,8 @@
           ["bd" "<leader>c"]
           ["bd!" "<leader>C"]
         ])
+      # set esc to also exit terminal mode
+      (mkKeymaps "t" "raw" [[''[[<C-\><C-n>]]'' "<esc>" "escape terminal mode"]])
 
       # toggles - credit to Khaneliman's khanelivim
       (mkKeymaps "n" "raw" [

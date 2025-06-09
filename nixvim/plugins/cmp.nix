@@ -44,8 +44,14 @@
     };
 
     # snippets
+    luasnip.enable = true;
     nvim-snippets.enable = true;
     friendly-snippets.enable = true;
   };
-  extraPackages = with pkgs; [wordnet];
+  extraPackages = with pkgs; [
+    aspell
+    aspellDicts.en
+    aspellDicts.en-science
+    aspellDicts.en-computers
+  ];
 }

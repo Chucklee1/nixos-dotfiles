@@ -9,6 +9,7 @@
     lua_ls.enable = true;
     marksman.enable = true;
     nixd.enable = true;
+    texlab.enable = true;
     yamlls.enable = true;
   };
 

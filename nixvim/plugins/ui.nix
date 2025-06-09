@@ -10,15 +10,8 @@
     # sidetree
     neo-tree = {
       enable = true;
-      sources = [
-        "buffers"
-        "git_status"
-      ];
-      buffers.window.mappings = {
-        "." = "set_root";
-        "k" = "navigate_up";
-        "C" = "buffer_delete";
-      };
+      sources = ["buffers"];
+      window.width = 15;
     };
     # bundle
     snacks = {

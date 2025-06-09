@@ -46,7 +46,10 @@
   } @ inputs: let
     # ---- pkgs ----
     system = "x86_64-linux";
-    pkgs = import nixpkgs {inherit system;};
+    pkgs = import nixpkgs {
+      config.allowUnfree = true;
+      inherit system;
+    };
     nixvimpkgs = inputs.nixvim.legacyPackages.${system};
 
     # ---- libs & helpers ----
