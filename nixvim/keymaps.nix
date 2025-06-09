@@ -49,9 +49,6 @@
           ["bd" "<leader>c"]
           ["bd!" "<leader>C"]
         ])
-      # set esc to also exit terminal mode
-      (mkKeymaps "t" "raw" [[''[[<C-\><C-n>]]'' "<esc>" "escape terminal mode"]])
-
       # toggles - credit to Khaneliman's khanelivim
       (mkKeymaps "n" "raw" [
         [
