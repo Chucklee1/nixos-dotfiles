@@ -1,14 +1,10 @@
-{
+{pkgs, ...}: {
   plugins.telescope = {
     enable = true;
     settings = {
       defaults.mappings = {
-        i = {
-          "<C-d>".__raw = "require('telescope.actions').delete_buffer";
-        };
-      };
-      n = {
-        "<C-d>".__raw = "require('telescope.actions').delete_buffer";
+        i = {"<C-d>".__raw = "require('telescope.actions').delete_buffer";};
+        n = {"<C-d>".__raw = "require('telescope.actions').delete_buffer";};
       };
     };
     extensions = {
@@ -33,4 +29,9 @@
   extraConfigLua = ''
     require("telescope").load_extension("lazygit")
   '';
+  extraPackages = with pkgs; [
+    fzf
+    fd
+    poppler-utils
+  ];
 }

@@ -1,4 +1,4 @@
-{lib, ...}: {
+{pkgs, ...}: {
   # ---- LSP ----
   plugins.lsp.enable = true;
   lsp.servers = {
@@ -46,4 +46,13 @@
     # smart indenting
     sleuth.enable = true;
   };
+
+  extraPlugins = with pkgs.vimPlugins; [
+    plenary-nvim
+  ];
+  extraPackages = with pkgs; [
+    # formatters
+    stylua
+    alejandra
+  ];
 }

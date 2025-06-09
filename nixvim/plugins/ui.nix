@@ -1,11 +1,25 @@
 {
   plugins = {
+    web-devicons.enable = true;
     trouble.enable = true;
     scrollview.enable = true;
     which-key.enable = true;
     # git
     gitsigns.enable = true;
     lazygit.enable = true;
+    # sidetree
+    neo-tree = {
+      enable = true;
+      sources = [
+        "buffers"
+        "git_status"
+      ];
+      buffers.window.mappings = {
+        "." = "set_root";
+        "k" = "navigate_up";
+        "C" = "buffer_delete";
+      };
+    };
     # bundle
     snacks = {
       enable = true;
