@@ -51,7 +51,6 @@
         # apps
         qbittorrent
         muse-sounds-manager
-        (ungoogled-chromium.override {enableWideVine = true;})
         logisim-evolution
         musescore
         nixvim
@@ -59,6 +58,7 @@
       # programs
       programs = {
         btop.enable = true;
+        librewolf.enable = true;
       };
     })
   ];
