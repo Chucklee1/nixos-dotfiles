@@ -14,9 +14,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-    };
     # theming
     stylix = {
       url = "github:danth/stylix";
