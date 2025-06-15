@@ -22,6 +22,7 @@
           "XF86MonBrightnessDown" = sh "brightnessctl set 5%-";
           "XF86KbdBrightnessUp" = sh "brightnessctl --device=smc::kbd_backlight set 10%+";
           "XF86KbdBrightnessDown" = sh "brightnessctl --device=smc::kbd_backlight set 10%-";
+          "Pause" = sh "rmpc togglepause";
 
           # screenshot
           "Print".action = screenshot;
