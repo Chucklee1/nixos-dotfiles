@@ -1,5 +1,7 @@
 {inputs, ...}: let
   environmentVariables = {
+    TERMINAL = "kitty";
+    EDITOR = "nvim";
     XDG_CURRENT_DESKTOP = "niri";
     XDG_SESSION_DESKTOP = "niri";
     NIXOS_OZONE_WL = "1";
