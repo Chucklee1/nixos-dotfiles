@@ -6,11 +6,7 @@
 }: {
   nix.global = [
     # ---- system ----
-    ({
-      lib,
-      config,
-      ...
-    }: {
+    ({lib, ...}: {
       # boot
       boot.loader = {
         efi.canTouchEfiVariables = true;
