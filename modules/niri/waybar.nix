@@ -26,7 +26,7 @@
             height = 20;
 
             modules-left = [
-              "niri/window"
+              "mpd"
             ];
             modules-center = [
               "clock"
@@ -41,13 +41,38 @@
               "tray"
             ];
 
+            mpd = {
+              "format" = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ";
+              "format-disconnected" = "Disconnected ";
+              "format-stopped" = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ";
+              "interval" = 10;
+              "consume-icons" = {
+                "on" = " "; # Icon shows only when "consume" is on
+              };
+              "random-icons" = {
+                "off" = "<span color=\"#f53c3c\"></span> "; # Icon grayed out when "random" is off
+                "on" = " ";
+              };
+              "repeat-icons" = {
+                "on" = " ";
+              };
+              "single-icons" = {
+                "on" = "1 ";
+              };
+              "state-icons" = {
+                "paused" = "";
+                "playing" = "";
+              };
+              "tooltip-format" = "MPD (connected)";
+              "tooltip-format-disconnected" = "MPD (disconnected)";
+            };
             "niri/window" = {
               tooltip = false;
               format = "{app_id}";
             };
 
             "clock" = {
-              format = "{:%Y-%M-%d | %H:%M:%S}";
+              format = "{:%F | %X}";
               interval = 1;
               tooltip = false;
             };
