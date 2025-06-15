@@ -31,7 +31,11 @@
     })
   ];
   home.global = [
-    ({pkgs, ...}: {
+    ({
+      config,
+      pkgs,
+      ...
+    }: {
       home.packages = with pkgs; [
         # files
         file-roller
@@ -42,12 +46,14 @@
         ffmpeg-full
         pavucontrol
         mpv
+        mpvc
         # images
         imagemagick
         # apps
         tenacity
         gimp
         picard
+        firefox
         # apps
         qbittorrent
         muse-sounds-manager
@@ -59,6 +65,17 @@
       programs = {
         btop.enable = true;
         librewolf.enable = true;
+        zathura.enable = true;
+        yazi.enable = true;
+      };
+      services.mpd = let
+        musicDir = "${config.home.homeDirectory}/server/Media/Music";
+        dataDir = "${config.home.homeDirectory}/server/mpd";
+      in {
+        inherit dataDir;
+        enable = true;
+        musicDirectory = musicDir;
+        network.listenAddress = "any";
       };
     })
   ];
