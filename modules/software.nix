@@ -30,6 +30,50 @@
       };
     })
   ];
+  nix.desktop = [
+    # dev work
+    ({pkgs, ...}: {
+      programs.nix-ld = {
+        enable = true;
+        libraries = with pkgs; [
+          jq
+          unzip
+          python313
+          python313Packages.pip
+        ];
+      };
+    })
+    # games
+    ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        osu-lazer-bin
+        prismlauncher
+        ryubing
+        cemu
+        joycond
+        joycond-cemuhook
+      ];
+      programs.steam = {
+        enable = true;
+        protontricks.enable = true;
+        gamescopeSession.enable = true;
+        extraCompatPackages = [pkgs.proton-ge-bin];
+        remotePlay.openFirewall = true;
+        dedicatedServer.openFirewall = true;
+        localNetworkGameTransfers.openFirewall = true;
+      };
+    })
+    # wine
+    ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        zenity
+        samba
+        wine
+        wineWowPackages.stagingFull
+        winetricks
+      ];
+    })
+  ];
   home.global = [
     ({
       config,
@@ -47,6 +91,13 @@
         pavucontrol
         mpv
         mpvc
+        # dev tools
+        openai
+        rclone
+        python3
+        gnumake
+        gcc
+        gdb # GNU Project debugger
         # apps
         tenacity
         gimp
@@ -61,6 +112,7 @@
       # programs
       programs = {
         btop.enable = true;
+        direnv.enable = true;
         librewolf.enable = true;
         vesktop.enable = true;
         yazi.enable = true;
@@ -77,4 +129,6 @@
       };
     })
   ];
+  # rip-off rivertuner
+  home.desktop = [{programs.mangohud.enable = true;}];
 }
