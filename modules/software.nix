@@ -37,9 +37,9 @@
       ...
     }: {
       home.packages = with pkgs; [
-        # files
+        # media handling
         file-roller
-        fontpreview
+        imagemagick
         epub-thumbnailer
         ffmpegthumbnailer
         # audio
@@ -47,13 +47,10 @@
         pavucontrol
         mpv
         mpvc
-        # images
-        imagemagick
         # apps
         tenacity
         gimp
         picard
-        firefox
         # apps
         qbittorrent
         muse-sounds-manager
@@ -65,8 +62,9 @@
       programs = {
         btop.enable = true;
         librewolf.enable = true;
-        zathura.enable = true;
+        vesktop.enable = true;
         yazi.enable = true;
+        zathura.enable = true;
       };
       services.mpd = let
         musicDir = "${config.home.homeDirectory}/server/Media/Music";
