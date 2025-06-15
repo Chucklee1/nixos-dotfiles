@@ -90,7 +90,7 @@
         ffmpeg-full
         pavucontrol
         mpv
-        mpvc
+        rmpc
         # dev tools
         openai
         rclone
@@ -119,13 +119,18 @@
         zathura.enable = true;
       };
       services.mpd = let
-        musicDir = "${config.home.homeDirectory}/server/Media/Music";
-        dataDir = "${config.home.homeDirectory}/server/mpd";
+        root = "/media/goat/BLUE_SATA/home/server";
       in {
-        inherit dataDir;
         enable = true;
-        musicDirectory = musicDir;
+        dataDir = "${root}/mpd";
+        musicDirectory = "${root}/Media/Music";
         network.listenAddress = "any";
+        extraConfig = ''
+          audio_output {
+            type "pipewire"
+            name "MPDOUT"
+          }
+        '';
       };
     })
   ];
