@@ -3,40 +3,22 @@
 
   inputs = {
     # main repos
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
     # theming
-    stylix = {
-      url = "github:danth/stylix";
-    };
-    minegrub-theme = {
-      url = "github:Lxtharia/minegrub-theme";
-    };
-    minesddm = {
-      url = "github:Davi-S/sddm-theme-minesddm";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    stylix.url = "github:danth/stylix";
+    minegrub-theme.url = "github:Lxtharia/minegrub-theme";
+    minesddm.url = "github:Davi-S/sddm-theme-minesddm";
+    minesddm.inputs.nixpkgs.follows = "nixpkgs";
     # neovim
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
     # wayland
-    niri = {
-      url = "github:sodiboo/niri-flake";
-    };
-    waybar = {
-      url = "github:Alexays/Waybar/master";
-    };
+    niri.url = "github:sodiboo/niri-flake";
+    waybar. url = "github:Alexays/Waybar/master";
   };
 
   outputs = {
@@ -79,9 +61,7 @@
       (host: let
         mod = mkMod host;
       in
-        lib.nixosSystem {
-          modules = mod.nix ++ [{_module.args.homeMods = mod.home;}];
-        });
+        lib.nixosSystem {modules = mod.nix ++ [{_module.args.homeMods = mod.home;}];});
     # devshell mainly for remotes
     devShells.${system}.nixvim = pkgs.mkShell {packages = [nixvim];};
   };
