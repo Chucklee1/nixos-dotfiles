@@ -4,6 +4,7 @@
     trouble.enable = true;
     scrollview.enable = true;
     which-key.enable = true;
+    presence-nvim.enable = true;
     # git
     gitsigns.enable = true;
     lazygit.enable = true;
