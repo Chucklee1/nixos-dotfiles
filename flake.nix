@@ -52,10 +52,6 @@
     specialArgs = {
       inherit system nixvim;
       user = "goat";
-      # default apps
-      editor = "NVIM";
-      terminal = "kitty";
-      fileExplorer = "yazi";
     };
 
     mkMod = host: (extlib.mergeProfiles (extlib.mergeModules "${self}/modules" {inherit inputs self;}) "global" host);
