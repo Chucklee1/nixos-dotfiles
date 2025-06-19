@@ -94,6 +94,15 @@
       hardware.bluetooth.enable = true;
       services.blueman.enable = true;
 
+      # ssh
+      services.openssh = {
+        enable = true;
+        settings = {
+          PasswordAuthentication = false;
+          PermitRootLogin = "prohibit-password";
+        };
+      };
+
       # misc
       services = {
         printing.enable = true;
@@ -103,13 +112,7 @@
       };
     })
   ];
-  nix.laptop = [
-    {
-      networking.networkmanager.wifi = {
-        macAddress = "random";
-      };
-    }
-  ];
+  nix.laptop = [{networking.networkmanager.wifi.macAddress = "random";}];
   nix.desktop = [
     # gpu
     ({

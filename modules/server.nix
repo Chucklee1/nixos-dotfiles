@@ -1,4 +1,6 @@
-{
+let
+  root = "/media/goat/BLUE_SATA/home/server";
+in {
   nix.global = [
     # firewall
     {
@@ -7,14 +9,19 @@
         allowedTCPPorts = [22 80];
       };
     }
-    # ssh
+    # mpd
     {
-      services.openssh = {
+      services.mpd = {
         enable = true;
-        settings = {
-          PasswordAuthentication = false;
-          PermitRootLogin = "prohibit-password";
-        };
+        dataDir = "${root}/mpd";
+        musicDirectory = "${root}/Media/Music";
+        network.listenAddress = "any";
+        extraConfig = ''
+          audio_output {
+            type "pipewire"
+            name "MPDOUT"
+          }
+        '';
       };
     }
     # tailscale
@@ -27,31 +34,20 @@
     }
   ];
   nix.desktop = [
-    ({pkgs, ...}: let
-      # folders
-      MEDIA = "/media/goat/BLUE_SATA/home/server/Media";
-      ND = "/home/goat/server/Navidrome";
-      ABS = "/media/goat/BLUE_SATA/home/server/AudioBookshelf";
-
-      # navidrome cfg
-      settings = (pkgs.formats.json {}).generate "config.json" {
-        EnableInsightsCollector = false;
-        MusicFolder = "${MEDIA}/Music";
-        DataFolder = "${ND}/data";
-        CacheFolder = "${ND}/cache";
+    ({pkgs, ...}: {
+      services.navidrome = {
+        enable = true;
+        settings = {
+          EnableInsightsCollector = false;
+          MusicFolder = "${root}Media/Music";
+          DataFolder = "${root}/Navidrome/data";
+          CacheFolder = "${root}/Navidrome/cache";
+        };
       };
-    in {
-      systemd.services = {
-        n-avidrome = {
-          wantedBy = ["multi-user.target"];
-          after = ["network.target"];
-          serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
-        };
-        a-udiobookshelf = {
-          wantedBy = ["multi-user.target"];
-          after = ["network.target"];
-          serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${ABS} --config ${ABS}'';
-        };
+      systemd.services.a-udiobookshelf = {
+        wantedBy = ["multi-user.target"];
+        after = ["network.target"];
+        serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${root}/AudioBookshelf --config ${root}/AudioBookshelf'';
       };
     })
   ];
