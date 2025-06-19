@@ -9,8 +9,8 @@
         in {
           # programs
           "${mod}+Return" = sh "kitty";
-          "${mod}+E" = sh "yazi";
-          "${mod}+F" = sh "librewolf";
+          "${mod}+E" = sh "kitty -e yazi";
+          "${mod}+Shift+B" = sh "librewolf";
           "${mod}+Space" = sh ''wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"'';
           "${mod}+Shift+L" = sh "swaylock";
           "${mod}+W" = sh ''systemctl --user restart waybar.service'';
