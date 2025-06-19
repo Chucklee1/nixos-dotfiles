@@ -5,22 +5,43 @@
         # dependancies
         libnotify
         libsecret
-        # utils
-        p7zip
-        v4l-utils
-        ripgrep
-        pciutils
+        # web
         wget
         git
         curl
+        # previewing
+        epub-thumbnailer
+        ffmpegthumbnailer
+        poppler
+        # finding
+        fd
+        rg
+        jq
+        fzf
+        pciutils
+        zoxide
+        # media
+        ffmpeg-full
+        v4l-utils
+        imagemagick
+        mpv
+        pavucontrol
+        p7zip
+        # dev tools
+        gcc
+        gdb # GNU Project debugger
+        gnumake
+        openai
+        python3
+        rclone
       ];
 
       # programs
       programs = {
         dconf.enable = true;
-        xfconf.enable = true;
+        xfconf.enable = false;
         thunar = {
-          enable = true;
+          enable = false;
           plugins = with pkgs.xfce; [
             thunar-archive-plugin
             thunar-media-tags-plugin
@@ -76,62 +97,35 @@
   ];
   home.global = [
     ({
+      lib,
       pkgs,
       nixvim,
       ...
     }: {
       home.packages = with pkgs; [
-        # media handling
-        file-roller
-        imagemagick
-        epub-thumbnailer
-        ffmpegthumbnailer
-        # audio
-        ffmpeg-full
-        pavucontrol
-        mpv
-        rmpc
-        # dev tools
-        openai
-        rclone
-        python3
-        gnumake
-        gcc
-        gdb # GNU Project debugger
-        # apps
-        tenacity
         gimp
-        picard
-        # apps
-        qbittorrent
-        muse-sounds-manager
         logisim-evolution
         musescore
+        muse-sounds-manager
         nixvim
+        picard
+        qbittorrent
+        tenacity
       ];
       # programs
-      programs = {
-        btop.enable = true;
-        direnv.enable = true;
-        librewolf.enable = true;
-        vesktop.enable = true;
-        yazi.enable = true;
-        zathura.enable = true;
-      };
-      services.mpd = let
-        root = "/media/goat/BLUE_SATA/home/server";
-      in {
-        enable = true;
-        dataDir = "${root}/mpd";
-        musicDirectory = "${root}/Media/Music";
-        network.listenAddress = "any";
-        extraConfig = ''
-          audio_output {
-            type "pipewire"
-            name "MPDOUT"
-          }
-        '';
-      };
+      programs = lib.genAttrs (n: {enable = true;}) [
+        "bash"
+        "btop"
+        "direnv"
+        "git"
+        "kitty"
+        "librewolf"
+        "oh-my-posh"
+        "rmpc"
+        "vesktop"
+        "yazi"
+        "zathura"
+      ];
     })
   ];
   # rip-off rivertuner

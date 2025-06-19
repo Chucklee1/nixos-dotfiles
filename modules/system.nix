@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   nix.global = [
     # ---- system ----
     ({
@@ -50,6 +50,22 @@
           "video"
           "libvirtd"
         ];
+      };
+    })
+    inputs.home-manager.nixosModules.home-manager
+    ({
+      config,
+      user,
+      ...
+    }: {
+      home-manager.users.${user} = {
+        home = {
+          stateVersion = "24.05"; # DO NOT CHANGE
+          username = user;
+          homeDirectory = "/home/${user}";
+        };
+        nixpkgs.config.allowUnfree = true;
+        imports = config._module.args.homeMods;
       };
     })
     # ---- higher-level drivers ----
