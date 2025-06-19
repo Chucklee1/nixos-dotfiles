@@ -1,4 +1,4 @@
-{nixvim, ...}: {
+{
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -76,8 +76,8 @@
   ];
   home.global = [
     ({
-      config,
       pkgs,
+      nixvim,
       ...
     }: {
       home.packages = with pkgs; [

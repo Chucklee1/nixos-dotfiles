@@ -1,12 +1,11 @@
-{
-  inputs,
-  machine,
-  user,
-  ...
-}: {
+{inputs, ...}: {
   nix.global = [
     inputs.home-manager.nixosModules.home-manager
-    ({config, ...}: {
+    ({
+      config,
+      user,
+      ...
+    }: {
       home-manager.users.${user} = {
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
@@ -19,7 +18,11 @@
     })
   ];
   home.global = [
-    ({lib, ...}: {
+    ({
+      lib,
+      machine,
+      ...
+    }: {
       programs = {
         git = {
           enable = true;

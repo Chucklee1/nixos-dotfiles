@@ -1,13 +1,11 @@
 {
-  user,
-  machine,
-  ...
-}: {
   nix.global = [
     # ---- system ----
     ({
       lib,
       system,
+      user,
+      machine,
       ...
     }: {
       # boot
@@ -92,7 +90,6 @@
   nix.laptop = [
     {
       networking.networkmanager.wifi = {
-        backend = "iwd";
         macAddress = "random";
       };
     }

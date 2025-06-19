@@ -49,14 +49,16 @@
 
     # ---- system  ----
     profiles = ["desktop" "laptop" "umbra"];
-    specialArgs = {inherit system;};
+    specialArgs = {
+      inherit system nixvim;
+      user = "goat";
+      # default apps
+      editor = "NVIM";
+      terminal = "kitty";
+      fileExplorer = "yazi";
+    };
 
-    mkMod = host: (extlib.mergeProfiles (extlib.mergeModules "${self}/modules" {
-        inherit inputs self nixvim;
-        user = "goat";
-        machine = "${host}";
-      }) "global"
-      host);
+    mkMod = host: (extlib.mergeProfiles (extlib.mergeModules "${self}/modules" {inherit inputs self;}) "global" host);
   in {
     nixosConfigurations =
       lib.genAttrs profiles
