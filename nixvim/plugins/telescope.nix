@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   plugins.telescope = {
     enable = true;
     settings = {
@@ -29,9 +29,4 @@
   extraConfigLua = ''
     require("telescope").load_extension("lazygit")
   '';
-  extraPackages = with pkgs; [
-    fzf
-    fd
-    poppler-utils
-  ];
 }

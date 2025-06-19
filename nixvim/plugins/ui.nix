@@ -37,6 +37,7 @@
         view_options.show_hidden = true;
       };
     };
+    yazi.enable = true;
     noice = {
       enable = true; # fancy cmd window
       settings.presets = {
