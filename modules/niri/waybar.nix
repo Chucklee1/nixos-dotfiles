@@ -1,13 +1,10 @@
-{
-  inputs,
-  system,
-  ...
-}: {
+{inputs, ...}: {
   home.global = [
     ({
       lib,
       config,
       pkgs,
+      system,
       ...
     }: {
       # waybar

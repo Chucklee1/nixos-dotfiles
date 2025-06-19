@@ -44,13 +44,11 @@
       home = let
         root = /media/goat/BLUE_SATA/repos/nixos-dotfiles;
       in {
-        shellAliases =
-          (lib.genAttrs ["v" "vi" "vm" "vim" "neovim"] (_: "nvim"))
-          // {
-            cg = "nix-collect-garbage";
-            update-flake = "nix flake update --flake ${root}";
-            rebuild-flake = "sudo nixos-rebuild switch -v --impure --show-trace --flake ${root}#${machine}";
-          };
+        shellAliases = {
+          cg = "nix-collect-garbage";
+          update-flake = "nix flake update --flake ${root}";
+          rebuild-flake = "sudo nixos-rebuild switch -v --impure --show-trace --flake ${root}#${machine}";
+        };
         # issue with nix shell
         file.".config/nixpkgs/config.nix".text = "{ nixpkgs.config.allowUnfree = true; }";
       };

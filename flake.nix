@@ -49,8 +49,10 @@
 
     # ---- system  ----
     profiles = ["desktop" "laptop" "umbra"];
+    specialArgs = {inherit system;};
+
     mkMod = host: (extlib.mergeProfiles (extlib.mergeModules "${self}/modules" {
-        inherit inputs self system nixvim;
+        inherit inputs self nixvim;
         user = "goat";
         machine = "${host}";
       }) "global"
@@ -61,7 +63,17 @@
       (host: let
         mod = mkMod host;
       in
-        lib.nixosSystem {modules = mod.nix ++ [{_module.args.homeMods = mod.home;}];});
+        lib.nixosSystem {
+          inherit specialArgs;
+          modules =
+            mod.nix
+            ++ [
+              {
+                home-manager.extraSpecialArgs = {};
+                _module.args.homeMods = mod.home;
+              }
+            ];
+        });
     # devshell mainly for remotes
     devShells.${system}.nixvim = pkgs.mkShell {packages = [nixvim];};
   };
