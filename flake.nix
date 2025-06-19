@@ -71,7 +71,7 @@
             mod.nix
             ++ [
               {
-                home-manager.extraSpecialArgs = {};
+                home-manager.extraSpecialArgs = specialArgs;
                 _module.args.homeMods = mod.home;
               }
             ];
