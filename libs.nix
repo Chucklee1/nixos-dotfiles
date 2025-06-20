@@ -48,6 +48,12 @@ with nixpkgs.lib; rec {
     (builtins.foldl' mergeAllRecursive {})
   ]);
 
+  simpleMerge = dir: (pipe dir [
+    readDirRecursive
+    (filterAttrs (flip (const (hasSuffix ".nix"))))
+    attrValues
+  ]);
+
   # concats profiles from singular module (subattrs under nix & home, eg desktop)
   mergeProfiles = mod: prev: next: (genAttrs ["nix" "home"] (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
 }
