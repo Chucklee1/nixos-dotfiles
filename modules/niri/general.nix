@@ -1,7 +1,5 @@
 {inputs, ...}: let
   environmentVariables = {
-    TERMINAL = "kitty";
-    EDITOR = "nvim";
     XDG_CURRENT_DESKTOP = "niri";
     XDG_SESSION_DESKTOP = "niri";
     NIXOS_OZONE_WL = "1";
@@ -14,8 +12,7 @@
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
   };
-in {
-  nix.global = [
+  nixNiri = [
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
       nixpkgs.overlays = [inputs.niri.overlays.niri];
@@ -50,7 +47,7 @@ in {
     })
   ];
 
-  home.global = [
+  homeNiri = [
     ({
       lib,
       config,
@@ -124,14 +121,18 @@ in {
       };
     })
   ];
-
-  home.desktop = [
-    {
-      programs.niri.settings.outputs."DP-1".mode = {
-        width = 1920;
-        height = 1080;
-        refresh = 165.001;
-      };
-    }
-  ];
+in {
+  nix.desktop = nixNiri;
+  nix.laptop = nixNiri;
+  home.desktop =
+    homeNiri
+    ++ [
+      {
+        programs.niri.settings.outputs."DP-1".mode = {
+          width = 1920;
+          height = 1080;
+          refresh = 165.001;
+        };
+      }
+    ];
 }

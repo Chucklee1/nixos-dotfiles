@@ -1,5 +1,5 @@
-{
-  home.global = [
+let
+  homeNiri = [
     ({config, ...}:
       with config.lib.niri.actions;
       with config.lib.stylix.colors.withHashtag; {
@@ -71,4 +71,7 @@
         };
       })
   ];
+in {
+  home.desktop = homeNiri;
+  home.laptop = homeNiri;
 }

@@ -1,5 +1,5 @@
-{inputs, ...}: {
-  home.global = [
+{inputs, ...}: let
+  homeWaybar = [
     ({
       lib,
       config,
@@ -129,4 +129,7 @@
       };
     })
   ];
+in {
+  home.desktop = homeWaybar;
+  home.laptop = homeWaybar;
 }
