@@ -1,23 +1,40 @@
-{
+let
+  globalNix = {
+    machine,
+    user,
+    ...
+  }: {
+    environment = let
+      root =
+        if machine == "macbook"
+        then "/Users/${user}/nixos-dotfiles"
+        else "/media/goat/BLUE_SATA/repos/nixos-dotfiles";
+    in {
+      variables = {
+        BASH_SILENCE_DEPRECATION_WARNING = "1";
+        TERMINAL = "kitty";
+        EDITOR = "nvim";
+      };
+      shellAliases = {
+        cg = "nix-collect-garbage";
+        update-flake = "nix flake update --flake ${root}";
+        rebuild-flake = "sudo nixos-rebuild switch --impure --show-trace --flake ${root}#${machine}";
+      };
+    };
+  };
+in {
+  nix.global = [globalNix];
+  nix.macbook = [globalNix];
   home.global = [
     ({
       lib,
       pkgs,
-      machine,
       ...
     }: {
       programs = {
         git = {
           userEmail = "kermitthefrog@kakao.com";
           userName = "Chucklee1";
-        };
-        kitty = {
-          settings = {
-            confirm_os_window_close = 0;
-            tab_bar_edge = "bottom";
-            tab_bar_style = lib.mkForce "powerline";
-            tab_powerline_style = "round";
-          };
         };
         lazygit.settings = {
           notARepository = "skip";
@@ -27,15 +44,6 @@
         yazi = {
           plugins =
             lib.genAttrs ["mediainfo" "mount" "restore"] (pn: pkgs.yaziPlugins.${pn});
-        };
-      };
-      home = let
-        root = "/media/goat/BLUE_SATA/repos/nixos-dotfiles";
-      in {
-        shellAliases = {
-          cg = "nix-collect-garbage";
-          update-flake = "nix flake update --flake ${root}";
-          rebuild-flake = "sudo nixos-rebuild switch -v --impure --show-trace --flake ${root}#${machine}";
         };
       };
     })
