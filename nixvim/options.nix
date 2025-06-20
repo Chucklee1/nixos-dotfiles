@@ -1,5 +1,6 @@
 {
   # ----- OPTIONS -----
+  nixpkgs.config.allowUnfree = true;
   withPerl = false;
   withRuby = false;
   opts = {
