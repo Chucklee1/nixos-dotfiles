@@ -23,14 +23,14 @@
           notARepository = "skip";
           promptToReturnFromSubprocess = false;
         };
+        oh-my-posh.useTheme = "pure";
         yazi = {
           plugins =
-            lib.genAttrs (pn: pkgs.yaziPlugins.${pn})
-            ["mediainfo" "mount" "restore"];
+            lib.genAttrs ["mediainfo" "mount" "restore"] (pn: pkgs.yaziPlugins.${pn});
         };
       };
       home = let
-        root = /media/goat/BLUE_SATA/repos/nixos-dotfiles;
+        root = "/media/goat/BLUE_SATA/repos/nixos-dotfiles";
       in {
         shellAliases = {
           cg = "nix-collect-garbage";

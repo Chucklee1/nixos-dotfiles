@@ -15,7 +15,7 @@
         poppler
         # finding
         fd
-        rg
+        ripgrep
         jq
         fzf
         pciutils
@@ -57,7 +57,6 @@
       programs.nix-ld = {
         enable = true;
         libraries = with pkgs; [
-          jq
           unzip
           python313
           python313Packages.pip
@@ -113,7 +112,7 @@
         tenacity
       ];
       # programs
-      programs = lib.genAttrs (n: {enable = true;}) [
+      programs = lib.genAttrs [
         "bash"
         "btop"
         "direnv"
@@ -125,7 +124,7 @@
         "vesktop"
         "yazi"
         "zathura"
-      ];
+      ] (n: {enable = true;});
     })
   ];
   # rip-off rivertuner
