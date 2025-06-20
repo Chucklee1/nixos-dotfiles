@@ -9,6 +9,24 @@ in {
         allowedTCPPorts = [22 80];
       };
     }
+    # ssh
+    {
+      services.openssh = {
+        enable = true;
+        settings = {
+          PasswordAuthentication = false;
+          PermitRootLogin = "prohibit-password";
+        };
+      };
+    }
+    # tailscale
+    {
+      services.tailscale = {
+        enable = true;
+        port = 443;
+        useRoutingFeatures = "server";
+      };
+    }
     # mpd
     {
       services.mpd = {
@@ -24,30 +42,28 @@ in {
         '';
       };
     }
-    # tailscale
-    {
-      services.tailscale = {
-        enable = true;
-        port = 443;
-        useRoutingFeatures = "server";
-      };
-    }
   ];
   nix.desktop = [
-    ({pkgs, ...}: {
-      services.navidrome = {
-        enable = true;
-        settings = {
-          EnableInsightsCollector = false;
-          MusicFolder = "${root}Media/Music";
-          DataFolder = "${root}/Navidrome/data";
-          CacheFolder = "${root}/Navidrome/cache";
-        };
+    ({pkgs, ...}: let
+      # navidrome cfg
+      settings = (pkgs.formats.json {}).generate "config.json" {
+        EnableInsightsCollector = false;
+        MusicFolder = "${root}Media/Music";
+        DataFolder = "${root}/Navidrome/data";
+        CacheFolder = "${root}/Navidrome/cache";
       };
-      systemd.services.a-udiobookshelf = {
-        wantedBy = ["multi-user.target"];
-        after = ["network.target"];
-        serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${root}/AudioBookshelf --config ${root}/AudioBookshelf'';
+    in {
+      systemd.services = {
+        n-avidrome = {
+          wantedBy = ["multi-user.target"];
+          after = ["network.target"];
+          serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
+        };
+        a-udiobookshelf = {
+          wantedBy = ["multi-user.target"];
+          after = ["network.target"];
+          serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${root}/AudioBookshelf --config ${root}/AudioBookshelf'';
+        };
       };
     })
   ];
