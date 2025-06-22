@@ -51,7 +51,7 @@ in {
         # navidrome cfg
         settings = (pkgs.formats.json {}).generate "config.json" {
           EnableInsightsCollector = false;
-          MusicFolder = "${root}Media/Music";
+          MusicFolder = "${root}/Media/Music";
           DataFolder = "${root}/Navidrome/data";
           CacheFolder = "${root}/Navidrome/cache";
         };
