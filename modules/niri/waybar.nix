@@ -1,4 +1,5 @@
 {inputs, ...}: let
+  nixWaybar = [({system, ...}: {nixpkgs.overlays = [(_: _: {waybar_git = inputs.waybar.packages.${system}.waybar;})];})];
   homeWaybar = [
     ({
       lib,
@@ -8,7 +9,6 @@
       ...
     }: {
       # waybar
-      nixpkgs.overlays = [(_: _: {waybar_git = inputs.waybar.packages.${system}.waybar;})];
       stylix.targets.waybar.enable = false;
       programs.waybar = with config.lib.stylix.colors.withHashtag; let
         span = color: str: ''<span color="${color}" >${str}</span>'';
@@ -130,6 +130,8 @@
     })
   ];
 in {
+  nix.desktop = nixWaybar;
+  nix.laptop = nixWaybar;
   home.desktop = homeWaybar;
   home.laptop = homeWaybar;
 }
