@@ -130,6 +130,7 @@
           picard
           qbittorrent
           tenacity
+          kitty
         ] []);
       # programs
       programs =
@@ -144,7 +145,6 @@
           zathura.enable = true;
         }
         // (onlyLinux {
-          kitty.enable = true;
           librewolf.enable = true;
           vesktop.enable = true;
         } {});
