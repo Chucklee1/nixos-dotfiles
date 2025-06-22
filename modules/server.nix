@@ -1,7 +1,6 @@
 let
   root = "/media/goat/BLUE_SATA/home/server";
-in {
-  nix.global = [
+  linuxNix = [
     # firewall
     {
       networking.firewall = {
@@ -43,28 +42,32 @@ in {
       };
     }
   ];
-  nix.desktop = [
-    ({pkgs, ...}: let
-      # navidrome cfg
-      settings = (pkgs.formats.json {}).generate "config.json" {
-        EnableInsightsCollector = false;
-        MusicFolder = "${root}Media/Music";
-        DataFolder = "${root}/Navidrome/data";
-        CacheFolder = "${root}/Navidrome/cache";
-      };
-    in {
-      systemd.services = {
-        n-avidrome = {
-          wantedBy = ["multi-user.target"];
-          after = ["network.target"];
-          serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
+in {
+  nix.laptop = linuxNix;
+  nix.desktop =
+    linuxNix
+    ++ [
+      ({pkgs, ...}: let
+        # navidrome cfg
+        settings = (pkgs.formats.json {}).generate "config.json" {
+          EnableInsightsCollector = false;
+          MusicFolder = "${root}Media/Music";
+          DataFolder = "${root}/Navidrome/data";
+          CacheFolder = "${root}/Navidrome/cache";
         };
-        a-udiobookshelf = {
-          wantedBy = ["multi-user.target"];
-          after = ["network.target"];
-          serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${root}/AudioBookshelf --config ${root}/AudioBookshelf'';
+      in {
+        systemd.services = {
+          n-avidrome = {
+            wantedBy = ["multi-user.target"];
+            after = ["network.target"];
+            serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
+          };
+          a-udiobookshelf = {
+            wantedBy = ["multi-user.target"];
+            after = ["network.target"];
+            serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${root}/AudioBookshelf --config ${root}/AudioBookshelf'';
+          };
         };
-      };
-    })
-  ];
+      })
+    ];
 }

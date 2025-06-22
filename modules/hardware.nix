@@ -15,11 +15,9 @@
   };
 in {
   nix = {
-    global = [
+    desktop = [
       inputs.disko.nixosModules.default
       {hardware.enableRedistributableFirmware = true;}
-    ];
-    desktop = [
       (mkFs "ext4" "/media/goat/BLUE_SATA" "/dev/disk/by-uuid/a6ffb4f9-049c-49a1-8b5f-1aca1b8dca08" null)
       (import "${self}/assets/disko/ext4.nix" {device = "/dev/nvme0n1";})
       {
@@ -33,6 +31,8 @@ in {
       }
     ];
     laptop = [
+      inputs.disko.nixosModules.default
+      {hardware.enableRedistributableFirmware = true;}
       (import "${self}/assets/disko/ext4.nix" {device = "/dev/nvme0n1";})
       {
         boot = {
@@ -44,6 +44,8 @@ in {
       }
     ];
     umbra = [
+      inputs.disko.nixosModules.default
+      {hardware.enableRedistributableFirmware = true;}
       (import "${self}/assets/disko/ext4.nix" {device = "/dev/sda";})
       {
         boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];

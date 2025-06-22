@@ -1,9 +1,8 @@
-{inputs, ...}: {
-  nix.global = [
+{inputs, ...}: let
+  linuxNix = [
     # ---- system ----
     ({
       lib,
-      system,
       user,
       machine,
       ...
@@ -28,14 +27,6 @@
       i18n.defaultLocale = "en_CA.UTF-8";
       time.timeZone = "America/Vancouver";
 
-      # nix
-      nixpkgs = {
-        inherit system;
-        hostPlatform = "${system}";
-        config.allowUnfree = true;
-      };
-      nix.settings.experimental-features = ["nix-command" "flakes"];
-
       # user
       users.users.${user} = {
         name = "${user}";
@@ -50,19 +41,11 @@
       };
     })
     inputs.home-manager.nixosModules.home-manager
-    ({
-      config,
-      user,
-      ...
-    }: {
-      home-manager.users.${user} = {
-        home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
-          username = user;
-          homeDirectory = "/home/${user}";
-        };
-        nixpkgs.config.allowUnfree = true;
-        imports = config._module.args.homeMods;
+    ({user, ...}: {
+      home-manager.users.${user}.home = {
+        stateVersion = "24.05"; # DO NOT CHANGE
+        username = user;
+        homeDirectory = "/home/${user}";
       };
     })
     # ---- higher-level drivers ----
@@ -109,39 +92,105 @@
       };
     })
   ];
-  nix.laptop = [{networking.networkmanager.wifi.macAddress = "random";}];
-  nix.desktop = [
-    # gpu
+in {
+  nix.global = [
     ({
-      lib,
       config,
+      system,
+      user,
       ...
     }: {
-      nixpkgs.config.nvidia.acceptLicense = true;
-      services.xserver.videoDrivers = ["nvidia"];
-      hardware.nvidia = {
-        modesetting.enable = true;
-        package = config.boot.kernelPackages.nvidiaPackages.beta;
-        videoAcceleration = true;
-        open = false;
+      # pkg conf
+      nix.settings.experimental-features = "nix-command flakes";
+      nixpkgs = {
+        hostPlatform = "${system}";
+        config.allowUnfree = true;
       };
-      environment.variables =
-        {
-          LIBVA_DRIVER_NAME = "nvidia";
-          NVD_BACKEND = "direct";
-        }
-        // lib.mkIf config.programs.niri.enable {
-          GBM_BACKEND = "nvidia-drm";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        };
+      # home manager
+      home-manager.useGlobalPkgs = true;
+      home-manager.users.${user}.imports = config._module.args.homeMods;
     })
-    # tablet support
+  ];
+  nix.laptop =
+    linuxNix
+    ++ [
+      {networking.networkmanager.wifi.macAddress = "random";}
+    ];
+  nix.desktop =
+    linuxNix
+    ++ [
+      # gpu
+      ({
+        lib,
+        config,
+        ...
+      }: {
+        nixpkgs.config.nvidia.acceptLicense = true;
+        services.xserver.videoDrivers = ["nvidia"];
+        hardware.nvidia = {
+          modesetting.enable = true;
+          package = config.boot.kernelPackages.nvidiaPackages.beta;
+          videoAcceleration = true;
+          open = false;
+        };
+        environment.variables =
+          {
+            LIBVA_DRIVER_NAME = "nvidia";
+            NVD_BACKEND = "direct";
+          }
+          // lib.mkIf config.programs.niri.enable {
+            GBM_BACKEND = "nvidia-drm";
+            __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+          };
+      })
+      # tablet support
+      {
+        hardware.uinput.enable = true;
+        programs.weylus.enable = true;
+        services.udev.extraRules = ''
+          KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+        '';
+      }
+    ];
+
+  nix.macbook = let
+    user = "goat";
+  in [
+    inputs.home-manager.darwinModules.home-manager
+    ({pkgs, ...}: {
+      # system cfg
+      system.stateVersion = 6;
+      system.primaryUser = "goat";
+
+      # user
+      users.knownUsers = ["goat"];
+      users.users.${user} = {
+        uid = 501;
+        name = "${user}";
+        home = "/Users/${user}";
+        shell = pkgs.bash;
+        ignoreShellProgramCheck = true;
+      };
+      home-manager.users.${user}.home.stateVersion = "25.05";
+      # shell
+      programs.bash = {
+        completion.enable = true;
+        enable = true;
+        interactiveShellInit = "";
+      };
+    })
+    # homebrew
     {
-      hardware.uinput.enable = true;
-      programs.weylus.enable = true;
-      services.udev.extraRules = ''
-        KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
-      '';
+      homebrew = {
+        caskArgs.no_quarantine = true;
+        enable = true;
+        #brews = [];
+        casks = [
+          "kitty"
+          "librewolf"
+          "prismlauncher"
+        ];
+      };
     }
   ];
 }
