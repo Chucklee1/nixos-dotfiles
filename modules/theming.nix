@@ -42,46 +42,13 @@
     base0E = "#AA759F";
     base0F = "#8F5536";
   };
-  globalStylix = {pkgs, ...}: {
-    stylix = {
-      enable = true;
-      autoEnable = true;
-      homeManagerIntegration.autoImport = true;
-      image = pkgs.fetchurl {
-        url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
-        hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
-      };
-      base16Scheme = nordic;
-      polarity = "dark";
-
-      fonts = {
-        monospace.package = pkgs.nerd-fonts.jetbrains-mono;
-        monospace.name = "JetBrainsMono Nerd Font Mono";
-        sansSerif.package = pkgs.noto-fonts-cjk-sans;
-        sansSerif.name = "Noto Sans CJK";
-        serif.package = pkgs.noto-fonts-cjk-serif;
-        serif.name = "Noto Serif CJK";
-
-        sizes = {
-          applications = 12;
-          terminal = 12;
-          desktop = 11;
-          popups = 12;
-        };
-      };
-    };
-  };
   globalLinux = [
     inputs.stylix.nixosModules.stylix
-    globalStylix
     ({pkgs, ...}: {
-      stylix = {
-        cursor = {
-          package = pkgs.bibata-cursors;
-          name = "Bibata-Modern-Classic";
-          size = 24;
-        };
-        targets.grub.enable = false;
+      stylix.cursor = {
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Classic";
+        size = 24;
       };
     })
     # boot theme
@@ -121,33 +88,72 @@
   ];
 in {
   nix = {
+    global = [
+      ({pkgs, ...}: {
+        stylix = {
+          enable = true;
+          autoEnable = true;
+          homeManagerIntegration.autoImport = true;
+          image = pkgs.fetchurl {
+            url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
+            hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
+          };
+          base16Scheme = nordic;
+          polarity = "dark";
+
+          fonts = {
+            monospace.package = pkgs.nerd-fonts.jetbrains-mono;
+            monospace.name = "JetBrainsMono Nerd Font Mono";
+            sansSerif.package = pkgs.noto-fonts-cjk-sans;
+            sansSerif.name = "Noto Sans CJK";
+            serif.package = pkgs.noto-fonts-cjk-serif;
+            serif.name = "Noto Serif CJK";
+
+            sizes = {
+              applications = 12;
+              terminal = 12;
+              desktop = 11;
+              popups = 12;
+            };
+          };
+        };
+      })
+      # system targets
+      {
+        stylix.targets = {
+          grub.enable = false;
+        };
+      }
+    ];
+
     desktop = globalLinux;
     laptop = globalLinux;
-
-    macbook = [
-      inputs.stylix.darwinModules.stylix
-      globalStylix
-    ];
+    macbook = [inputs.stylix.darwinModules.stylix];
 
     home.global = [
       ({
         pkgs,
         machine,
         ...
-      }: {
-        stylix =
-          if machine == "macbook"
-          then {}
-          else {
-            iconTheme = {
-              enable = true;
-              package = pkgs.papirus-icon-theme;
-              dark = "Papirus-Dark";
-            };
+      }:
+        if machine == "macbook"
+        then {}
+        else {
+          stylix.iconTheme = {
+            enable = true;
+            package = pkgs.papirus-icon-theme;
+            dark = "Papirus-Dark";
           };
-        gtk.enable = true;
-        qt.enable = true;
-      })
+          gtk.enable = true;
+          qt.enable = true;
+        })
+      # home targets
+      {
+        stylix.targets = {
+          kitty.enable = false;
+          waybar.enable = false;
+        };
+      }
     ];
   };
 }
