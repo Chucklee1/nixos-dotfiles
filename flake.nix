@@ -1,30 +1,33 @@
 {
   description = "Never let them know your next move";
 
-  inputs = {
-    # main repos
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    # disk formatting
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
-    # macos
-    nix-darwin.url = "github:LnL7/nix-darwin/master";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    mac-app-util.url = "github:hraban/mac-app-util";
-    # theming
-    stylix.url = "github:danth/stylix";
-    minegrub-theme.url = "github:Lxtharia/minegrub-theme";
-    minesddm.url = "github:Davi-S/sddm-theme-minesddm";
-    minesddm.inputs.nixpkgs.follows = "nixpkgs";
-    # neovim
-    nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    # wayland
-    niri.url = "github:sodiboo/niri-flake";
-    waybar. url = "github:Alexays/Waybar/master";
-  };
+  # ---- main pkg providers ----
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.home-manager.url = "github:nix-community/home-manager";
+  inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+  # ---- disk formatting ----
+  inputs.disko.url = "github:nix-community/disko";
+  inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
+
+  # ---- macos ----
+  inputs.nix-darwin.url = "github:LnL7/nix-darwin/master";
+  inputs.nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.mac-app-util.url = "github:hraban/mac-app-util";
+
+  # ---- theming ----
+  inputs.stylix.url = "github:danth/stylix";
+  inputs.minegrub-theme.url = "github:Lxtharia/minegrub-theme";
+  inputs.minesddm.url = "github:Davi-S/sddm-theme-minesddm";
+  inputs.minesddm.inputs.nixpkgs.follows = "nixpkgs";
+
+  # ---- neovim ----
+  inputs.nixvim.url = "github:nix-community/nixvim";
+  inputs.nixvim.inputs.nixpkgs.follows = "nixpkgs";
+
+  # ---- wayland ----
+  inputs.niri.url = "github:sodiboo/niri-flake";
+  inputs.waybar. url = "github:Alexays/Waybar/master";
 
   outputs = {
     self,
@@ -47,27 +50,31 @@
       desktop = {
         system = "x86_64-linux";
         builder = nixpkgs.lib.nixosSystem;
+        buildType = "nixos";
+        homeDir = "/home";
         user = "goat";
       };
       laptop = {
         system = "x86_64-linux";
         builder = nixpkgs.lib.nixosSystem;
+        buildType = "nixos";
+        homeDir = "/home";
         user = "goat";
       };
       macbook = {
         system = "aarch64-darwin";
         builder = nix-darwin.lib.darwinSystem;
+        buildType = "darwin";
+        homeDir = "/Users";
         user = "goat";
       };
     };
 
-    merged = extlib.mergeModules "${self}/modules" {inherit inputs self;};
-    mkMod = host: (extlib.mergeProfiles merged "global" host);
-
     mkSystems =
       nixpkgs.lib.mapAttrs
       (machine: cfg: let
-        mod = mkMod machine;
+        merged = extlib.mergeModules "${self}/modules" {inherit inputs self;};
+        mod = extlib.mergeProfiles merged "global" machine;
         specialArgs = {
           inherit machine;
           inherit (cfg) system user;
