@@ -73,5 +73,4 @@ let
   ];
 in {
   home.desktop = homeNiri;
-  home.laptop = homeNiri;
 }

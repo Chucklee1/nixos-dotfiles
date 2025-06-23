@@ -126,7 +126,6 @@
   ];
 in {
   nix.desktop = nixNiri;
-  nix.laptop = nixNiri;
   home.desktop =
     homeNiri
     ++ [

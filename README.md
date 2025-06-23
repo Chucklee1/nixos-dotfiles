@@ -3,7 +3,6 @@
 ## machines:
 
 - desktop: desktop
-- laptop: laptop
 - macbook: macbook
 - umbra: usb profile _(see todo)_
 

@@ -43,7 +43,6 @@ let
     }
   ];
 in {
-  nix.laptop = linuxNix;
   nix.desktop =
     linuxNix
     ++ [

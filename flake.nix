@@ -59,13 +59,6 @@
         homeDir = "/home";
         user = "goat";
       };
-      laptop = {
-        system = "x86_64-linux";
-        builder = nixpkgs.lib.nixosSystem;
-        buildType = "nixos";
-        homeDir = "/home";
-        user = "goat";
-      };
       macbook = {
         system = "aarch64-darwin";
         builder = nix-darwin.lib.darwinSystem;
@@ -82,7 +75,7 @@
         mod = extlib.mergeProfiles merged "global" machine;
         specialArgs = {
           inherit machine;
-          inherit (cfg) system user;
+          inherit (cfg) system buildType homeDir user;
           nixvim = nixvim cfg.system;
         };
       in

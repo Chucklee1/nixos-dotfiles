@@ -1,6 +1,7 @@
 {inputs, ...}: let
   linuxNix = [
     # ---- system ----
+    inputs.home-manager.nixosModules.home-manager
     ({
       lib,
       user,
@@ -38,14 +39,6 @@
           "video"
           "libvirtd"
         ];
-      };
-    })
-    inputs.home-manager.nixosModules.home-manager
-    ({user, ...}: {
-      home-manager.users.${user}.home = {
-        stateVersion = "24.05"; # DO NOT CHANGE
-        username = user;
-        homeDirectory = "/home/${user}";
       };
     })
     # ---- higher-level drivers ----
@@ -98,6 +91,7 @@ in {
       config,
       system,
       user,
+      homeDir,
       ...
     }: {
       # pkg conf
@@ -108,14 +102,14 @@ in {
       };
       # home manager
       home-manager.useGlobalPkgs = true;
-      home-manager.users.${user}.imports = config._module.args.homeMods;
+      home-manager.users.${user} = {
+        stateVersion = "24.05"; # DO NOT CHANGE
+        username = user;
+        homeDirectory = "${homeDir}/${user}";
+        imports = config._module.args.homeMods;
+      };
     })
   ];
-  nix.laptop =
-    linuxNix
-    ++ [
-      {networking.networkmanager.wifi.macAddress = "random";}
-    ];
   nix.desktop =
     linuxNix
     ++ [

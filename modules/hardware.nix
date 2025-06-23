@@ -30,19 +30,6 @@ in {
         hardware.cpu.amd.updateMicrocode = true;
       }
     ];
-    laptop = [
-      inputs.disko.nixosModules.default
-      {hardware.enableRedistributableFirmware = true;}
-      (import "${self}/assets/disko/ext4.nix" {device = "/dev/nvme0n1";})
-      {
-        boot = {
-          initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
-          kernelModules = ["kvm-amd"];
-          loader.grub.gfxmodeEfi = "1920x1080x30,auto";
-        };
-        hardware.cpu.amd.updateMicrocode = true;
-      }
-    ];
     umbra = [
       inputs.disko.nixosModules.default
       {hardware.enableRedistributableFirmware = true;}

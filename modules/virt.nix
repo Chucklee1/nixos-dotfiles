@@ -37,8 +37,5 @@ let
   ];
 in {
   nix.desktop = nixvirt;
-  nix.laptop = nixvirt;
-
   home.desktop = homevirt;
-  home.laptop = homevirt;
 }

@@ -66,6 +66,7 @@
         background = "background_options/1.8  - [Classic Minecraft].png";
         boot-options-count = 4;
       };
+
       # ---- login theme ----
       services.displayManager.sddm = {
         enable = true;
@@ -85,6 +86,12 @@
         libsForQt5.layer-shell-qt
       ];
     })
+    # system targets
+    {
+      stylix.targets = {
+        grub.enable = false;
+      };
+    }
   ];
 in {
   nix = {
@@ -118,16 +125,9 @@ in {
           };
         };
       })
-      # system targets
-      {
-        stylix.targets = {
-          grub.enable = false;
-        };
-      }
     ];
 
     desktop = globalLinux;
-    laptop = globalLinux;
     macbook = [inputs.stylix.darwinModules.stylix];
 
     home.global = [

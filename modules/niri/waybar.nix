@@ -131,7 +131,5 @@
   ];
 in {
   nix.desktop = nixWaybar;
-  nix.laptop = nixWaybar;
   home.desktop = homeWaybar;
-  home.laptop = homeWaybar;
 }
