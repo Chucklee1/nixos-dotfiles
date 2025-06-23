@@ -124,12 +124,12 @@
           direnv.enable = true;
           git.enable = true;
           oh-my-posh.enable = true;
-          rmpc.enable = true;
           yazi.enable = true;
           zathura.enable = true;
         }
         // (onlyLinux {
           librewolf.enable = true;
+          rmpc.enable = true;
           vesktop.enable = true;
         } {});
     })
