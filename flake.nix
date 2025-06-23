@@ -13,7 +13,6 @@
   # ---- macos ----
   inputs.nix-darwin.url = "github:LnL7/nix-darwin/master";
   inputs.nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.mac-app-util.url = "github:hraban/mac-app-util";
 
   # ---- theming ----
   inputs.stylix.url = "github:danth/stylix";
