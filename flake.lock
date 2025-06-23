@@ -102,6 +102,22 @@
         "type": "github"
       }
     },
+    "en_us-dictionary": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736184845,
+        "narHash": "sha256-PfBQ9iavOLx7M8+j0TXASUxVamPiQn2YXsiuUmz4XCg=",
+        "owner": "dwyl",
+        "repo": "english-words",
+        "rev": "20f5cc9b3f0ccc8ce45d814c532b7c2031bba31c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dwyl",
+        "repo": "english-words",
+        "type": "github"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -739,6 +755,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
+        "en_us-dictionary": "en_us-dictionary",
         "home-manager": "home-manager",
         "mac-app-util": "mac-app-util",
         "minegrub-theme": "minegrub-theme",

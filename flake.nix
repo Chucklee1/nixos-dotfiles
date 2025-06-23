@@ -29,6 +29,10 @@
   inputs.niri.url = "github:sodiboo/niri-flake";
   inputs.waybar.url = "github:Alexays/Waybar/master";
 
+  # ---- non-flakes ----
+  inputs.en_us-dictionary.url = "github:dwyl/english-words";
+  inputs.en_us-dictionary.flake = false;
+
   outputs = {
     self,
     nixpkgs,
@@ -42,6 +46,7 @@
     nixvim = system:
       inputs.nixvim.legacyPackages.${system}.makeNixvimWithModule {
         inherit system;
+        extraSpecialArgs = {inherit inputs;};
         module.imports = extlib.simpleMerge "${self}/nixvim";
       };
 
