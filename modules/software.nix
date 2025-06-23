@@ -13,21 +13,8 @@
     in {
       environment.systemPackages = with pkgs;
         [
-          # dependancies
-          libnotify
-          libsecret
-          # web
-          wget
-          git
-          curl
-          # previewing
-          epub-thumbnailer
-          ffmpegthumbnailer
-          poppler
           # finding
-          fd
           ripgrep
-          jq
           fzf
           pciutils
           zoxide
@@ -35,17 +22,19 @@
           ffmpeg-full
           imagemagick
           mpv
+          # archive management
           p7zip
-          # dev tools
+          unzip
+          unrar
+          # misc tools
+          curl
           gcc
           gdb # GNU Project debugger
           gnumake
-          openai
           python3
           rclone
         ]
         ++ (onlyLinux [
-          v4l-utils
           pavucontrol
         ] []);
 
@@ -69,11 +58,6 @@
     ({pkgs, ...}: {
       programs.nix-ld = {
         enable = true;
-        libraries = with pkgs; [
-          unzip
-          python313
-          python313Packages.pip
-        ];
       };
     })
     # games
