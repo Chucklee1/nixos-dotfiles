@@ -1,30 +1,30 @@
-let
-  globalNix = {
-    machine,
-    user,
-    ...
-  }: {
-    environment = let
-      root =
-        if machine == "macbook"
-        then "/Users/${user}/nixos-dotfiles"
-        else "/media/goat/BLUE_SATA/repos/nixos-dotfiles";
-    in {
-      variables = {
-        BASH_SILENCE_DEPRECATION_WARNING = "1";
-        TERMINAL = "kitty";
-        EDITOR = "nvim";
-      };
-      shellAliases = {
-        cg = "nix-collect-garbage";
-        update-flake = "nix flake update --flake ${root}";
-        rebuild-flake = "sudo nixos-rebuild switch --impure --show-trace --flake ${root}#${machine}";
-      };
-    };
-  };
-in {
-  nix.global = [globalNix];
-  nix.macbook = [globalNix];
+{
+  nix.global = [
+    (
+      {
+        machine,
+        user,
+        buildType,
+        homeDir,
+        ...
+      }: {
+        environment = let
+          root = "${homeDir}/${user}/nixos-dotfiles";
+          buildFlags = "--show-trace --impure";
+        in {
+          variables = {
+            BASH_SILENCE_DEPRECATION_WARNING = "1";
+            TERMINAL = "kitty";
+            EDITOR = "nvim";
+          };
+          shellAliases = {
+            update-flake = "nix flake update --flake ${root}";
+            rebuild-flake = "sudo ${buildType}-rebuild switch --flake ${root}#${machine} ${buildFlags}";
+          };
+        };
+      }
+    )
+  ];
   home.global = [
     ({
       lib,
@@ -32,19 +32,12 @@ in {
       ...
     }: {
       programs = {
-        git = {
-          userEmail = "kermitthefrog@kakao.com";
-          userName = "Chucklee1";
-        };
-        lazygit.settings = {
-          notARepository = "skip";
-          promptToReturnFromSubprocess = false;
-        };
+        git.userEmail = "kermitthefrog@kakao.com";
+        git.userName = "Chucklee1";
+        lazygit.settings.notARepository = "skip";
+        lazygit.settings.promptToReturnFromSubprocess = false;
         oh-my-posh.useTheme = "pure";
-        yazi = {
-          plugins =
-            lib.genAttrs ["mediainfo" "mount" "restore"] (pn: pkgs.yaziPlugins.${pn});
-        };
+        yazi.plugins = lib.genAttrs ["mediainfo" "mount" "restore"] (pn: pkgs.yaziPlugins.${pn});
       };
     })
   ];
