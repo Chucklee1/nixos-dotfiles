@@ -96,15 +96,29 @@
 in {
   nix = {
     global = [
-      ({pkgs, ...}: {
+      ({pkgs, ...}: let
+        painted-lake = pkgs.fetchurl {
+          url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
+          hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
+        };
+        pastel-waves = pkgs.fetchurl {
+          url = "https://w.wallhaven.cc/full/r2/wallhaven-r2e391.png";
+          hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        };
+        azure-ridge = pkgs.fetchurl {
+          url = "https://w.wallhaven.cc/full/lm/wallhaven-lm7edq.png";
+          hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        };
+        their-wrath = pkgs.fetchurl {
+          url = "https://w.wallhaven.cc/full/g8/wallhaven-g8ke3e.jpg";
+          hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        };
+      in {
         stylix = {
           enable = true;
           autoEnable = true;
           homeManagerIntegration.autoImport = true;
-          image = pkgs.fetchurl {
-            url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
-            hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
-          };
+          image = painted-lake;
           base16Scheme = nordic;
           polarity = "dark";
 
