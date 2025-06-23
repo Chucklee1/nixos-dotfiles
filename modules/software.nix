@@ -55,11 +55,11 @@
   ];
   nix.desktop = [
     # dev work
-    ({pkgs, ...}: {
+    {
       programs.nix-ld = {
         enable = true;
       };
-    })
+    }
     # games
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
