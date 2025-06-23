@@ -1,7 +1,6 @@
 {inputs, ...}: let
   linuxNix = [
     # ---- system ----
-    inputs.home-manager.nixosModules.home-manager
     ({
       lib,
       user,
@@ -39,6 +38,14 @@
           "video"
           "libvirtd"
         ];
+      };
+    })
+    inputs.home-manager.nixosModules.home-manager
+    ({user, ...}: {
+      home-manager.users.${user}.home = {
+        stateVersion = "24.05"; # DO NOT CHANGE
+        username = user;
+        homeDirectory = "/home/${user}";
       };
     })
     # ---- higher-level drivers ----
@@ -102,12 +109,7 @@ in {
       };
       # home manager
       home-manager.useGlobalPkgs = true;
-      home-manager.users.${user} = {
-        stateVersion = "24.05"; # DO NOT CHANGE
-        username = user;
-        homeDirectory = "${homeDir}/${user}";
-        imports = config._module.args.homeMods;
-      };
+      home-manager.users.${user}.imports = config._module.args.homeMods;
     })
   ];
   nix.desktop =
@@ -155,6 +157,19 @@ in {
       # system cfg
       system.stateVersion = 6;
       system.primaryUser = "goat";
+      system.keyboard.enableKeyMapping = true;
+      system.defaults.WindowManager = {
+        StandardHideDesktopIcons = true;
+      };
+
+      # wm config
+      services.skhd = {
+        enable = true;
+        skhdConfig = ''
+          cmd - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
+          cmd - space : /Applications/dmenu-mac.app/Contents/MacOS/dmenu-mac
+        '';
+      };
 
       # user
       users.knownUsers = ["goat"];
@@ -165,7 +180,7 @@ in {
         shell = pkgs.bash;
         ignoreShellProgramCheck = true;
       };
-      home-manager.users.${user}.home.stateVersion = "25.05";
+      home-manager.users.${user}.home.stateVersion = "24.05";
       # shell
       programs.bash = {
         completion.enable = true;
@@ -178,8 +193,9 @@ in {
       homebrew = {
         caskArgs.no_quarantine = true;
         enable = true;
-        #brews = [];
+        #brews = [ ];
         casks = [
+          "dmenu-mac"
           "kitty"
           "librewolf"
           "prismlauncher"
