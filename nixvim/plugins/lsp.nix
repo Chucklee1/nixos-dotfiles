@@ -20,7 +20,10 @@
       enable = true;
       enableLspFormat = true;
       sources = {
-        diagnostics.statix.enable = true;
+        diagnostics.statix = {
+          enable = true;
+          settings.extra_args = ["--disable=duplicate_key"];
+        };
         formatting = {
           alejandra.enable = true;
           prettier.enable = true;
@@ -37,22 +40,14 @@
       settings.user_default_options.names = false;
     };
 
-    # nix tools
-    nix.enable = true;
-    nix-develop.enable = true;
-
     # document tools
     render-markdown.enable = true;
-
-    # smart indenting
-    sleuth.enable = true;
   };
 
   extraPlugins = with pkgs.vimPlugins; [
     plenary-nvim
   ];
   extraPackages = with pkgs; [
-    # formatters
     stylua
     alejandra
   ];
