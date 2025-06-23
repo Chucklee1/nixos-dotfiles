@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   plugins = {
     # breadcrumbs
     lspsaga = {
@@ -48,10 +52,12 @@
     nvim-snippets.enable = true;
     friendly-snippets.enable = true;
   };
-  extraPackages = with pkgs; [
-    aspell
-    aspellDicts.en
-    aspellDicts.en-science
-    aspellDicts.en-computers
-  ];
+  # dictionary lookip file
+  extraConfigLua = ''
+    require("cmp_dictionary").setup {
+      dic = {
+        ["*"] = "${inputs.en_us-dictionary}/words.txt"
+      },
+    }
+  '';
 }
