@@ -93,11 +93,9 @@
           gaps = 4;
           border.width = 2;
           always-center-single-column = false;
-          tab-indicator = {
-            hide-when-single-tab = true;
-            place-within-column = true;
-            width = 8.0;
-          };
+          tab-indicator.hide-when-single-tab = true;
+          tab-indicator.place-within-column = true;
+          tab-indicator.width = 8.0;
         };
         # disable annoying hot-corners
         gestures.hot-corners.enable = false;
@@ -116,6 +114,11 @@
           {
             matches = [{app-id = "^org.prismlauncher.PrismLauncher$";}];
             open-floating = false;
+          }
+          {
+            matches = [{app-id = "org.kde.polkit-kde-authentication-agent$";}];
+            block-out-from = "screen-capture";
+            open-floating = true;
           }
         ];
       };
