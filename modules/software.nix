@@ -91,6 +91,30 @@
       ];
     })
   ];
+  nix.macbook = [
+    {
+      # shell
+      programs.bash = {
+        completion.enable = true;
+        enable = true;
+        interactiveShellInit = "";
+      };
+    }
+    # homebrew
+    {
+      homebrew = {
+        caskArgs.no_quarantine = true;
+        enable = true;
+        #brews = [ ];
+        casks = [
+          "dmenu-mac"
+          "kitty"
+          "librewolf"
+          "prismlauncher"
+        ];
+      };
+    }
+  ];
   home.global = [
     ({
       pkgs,

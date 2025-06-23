@@ -181,26 +181,6 @@ in {
         ignoreShellProgramCheck = true;
       };
       home-manager.users.${user}.home.stateVersion = "24.05";
-      # shell
-      programs.bash = {
-        completion.enable = true;
-        enable = true;
-        interactiveShellInit = "";
-      };
     })
-    # homebrew
-    {
-      homebrew = {
-        caskArgs.no_quarantine = true;
-        enable = true;
-        #brews = [ ];
-        casks = [
-          "dmenu-mac"
-          "kitty"
-          "librewolf"
-          "prismlauncher"
-        ];
-      };
-    }
   ];
 }
