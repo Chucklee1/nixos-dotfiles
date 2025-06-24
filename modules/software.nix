@@ -91,30 +91,6 @@
       ];
     })
   ];
-  nix.macbook = [
-    {
-      # shell
-      programs.bash = {
-        completion.enable = true;
-        enable = true;
-        interactiveShellInit = "";
-      };
-    }
-    # homebrew
-    {
-      homebrew = {
-        caskArgs.no_quarantine = true;
-        enable = true;
-        #brews = [ ];
-        casks = [
-          "dmenu-mac"
-          "kitty"
-          "librewolf"
-          "prismlauncher"
-        ];
-      };
-    }
-  ];
   home.global = [
     ({
       pkgs,
@@ -157,6 +133,33 @@
           vesktop.enable = true;
         } {});
     })
+  ];
+  nix.macbook = [
+    {
+      # shell
+      programs.bash = {
+        completion.enable = true;
+        enable = true;
+        interactiveShellInit = "";
+      };
+      # homebrew
+      homebrew = {
+        enable = true;
+        onActivation = {
+          autoUpdate = true;
+          upgrade = true;
+          cleanup = "zap";
+        };
+        caskArgs.no_quarantine = true;
+        #brews = [ ];
+        casks = [
+          "dmenu-mac"
+          "kitty"
+          "librewolf"
+          "prismlauncher"
+        ];
+      };
+    }
   ];
   # rip-off rivertuner
   home.desktop = [{programs.mangohud.enable = true;}];

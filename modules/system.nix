@@ -95,14 +95,18 @@
 in {
   nix.global = [
     ({
+      lib,
       config,
       system,
       user,
-      homeDir,
       ...
     }: {
       # pkg conf
       nix.settings.experimental-features = "nix-command flakes";
+      nix.gc = {
+        automatic = lib.mkDefault true;
+        options = lib.mkDefault "--delete-older-than 7d";
+      };
       nixpkgs = {
         hostPlatform = "${system}";
         config.allowUnfree = true;
@@ -149,27 +153,37 @@ in {
       }
     ];
 
-  nix.macbook = let
-    user = "goat";
-  in [
+  nix.macbook = [
     inputs.home-manager.darwinModules.home-manager
-    ({pkgs, ...}: {
-      # system cfg
-      system.stateVersion = 6;
-      system.primaryUser = "goat";
-      system.keyboard.enableKeyMapping = true;
-      system.defaults.WindowManager = {
-        StandardHideDesktopIcons = true;
+    ({
+      pkgs,
+      user,
+      ...
+    }: {
+      # nix issue fix
+      nix.settings = {auto-optimise-store = false;};
+      system = {
+        stateVersion = 6;
+        primaryUser = "${user}";
+        keyboard.enableKeyMapping = true;
+
+        defaults = {
+          WindowManager.StandardHideDesktopIcons = true;
+          finder.AppleShowAllExtensions = true;
+          finder.AppleShowAllFiles = true;
+        };
+        defaults.CustomUserPreferences = {
+          "com.apple.desktopservices" = {
+            # Disable creating .DS_Store files in network an USB volumes
+            DSDontWriteNetworkStores = true;
+            DSDontWriteUSBStores = true;
+          };
+          "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
+        };
       };
 
-      # wm config
-      services.skhd = {
-        enable = true;
-        skhdConfig = ''
-          cmd - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
-          cmd - space : /Applications/dmenu-mac.app/Contents/MacOS/dmenu-mac
-        '';
-      };
+      # Add ability to used TouchID for sudo authentication
+      security.pam.services.sudo_local.touchIdAuth = true;
 
       # user
       users.knownUsers = ["goat"];
@@ -181,6 +195,13 @@ in {
         ignoreShellProgramCheck = true;
       };
       home-manager.users.${user}.home.stateVersion = "24.05";
+
+      # wm config
+      services.skhd.enable = true;
+      services.yabai = {
+        enable = true;
+        enableScriptingAddition = true;
+      };
     })
   ];
 }
