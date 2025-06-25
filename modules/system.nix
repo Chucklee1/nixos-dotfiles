@@ -189,7 +189,6 @@ in {
           NSNavPanelExpandedStateForSaveMode = true;
           NSNavPanelExpandedStateForSaveMode2 = true;
           NSDocumentSaveNewDocumentsToCloud = false; # do not save to icloud by default
-          "com.apple.swipescrolldirection" = false; # Disable "natural" scrolling
           AppleKeyboardUIMode = 3; # full keyboard access
         };
 
@@ -217,7 +216,6 @@ in {
     # nix managed services
     {
       services = {
-        tailscale.enable = true;
         aerospace.enable = true;
         sketchybar.enable = true;
       };
