@@ -67,8 +67,8 @@ with inputs.nixpkgs.lib; rec {
       (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
 
   # system if templates (order LTR: linux, darwin
-  isLinux = system: (hasSuffix "linux" system);
-  isDarwin = system: (hasSuffix "darwin" system);
+  isLinux = system: (hasSuffix "linux" "${system}");
+  isDarwin = system: (hasSuffix "darwin" "${system}");
 
   builder = system:
     if (isLinux system)

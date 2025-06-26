@@ -11,7 +11,7 @@
           root = "$HOME/nixos-dotfiles";
           buildFlags = "--show-trace --impure";
           buildType =
-            if extlib.isDarwin
+            if (extlib.isDarwin system)
             then "darwin"
             else "linux";
         in {

@@ -230,7 +230,7 @@ in {
       ...
     }: let
       homeDir =
-        if extlib.isDarwin system
+        if (extlib.isDarwin system)
         then "/Users"
         else "/home";
     in {
