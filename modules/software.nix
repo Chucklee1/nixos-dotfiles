@@ -2,15 +2,10 @@
   nix.global = [
     ({
       pkgs,
-      machine,
+      extlib,
+      system,
       ...
-    }: let
-      onlyLinux = opt: opt2: (
-        if machine == "macbook"
-        then opt2
-        else opt
-      );
-    in {
+    }: {
       environment.systemPackages = with pkgs;
         [
           # finding
@@ -34,32 +29,34 @@
           python3
           rclone
         ]
-        ++ (onlyLinux [
-          pavucontrol
-        ] []);
+        ++ (extlib.ifLinux system [pavucontrol] []);
 
       # programs
-      programs = onlyLinux {
-        dconf.enable = true;
-        xfconf.enable = false;
-        thunar = {
-          enable = false;
-          plugins = with pkgs.xfce; [
-            thunar-archive-plugin
-            thunar-media-tags-plugin
-            thunar-volman
-          ];
-        };
-      } {};
+      programs =
+        (extlib.ifLinux system {
+          nix-ld.enable = true;
+          dconf.enable = true;
+          xfconf.enable = false;
+          thunar = {
+            enable = false;
+            plugins = with pkgs.xfce; [
+              thunar-archive-plugin
+              thunar-media-tags-plugin
+              thunar-volman
+            ];
+          };
+        } {})
+        // (extlib.ifDarwin system {
+          bash = {
+            completion.enable = true;
+            enable = true;
+            interactiveShellInit = "";
+          };
+        } {});
     })
   ];
   nix.desktop = [
     # dev work
-    {
-      programs.nix-ld = {
-        enable = true;
-      };
-    }
     # games
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -70,6 +67,11 @@
         joycond
         joycond-cemuhook
       ];
+      programs.gamemode = {
+        enable = true;
+        settings.general.desiredgov = "performance";
+        settings.general.renice = 10;
+      };
       programs.steam = {
         enable = true;
         protontricks.enable = true;
@@ -95,18 +97,13 @@
     ({
       pkgs,
       nixvim,
-      machine,
+      extlib,
+      system,
       ...
-    }: let
-      onlyLinux = opt: opt2: (
-        if machine == "macbook"
-        then opt2
-        else opt
-      );
-    in {
+    }: {
       home.packages = with pkgs;
         [nixvim]
-        ++ (onlyLinux [
+        ++ (extlib.ifLinux system [
           gimp
           logisim-evolution
           musescore
@@ -116,6 +113,7 @@
           tenacity
           kitty
         ] []);
+
       # programs
       programs =
         {
@@ -127,7 +125,7 @@
           yazi.enable = true;
           zathura.enable = true;
         }
-        // (onlyLinux {
+        // (extlib.ifLinux system {
           librewolf.enable = true;
           rmpc.enable = true;
           vesktop.enable = true;
@@ -136,12 +134,6 @@
   ];
   nix.macbook = [
     {
-      # shell
-      programs.bash = {
-        completion.enable = true;
-        enable = true;
-        interactiveShellInit = "";
-      };
       # homebrew
       homebrew = {
         enable = true;

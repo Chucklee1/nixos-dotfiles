@@ -229,10 +229,7 @@ in {
       system,
       ...
     }: let
-      homeDir =
-        if (extlib.isDarwin system)
-        then "/Users"
-        else "/home";
+      homeDir = extlib.ifDarwin system "/Users" "/home";
     in {
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE

@@ -10,10 +10,7 @@
         environment = let
           root = "$HOME/nixos-dotfiles";
           buildFlags = "--show-trace --impure";
-          buildType =
-            if (extlib.isDarwin system)
-            then "darwin"
-            else "linux";
+          buildType = extlib.ifDarwin system "darwin" "linux";
         in {
           variables = {
             BASH_SILENCE_DEPRECATION_WARNING = "1";
