@@ -82,7 +82,7 @@
       desc = "enable spelling";
       event = ["FileType"];
       pattern = ["markdown" "latex" "html"];
-      callback.__raw = "function() vim.opt.spell = true end,";
+      callback.__raw = "function() vim.opt.spell = true end";
     }
     {
       desc = "4 tabspace, real tabs";

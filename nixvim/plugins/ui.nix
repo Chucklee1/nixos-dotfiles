@@ -8,12 +8,6 @@
     # git
     gitsigns.enable = true;
     lazygit.enable = true;
-    # sidetree
-    neo-tree = {
-      enable = true;
-      sources = ["buffers"];
-      window.width = 15;
-    };
     # bundle
     snacks = {
       enable = true;

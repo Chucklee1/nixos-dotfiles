@@ -32,8 +32,8 @@
 
           # Telescope binding
           ["Telescope find_files" "<leader>ff"]
-          ["Telescope live_grep" "<leader>fn"]
-          ["Telescope nerdy" "<leader>fg"]
+          ["Telescope live_grep" "<leader>fg"]
+          ["Telescope nerdy" "<leader>fn"]
           ["Telescope buffers" "<leader>fb"]
 
           # Buffer
@@ -41,7 +41,6 @@
           ["bp" "<S-h>"]
           ["bd" "<leader>c"]
           ["bd!" "<leader>C"]
-          ["Neotree toggle" "<leader>b"]
 
           # force it
           ["w!" "<leader>W"]
