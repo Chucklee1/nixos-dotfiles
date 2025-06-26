@@ -75,11 +75,26 @@
   performance.byteCompileLua.enable = true;
 
   # ---- AUTOCMDS ----
+  # expandtab -> tabbing w/ spaces
+  # noexpandtab -> tabbing w/ \t char
   autoCmd = [
     {
+      desc = "enable spelling";
       event = ["FileType"];
-      pattern = ["latex" "html" "markdown" "text"];
-      callback.__raw = ''function() vim.opt_local.spell = true end'';
+      pattern = ["markdown" "latex" "html"];
+      callback.__raw = "function() vim.opt.spell = true end,";
+    }
+    {
+      desc = "4 tabspace, real tabs";
+      event = ["FileType"];
+      pattern = ["markdown" "latex" "html" "json" "toml" "yaml" "kdl"];
+      command = "setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab";
+    }
+    {
+      desc = "2 tabspace, tabs are spaces";
+      event = ["FileType"];
+      pattern = ["nix" "lua" "asm" "c" "cpp"];
+      command = "setlocal tabstop=2 shiftwidth=2 softtabstop=2 noexpandtab";
     }
   ];
 

@@ -33,7 +33,7 @@
           # Telescope binding
           ["Telescope find_files" "<leader>ff"]
           ["Telescope live_grep" "<leader>fn"]
-          ["Telescope git_commits" "<leader>fg"]
+          ["Telescope nerdy" "<leader>fg"]
           ["Telescope buffers" "<leader>fb"]
 
           # Buffer

@@ -28,5 +28,11 @@
   };
   extraConfigLua = ''
     require("telescope").load_extension("lazygit")
+    require('telescope').load_extension('nerdy')
   '';
+
+  plugins.nerdy = {
+    enable = true;
+    enableTelescope = true;
+  };
 }
