@@ -67,13 +67,13 @@ with inputs.nixpkgs.lib; rec {
       (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
 
   # system if templates (order LTR: linux, darwin
-  isLinux = system: (builtins.hasSuffix "linux" system);
-  isDarwin = system: (builtins.hasSuffix "darwin" system);
+  isLinux = system: (hasSuffix "linux" system);
+  isDarwin = system: (hasSuffix "darwin" system);
 
-  builder =
-    if (isLinux cfg.system)
+  builder = system:
+    if (isLinux system)
     then inputs.nixpkgs.lib.nixosSystem
-    else if (isDarwin cfg.system)
+    else if (isDarwin system)
     then inputs.nix-darwin.lib.darwinSystem
     else null;
 }

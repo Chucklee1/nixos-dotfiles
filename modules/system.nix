@@ -224,10 +224,16 @@ in {
 
   home.global = [
     ({
+      extlib,
       user,
-      homeDir,
+      system,
       ...
-    }: {
+    }: let
+      homeDir =
+        if extlib.isDarwin system
+        then "/Users"
+        else "/home";
+    in {
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE
         username = user;

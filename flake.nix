@@ -35,7 +35,6 @@
   outputs = {
     self,
     nixpkgs,
-    nix-darwin,
     ...
   } @ inputs: let
     # flake helpers
@@ -69,7 +68,7 @@
         nixvim = nixvim cfg.system;
       };
     in
-      builder {
+      (extlib.builder cfg.system) {
         inherit (cfg) system;
         inherit specialArgs;
         modules =
