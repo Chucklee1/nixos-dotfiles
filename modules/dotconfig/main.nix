@@ -3,14 +3,17 @@
     (
       {
         machine,
-        user,
-        buildType,
-        homeDir,
+        system,
+        extlib,
         ...
       }: {
         environment = let
-          root = "${homeDir}/${user}/nixos-dotfiles";
+          root = "$HOME/nixos-dotfiles";
           buildFlags = "--show-trace --impure";
+          buildType =
+            if extlib.isDarwin
+            then "darwin"
+            else "linux";
         in {
           variables = {
             BASH_SILENCE_DEPRECATION_WARNING = "1";

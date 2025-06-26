@@ -1,5 +1,9 @@
-{nixpkgs, ...}:
-with nixpkgs.lib; rec {
+{
+  inputs,
+  self,
+  ...
+}:
+with inputs.nixpkgs.lib; rec {
   readDirRecursive = dir:
     concatMapAttrs (file:
       flip getAttr {
@@ -48,6 +52,7 @@ with nixpkgs.lib; rec {
     (builtins.foldl' mergeAllRecursive {})
   ]);
 
+  # returns list of file paths - it's just mergeModules without wrapping
   simpleMerge = dir: (pipe dir [
     readDirRecursive
     (filterAttrs (flip (const (hasSuffix ".nix"))))
@@ -55,5 +60,20 @@ with nixpkgs.lib; rec {
   ]);
 
   # concats profiles from singular module (subattrs under nix & home, eg desktop)
-  mergeProfiles = mod: prev: next: (genAttrs ["nix" "home"] (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
+  mergeProfiles = let
+    mod = mergeModules "${self}/modules" {inherit inputs self;};
+  in
+    prev: next: (genAttrs ["nix" "home"]
+      (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
+
+  # system if templates (order LTR: linux, darwin
+  isLinux = system: (builtins.hasSuffix "linux" system);
+  isDarwin = system: (builtins.hasSuffix "darwin" system);
+
+  builder =
+    if (isLinux cfg.system)
+    then inputs.nixpkgs.lib.nixosSystem
+    else if (isDarwin cfg.system)
+    then inputs.nix-darwin.lib.darwinSystem
+    else null;
 }

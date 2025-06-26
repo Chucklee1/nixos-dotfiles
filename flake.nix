@@ -38,8 +38,8 @@
     nix-darwin,
     ...
   } @ inputs: let
-    # ---- libs & helpers ----
-    extlib = import "${self}/libs.nix" {inherit nixpkgs;};
+    # flake helpers
+    extlib = import "${self}/libs.nix" {inherit inputs self;};
 
     # ---- nixvim ----
     nixvim = system:
@@ -53,40 +53,32 @@
     profiles = {
       desktop = {
         system = "x86_64-linux";
-        builder = nixpkgs.lib.nixosSystem;
-        buildType = "nixos";
-        homeDir = "/home";
         user = "goat";
       };
       macbook = {
         system = "aarch64-darwin";
-        builder = nix-darwin.lib.darwinSystem;
-        buildType = "darwin";
-        homeDir = "/Users";
         user = "goat";
       };
     };
 
-    mkSystems =
-      nixpkgs.lib.mapAttrs
-      (machine: cfg: let
-        merged = extlib.mergeModules "${self}/modules" {inherit inputs self;};
-        mod = extlib.mergeProfiles merged "global" machine;
-        specialArgs = {
-          inherit machine;
-          inherit (cfg) system buildType homeDir user;
-          nixvim = nixvim cfg.system;
-        };
-      in
-        cfg.builder {
-          inherit (cfg) system;
-          inherit specialArgs;
-          modules =
-            mod.nix
-            ++ [{home-manager.extraSpecialArgs = specialArgs;}]
-            ++ [{_module.args.homeMods = mod.home;}];
-        })
-      profiles;
+    mkSystem = machine: cfg: let
+      mod = extlib.mergeProfiles "global" machine;
+      specialArgs = {
+        inherit machine extlib;
+        inherit (cfg) system user;
+        nixvim = nixvim cfg.system;
+      };
+    in
+      builder {
+        inherit (cfg) system;
+        inherit specialArgs;
+        modules =
+          mod.nix
+          ++ [{home-manager.extraSpecialArgs = specialArgs;}]
+          ++ [{_module.args.homeMods = mod.home;}];
+      };
+
+    mkSystems = nixpkgs.lib.mapAttrs mkSystem profiles;
   in {
     nixosConfigurations = mkSystems;
     darwinConfigurations = mkSystems;
