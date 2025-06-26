@@ -1,6 +1,7 @@
 let
   root = "/media/goat/BLUE_SATA/home/server";
-  linuxNix = [
+in {
+  nix.desktop = [
     # firewall
     {
       networking.firewall = {
@@ -26,6 +27,30 @@ let
         useRoutingFeatures = "server";
       };
     }
+    ({pkgs, ...}: let
+      # navidrome cfg
+      settings = (pkgs.formats.json {}).generate "config.json" {
+        EnableInsightsCollector = false;
+        MusicFolder = "${root}/Media/Music";
+        DataFolder = "${root}/Navidrome/data";
+        CacheFolder = "${root}/Navidrome/cache";
+      };
+    in {
+      systemd.services = {
+        n-avidrome = {
+          wantedBy = ["multi-user.target"];
+          after = ["network.target"];
+          serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
+        };
+        a-udiobookshelf = {
+          wantedBy = ["multi-user.target"];
+          after = ["network.target"];
+          serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${root}/AudioBookshelf --config ${root}/AudioBookshelf'';
+        };
+      };
+    })
+  ];
+  home.desktop = [
     # mpd
     {
       services.mpd = {
@@ -42,31 +67,4 @@ let
       };
     }
   ];
-in {
-  nix.desktop =
-    linuxNix
-    ++ [
-      ({pkgs, ...}: let
-        # navidrome cfg
-        settings = (pkgs.formats.json {}).generate "config.json" {
-          EnableInsightsCollector = false;
-          MusicFolder = "${root}/Media/Music";
-          DataFolder = "${root}/Navidrome/data";
-          CacheFolder = "${root}/Navidrome/cache";
-        };
-      in {
-        systemd.services = {
-          n-avidrome = {
-            wantedBy = ["multi-user.target"];
-            after = ["network.target"];
-            serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
-          };
-          a-udiobookshelf = {
-            wantedBy = ["multi-user.target"];
-            after = ["network.target"];
-            serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${root}/AudioBookshelf --config ${root}/AudioBookshelf'';
-          };
-        };
-      })
-    ];
 }
