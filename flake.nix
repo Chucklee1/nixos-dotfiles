@@ -22,16 +22,11 @@
   inputs.minesddm.inputs.nixpkgs.follows = "nixpkgs";
 
   # ---- neovim ----
-  inputs.nixvim.url = "github:nix-community/nixvim";
-  inputs.nixvim.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nix-vim.url = "github:Chucklee1/nix-vim";
 
   # ---- wayland ----
   inputs.niri.url = "github:sodiboo/niri-flake";
   inputs.waybar.url = "github:Alexays/Waybar/master";
-
-  # ---- non-flakes ----
-  inputs.en_us-dictionary.url = "github:dwyl/english-words";
-  inputs.en_us-dictionary.flake = false;
 
   outputs = {
     self,
@@ -40,14 +35,6 @@
   } @ inputs: let
     # flake helpers
     extlib = import "${self}/libs.nix" {inherit inputs self;};
-
-    # ---- nixvim ----
-    nixvim = system:
-      inputs.nixvim.legacyPackages.${system}.makeNixvimWithModule {
-        inherit system;
-        extraSpecialArgs = {inherit inputs;};
-        module.imports = extlib.simpleMerge "${self}/nixvim";
-      };
 
     # ---- system  ----
     profiles = {
@@ -66,7 +53,6 @@
       specialArgs = {
         inherit machine extlib;
         inherit (cfg) system user;
-        nixvim = nixvim cfg.system;
       };
     in
       (extlib.builder cfg.system) {

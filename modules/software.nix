@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   nix.global = [
     ({
       pkgs,
@@ -92,17 +92,27 @@
         winetricks
       ];
     })
+    # roblox
+    ({pkgs, ...}: {
+      services.flatpak.enable = true;
+      systemd.services.flatpak-repo = {
+        wantedBy = ["multi-user.target"];
+        path = [pkgs.flatpak];
+        script = ''
+          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        '';
+      };
+    })
   ];
   home.global = [
     ({
       pkgs,
-      nixvim,
       extlib,
       system,
       ...
     }: {
       home.packages = with pkgs;
-        [nixvim]
+        [inputs.nix-vim.packages.${pkgs.system}.full]
         ++ (extlib.ifLinux system [
           gimp
           logisim-evolution
