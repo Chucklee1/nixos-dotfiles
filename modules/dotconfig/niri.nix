@@ -1,5 +1,88 @@
-let
-  homeNiri = [
+{
+  home.desktop = [
+    ({
+      lib,
+      config,
+      pkgs,
+      ...
+    }: {
+      programs = {
+        swaylock = {
+          enable = true;
+          package = pkgs.swaylock-effects;
+        };
+        waybar = {
+          enable = true;
+          package = pkgs.waybar_git;
+          systemd.enable = true;
+        };
+        wlogout.enable = true;
+      };
+
+      programs.niri.settings = {
+        # general
+        prefer-no-csd = true;
+        hotkey-overlay.skip-at-startup = true;
+        screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+
+        spawn-at-startup = let
+          get = pkg: lib.getExe pkgs.${pkg};
+        in [
+          {command = ["${get "xwayland-satellite"}"];}
+          {command = ["${get "wlsunset"}" "-T" "5200"];}
+          {command = ["${get "swaybg"}" "-m" "fill" "-i" "${config.stylix.image}"];}
+          {command = ["brightnessctl" "s" "50%"];}
+          {command = ["systemctl" "--user" "reset-failed" "waybar.service"];}
+          {command = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "1"];}
+        ];
+        # input
+        input = {
+          mouse.accel-speed = 0.0;
+          tablet.map-to-output = "eDP-1";
+          touch.map-to-output = "eDP-1";
+          touchpad = {
+            tap = true;
+            dwt = true;
+            natural-scroll = true;
+            click-method = "clickfinger";
+          };
+        };
+        # layout n theming
+        layout = {
+          gaps = 4;
+          border.width = 2;
+          always-center-single-column = false;
+          tab-indicator.hide-when-single-tab = true;
+          tab-indicator.place-within-column = true;
+          tab-indicator.width = 8.0;
+        };
+        # disable annoying hot-corners
+        gestures.hot-corners.enable = false;
+        window-rules = let
+          r = 4.0;
+        in [
+          {
+            geometry-corner-radius = {
+              top-left = r;
+              top-right = r;
+              bottom-left = r;
+              bottom-right = r;
+            };
+            clip-to-geometry = true;
+          }
+          {
+            matches = [{app-id = "^org.prismlauncher.PrismLauncher$";}];
+            open-floating = false;
+          }
+          {
+            matches = [{app-id = "org.kde.polkit-kde-authentication-agent$";}];
+            block-out-from = "screen-capture";
+            open-floating = true;
+          }
+        ];
+      };
+    })
+    # keybinds
     ({config, ...}:
       with config.lib.niri.actions;
       with config.lib.stylix.colors.withHashtag; {
@@ -15,10 +98,10 @@ let
         in {
           # programs
           "${mod}+Return" = sh terminal;
-          "${mod}+E" = sh file-manager;
+          "${mod}+Shift+Return" = sh file-manager;
           "${mod}+Shift+B" = sh browser;
           "${mod}+Space" = sh app-launcher;
-          "${mod}+Shift+L" = sh "swaylock";
+          "${mod}+Shift+L" = sh "wlogout";
           "${mod}+W" = sh ''systemctl --user restart waybar.service'';
 
           # media keys
@@ -78,7 +161,13 @@ let
           "${mod}+Shift+f".action = toggle-window-floating;
         };
       })
+    # display setup
+    {
+      programs.niri.settings.outputs."DP-1".mode = {
+        width = 1920;
+        height = 1080;
+        refresh = 165.001;
+      };
+    }
   ];
-in {
-  home.desktop = homeNiri;
 }

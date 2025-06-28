@@ -92,7 +92,6 @@ in {
     ({
       lib,
       config,
-      system,
       user,
       ...
     }: {
@@ -102,10 +101,7 @@ in {
         automatic = lib.mkDefault true;
         options = lib.mkDefault "--delete-older-than 7d";
       };
-      nixpkgs = {
-        hostPlatform = "${system}";
-        config.allowUnfree = true;
-      };
+      nixpkgs.config.allowUnfree = true;
       # home manager
       home-manager.useGlobalPkgs = true;
       home-manager.users.${user}.imports = config._module.args.homeMods;
@@ -226,12 +222,12 @@ in {
 
   home.global = [
     ({
+      pkgs,
       extlib,
       user,
-      system,
       ...
     }: let
-      homeDir = extlib.ifDarwin system "/Users" "/home";
+      homeDir = extlib.ifDarwin pkgs.system "/Users" "/home";
     in {
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE

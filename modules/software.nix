@@ -3,7 +3,6 @@
     ({
       pkgs,
       extlib,
-      system,
       ...
     }: {
       environment.systemPackages = with pkgs;
@@ -33,7 +32,7 @@
 
       # programs
       programs =
-        (extlib.ifLinux system {
+        (extlib.ifLinux pkgs.system {
           nix-ld.enable = true;
           dconf.enable = true;
           xfconf.enable = false;
@@ -46,7 +45,7 @@
             ];
           };
         } {})
-        // (extlib.ifDarwin system {
+        // (extlib.ifDarwin pkgs.system {
           bash = {
             completion.enable = true;
             enable = true;
@@ -108,11 +107,10 @@
     ({
       pkgs,
       extlib,
-      system,
       ...
     }: {
       home.packages = with pkgs;
-        [inputs.nix-vim.packages.${pkgs.system}.full]
+        [inputs.nix-vim.packages.${system}.full]
         ++ (extlib.ifLinux system [
           gimp
           logisim-evolution
@@ -135,7 +133,7 @@
           yazi.enable = true;
           zathura.enable = true;
         }
-        // (extlib.ifLinux system {
+        // (extlib.ifLinux pkgs.system {
           librewolf.enable = true;
           rmpc.enable = true;
           vesktop.enable = true;

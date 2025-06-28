@@ -1,11 +1,9 @@
 {inputs, ...}: let
-  nixWaybar = [({system, ...}: {nixpkgs.overlays = [(_: _: {waybar_git = inputs.waybar.packages.${system}.waybar;})];})];
   homeWaybar = [
     ({
       lib,
       config,
       pkgs,
-      system,
       ...
     }: {
       # waybar
@@ -13,13 +11,9 @@
       programs.waybar = with config.lib.stylix.colors.withHashtag; let
         # helpers
         span = color: str: ''<span color="${color}" >${str}</span>'';
-        red = base08;
-        orange = base09;
-        yellow = base0A;
-        green = base0B;
         # ---- modules ----
         backlight = {
-          format = ''{percent}% ${span yellow "{icon}"}'';
+          format = ''{percent}% ${span base0A "{icon}"}'';
           format-icons = ["" "" "" "" "" "" "" "" ""];
         };
         battery = {
@@ -30,11 +24,11 @@
           };
           format-icons = [" " " " " " " " " "];
           format = ''{capacity}% ${span base0B "{icon}"}'';
-          format-warning = ''{capacity}% ${span orange "{icon}"}'';
-          format-critical = ''{capacity}% ${span red "{icon}"}'';
+          format-warning = ''{capacity}% ${span base09 "{icon}"}'';
+          format-critical = ''{capacity}% ${span base08 "{icon}"}'';
           format-charging = ''{capacity}% ${span base0B "󱐋{icon}"}'';
-          format-charging-warning = ''{capacity}% ${span orange "󱐋{icon}"}'';
-          format-charging-critical = ''{capacity}% ${span red "󱐋{icon}"}'';
+          format-charging-warning = ''{capacity}% ${span base09 "󱐋{icon}"}'';
+          format-charging-critical = ''{capacity}% ${span base08 "󱐋{icon}"}'';
           format-alt = "{icon} {time}";
           tooltip = false;
         };
@@ -60,14 +54,14 @@
             capslock = "C {icon}";
           };
           format-icons = {
-            locked = span red " ";
+            locked = span base08 " ";
             unlocked = span base07 " ";
           };
         };
         mpd = {
           format = "{stateIcon}";
           format-disconnected = "󰝛";
-          format-stopped = span red "";
+          format-stopped = span base08 "";
           interval = 10;
           state-icons = {
             paused = "";
@@ -85,9 +79,9 @@
           format = "{volume}% {icon}";
           format-bluetooth = "{volume}% {icon}";
           format-icons = {"default" = ["" "" ""];};
-          format-muted = span red "M ";
+          format-muted = span base08 "M ";
           format-source = "{volume}% ";
-          format-source-muted = span red "M ";
+          format-source-muted = span base08 "M ";
           tooltip = false;
         };
         tray = {
@@ -112,9 +106,6 @@
           };
         };
       in {
-        enable = true;
-        package = pkgs.waybar_git;
-        systemd.enable = true;
         settings = [
           {
             position = "top";
