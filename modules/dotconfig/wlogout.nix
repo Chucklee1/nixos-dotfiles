@@ -1,7 +1,7 @@
 {self, ...}: {
   home.desktop = [
     ({config, ...}: {
-      programs.wlogout.settings = [
+      programs.wlogout.layout = [
         {
           label = "lock";
           action = "swaylock";

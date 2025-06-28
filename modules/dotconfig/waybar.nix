@@ -1,5 +1,5 @@
-{inputs, ...}: let
-  homeWaybar = [
+{
+  home.desktop = [
     ({
       lib,
       config,
@@ -160,7 +160,4 @@
       };
     })
   ];
-in {
-  nix.desktop = nixWaybar;
-  home.desktop = homeWaybar;
 }
