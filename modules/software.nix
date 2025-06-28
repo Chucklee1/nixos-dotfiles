@@ -3,6 +3,7 @@
     ({
       pkgs,
       extlib,
+      system,
       ...
     }: {
       environment.systemPackages = with pkgs;
@@ -32,7 +33,13 @@
 
       # programs
       programs =
-        (extlib.ifLinux pkgs.system {
+        extlib.ifDarwin system {
+          bash = {
+            completion.enable = true;
+            enable = true;
+            interactiveShellInit = "";
+          };
+        } {
           nix-ld.enable = true;
           dconf.enable = true;
           xfconf.enable = false;
@@ -44,14 +51,7 @@
               thunar-volman
             ];
           };
-        } {})
-        // (extlib.ifDarwin pkgs.system {
-          bash = {
-            completion.enable = true;
-            enable = true;
-            interactiveShellInit = "";
-          };
-        } {});
+        };
     })
   ];
   nix.desktop = [
