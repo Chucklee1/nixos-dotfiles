@@ -38,6 +38,28 @@
         lazygit.settings.promptToReturnFromSubprocess = false;
         oh-my-posh.useTheme = "pure";
         yazi.plugins = lib.genAttrs ["mediainfo" "mount" "restore"] (pn: pkgs.yaziPlugins.${pn});
+        yazi.settings.theme.icon.prepend_dirs = [
+          {
+            name = "Modding";
+            text = "";
+          }
+          {
+            name = "nixos-dotfiles";
+            text = "";
+          }
+          {
+            name = "PrismLauncher";
+            text = "";
+          }
+          {
+            name = "Repos";
+            text = "";
+          }
+          {
+            name = "Server";
+            text = "";
+          }
+        ];
       };
     })
   ];
