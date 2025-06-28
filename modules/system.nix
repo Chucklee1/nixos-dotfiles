@@ -37,6 +37,8 @@
           "networkmanager"
           "audio"
           "video"
+          "input"
+          "gamemode"
           "libvirtd"
         ];
       };

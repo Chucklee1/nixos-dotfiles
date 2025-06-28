@@ -6,7 +6,6 @@ let
         programs.niri.settings.binds = let
           # helpers
           sh = x: {action = spawn "sh" "-c" x;};
-          cmd = x: {action = x;};
           # defaults
           mod = "Mod";
           terminal = "kitty";
@@ -14,7 +13,6 @@ let
           file-manager = "${terminal} -e yazi";
           app-launcher = ''wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"'';
         in {
-          # ---- niri-external ----
           # programs
           "${mod}+Return" = sh terminal;
           "${mod}+E" = sh file-manager;
@@ -38,48 +36,46 @@ let
           # clipboard
           "${mod}+Shift+C" = sh "env DISPLAY=:0 xsel -ob | wl-copy";
           "${mod}+Shift+V" = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
-
-          # ---- niri-internal ----
           # screenshot
-          "Print" = cmd screenshot;
-          "Alt+Print" = cmd screenshot-window;
+          "Print".action = screenshot;
+          "Alt+Print".action = screenshot-window;
           # quits
-          "${mod}+Q" = cmd close-window;
-          "Ctrl+Alt+Delete" = cmd quit;
-          "Ctrl+Shift+Alt+Delete" = cmd quit {skip-confirmation = true;};
+          "${mod}+Q".action = close-window;
+          "Ctrl+Alt+Delete".action = quit;
+          "Ctrl+Shift+Alt+Delete".action = quit {skip-confirmation = true;};
 
           # moving
-          "${mod}+Up" = cmd focus-window-or-workspace-up;
-          "${mod}+Down" = cmd focus-window-or-workspace-down;
-          "${mod}+Shift+Up" = cmd move-window-up-or-to-workspace-up;
-          "${mod}+Shift+Down" = cmd move-window-down-or-to-workspace-down;
-          "${mod}+Left" = cmd focus-column-left;
-          "${mod}+Right" = cmd focus-column-right;
-          "${mod}+Shift+Left" = cmd move-column-left;
-          "${mod}+Shift+Right" = cmd move-column-right;
-          "${mod}+Alt+left" = cmd focus-monitor-next;
-          "${mod}+Alt+right" = cmd focus-monitor-previous;
-          "${mod}+Shift+Alt+left" = cmd move-window-to-monitor-next;
-          "${mod}+Shift+Alt+right" = cmd move-window-to-monitor-previous;
+          "${mod}+Up".action = focus-window-or-workspace-up;
+          "${mod}+Down".action = focus-window-or-workspace-down;
+          "${mod}+Shift+Up".action = move-window-up-or-to-workspace-up;
+          "${mod}+Shift+Down".action = move-window-down-or-to-workspace-down;
+          "${mod}+Left".action = focus-column-left;
+          "${mod}+Right".action = focus-column-right;
+          "${mod}+Shift+Left".action = move-column-left;
+          "${mod}+Shift+Right".action = move-column-right;
+          "${mod}+Alt+left".action = focus-monitor-next;
+          "${mod}+Alt+right".action = focus-monitor-previous;
+          "${mod}+Shift+Alt+left".action = move-window-to-monitor-next;
+          "${mod}+Shift+Alt+right".action = move-window-to-monitor-previous;
 
           # column width - using = since + needs shift
-          "${mod}+Minus" = cmd set-column-width "-10%";
-          "${mod}+Equal" = cmd set-column-width "+10%";
-          "${mod}+Shift+Minus" = cmd set-column-width "-1%";
-          "${mod}+Shift+Equal" = cmd set-column-width "+1%";
-          "${mod}+Ctrl+Minus" = cmd set-window-height "-10%";
-          "${mod}+Ctrl+Equal" = cmd set-window-height "+10%";
+          "${mod}+Minus".action = set-column-width "-10%";
+          "${mod}+Equal".action = set-column-width "+10%";
+          "${mod}+Shift+Minus".action = set-column-width "-1%";
+          "${mod}+Shift+Equal".action = set-column-width "+1%";
+          "${mod}+Ctrl+Minus".action = set-window-height "-10%";
+          "${mod}+Ctrl+Equal".action = set-window-height "+10%";
           # window presets
-          "${mod}+R" = cmd switch-preset-column-width;
-          "${mod}+M" = cmd expand-column-to-available-width;
-          "${mod}+Ctrl+M" = cmd maximize-column;
-          "${mod}+Shift+M" = cmd fullscreen-window;
-          "${mod}+Period" = cmd consume-or-expel-window-right;
-          "${mod}+Comma" = cmd consume-or-expel-window-left;
+          "${mod}+R".action = switch-preset-column-width;
+          "${mod}+M".action = expand-column-to-available-width;
+          "${mod}+Ctrl+M".action = maximize-column;
+          "${mod}+Shift+M".action = fullscreen-window;
+          "${mod}+Period".action = consume-or-expel-window-right;
+          "${mod}+Comma".action = consume-or-expel-window-left;
           # layouts
-          "${mod}+t" = cmd toggle-column-tabbed-display;
-          "${mod}+f" = cmd switch-focus-between-floating-and-tiling;
-          "${mod}+Shift+f" = cmd toggle-window-floating;
+          "${mod}+t".action = toggle-column-tabbed-display;
+          "${mod}+f".action = switch-focus-between-floating-and-tiling;
+          "${mod}+Shift+f".action = toggle-window-floating;
         };
       })
   ];

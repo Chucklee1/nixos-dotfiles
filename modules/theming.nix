@@ -42,8 +42,50 @@
     base0E = "#AA759F";
     base0F = "#8F5536";
   };
-  globalLinux = [
+
+  globalNix = {pkgs, ...}: let
+    painted-lake = pkgs.fetchurl {
+      url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
+      hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
+    };
+    pastel-waves = pkgs.fetchurl {
+      url = "https://w.wallhaven.cc/full/r2/wallhaven-r2e391.png";
+      hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    };
+    azure-ridge = pkgs.fetchurl {
+      url = "https://w.wallhaven.cc/full/lm/wallhaven-lm7edq.png";
+      hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    };
+  in {
+    stylix = {
+      enable = true;
+      autoEnable = true;
+      homeManagerIntegration.autoImport = true;
+      image = painted-lake;
+      base16Scheme = nordic;
+      polarity = "dark";
+
+      fonts = {
+        monospace.package = pkgs.nerd-fonts.jetbrains-mono;
+        monospace.name = "JetBrainsMono Nerd Font Mono";
+        sansSerif.package = pkgs.noto-fonts-cjk-sans;
+        sansSerif.name = "Noto Sans CJK";
+        serif.package = pkgs.noto-fonts-cjk-serif;
+        serif.name = "Noto Serif CJK";
+
+        sizes = {
+          applications = 12;
+          terminal = 12;
+          desktop = 11;
+          popups = 12;
+        };
+      };
+    };
+  };
+in {
+  nix.desktop = [
     inputs.stylix.nixosModules.stylix
+    globalNix
     ({pkgs, ...}: {
       stylix.cursor = {
         package = pkgs.bibata-cursors;
@@ -51,123 +93,56 @@
         size = 24;
       };
     })
-    # boot theme
+
+    # ---- grub theme ----
     inputs.minegrub-theme.nixosModules.default
-    inputs.minesddm.nixosModules.default
-    ({
-      pkgs,
-      config,
-      ...
-    }: {
-      # ---- grub theme ----
+    {
+      stylix.targets.grub.enable = false;
       boot.loader.grub.minegrub-theme = {
         enable = true;
         splash = "100% Flakes!";
         background = "background_options/1.8  - [Classic Minecraft].png";
         boot-options-count = 4;
       };
+    }
 
-      # ---- login theme ----
+    # ---- login theme ----
+    inputs.minesddm.nixosModules.default
+    {
       services.displayManager.sddm = {
         enable = true;
         wayland.enable = true;
         theme = "minesddm";
-        settings.Theme = {
-          current = "minesddm";
-          CursorTheme = "${config.stylix.cursor.name}";
-          CursorSize = config.stylix.cursor.size;
-        };
-      };
-      # deps for sddm theme
-      environment.systemPackages = with pkgs; [
-        qt5.qtbase
-        qt5.qtquickcontrols2
-        qt5.qtgraphicaleffects
-        libsForQt5.layer-shell-qt
-      ];
-    })
-    # system targets
-    {
-      stylix.targets = {
-        grub.enable = false;
       };
     }
   ];
-in {
-  nix = {
-    global = [
-      ({pkgs, ...}: let
-        painted-lake = pkgs.fetchurl {
-          url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
-          hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
-        };
-        pastel-waves = pkgs.fetchurl {
-          url = "https://w.wallhaven.cc/full/r2/wallhaven-r2e391.png";
-          hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-        };
-        azure-ridge = pkgs.fetchurl {
-          url = "https://w.wallhaven.cc/full/lm/wallhaven-lm7edq.png";
-          hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-        };
-        their-wrath = pkgs.fetchurl {
-          url = "https://w.wallhaven.cc/full/g8/wallhaven-g8ke3e.jpg";
-          hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-        };
-      in {
-        stylix = {
+  nix.macbook = [
+    inputs.stylix.darwinModules.stylix
+    globalNix
+  ];
+
+  home.global = [
+    ({
+      pkgs,
+      extlib,
+      system,
+      ...
+    }:
+      extlib.ifDarwin system {} {
+        stylix.iconTheme = {
           enable = true;
-          autoEnable = true;
-          homeManagerIntegration.autoImport = true;
-          image = painted-lake;
-          base16Scheme = nordic;
-          polarity = "dark";
-
-          fonts = {
-            monospace.package = pkgs.nerd-fonts.jetbrains-mono;
-            monospace.name = "JetBrainsMono Nerd Font Mono";
-            sansSerif.package = pkgs.noto-fonts-cjk-sans;
-            sansSerif.name = "Noto Sans CJK";
-            serif.package = pkgs.noto-fonts-cjk-serif;
-            serif.name = "Noto Serif CJK";
-
-            sizes = {
-              applications = 12;
-              terminal = 12;
-              desktop = 11;
-              popups = 12;
-            };
-          };
+          package = pkgs.papirus-icon-theme;
+          dark = "Papirus-Dark";
         };
+        gtk.enable = true;
+        qt.enable = true;
       })
-    ];
-
-    desktop = globalLinux;
-    macbook = [inputs.stylix.darwinModules.stylix];
-
-    home.global = [
-      ({
-        pkgs,
-        machine,
-        ...
-      }:
-        if machine == "macbook"
-        then {}
-        else {
-          stylix.iconTheme = {
-            enable = true;
-            package = pkgs.papirus-icon-theme;
-            dark = "Papirus-Dark";
-          };
-          gtk.enable = true;
-          qt.enable = true;
-        })
-      # home targets
-      {
-        stylix.targets = {
-          kitty.enable = false;
-          waybar.enable = false;
-        };
-      }
-    ];
-  };
+    # home targets
+    {
+      stylix.targets = {
+        kitty.enable = false;
+        waybar.enable = false;
+      };
+    }
+  ];
 }

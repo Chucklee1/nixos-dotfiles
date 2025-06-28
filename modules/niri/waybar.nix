@@ -9,9 +9,108 @@
       ...
     }: {
       # waybar
-      stylix.targets.waybar.enable = false;
+      # stylix.targets.waybar.enable = false;
       programs.waybar = with config.lib.stylix.colors.withHashtag; let
+        # helpers
         span = color: str: ''<span color="${color}" >${str}</span>'';
+        red = base08;
+        orange = base09;
+        yellow = base0A;
+        green = base0B;
+        # ---- modules ----
+        backlight = {
+          format = ''{percent}% ${span yellow "{icon}"}'';
+          format-icons = ["" "" "" "" "" "" "" "" ""];
+        };
+        battery = {
+          interval = 30;
+          states = {
+            warning = 40;
+            critical = 20;
+          };
+          format-icons = [" " " " " " " " " "];
+          format = ''{capacity}% ${span base0B "{icon}"}'';
+          format-warning = ''{capacity}% ${span orange "{icon}"}'';
+          format-critical = ''{capacity}% ${span red "{icon}"}'';
+          format-charging = ''{capacity}% ${span base0B "󱐋{icon}"}'';
+          format-charging-warning = ''{capacity}% ${span orange "󱐋{icon}"}'';
+          format-charging-critical = ''{capacity}% ${span red "󱐋{icon}"}'';
+          format-alt = "{icon} {time}";
+          tooltip = false;
+        };
+        clock = {
+          format = "{:%F | %X}";
+          interval = 1;
+          tooltip = false;
+        };
+        idle_inhibitor = {
+          format = "{icon}";
+          format-icons = {
+            activated = span base0C "";
+            deactivated = "";
+          };
+          start-activated = true;
+          tooltip = false;
+        };
+        keyboard-state = {
+          numlock = true;
+          capslock = true;
+          format = {
+            numlock = "N {icon}";
+            capslock = "C {icon}";
+          };
+          format-icons = {
+            locked = span red " ";
+            unlocked = span base07 " ";
+          };
+        };
+        mpd = {
+          format = "{stateIcon}";
+          format-disconnected = "󰝛";
+          format-stopped = span red "";
+          interval = 10;
+          state-icons = {
+            paused = "";
+            playing = "";
+          };
+          tooltip = false;
+        };
+        network = {
+          format-disconnected = "nah ⚠";
+          format-ethernet = span base07 "{ipaddr}/{cidr}";
+          format-wifi = span base07 "{essid} ";
+          tooltip = false;
+        };
+        pulseaudio = {
+          format = "{volume}% {icon}";
+          format-bluetooth = "{volume}% {icon}";
+          format-icons = {"default" = ["" "" ""];};
+          format-muted = span red "M ";
+          format-source = "{volume}% ";
+          format-source-muted = span red "M ";
+          tooltip = false;
+        };
+        tray = {
+          icon-size = 18;
+          spacing = 15;
+        };
+
+        # ---- niri specific modules ----
+        "niri/window" = {
+          tooltip = false;
+          format = "{}";
+          max-length = 150;
+        };
+        "niri/workspaces" = {
+          disable-scroll = true;
+          disable-markup = true;
+          disable-click = true;
+          format = "{icon}";
+          format-icons = {
+            active = "";
+            default = "";
+          };
+        };
       in {
         enable = true;
         package = pkgs.waybar_git;
@@ -20,89 +119,16 @@
           {
             position = "top";
             layer = "top";
-            height = 20;
+            height = 24;
 
-            modules-left = [
-              "idle_inhibitor"
-              "niri/window"
-            ];
-            modules-center = [
-              "clock"
-            ];
-            modules-right = [
-              "mpd"
-              "pulseaudio"
-              "network"
-              "backlight"
-              "battery"
-              "tray"
-            ];
+            inherit "niri/workspaces" "niri/window";
+            modules-left = ["niri/workspaces" "niri/window"];
 
-            mpd = {
-              format = "{stateIcon} {artist}/{title} {elapsedTime:%M:%S}/{totalTime:%M:%S} ";
-              format-disconnected = "󰝛";
-              format-stopped = "";
-              interval = 10;
-              state-icons = {
-                paused = "";
-                playing = "";
-              };
-              tooltip-format = "MPD (connected)";
-              tooltip-format-disconnected = "MPD (disconnected)";
-            };
-            "niri/window" = {
-              tooltip = false;
-              format = "{app_id}";
-            };
-            "clock" = {
-              format = "{:%F | %X}";
-              interval = 1;
-              tooltip = false;
-            };
+            inherit clock;
+            modules-center = ["clock"];
 
-            idle_inhibitor = {
-              format = "{icon}";
-              format-icons = {
-                activated = span base0C "";
-                deactivated = "";
-                tooltip = false;
-              };
-            };
-            pulseaudio = {
-              format = "{volume}% {icon}";
-              format-bluetooth = "{volume}% {icon}";
-              format-icons = {"default" = ["" "" ""];};
-              format-muted = span base08 "M ";
-              format-source = "{volume}% ";
-              format-source-muted = span base08 "M ";
-              tooltip = false;
-            };
-            network = {
-              format-disconnected = "nah ⚠";
-              format-ethernet = "{ipaddr}/{cidr}";
-              format-wifi = "{essid} ({signalStrength}%) ";
-              tooltip = false;
-            };
-            backlight = {
-              format = ''{percent}% ${span base0A "{icon}"}'';
-              format-icons = ["" "" "" "" "" "" "" "" ""];
-            };
-            battery = {
-              interval = 30;
-              states = {
-                warning = 40;
-                critical = 20;
-              };
-              format-icons = [" " " " " " " " " "];
-              format = ''{capacity}% ${span base0B "{icon}"}'';
-              format-warning = ''{capacity}% ${span base09 "{icon}"}'';
-              format-critical = ''{capacity}% ${span base08 "{icon}"}'';
-              format-charging = ''{capacity}% ${span base0B "󱐋{icon}"}'';
-              format-charging-warning = ''{capacity}% ${span base09 "󱐋{icon}"}'';
-              format-charging-critical = ''{capacity}% ${span base08 "󱐋{icon}"}'';
-              format-alt = "{icon} {time}";
-              tooltip = false;
-            };
+            inherit keyboard-state mpd pulseaudio network backlight tray;
+            modules-right = ["keyboard-state" "mpd" "pulseaudio" "network" "backlight" "battery" "tray"];
           }
         ];
         style =
@@ -110,20 +136,34 @@
           # css
           ''
             * {
-              font-family: "JetBrainsMono nerd font";
-              font-size: 12px;
+              border: none;
+              border-radius: 0;
+            	font-family: JetBrainsMono Nerd Font;
+            	font-size: 12px;
+            	padding: 0;
+            	margin: 0;
             }
 
+            #waybar {
+            	color: ${base05};
+              background-color: alpha(${base00}, 0.8);
+            }
+            #workspaces button {
+            	color: ${base05};
+            }
             #window {
               padding-left: 2;
             }
 
-            #idle_inhibitor,
+            #mpd,
             #pulseaudio,
-            #network,
+            #battery,
             #backlight,
-            #battery {
-              padding: 0 10 0 10;
+            #network,
+            #bluetooth,
+            #idle_inhibitor,
+            #tray {
+              padding: 0 10 0 10
             }
           '';
       };
