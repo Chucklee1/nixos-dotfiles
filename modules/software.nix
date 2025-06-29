@@ -8,7 +8,7 @@
     }: {
       environment.systemPackages = with pkgs;
         [
-          # finding
+          # info helpers
           ripgrep
           fzf
           pciutils
@@ -16,18 +16,23 @@
           # media
           ffmpeg-full
           imagemagick
+          mediainfo
           mpv
-          # archive management
+          # file-management
           p7zip
+          rclone
+          rar
+          trash-cli
           unzip
           unrar
-          # misc tools
-          curl
+          udisks
+          zip
+          # dev
           gcc
-          gdb # GNU Project debugger
+          gdb # GNU debugger
           gnumake
           python3
-          rclone
+          curl
         ]
         ++ (extlib.ifLinux system [pavucontrol] []);
 
