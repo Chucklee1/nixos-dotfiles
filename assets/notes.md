@@ -32,7 +32,7 @@ margin: [TOP]px [RIGHT]px [BOTTOM]px [LEFT]px;
 margin: [TOP]px [LEFT & RIGHT]px [BOTTOM]px;
 }
 
-## ---- nix ---- 
+## ---- nix ----
 
 - disko-generate
   ```
@@ -45,6 +45,8 @@ margin: [TOP]px [LEFT & RIGHT]px [BOTTOM]px;
   `sudo nixos-generate-config --no-filesystems --show-hardware-config --root /mnt`
 - install to /mnt  
   `"sudo nixos---flake install --root /mnt --flake github:Chucklee1/nixos-dotfiles"`
+
+- prefetcher with nurl: `nix run github:nix-community/nurl -- <link here>`
 
 # ---- SOPS ----
 
