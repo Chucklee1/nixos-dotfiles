@@ -1,7 +1,7 @@
 {
   home.global = [
     ({pkgs, ...}: {
-      program.yazi = {
+      programs.yazi = {
         plugins = with pkgs; {
           bookmarks = fetchFromGitHub {
             owner = "dedukun";
@@ -40,6 +40,18 @@
             rev = "2c2802d8d2941dcf2c26bd07587de69e3589549c";
             hash = "sha256-n/PNwyCOL3uCWgtSjq4+dPwr+hWSF4h9fbvZOQPBuYM=";
           };
+        };
+        settings.keymap = {
+          mgr.prepend_keymap = [
+            {
+              on = "M";
+              run = "plugin mount";
+            }
+            {
+              on = ["l" "g"];
+              run = "plugin lazygit";
+            }
+          ];
         };
       };
     })
