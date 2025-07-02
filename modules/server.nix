@@ -57,6 +57,7 @@ in {
         enable = true;
         dataDir = "${root}/mpd";
         musicDirectory = "${root}/Media/Music";
+        playlistDirectory = "${root}/Media/Music/[Playlist]";
         network.listenAddress = "any";
         extraConfig = ''
           audio_output {
