@@ -4,13 +4,12 @@
       {
         pkgs,
         machine,
-        extlib,
         ...
       }: {
         environment = let
           root = "$HOME/nixos-dotfiles";
           buildFlags = "--show-trace --impure";
-          buildType = extlib.ifDarwin pkgs.system "darwin" "nixos";
+          buildType = pkgs.extlib.ifDarwin "darwin" "nixos";
         in {
           variables = {
             BASH_SILENCE_DEPRECATION_WARNING = "1";

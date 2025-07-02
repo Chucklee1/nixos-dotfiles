@@ -66,16 +66,13 @@ with inputs.nixpkgs.lib; rec {
     prev: next: (genAttrs ["nix" "home"]
       (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
 
-  # system if templates (order LTR: linux, darwin
-  ifLinux = system: A: B:
+  # system helpers
+  withSystem.ifLinux = system: A: B:
     if (hasSuffix "linux" "${system}")
     then A
     else B;
-  ifDarwin = system: A: B:
+  withSystem.ifDarwin = system: A: B:
     if (hasSuffix "darwin" "${system}")
     then A
     else B;
-
-  # default to linux
-  builder = system: ifDarwin system inputs.nix-darwin.lib.darwinSystem inputs.nixpkgs.lib.nixosSystem;
 }

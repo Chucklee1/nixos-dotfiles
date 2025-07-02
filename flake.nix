@@ -17,8 +17,7 @@
   # ---- theming ----
   inputs.stylix.url = "github:danth/stylix";
   inputs.minegrub-theme.url = "github:Lxtharia/minegrub-theme";
-  #inputs.minesddm.url = "github:Davi-S/sddm-theme-minesddm";
-  inputs.minesddm.url = "github:Chucklee1/sddm-theme-minesddm";
+  inputs.minesddm.url = "github:Davi-S/sddm-theme-minesddm";
   inputs.minesddm.inputs.nixpkgs.follows = "nixpkgs";
 
   # ---- neovim ----
@@ -28,45 +27,5 @@
   inputs.niri.url = "github:sodiboo/niri-flake";
   inputs.waybar.url = "github:Alexays/Waybar/master";
 
-  outputs = {
-    self,
-    nixpkgs,
-    ...
-  } @ inputs: let
-    # flake helpers
-    extlib = import "${self}/libs.nix" {inherit inputs self;};
-
-    # ---- system  ----
-    profiles = {
-      desktop = {
-        system = "x86_64-linux";
-        user = "goat";
-      };
-      macbook = {
-        system = "aarch64-darwin";
-        user = "goat";
-      };
-    };
-
-    mkSystem = machine: cfg: let
-      mod = extlib.mergeProfiles "global" machine;
-      specialArgs = {
-        inherit machine extlib;
-        inherit (cfg) system user;
-      };
-    in
-      (extlib.builder cfg.system) {
-        inherit (cfg) system;
-        inherit specialArgs;
-        modules =
-          mod.nix
-          ++ [{home-manager.extraSpecialArgs = specialArgs;}]
-          ++ [{_module.args.homeMods = mod.home;}];
-      };
-
-    mkSystems = nixpkgs.lib.mapAttrs mkSystem profiles;
-  in {
-    nixosConfigurations = mkSystems;
-    darwinConfigurations = mkSystems;
-  };
+  outputs = self: nixpkgs: inputs: (import ./flake/output.nix {inherit self nixpkgs inputs;});
 }

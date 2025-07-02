@@ -1,0 +1,8 @@
+--- metadata.desktop	2025-07-02 12:05:02.165078866 -0700
++++ metadata_1.desktop	2025-07-02 12:06:29.766974202 -0700
+@@ -16,4 +16,4 @@
+ Theme-API=2.0
+ Website=https://github.com/Davi-S/sddm-theme-minesddm
+ Version=1.0.0
+-QtVersion=6
++QtVersion=5

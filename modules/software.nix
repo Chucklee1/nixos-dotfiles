@@ -1,11 +1,6 @@
 {inputs, ...}: {
   nix.global = [
-    ({
-      pkgs,
-      extlib,
-      system,
-      ...
-    }: {
+    ({pkgs, ...}: {
       environment.systemPackages = with pkgs;
         [
           # info helpers
@@ -34,11 +29,11 @@
           python3
           curl
         ]
-        ++ (extlib.ifLinux system [pavucontrol] []);
+        ++ (extlib.ifLinux [pavucontrol] []);
 
       # programs
       programs =
-        extlib.ifDarwin system {
+        pkgs.extlib.ifDarwin {
           bash = {
             completion.enable = true;
             enable = true;
@@ -109,14 +104,10 @@
     })
   ];
   home.global = [
-    ({
-      pkgs,
-      extlib,
-      ...
-    }: {
+    ({pkgs, ...}: {
       home.packages = with pkgs;
         [inputs.nix-vim.packages.${system}.full]
-        ++ (extlib.ifLinux system [
+        ++ (extlib.ifDarwin [] [
           gimp
           logisim-evolution
           musescore
@@ -125,7 +116,7 @@
           qbittorrent
           tenacity
           kitty
-        ] []);
+        ]);
 
       # programs
       programs =
@@ -138,11 +129,11 @@
           yazi.enable = true;
           zathura.enable = true;
         }
-        // (extlib.ifLinux pkgs.system {
+        // (pkgs.extlib.ifDarwin {} {
           librewolf.enable = true;
           rmpc.enable = true;
           vesktop.enable = true;
-        } {});
+        });
     })
   ];
   nix.macbook = [

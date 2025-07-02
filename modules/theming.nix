@@ -122,13 +122,8 @@ in {
   ];
 
   home.global = [
-    ({
-      pkgs,
-      extlib,
-      system,
-      ...
-    }:
-      extlib.ifDarwin system {} {
+    ({pkgs, ...}:
+      pkgs.extlib.ifDarwin {} {
         stylix.iconTheme = {
           enable = true;
           package = pkgs.papirus-icon-theme;
