@@ -27,5 +27,47 @@
   inputs.niri.url = "github:sodiboo/niri-flake";
   inputs.waybar.url = "github:Alexays/Waybar/master";
 
-  outputs = self: nixpkgs: inputs: (import ./flake/output.nix {inherit self nixpkgs inputs;});
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  } @ inputs: let
+    # ---- additionals ----
+    extlib = import ./libs.nix {inherit inputs self;};
+    overlays = import ./overlays.nix {inherit inputs self extlib;};
+
+    # ---- system  ----
+    profiles = {
+      desktop = {
+        system = "x86_64-linux";
+        user = "goat";
+      };
+      macbook = {
+        system = "aarch64-darwin";
+        user = "goat";
+      };
+    };
+
+    mkSystems = nixpkgs.lib.mapAttrs (machine: cfg: let
+      builder = extlib.withSystem.ifDarwin cfg.system inputs.nix-darwin.lib.darwinSystem inputs.nixpkgs.lib.nixosSystem;
+      mod = extlib.mergeProfiles "global" machine;
+      specialArgs = {
+        inherit machine;
+        inherit (cfg) system user;
+      };
+    in
+      builder {
+        inherit (cfg) system;
+        inherit specialArgs;
+        overlays = [overlays.global overlays.${cfg.system}];
+        modules =
+          mod.nix
+          ++ [{home-manager.extraSpecialArgs = specialArgs;}]
+          ++ [{_module.args.homeMods = mod.home;}];
+      })
+    profiles;
+  in {
+    nixosConfigurations = mkSystems;
+    darwinConfigurations = mkSystems;
+  };
 }
