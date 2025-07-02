@@ -34,7 +34,6 @@
   } @ inputs: let
     # ---- additionals ----
     extlib = import ./libs.nix {inherit inputs self;};
-    overlays = import ./overlays.nix {inherit inputs self extlib;};
 
     # ---- system  ----
     profiles = {
@@ -54,12 +53,17 @@
       specialArgs = {
         inherit machine;
         inherit (cfg) system user;
+        ifSys = {
+          linux = A: B:
+            extlib.withSystem.ifLinux cfg.system A B;
+          darwin = A: B:
+            extlib.withSystem.ifDarwin cfg.system A B;
+        };
       };
     in
       builder {
         inherit (cfg) system;
         inherit specialArgs;
-        overlays = [overlays.global overlays.${cfg.system}];
         modules =
           mod.nix
           ++ [{home-manager.extraSpecialArgs = specialArgs;}]

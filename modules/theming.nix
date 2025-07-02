@@ -1,4 +1,8 @@
-{inputs, ...}: let
+{
+  inputs,
+  self,
+  ...
+}: let
   # helpers
   hideHashtag = set: builtins.mapAttrs (_: v: builtins.replaceStrings ["#"] [""] v) set;
   # themes
@@ -107,14 +111,29 @@ in {
     }
 
     # ---- login theme ----
-    inputs.minesddm.nixosModules.default
-    {
+    ({pkgs, ...}: {
+      nixpkgs.overlays = [
+        (final: _: {
+          minesddm = inputs.minesddm.packages.${final.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
+            patches = (old.patches or []) ++ ["${self}/assets/patches/minesddm.patch"];
+          });
+        })
+      ];
       services.displayManager.sddm = {
         enable = true;
         wayland.enable = true;
         theme = "minesddm";
       };
-    }
+      environment.systemPackages = with pkgs; [
+        minesddm
+        qt6.qtbase
+        qt6.qt5compat
+        qt5.qtbase
+        qt5.qtquickcontrols2
+        qt5.qtgraphicaleffects
+        libsForQt5.layer-shell-qt
+      ];
+    })
   ];
   nix.macbook = [
     inputs.stylix.darwinModules.stylix
@@ -122,8 +141,12 @@ in {
   ];
 
   home.global = [
-    ({pkgs, ...}:
-      pkgs.extlib.ifDarwin {} {
+    ({
+      pkgs,
+      ifSys,
+      ...
+    }:
+      ifSys.darwin {} {
         stylix.iconTheme = {
           enable = true;
           package = pkgs.papirus-icon-theme;

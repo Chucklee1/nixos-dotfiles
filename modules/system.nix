@@ -222,11 +222,11 @@ in {
 
   home.global = [
     ({
-      pkgs,
+      ifSys,
       user,
       ...
     }: let
-      homeDir = pkgs.extlib.ifDarwin "/Users" "/home";
+      homeDir = ifSys.darwin "/Users" "/home";
     in {
       home = {
         stateVersion = "24.05"; # DO NOT CHANGE

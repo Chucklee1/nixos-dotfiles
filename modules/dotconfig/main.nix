@@ -2,14 +2,14 @@
   nix.global = [
     (
       {
-        pkgs,
         machine,
+        ifSys,
         ...
       }: {
         environment = let
           root = "$HOME/nixos-dotfiles";
           buildFlags = "--show-trace --impure";
-          buildType = pkgs.extlib.ifDarwin "darwin" "nixos";
+          buildType = ifSys.darwin "darwin" "nixos";
         in {
           variables = {
             BASH_SILENCE_DEPRECATION_WARNING = "1";
