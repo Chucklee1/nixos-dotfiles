@@ -126,8 +126,6 @@ in {
       };
       environment.systemPackages = with pkgs; [
         minesddm
-        qt6.qtbase
-        qt6.qt5compat
         qt5.qtbase
         qt5.qtquickcontrols2
         qt5.qtgraphicaleffects

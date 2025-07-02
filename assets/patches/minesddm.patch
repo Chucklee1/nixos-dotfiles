@@ -1,8 +1,30 @@
---- minesddm/metadata.desktop	2025-07-02 12:05:02.165078866 -0700
-+++ minesddm/metadata.desktop	2025-07-02 12:06:29.766974202 -0700
-@@ -16,4 +16,4 @@
+diff --git a/flake.nix b/flake.nix
+index 5f8b1a4..78771bc 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -29,7 +29,7 @@
+     }) // {
+       nixosModules.default = { config, pkgs, lib, ... }:
+       let
+-        cfg = config.services.xserver.displayManager.sddm;
++        cfg = config.services.displayManager.sddm;
+         isMinesddmTheme = (cfg.theme == "minesddm") ||
+                            (cfg.settings.Theme.Current == "minesddm");
+       in {
+@@ -43,4 +43,4 @@
+         ];
+       };
+     };
+-}
+\ No newline at end of file
++}
+diff --git a/minesddm/metadata.desktop b/minesddm/metadata.desktop
+index 5fc4263..879539c 100644
+--- a/minesddm/metadata.desktop
++++ b/minesddm/metadata.desktop
+@@ -16,4 +16,4 @@ Theme-Id=minesddm-theme
  Theme-API=2.0
  Website=https://github.com/Davi-S/sddm-theme-minesddm
  Version=1.0.0
 -QtVersion=6
-+QtVersion=5
++QtVersion=
