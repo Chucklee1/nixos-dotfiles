@@ -71,6 +71,7 @@
       })
     profiles;
   in {
+    inherit extlib;
     nixosConfigurations = mkSystems;
     darwinConfigurations = mkSystems;
   };
