@@ -27,12 +27,17 @@
             rev = "b74b7b82aa468d8715547628511e4495df455790";
             hash = "sha256-RKSHos4Jnr6MYTtvzRvM2+c//9kyKD/pm1GGgrKcPc4=";
           };
-
           mount = fetchFromGitHub {
             owner = "yazi-rs";
             repo = "plugins";
             rev = "2ad42fa7065b4885ff058280b4ab4309c11a5755";
             hash = "sha256-+FDiOaEYkA0A8w+Cg2Y/pFZY56lOsWLeKCNwLI0ZKVk=";
+          };
+          relative-motions = fetchFromGitHub {
+            owner = "dedukun";
+            repo = "relative-motions.yazi";
+            rev = "9d26460e781a254f59e2b8d460829796534f8fce";
+            hash = "sha256-xoqUwmw6DUUGUbkmJye3b4IH7Kp0ZSOYYMCjJ9e7E68=";
           };
           restore = fetchFromGitHub {
             owner = "boydaihungst";
@@ -42,7 +47,7 @@
           };
         };
         settings.keymap = {
-          mgr.prepend_keymap = [
+          manager.prepend_keymap = [
             {
               on = "M";
               run = "plugin mount";

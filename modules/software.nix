@@ -15,6 +15,7 @@
           # media
           ffmpeg-full
           imagemagick
+          exiftool
           mediainfo
           mpv
           # file-management
