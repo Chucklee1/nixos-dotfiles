@@ -111,27 +111,14 @@ in {
     }
 
     # ---- login theme ----
-    ({pkgs, ...}: {
-      nixpkgs.overlays = [
-        (final: _: {
-          minesddm = inputs.minesddm.packages.${final.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-            patches = (old.patches or []) ++ ["${self}/assets/patches/minesddm.patch"];
-          });
-        })
-      ];
+    inputs.minesddm.nixosModules.default
+    {
       services.displayManager.sddm = {
         enable = true;
         wayland.enable = true;
         theme = "minesddm";
       };
-      environment.systemPackages = with pkgs; [
-        minesddm
-        qt5.qtbase
-        qt5.qtquickcontrols2
-        qt5.qtgraphicaleffects
-        libsForQt5.layer-shell-qt
-      ];
-    })
+    }
   ];
   nix.macbook = [
     inputs.stylix.darwinModules.stylix
