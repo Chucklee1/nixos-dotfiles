@@ -425,15 +425,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1750395274,
-        "narHash": "sha256-d8Xyfp6J5GAzCYwFKHMtpPhUME5nn3qeVZy8/1zOiis=",
-        "owner": "Davi-S",
+        "lastModified": 1751689072,
+        "narHash": "sha256-Elo2WEOujaEPC46GPRBUk+M3FJLCv67qMMS0MpNVchQ=",
+        "owner": "Chucklee1",
         "repo": "sddm-theme-minesddm",
-        "rev": "9771daed0ee8674cd35879147932a26c93796596",
+        "rev": "411f1c646b3b15aa2ce435a6d1bc765d8a0c7d53",
         "type": "github"
       },
       "original": {
-        "owner": "Davi-S",
+        "owner": "Chucklee1",
         "repo": "sddm-theme-minesddm",
         "type": "github"
       }
