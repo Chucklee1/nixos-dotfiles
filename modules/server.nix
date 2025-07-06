@@ -36,7 +36,7 @@ in {
         CacheFolder = "${root}/Navidrome/cache";
       };
     in {
-      systemd.services = {
+      systemd.user.services = {
         n-avidrome = {
           wantedBy = ["multi-user.target"];
           after = ["network.target"];
