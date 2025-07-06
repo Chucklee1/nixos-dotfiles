@@ -5,6 +5,8 @@
       ifSys,
       ...
     }: {
+      # overlay must be in global nixos scope
+      nixpkgs.overlays = [inputs.nix-vim.overlays.default];
       environment.systemPackages = with pkgs;
         [
           # info helpers
@@ -115,7 +117,7 @@
       ...
     }: {
       home.packages = with pkgs;
-        [inputs.nix-vim.packages.${system}.full]
+        [nixvim.full]
         ++ (ifSys.linux [
           gimp
           logisim-evolution
