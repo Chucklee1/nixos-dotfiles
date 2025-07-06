@@ -127,6 +127,7 @@
           qbittorrent
           tenacity
           kitty
+          rmpc
         ] []);
 
       # programs
@@ -142,7 +143,6 @@
         }
         // (ifSys.darwin {} {
           librewolf.enable = true;
-          rmpc.enable = true;
           vesktop.enable = true;
         });
     })

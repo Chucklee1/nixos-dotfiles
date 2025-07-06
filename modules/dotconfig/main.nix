@@ -1,4 +1,4 @@
-{
+{self, ...}: {
   nix.global = [
     (
       {
@@ -27,7 +27,11 @@
     )
   ];
   home.global = [
-    ({pkgs, ...}: {
+    {
+      home.file = {
+        ".config/rmpc/config.ron".source = "${self}/assets/rmpc/config.ron";
+        ".config/rmpc/theme.ron".source = "${self}/assets/rmpc/theme.ron";
+      };
       programs = {
         git.userEmail = "kermitthefrog@kakao.com";
         git.userName = "Chucklee1";
@@ -35,6 +39,6 @@
         lazygit.settings.promptToReturnFromSubprocess = false;
         oh-my-posh.useTheme = "pure";
       };
-    })
+    }
   ];
 }
