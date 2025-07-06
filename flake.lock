@@ -1071,11 +1071,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1751764634,
-        "narHash": "sha256-u+HtQq1V+K2q+k3IHntJucsU1QaepoAL2LwTS/bQ7Ss=",
+        "lastModified": 1751769201,
+        "narHash": "sha256-EiAZ3WqLiWyFerTFOYewwB4Egr9LMlkHYTtghkHbeXY=",
         "owner": "Chucklee1",
         "repo": "nix-vim",
-        "rev": "5d6b5e19add1419ad8eabcc6034f30d0f46a2503",
+        "rev": "fbc8a9216e7829ef4c9b53ef1bccc9166fe41d53",
         "type": "github"
       },
       "original": {
