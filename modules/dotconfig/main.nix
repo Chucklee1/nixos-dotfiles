@@ -29,8 +29,7 @@
   home.global = [
     {
       home.file = {
-        ".config/rmpc/config.ron".source = "${self}/assets/rmpc/config.ron";
-        ".config/rmpc/theme.ron".source = "${self}/assets/rmpc/theme.ron";
+        ".config/rmpc".source = "${self}/assets/rmpc";
       };
       programs = {
         git.userEmail = "kermitthefrog@kakao.com";
