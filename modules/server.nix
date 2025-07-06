@@ -60,6 +60,7 @@ in {
         playlistDirectory = "${root}/Media/Music/[Playlist]";
         network.listenAddress = "any";
         extraConfig = ''
+          save_absolute_paths_in_playlists "yes"
           audio_output {
             type "pipewire"
             name "MPDOUT"
