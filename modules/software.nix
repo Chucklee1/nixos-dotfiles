@@ -31,6 +31,9 @@
           gcc
           gdb # GNU debugger
           gnumake
+          # java 󰇸
+          gradle
+          jdk
           python3
           curl
         ]
