@@ -56,7 +56,7 @@ in {
       services.mpd = {
         enable = true;
         dataDir = "${root}/mpd";
-        musicDirectory = "${root}/Media/Music";
+        musicDirectory = "${root}/Media";
         playlistDirectory = "${root}/Media/Music/[Playlist]";
         network.listenAddress = "any";
         extraConfig = ''
