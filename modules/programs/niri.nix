@@ -24,7 +24,9 @@ in {
         enable = true;
         package = pkgs.niri-unstable;
       };
-  {environment = {inherit variables;};}];
+    })
+    {environment = {inherit variables;};}
+  ];
   home.desktop = [
     ({
       lib,

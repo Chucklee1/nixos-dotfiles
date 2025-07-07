@@ -1,12 +1,10 @@
-{inputs, ...}: {
+{
   nix.global = [
     ({
       pkgs,
       ifSys,
       ...
     }: {
-      # overlay must be in global nixos scope
-      nixpkgs.overlays = [inputs.nix-vim.overlays.default];
       environment.systemPackages = with pkgs;
         [
           # info helpers
@@ -62,7 +60,6 @@
     })
   ];
   nix.desktop = [
-    # dev work
     # games
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -127,13 +124,11 @@
 
       # polkit n portals
       security.polkit.enable = true;
-      xdg.portal = {
-        extraPortals = [
-          pkgs.xdg-desktop-portal-gnome
-          pkgs.xdg-desktop-portal-gtk
-        ];
-        config.common.default = "gnome";
-      };
+      xdg.portal.extraPortals = [
+        pkgs.xdg-desktop-portal-gnome
+        pkgs.xdg-desktop-portal-gtk
+      ];
+      xdg.portal.config.common.default = "gnome";
     })
   ];
   home.global = [
@@ -143,8 +138,7 @@
       ...
     }: {
       home.packages = with pkgs;
-        [nixvim.full]
-        ++ (ifSys.linux [
+        ifSys.linux [
           gimp
           logisim-evolution
           musescore
@@ -154,7 +148,7 @@
           tenacity
           kitty
           rmpc
-        ] []);
+        ] [];
 
       # programs
       programs =
@@ -167,10 +161,10 @@
           yazi.enable = true;
           zathura.enable = true;
         }
-        // (ifSys.darwin {} {
+        // (ifSys.linux {
           librewolf.enable = true;
           vesktop.enable = true;
-        });
+        } {});
     })
   ];
   nix.macbook = [
