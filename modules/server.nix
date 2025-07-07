@@ -1,5 +1,5 @@
 let
-  root = "/media/goat/BLUE_SATA/home/server";
+  root = "/media/goat/BLUE_SATA";
 in {
   nix.desktop = [
     # firewall
@@ -27,28 +27,20 @@ in {
         useRoutingFeatures = "server";
       };
     }
-    ({pkgs, ...}: let
-      # navidrome cfg
-      settings = (pkgs.formats.json {}).generate "config.json" {
-        EnableInsightsCollector = false;
-        MusicFolder = "${root}/Media/Music";
-        DataFolder = "${root}/Navidrome/data";
-        CacheFolder = "${root}/Navidrome/cache";
-      };
-    in {
-      systemd.user.services = {
-        n-avidrome = {
-          wantedBy = ["multi-user.target"];
-          after = ["network.target"];
-          serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${settings}'';
-        };
-        a-udiobookshelf = {
-          wantedBy = ["multi-user.target"];
-          after = ["network.target"];
-          serviceConfig.ExecStart = ''${pkgs.audiobookshelf}/bin/audiobookshelf --metadata ${root}/AudioBookshelf --config ${root}/AudioBookshelf'';
+    {
+      services.navidrome = {
+        enable = true;
+        # port = 4533;
+        settings = {
+          EnableInsightsCollector = false;
+          MusicFolder = "${root}/home/Music";
+          DataFolder = "${root}/server/Navidrome/data";
+          CacheFolder = "${root}/server/Navidrome/cache";
         };
       };
-    })
+      services.audiobookshelf.enable = true;
+      # port = 8000;
+    }
   ];
   home.desktop = [
     # mpd
@@ -56,8 +48,8 @@ in {
       services.mpd = {
         enable = true;
         dataDir = "${root}/mpd";
-        musicDirectory = "${root}/Media";
-        playlistDirectory = "${root}/Media/Music/[Playlist]";
+        musicDirectory = "${root}/home/Music";
+        playlistDirectory = "${root}/home/Music/[Playlist]";
         network.listenAddress = "any";
         extraConfig = ''
           save_absolute_paths_in_playlists "yes"
