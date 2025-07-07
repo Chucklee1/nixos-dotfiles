@@ -1,4 +1,4 @@
-let
+{inputs, ...}: let
   variables = {
     XDG_CURRENT_DESKTOP = "niri";
     XDG_SESSION_DESKTOP = "niri";
@@ -13,7 +13,18 @@ let
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
   };
 in {
-  nix.desktop = [{environment = {inherit variables;};}];
+  nix.desktop = [
+    inputs.niri.nixosModules.niri
+    ({pkgs, ...}: {
+      nixpkgs.overlays = [
+        inputs.niri.overlays.niri
+        (final: _: {waybar_git = inputs.waybar.packages.${final.stdenv.hostPlatform.system}.waybar;})
+      ];
+      programs.niri = {
+        enable = true;
+        package = pkgs.niri-unstable;
+      };
+  {environment = {inherit variables;};}];
   home.desktop = [
     ({
       lib,
