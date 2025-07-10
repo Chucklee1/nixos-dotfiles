@@ -1,12 +1,16 @@
 let
   root = "/media/goat/BLUE_SATA";
-in {
+in
+{
   nix.desktop = [
     # firewall
     {
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [22 80];
+        allowedTCPPorts = [
+          22
+          80
+        ];
       };
     }
     # ssh
@@ -47,7 +51,7 @@ in {
     {
       services.mpd = {
         enable = true;
-        dataDir = "${root}/mpd";
+        dataDir = "${root}/server/mpd";
         musicDirectory = "${root}/home/Music";
         playlistDirectory = "${root}/home/Music/[Playlist]";
         network.listenAddress = "any";
