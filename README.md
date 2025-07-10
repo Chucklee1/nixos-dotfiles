@@ -9,9 +9,9 @@
 ## TODO:
 
 - [x] continue to be as indecisive as possible
-- [x] make nixvim notifications shut up
 - [ ] find replacement for horrid recursiveMerge in libs.nix
-- [ ] move weird external args to specialArgs
+- [x] move weird external args to specialArgs
+- [x] Changes to waybar, spacing in windows, and corner rounding niri
 - [ ] work on iso/vm profile umbra with script for vm and config for testing
 
 ## Want to use my setup?
