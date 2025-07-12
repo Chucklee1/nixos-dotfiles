@@ -44,7 +44,6 @@ in {
           package = pkgs.waybar_git;
           systemd.enable = true;
         };
-        wlogout.enable = true;
       };
 
       programs.niri.settings = {
@@ -77,17 +76,14 @@ in {
         };
         # layout n theming
         layout = {
-          gaps = 4;
-          border.width = 2;
+          gaps = 0;
+          border.width = 3;
           always-center-single-column = false;
-          tab-indicator.hide-when-single-tab = true;
-          tab-indicator.place-within-column = true;
-          tab-indicator.width = 8.0;
         };
         # disable annoying hot-corners
         gestures.hot-corners.enable = false;
         window-rules = let
-          r = 4.0;
+          r = 1.0;
         in [
           {
             geometry-corner-radius = {
@@ -119,17 +115,13 @@ in {
           sh = x: {action = spawn "sh" "-c" x;};
           # defaults
           mod = "Mod";
-          terminal = "kitty";
-          browser = "librewolf";
-          file-manager = "${terminal} -e yazi";
-          app-launcher = ''wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"'';
         in {
           # programs
-          "${mod}+Return" = sh terminal;
-          "${mod}+Shift+Return" = sh file-manager;
-          "${mod}+Shift+B" = sh browser;
-          "${mod}+Space" = sh app-launcher;
-          "${mod}+Shift+L" = sh "wlogout";
+          "${mod}+Return" = sh "kitty";
+          "${mod}+Shift+Return" = sh "kitty -e yazi";
+          "${mod}+Shift+B" = sh "librewolf";
+          "${mod}+Space" = sh ''wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"'';
+          "${mod}+Shift+L" = sh "swaylock";
           "${mod}+W" = sh ''systemctl --user restart waybar.service'';
 
           # media keys
@@ -141,9 +133,9 @@ in {
           "XF86KbdBrightnessUp" = sh "brightnessctl --device=smc::kbd_backlight set 10%+";
           "XF86KbdBrightnessDown" = sh "brightnessctl --device=smc::kbd_backlight set 10%-";
           # rmpc
-          "KP_Begin" = sh "rmpc togglepause";
-          "KP_Right" = sh "rmpc next";
-          "KP_Left" = sh "rmpc prev";
+          "XF86AudioPlay" = sh "rmpc togglepause";
+          "XF86AudioNext" = sh "rmpc next";
+          "XF86AudioPrev" = sh "rmpc prev";
           # clipboard
           "${mod}+Shift+C" = sh "env DISPLAY=:0 xsel -ob | wl-copy";
           "${mod}+Shift+V" = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
