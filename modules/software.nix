@@ -63,7 +63,7 @@
     })
     # pip pkgs
     ({pkgs, ...}: {
-      overlays = [
+      nixpkgs.overlays = [
         (self: prev: let
           inherit (inputs.poetry2nix.lib.mkPoetry2Nix {pkgs = prev;}) mkPoetryApplication;
         in {
