@@ -29,7 +29,7 @@
 
   # ---- python ----
   inputs.poetry2nix.url = "github:nix-community/poetry2nix";
-  inputs.baca.url = "https://github.com/wustho/baca";
+  inputs.baca.url = "github:wustho/baca";
   inputs.baca.flake = false;
 
   outputs = {
