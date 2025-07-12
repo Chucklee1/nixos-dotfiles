@@ -75,4 +75,13 @@ with inputs.nixpkgs.lib; rec {
     if (hasSuffix "darwin" "${system}")
     then A
     else B;
+
+    # idea from github:Misterio77/nix-starter-configs
+    allSystems = genAttrs [
+      "x86_64-linux"
+      "aarch64-linux"
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
+
 }

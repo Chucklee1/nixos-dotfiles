@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   nix.global = [
     ({
       pkgs,
@@ -60,6 +60,17 @@
             ];
           };
         };
+    })
+    # pip pkgs
+    ({pkgs, ...}: {
+      overlays = [
+        (self: prev: let
+          inherit (inputs.poetry2nix.lib.mkPoetry2Nix {pkgs = prev;}) mkPoetryApplication;
+        in {
+          baca = mkPoetryApplication {projectDir = inputs.baca;};
+        })
+      ];
+      environment.systemPackages = [pkgs.baca];
     })
   ];
   nix.desktop = [
