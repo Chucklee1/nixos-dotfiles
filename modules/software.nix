@@ -1,4 +1,3 @@
-{ inputs, ... }:
 {
   nix.global = [
     (
@@ -22,7 +21,6 @@
             imagemagick
             exiftool
             mediainfo
-            mpv
             # file-management
             p7zip
             rclone
@@ -30,7 +28,6 @@
             trash-cli
             unzip
             unrar
-            udisks
             zip
             # dev
             gcc
@@ -42,7 +39,7 @@
             python3
             curl
           ]
-          ++ (ifSys.linux [ pavucontrol ] [ ]);
+          ++ (ifSys.linux [ udisks mpv pavucontrol ] [ ]);
 
         # programs
         programs =
