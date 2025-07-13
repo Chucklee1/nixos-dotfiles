@@ -1,4 +1,4 @@
 {inputs, ...}: {
-  nix.desktop = [{nixpkgs.overlays = [inputs.nix-vim.overlays.default];}];
-  home.desktop = [({pkgs, ...}: {home.packages = [pkgs.nixvim.full];})];
+  nix.global = [{nixpkgs.overlays = [inputs.nix-vim.overlays.default];}];
+  home.global = [({pkgs, ...}: {home.packages = [pkgs.nixvim.full];})];
 }
