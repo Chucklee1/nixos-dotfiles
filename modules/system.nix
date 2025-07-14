@@ -160,7 +160,6 @@ in {
       };
       system.defaults = {
         WindowManager.StandardHideDesktopIcons = true;
-
         dock = {
           autohide = true;
           dashboard-in-overlay = true; # Don't show dashboard as a space
@@ -211,13 +210,6 @@ in {
         ignoreShellProgramCheck = true;
       };
     })
-    # nix managed services
-    {
-      services = {
-        aerospace.enable = true;
-        sketchybar.enable = true;
-      };
-    }
   ];
 
   home.global = [
