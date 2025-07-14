@@ -28,9 +28,7 @@
   ];
   home.global = [
     {
-      home.file = {
-        ".config/rmpc".source = "${self}/assets/rmpc";
-      };
+      xdg.configFile.".config/rmpc".source = "${self}/assets/rmpc";
       programs = {
         git.userEmail = "kermitthefrog@kakao.com";
         git.userName = "Chucklee1";
