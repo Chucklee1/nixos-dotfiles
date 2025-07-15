@@ -1,5 +1,5 @@
 let
-  root = "/media/goat/BLUE_SATA";
+  root = "/home/goat";
 in
 {
   nix.desktop = [
@@ -37,9 +37,9 @@ in
         # port = 4533;
         settings = {
           EnableInsightsCollector = false;
-          MusicFolder = "${root}/home/Music";
-          DataFolder = "${root}/server/Navidrome/data";
-          CacheFolder = "${root}/server/Navidrome/cache";
+          MusicFolder = "${root}/Music";
+          DataFolder = "${root}/Music/[Navidrome]/data";
+          CacheFolder = "${root}/Music/[Navidrome]/cache";
         };
       };
       services.audiobookshelf.enable = true;
@@ -51,9 +51,8 @@ in
     {
       services.mpd = {
         enable = true;
-        dataDir = "${root}/server/mpd";
-        musicDirectory = "${root}/home/Music";
-        playlistDirectory = "${root}/home/Music/[Playlist]";
+        musicDirectory = "${root}/Music";
+        playlistDirectory = "${root}/Music/[Playlist]";
         network.listenAddress = "any";
         extraConfig = ''
           save_absolute_paths_in_playlists "yes"
