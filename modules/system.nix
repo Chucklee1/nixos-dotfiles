@@ -182,11 +182,7 @@ in {
         NSGlobalDomain = {
           AppleInterfaceStyle = "Dark";
           AppleInterfaceStyleSwitchesAutomatically = false;
-          # expanded save panel by default
-          NSNavPanelExpandedStateForSaveMode = true;
-          NSNavPanelExpandedStateForSaveMode2 = true;
           NSDocumentSaveNewDocumentsToCloud = false; # do not save to icloud by default
-          AppleKeyboardUIMode = 3; # full keyboard access
         };
 
         # misc
@@ -210,8 +206,15 @@ in {
         ignoreShellProgramCheck = true;
       };
     })
+    {
+      services.yabair.enable = true;
+      # csrutils disable
+      # sudo nvram boot-args=-arm64e_preview_abi
+      services.yabai.enableScriptingAddition = true;
+      services.skhd.enable = true;
+      services.jankyborders.enable = true;
+    }
   ];
-
   home.global = [
     ({
       ifSys,
