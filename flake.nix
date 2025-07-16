@@ -32,6 +32,9 @@
   inputs.baca.url = "github:wustho/baca";
   inputs.baca.flake = false;
 
+  # ---- yazi plguins ----
+  inputs.yazi-plugins.url = "github:yazi-rs/plugins";
+  inputs.yazi-plugins.flake = false;
   outputs = {
     self,
     nixpkgs,

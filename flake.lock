@@ -2349,7 +2349,8 @@
         "nixpkgs": "nixpkgs_20",
         "poetry2nix": "poetry2nix_2",
         "stylix": "stylix_3",
-        "waybar": "waybar_3"
+        "waybar": "waybar_3",
+        "yazi-plugins": "yazi-plugins"
       }
     },
     "stylix": {
@@ -3160,6 +3161,22 @@
       "original": {
         "owner": "Supreeeme",
         "repo": "xwayland-satellite",
+        "type": "github"
+      }
+    },
+    "yazi-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1751806373,
+        "narHash": "sha256-29K8PmBoqAMcQhDIfOVnbJt2FU4BR6k23Es9CqyEloo=",
+        "owner": "yazi-rs",
+        "repo": "plugins",
+        "rev": "b8860253fc44e500edeb7a09db648a829084facd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yazi-rs",
+        "repo": "plugins",
         "type": "github"
       }
     }
