@@ -1,30 +1,28 @@
 {self, ...}: {
   nix.global = [
-    (
-      {
-        machine,
-        ifSys,
-        ...
-      }: {
-        environment = let
-          root = "$HOME/nixos-dotfiles";
-          buildFlags = "--show-trace --impure";
-          buildType = ifSys.darwin "darwin" "nixos";
-        in {
-          variables = {
-            BASH_SILENCE_DEPRECATION_WARNING = "1";
-            TERMINAL = "kitty";
-            EDITOR = "nvim";
-          };
-          shellAliases = {
-            y = "yazi";
-            ny = "cd ${root} && yazi";
-            update-flake = "nix flake update --flake ${root}";
-            rebuild-flake = "sudo ${buildType}-rebuild switch --flake ${root}#${machine} ${buildFlags}";
-          };
+    ({
+      machine,
+      ifSys,
+      ...
+    }: {
+      environment = let
+        root = "$HOME/nixos-dotfiles";
+        buildFlags = "--show-trace --impure";
+        buildType = ifSys.darwin "darwin" "nixos";
+      in {
+        variables = {
+          BASH_SILENCE_DEPRECATION_WARNING = "1";
+          TERMINAL = "kitty";
+          EDITOR = "nvim";
         };
-      }
-    )
+        shellAliases = {
+          y = "yazi";
+          ny = "cd ${root} && yazi";
+          update-flake = "nix flake update --flake ${root}";
+          rebuild-flake = "sudo ${buildType}-rebuild switch --flake ${root}#${machine} ${buildFlags}";
+        };
+      };
+    })
   ];
   home.global = [
     {
