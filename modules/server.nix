@@ -1,7 +1,6 @@
 let
-  root = "/home/goat";
-in
-{
+  dir = "/srv";
+in {
   nix.desktop = [
     # firewall
     {
@@ -37,9 +36,10 @@ in
         # port = 4533;
         settings = {
           EnableInsightsCollector = false;
-          MusicFolder = "${root}/Music";
-          DataFolder = "${root}/Music/[Navidrome]/data";
-          CacheFolder = "${root}/Music/[Navidrome]/cache";
+          MusicFolder = "${dir}/Music";
+          PlaylistsPath = "${dir}/playlist";
+          DataFolder = "${dir}/navidrome/data";
+          CacheFolder = "${dir}/navidrome/cache";
         };
       };
       services.audiobookshelf.enable = true;
@@ -51,8 +51,8 @@ in
     {
       services.mpd = {
         enable = true;
-        musicDirectory = "${root}/Music";
-        playlistDirectory = "${root}/Music/[Playlist]";
+        musicDirectory = dir;
+        playlistDirectory = "${dir}/playlist";
         network.listenAddress = "any";
         extraConfig = ''
           save_absolute_paths_in_playlists "yes"
