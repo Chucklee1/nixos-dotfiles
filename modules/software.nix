@@ -7,34 +7,13 @@
     }: {
       environment.systemPackages = with pkgs;
         [
-          # info helpers
-          ripgrep
-          fzf
-          fd
-          pciutils
-          zoxide
-          # media
-          ffmpeg-full
-          imagemagick
-          exiftool
-          mediainfo
-          # file-management
-          p7zip
-          rclone
-          rar
-          trash-cli
-          unzip
-          unrar
-          zip
-          # dev
+          curl
           gcc
           gdb # GNU debugger
           gnumake
-          # java 󰇸
-          gradle
-          jdk
+          ffmpeg-full
+          imagemagick
           python3
-          curl
         ]
         ++ (ifSys.linux [udisks mpv pavucontrol] []);
 
@@ -49,15 +28,6 @@
         } {
           nix-ld.enable = true;
           dconf.enable = true;
-          xfconf.enable = false;
-          thunar = {
-            enable = false;
-            plugins = with pkgs.xfce; [
-              thunar-archive-plugin
-              thunar-media-tags-plugin
-              thunar-volman
-            ];
-          };
         };
     })
   ];
@@ -143,7 +113,7 @@
       home.packages = with pkgs;
         ifSys.linux
         [
-          gimp
+          #gimp
           logisim-evolution
           musescore
           muse-sounds-manager
