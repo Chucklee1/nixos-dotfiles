@@ -1,5 +1,6 @@
 let
   dir = "/srv";
+  music = "/home/goat/Music";
 in {
   nix.desktop = [
     # firewall
@@ -36,7 +37,7 @@ in {
         # port = 4533;
         settings = {
           EnableInsightsCollector = false;
-          MusicFolder = "${dir}/Music";
+          MusicFolder = music;
           PlaylistsPath = "${dir}/playlist";
           DataFolder = "${dir}/navidrome/data";
           CacheFolder = "${dir}/navidrome/cache";
@@ -51,7 +52,7 @@ in {
     {
       services.mpd = {
         enable = true;
-        musicDirectory = dir;
+        musicDirectory = music;
         playlistDirectory = "${dir}/playlist";
         network.listenAddress = "any";
         extraConfig = ''
