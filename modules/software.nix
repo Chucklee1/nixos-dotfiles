@@ -40,7 +40,7 @@
         joycond-cemuhook
         openmw
         osu-lazer-bin
-        prismlauncher
+        #prismlauncher
         ryubing
       ];
       programs.gamemode = {
