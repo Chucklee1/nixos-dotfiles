@@ -70,18 +70,18 @@
           tooltip = false;
         };
         network = {
-          format-disconnected = "nah ⚠";
-          format-ethernet = span base07 "{ipaddr}/{cidr}";
-          format-wifi = span base07 "{essid} ";
+          format-disconnected = span base0A "⚠";
+          format-ethernet = span base0A "";
+          format-wifi = span base07 "";
           tooltip = false;
         };
         pulseaudio = {
           format = "{volume}% {icon}";
           format-bluetooth = "{volume}% {icon}";
           format-icons = {"default" = ["" "" ""];};
-          format-muted = span base08 "M ";
+          format-muted = span base08 "";
           format-source = "{volume}% ";
-          format-source-muted = span base08 "M ";
+          format-source-muted = span base08 "";
           tooltip = false;
         };
         tray = {
