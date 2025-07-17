@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{
   nix.global = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -12,6 +12,7 @@
         exiftool
         mediainfo
         poppler
+        ueberzugpp
         # file-management
         ouch
         p7zip
@@ -45,10 +46,12 @@
         enableBashIntegration = true;
         shellWrapperName = "y";
 
-        plugins = with inputs; {
-          chmod = "${yazi-plugins}/chmod.yazi";
-          full-border = "${yazi-plugins}/full-border.yazi";
-          mount = "${yazi-plugins}/mount.yazi";
+        plugins = {
+          chmod = pkgs.yaziPlugins.chmod;
+          git = pkgs.yaziPlugins.git;
+          mount = pkgs.yaziPlugins.mount;
+          ouch = pkgs.yaziPlugins.ouch;
+          restore = pkgs.yaziPlugins.restore;
           bookmarks = pkgs.fetchFromGitHub {
             owner = "dedukun";
             repo = "bookmarks.yazi";
@@ -67,23 +70,12 @@
             rev = "41f7e89b7f631d6186d1f085360fb6557924d685";
             hash = "sha256-MvItTUorB0rWg7L3KXUsF3+1KE+wm38C1yAGSfpQ5gg=";
           };
-          ouch = pkgs.fetchFromGitHub {
-            owner = "ndtoan96";
-            repo = "ouch.yazi";
-            rev = "0742fffea5229271164016bf96fb599d861972db";
-            hash = "sha256-C0wG8NQ+zjAMfd+J39Uvs3K4U6e3Qpo1yLPm2xcsAaI=";
-          };
-          restore = pkgs.fetchFromGitHub {
-            owner = "boydaihungst";
-            repo = "restore.yazi";
-            rev = "84f1921806c49b7b20af26cbe57cb4fd286142e2";
-            hash = "sha256-pEQZ/2Z4XVYlfzqtCz51bIgE9KzkDF/qyX8vThhlWGI=";
-          };
         };
 
         initLua =
           #lua
           ''
+            require("git"):setup()
             require("bookmarks"):setup({
               last_directory = { enable = false, persist = false, mode="dir" },
               persist = "none",
@@ -101,22 +93,45 @@
                 },
               },
             })
-            require("full-border"):setup()
-            require("omp"):setup(
-              {config = "${pkgs.oh-my-posh}/share/oh-my-posh/themes/pure.json"}
-            )
+            require("omp"):setup({config = "${pkgs.oh-my-posh}/share/oh-my-posh/themes/pure.omp.json"})
           '';
 
-        settings.yazi = {
+        settings = {
           mgr.show_hidden = true;
           preview = {
             max_width = 1000;
             max_height = 1000;
           };
-          plugin.prepend_previewers = [
+          plugin.append_fetchers = [
             {
-              mime = "audio/*";
-              run = "exifaudio";
+              id = "git";
+              name = "*";
+              run = "git";
+            }
+            {
+              id = "git";
+              name = "*/";
+              run = "git";
+            }
+          ];
+          plugin.append_preloaders = [
+            {
+              mime = "{audio,video,image}/*";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/subrip";
+              run = "mediainfo";
+            }
+          ];
+          plugin.append_previewers = [
+            {
+              mime = "{audio,video,image}/*";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/subrip";
+              run = "mediainfo";
             }
             {
               mime = "application/*zip";
@@ -165,8 +180,8 @@
           ];
         };
 
-        settings.keymap = {
-          mgr.prepend_keymap = [
+        keymap = {
+          mgr.append_keymap = [
             # chmod
             {
               on = ["c" "m"];
