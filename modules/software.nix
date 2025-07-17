@@ -156,6 +156,7 @@
         casks = [
           "kitty"
           "librewolf"
+          "hammerspoon"
         ];
       };
     }

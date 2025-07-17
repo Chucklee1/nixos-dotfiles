@@ -24,18 +24,6 @@
         zip
       ];
     })
-    # thunar
-    ({pkgs, ...}: {
-      programs.xfconf.enable = false;
-      programs.thunar = {
-        enable = false;
-        plugins = with pkgs.xfce; [
-          thunar-archive-plugin
-          thunar-media-tags-plugin
-          thunar-volman
-        ];
-      };
-    })
   ];
 
   # yazi
