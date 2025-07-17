@@ -16,10 +16,7 @@ in {
   nix.desktop = [
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
-      nixpkgs.overlays = [
-        inputs.niri.overlays.niri
-        (final: _: {waybar_git = inputs.waybar.packages.${final.stdenv.hostPlatform.system}.waybar;})
-      ];
+      nixpkgs.overlays = [inputs.niri.overlays.niri];
       programs.niri = {
         enable = true;
         package = pkgs.niri-unstable;
@@ -40,7 +37,6 @@ in {
       };
       programs.waybar = {
         enable = true;
-        package = pkgs.waybar_git;
         systemd.enable = true;
       };
 

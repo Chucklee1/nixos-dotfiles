@@ -76,12 +76,17 @@ with inputs.nixpkgs.lib; rec {
     then A
     else B;
 
-    # idea from github:Misterio77/nix-starter-configs
-    allSystems = genAttrs [
-      "x86_64-linux"
-      "aarch64-linux"
-      "x86_64-darwin"
-      "aarch64-darwin"
-    ];
+  # idea from github:Misterio77/nix-starter-configs
+  allSystems = genAttrs [
+    "x86_64-linux"
+    "aarch64-linux"
+    "x86_64-darwin"
+    "aarch64-darwin"
+  ];
 
+  allSystemsWithPkgs = f:
+    allSystems (system: let
+      pkgs = import inputs.nixpkgs {inherit system;};
+    in
+      f pkgs);
 }

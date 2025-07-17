@@ -25,12 +25,6 @@
 
   # ---- wayland ----
   inputs.niri.url = "github:sodiboo/niri-flake";
-  inputs.waybar.url = "github:Alexays/Waybar/master";
-
-  # ---- python ----
-  inputs.poetry2nix.url = "github:nix-community/poetry2nix";
-  inputs.baca.url = "github:wustho/baca";
-  inputs.baca.flake = false;
 
   outputs = {
     self,
@@ -38,7 +32,10 @@
     ...
   } @ inputs: let
     # ---- additionals ----
-    extlib = import ./libs.nix {inherit inputs self;};
+    extlib = import ./outputs/libs.nix {inherit inputs self;};
+    devShells = extlib.allSystemsWithPkgs (
+      pkgs: import ./outputs/devshells.nix {inherit pkgs;}
+    );
 
     # ---- system  ----
     profiles = {
@@ -76,7 +73,7 @@
       })
     profiles;
   in {
-    inherit extlib;
+    inherit devShells extlib;
     nixosConfigurations = mkSystems;
     darwinConfigurations = mkSystems;
   };
