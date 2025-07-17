@@ -1,9 +1,11 @@
 {pkgs, ...}:
-with pkgs; {
+with pkgs; let
+  std = msg: ''echo -e "\e[32m${msg}\e[0m" '';
+in {
   haskell = mkShell {
     packages = [ghc cabal-install stack];
-    shellHook = ''echo "entered haskell shell" '';
+    shellHook = std "Entered Haskell Shell";
   };
   java = mkShell {packages = [jdk gradle];};
-  shellHook = ''echo "entered java shell" '';
+  shellHook = std "Entered Java Shell";
 }
