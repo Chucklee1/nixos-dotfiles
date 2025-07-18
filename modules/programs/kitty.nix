@@ -2,6 +2,7 @@
   home.global = [
     ({config, ...}:
       with config.lib.stylix.colors.withHashtag; {
+        stylix.targets.kitty.enable = false;
         home.file.".config/kitty/kitty.conf".text = ''
           font_family JetBrainsMono Nerd Font Mono
           font_size 12

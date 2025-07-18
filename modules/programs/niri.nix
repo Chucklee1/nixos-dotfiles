@@ -1,28 +1,10 @@
-{inputs, ...}: let
-  variables = {
-    XDG_CURRENT_DESKTOP = "niri";
-    XDG_SESSION_DESKTOP = "niri";
-    NIXOS_OZONE_WL = "1";
-    MOZ_ENABLE_WAYLAND = "1";
-    DISPLAY = ":0";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    SDL_VIDEODRIVER = "x11";
-    GDK_BACKEND = "wayland,x11";
-    QT_QPA_PLATFORM = "wayland;xcb";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-  };
-in {
+{inputs, ...}: {
   nix.desktop = [
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
       nixpkgs.overlays = [inputs.niri.overlays.niri];
-      programs.niri = {
-        enable = true;
-        package = pkgs.niri-unstable;
-      };
+      programs.niri.package = pkgs.niri-unstable;
     })
-    {environment = {inherit variables;};}
   ];
   home.desktop = [
     ({
@@ -31,21 +13,25 @@ in {
       pkgs,
       ...
     }: {
-      programs.swaylock = {
-        enable = true;
-        package = pkgs.swaylock-effects;
-      };
-      programs.waybar = {
-        enable = true;
-        systemd.enable = true;
-      };
+      programs.swaylock.package = pkgs.swaylock-effects;
+      programs.waybar.systemd.enable = true;
 
       programs.niri.settings = {
         # general
         prefer-no-csd = true;
         hotkey-overlay.skip-at-startup = true;
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
-        environment = variables;
+        environment = {
+          NIXOS_OZONE_WL = "1";
+          MOZ_ENABLE_WAYLAND = "1";
+          DISPLAY = ":0";
+          _JAVA_AWT_WM_NONREPARENTING = "1";
+          SDL_VIDEODRIVER = "x11";
+          GDK_BACKEND = "wayland,x11";
+          QT_QPA_PLATFORM = "wayland;xcb";
+          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+          QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+        };
         spawn-at-startup = let
           get = pkg: lib.getExe pkgs.${pkg};
         in [

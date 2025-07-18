@@ -1,43 +1,29 @@
 let
-  dir = "/media";
+  nixLinux = {
+    networking.firewall = {
+      enable = true;
+      allowedTCPPorts = [22 80 443];
+    };
+  };
 in {
+  nix.global = [{tailscale.enable = true;}];
+
   nix.desktop = [
-    # firewall
-    {
-      networking.firewall = {
-        enable = true;
-        allowedTCPPorts = [22 80];
-      };
-    }
-    # ssh
-    {
-      services.openssh = {
-        enable = true;
-        settings = {
-          PasswordAuthentication = false;
-          PermitRootLogin = "prohibit-password";
-        };
-      };
-    }
-    # tailscale
-    {
-      services.tailscale = {
-        enable = true;
-        port = 443;
-        useRoutingFeatures = "server";
-      };
-    }
+    nixLinux
     ({
       lib,
       pkgs,
       ...
     }: let
       mkJson = set: pkgs.writeText "navidrome-config.json" (lib.generators.toJSON {} set);
-      navidromeCFG = mkJson {
-        MusicFolder = "${dir}/Music";
-        DataFolder = "${dir}/navidrome/data";
-        CacheFolder = "${dir}/navidrome/cache";
-      };
+      navidromeCFG = let
+        dir = "/media";
+      in
+        mkJson {
+          MusicFolder = "${dir}/Music";
+          DataFolder = "${dir}/navidrome/data";
+          CacheFolder = "${dir}/navidrome/cache";
+        };
     in {
       systemd.user.services.navidrome = {
         # port 4533
@@ -50,13 +36,19 @@ in {
       services.audiobookshelf.enable = true; # port = 8000;
     })
   ];
-  nix.macbook = [{services.tailscale.enable = true;}];
 
-  home.global = [{services.syncthing.enable = true;}];
+  home.global = [
+    {
+      services.syncthing.enable = true;
+      services.mpd.enable = true;
+    }
+  ];
+
   home.desktop = [
     {
-      services.mpd = {
-        enable = true;
+      services.mpd = let
+        dir = "/media";
+      in {
         musicDirectory = "${dir}/Music";
         playlistDirectory = "${dir}/Music/playlist";
         network.listenAddress = "any";
@@ -67,15 +59,6 @@ in {
             name "MPDOUT"
           }
         '';
-      };
-    }
-  ];
-  home.macbook = [
-    {
-      services.mpd = {
-        enable = true;
-        musicDirectory = "/Users/goat/Media/Music";
-        playlistDirectory = "/Users/goat/Media/Music/playlist";
       };
     }
   ];

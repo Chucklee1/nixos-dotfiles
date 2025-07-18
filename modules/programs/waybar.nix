@@ -7,7 +7,7 @@
       ...
     }: {
       # waybar
-      # stylix.targets.waybar.enable = false;
+      stylix.targets.waybar.enable = false;
       programs.waybar = with config.lib.stylix.colors.withHashtag; let
         # helpers
         span = color: str: ''<span color="${color}" >${str}</span>'';
