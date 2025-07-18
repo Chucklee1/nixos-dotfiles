@@ -36,19 +36,55 @@ in {
       services.audiobookshelf.enable = true; # port = 8000;
     })
   ];
+  nix.macbook = [
+    ({pkgs, ...}: {
+      launchd.daemons.mpd = let
+        mpdcfg = pkgs.writeText "mpd.conf" ''
+          music_directory         "~/media/Music"
+          playlist_directory      "~/media/Music/playlists"
+          db_file                 "~/.mpd/mpd.db"
+          log_file                "~/.mpd/mpd.log"
+          pid_file                "~/.mpd/mpd.pid"
+          state_file              "~/.mpd/mpdstate"
+          auto_update             "yes"
+          auto_update_depth       "2"
+          follow_outside_symlinks "yes"
+          follow_inside_symlinks  "yes"
+          follow_outside_symlinks "yes"
+          follow_inside_symlinks  "yes"
 
-  home.global = [
-    {
-      services.syncthing.enable = true;
-      services.mpd.enable = true;
-    }
+          audio_output {
+              type                  "osx"
+              name                  "CoreAudio"
+              mixer_type            "software"
+          }
+
+          decoder {
+              plugin                "mp4ff"
+              enabled               "no"
+          }
+        '';
+      in {
+        script = ''
+          mkdir -p /var/run/mpd /var/lib/mpd
+          ${pkgs.mpd}/bin/mpd ${mpdcfg}
+        '';
+        serviceConfig = {
+          KeepAlive = true;
+          RunAtLoad = true;
+        };
+      };
+    })
   ];
+
+  home.global = [{services.syncthing.enable = true;}];
 
   home.desktop = [
     {
       services.mpd = let
         dir = "/media";
       in {
+        enable = true;
         musicDirectory = "${dir}/Music";
         playlistDirectory = "${dir}/Music/playlist";
         network.listenAddress = "any";
