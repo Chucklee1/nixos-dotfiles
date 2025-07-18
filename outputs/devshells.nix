@@ -3,7 +3,7 @@ with pkgs; let
   std = msg: ''echo -e "\e[32m${msg}\e[0m" '';
 in {
   haskell = mkShell {
-    packages = [ghc cabal-install stack];
+    packages = [ghc cabal-install stack zlib];
     shellHook = std "Entered Haskell Shell";
   };
   java = mkShell {packages = [jdk gradle];};
