@@ -144,7 +144,10 @@ in {
       };
     }
     # rice
-    {services.jankyborders.enable = true;}
+    {
+      services.jankyborders.enable = true;
+      services.sketchybar.enable = true;
+    }
   ];
 
   home.global = [
