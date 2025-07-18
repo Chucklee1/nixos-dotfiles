@@ -6,7 +6,7 @@ let
     };
   };
 in {
-  nix.global = [{tailscale.enable = true;}];
+  nix.global = [{services.tailscale.enable = true;}];
 
   nix.desktop = [
     nixLinux
