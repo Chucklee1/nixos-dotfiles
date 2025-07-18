@@ -50,6 +50,7 @@ in {
       services.audiobookshelf.enable = true; # port = 8000;
     })
   ];
+  nix.macbook = [{services.tailscale.enable = true;}];
 
   home.global = [{services.syncthing.enable = true;}];
   home.desktop = [
@@ -69,5 +70,13 @@ in {
       };
     }
   ];
-  home.macbook = [{services.mpd.enable = true;}];
+  home.macbook = [
+    {
+      services.mpd = {
+        enable = true;
+        musicDirectory = "/Users/goat/Media/Music";
+        playlistDirectory = "/Users/goat/Media/Music/playlist";
+      };
+    }
+  ];
 }
