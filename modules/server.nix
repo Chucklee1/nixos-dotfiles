@@ -50,6 +50,8 @@ in {
       services.audiobookshelf.enable = true; # port = 8000;
     })
   ];
+
+  home.global = [{services.syncthing.enable = true;}];
   home.desktop = [
     {
       services.mpd = {
@@ -67,4 +69,5 @@ in {
       };
     }
   ];
+  home.macbook = [{services.mpd.enable = true;}];
 }
