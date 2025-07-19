@@ -1,5 +1,5 @@
 {
-  nix.global = [
+  global.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # info helpers
@@ -27,7 +27,7 @@
   ];
 
   # yazi
-  home.global = [
+  global.home = [
     ({pkgs, ...}: {
       programs.yazi = {
         enableBashIntegration = true;

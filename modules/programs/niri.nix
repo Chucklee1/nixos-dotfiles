@@ -1,12 +1,12 @@
 {inputs, ...}: {
-  nix.desktop = [
+  desktop.nix = [
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
       nixpkgs.overlays = [inputs.niri.overlays.niri];
       programs.niri.package = pkgs.niri-unstable;
     })
   ];
-  home.desktop = [
+  desktop.home = [
     ({
       lib,
       config,

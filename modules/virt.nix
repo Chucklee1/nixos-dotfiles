@@ -36,9 +36,9 @@ let
     }
   ];
 in {
-  nix.desktop = nixvirt;
+  desktop.nix = nixvirt;
 
-  nix.umbra = [
+  umbra.nix = [
     ({
       pkgs,
       modulesPath,
@@ -69,5 +69,5 @@ in {
     })
   ];
 
-  home.desktop = homevirt;
+  desktop.home = homevirt;
 }

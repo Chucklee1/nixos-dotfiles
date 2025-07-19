@@ -151,17 +151,17 @@
     };
   };
 in {
-  nix.global = [
+  global.nix = [
     core.pkgConfig
     core.homeConfig
   ];
-  nix.desktop = [
+  desktop.nix = [
     inputs.home-manager.nixosModules.home-manager
     core.linux
     drivers.nvidia
     drivers.tablet
   ];
-  nix.macbook = [
+  macbook.nix = [
     inputs.home-manager.darwinModules.home-manager
     core.darwin
     ({

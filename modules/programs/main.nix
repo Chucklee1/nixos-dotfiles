@@ -1,5 +1,5 @@
 {self, ...}: {
-  nix.global = [
+  global.nix = [
     ({
       machine,
       ifSys,
@@ -24,7 +24,7 @@
       };
     })
   ];
-  nix.macbook = [
+  macbook.nix = [
     ({config, ...}:
       with config.lib.stylix.colors; let
       in {
@@ -37,7 +37,7 @@
       })
   ];
 
-  home.global = [
+  global.home = [
     {
       home.file.".config/rmpc".source = "${self}/assets/rmpc";
       home.file.".hammerspoon".source = "${self}/assets/hammerspoon";

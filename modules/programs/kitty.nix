@@ -1,5 +1,5 @@
 {
-  home.global = [
+  global.home = [
     ({config, ...}:
       with config.lib.stylix.colors.withHashtag; {
         stylix.targets.kitty.enable = false;

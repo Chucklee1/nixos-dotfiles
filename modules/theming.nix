@@ -32,7 +32,7 @@
     qt.enable = true;
   };
 in {
-  nix.global = [
+  global.nix = [
     ({pkgs, ...}: let
       # helpers
       hideHashtag = set: builtins.mapAttrs (_: v: builtins.replaceStrings ["#"] [""] v) set;
@@ -117,12 +117,12 @@ in {
     })
   ];
 
-  nix.desktop = [
+  desktop.nix = [
     inputs.stylix.nixosModules.stylix
     inputs.minegrub-theme.nixosModules.default
     inputs.minesddm.nixosModules.default
     nixLinux
   ];
-  nix.macbook = [inputs.stylix.darwinModules.stylix];
+  macbook.nix = [inputs.stylix.darwinModules.stylix];
   home.desktop = [homeLinux];
 }

@@ -6,9 +6,9 @@ let
     };
   };
 in {
-  nix.global = [{services.tailscale.enable = true;}];
+  global.nix = [{services.tailscale.enable = true;}];
 
-  nix.desktop = [
+  desktop.nix = [
     nixLinux
     ({
       lib,
@@ -38,7 +38,7 @@ in {
       services.audiobookshelf.enable = true; # port = 8000;
     })
   ];
-  nix.macbook = [
+  macbook.nix = [
     ({pkgs, ...}: {
       launchd.daemons.mpd = let
         mpdcfg = pkgs.writeText "mpd.conf" ''
@@ -79,9 +79,9 @@ in {
     })
   ];
 
-  home.global = [{services.syncthing.enable = true;}];
+  global.home = [{services.syncthing.enable = true;}];
 
-  home.desktop = [
+  desktop.home = [
     {
       services.mpd = let
         dir = "/media";

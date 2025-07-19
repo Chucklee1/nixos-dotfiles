@@ -1,5 +1,5 @@
 {
-  home.desktop = [
+  desktop.home = [
     ({
       lib,
       config,

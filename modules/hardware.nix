@@ -13,7 +13,7 @@
     };
   };
 in {
-  nix.desktop = [
+  desktop.nix = [
     inputs.disko.nixosModules.default
     (import "${self}/assets/disko/ext-home.nix" {
       main = "/dev/nvme0n1";

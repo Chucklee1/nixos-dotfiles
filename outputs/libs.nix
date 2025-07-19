@@ -64,7 +64,7 @@ with inputs.nixpkgs.lib; rec {
     mod = mergeModules "${self}/modules" {inherit inputs self;};
   in
     prev: next: (genAttrs ["nix" "home"]
-      (type: mod.${type}.${prev} or [] ++ mod.${type}.${next} or []));
+      (type: mod.${prev}.${type} or [] ++ mod.${next}.${type} or []));
 
   # system helpers
   withSystem.ifLinux = system: A: B:

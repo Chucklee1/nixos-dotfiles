@@ -50,7 +50,7 @@ let
     programs.waybar.enable = true;
   };
 in {
-  nix.global = [
+  global.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         curl
@@ -64,7 +64,7 @@ in {
     })
   ];
 
-  nix.desktop = [
+  desktop.nix = [
     nixLinux
     nixWayland
     {programs.river.enable = true;}
@@ -116,7 +116,7 @@ in {
       };
     })
   ];
-  nix.macbook = [
+  macbook.nix = [
     # bash
     {
       programs.bash = {
@@ -150,7 +150,7 @@ in {
     }
   ];
 
-  home.global = [
+  global.home = [
     ({pkgs, ...}: {
       home.packages = [pkgs.rmpc];
       # programs
@@ -166,7 +166,7 @@ in {
     })
   ];
   # rip-off rivertuner
-  home.desktop = [
+  desktop.home = [
     homeLinux
     homeWayland
     {programs.mangohud.enable = true;}
