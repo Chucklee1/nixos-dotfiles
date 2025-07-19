@@ -23,9 +23,11 @@ in {
           MusicFolder = "${dir}/Music";
           DataFolder = "${dir}/navidrome/data";
           CacheFolder = "${dir}/navidrome/cache";
+          PlaylistsPath = "${dir}/Music/playlist";
+          CoverJpegQuality = "100";
         };
     in {
-      systemd.user.services.navidrome = {
+      systemd.services.navidrome = {
         # port 4533
         enable = true;
         after = ["network.target"];
