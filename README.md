@@ -4,15 +4,13 @@
 
 - desktop: desktop
 - macbook: macbook
-- umbra: usb profile _(see todo)_
+- umbra: vm testing
 
 ## TODO:
 
 - [x] continue to be as indecisive as possible
 - [ ] find replacement for horrid recursiveMerge in libs.nix
-- [x] move weird external args to specialArgs
-- [x] Changes to waybar, spacing in windows, and corner rounding niri
-- [ ] work on iso/vm profile umbra with script for vm and config for testing
+- [ ] Work on iso image profile for easy booting onto any computer (still thinking of good name)
 
 ## Want to use my setup?
 
