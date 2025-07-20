@@ -22,7 +22,7 @@
         wayland.windowManager.sway = {
           enable = true;
           config = {
-            spawn-at-startup = let
+            startup = let
               get = pkg: lib.getExe pkgs.${pkg};
             in [
               {command = "${get "xwayland-satellite"}";}
@@ -31,16 +31,11 @@
               {command = "systemctl --user reset-failed waybar.service";}
             ];
             # input
-            input = {
-              mouse.accel-speed = 0.0;
-              tablet.map-to-output = "eDP-1";
-              touch.map-to-output = "eDP-1";
-              touchpad = {
-                tap = true;
-                dwt = true;
-                natural-scroll = true;
-                click-method = "clickfinger";
-              };
+            input.touchpad = {
+              tap = "enabled";
+              dwt = "enabled";
+              natural-scroll = "enabled";
+              click_method = "clickfinger";
             };
           };
           extraConfig =
