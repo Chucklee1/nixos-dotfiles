@@ -31,12 +31,12 @@
               {command = "systemctl --user reset-failed waybar.service";}
             ];
             # input
-            input.touchpad = {
-              tap = "enabled";
-              dwt = "enabled";
-              natural-scroll = "enabled";
-              click_method = "clickfinger";
-            };
+            #input.touchpad = {
+            #tap = "enabled";
+            #dwt = "enabled";
+            #natural-scroll = "enabled";
+            #click_method = "clickfinger";
+            #};
           };
           extraConfig =
             #ini
