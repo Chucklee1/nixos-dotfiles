@@ -1,43 +1,70 @@
 let
-  nixLinux = {
+  linuxNix = {
     networking.firewall = {
       enable = true;
       allowedTCPPorts = [22 80 443];
     };
   };
 in {
-  global.nix = [{services.tailscale.enable = true;}];
+  global = {
+    nix = [{services.tailscale.enable = true;}];
+    home = [{services.syncthing.enable = true;}];
+  };
 
-  desktop.nix = [
-    nixLinux
-    ({
-      lib,
-      pkgs,
-      ...
-    }: let
-      mkJson = set: pkgs.writeText "navidrome-config.json" (lib.generators.toJSON {} set);
-      navidromeCFG = let
-        dir = "/media";
-      in
-        mkJson {
-          MusicFolder = "${dir}/Music";
-          DataFolder = "${dir}/navidrome/data";
-          CacheFolder = "${dir}/navidrome/cache";
-          PlaylistsPath = "${dir}/Music/playlist";
-          CoverJpegQuality = "100";
+  desktop = {
+    nix = [
+      linuxNix
+      ({
+        lib,
+        pkgs,
+        ...
+      }: let
+        mkJson = set: pkgs.writeText "navidrome-config.json" (lib.generators.toJSON {} set);
+        navidromeCFG = let
+          dir = "/media";
+        in
+          mkJson {
+            MusicFolder = "${dir}/Music";
+            DataFolder = "${dir}/navidrome/data";
+            CacheFolder = "${dir}/navidrome/cache";
+            PlaylistsPath = "${dir}/Music/playlist";
+            CoverJpegQuality = "100";
+          };
+      in {
+        systemd.services.navidrome = {
+          # port 4533
+          enable = true;
+          after = ["network.target"];
+          wantedBy = ["default.target"];
+          description = "Music-hosting service";
+          serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${navidromeCFG}'';
         };
-    in {
-      systemd.services.navidrome = {
-        # port 4533
-        enable = true;
-        after = ["network.target"];
-        wantedBy = ["default.target"];
-        description = "Music-hosting service";
-        serviceConfig.ExecStart = ''${pkgs.navidrome}/bin/navidrome --configfile ${navidromeCFG}'';
-      };
-      services.audiobookshelf.enable = true; # port = 8000;
-    })
-  ];
+        services.audiobookshelf.enable = true; # port = 8000;
+      })
+    ];
+    home = [
+      {
+        services.mpd = let
+          dir = "/media";
+        in {
+          enable = true;
+          musicDirectory = "${dir}/Music";
+          playlistDirectory = "${dir}/Music/playlist";
+          network.listenAddress = "any";
+          extraConfig = ''
+            save_absolute_paths_in_playlists "yes"
+            audio_output {
+              type "pipewire"
+              name "MPDOUT"
+            }
+          '';
+        };
+      }
+    ];
+  };
+
+  laptop.nix = [linuxNix];
+
   macbook.nix = [
     ({pkgs, ...}: {
       launchd.daemons.mpd = let
@@ -77,27 +104,5 @@ in {
         };
       };
     })
-  ];
-
-  global.home = [{services.syncthing.enable = true;}];
-
-  desktop.home = [
-    {
-      services.mpd = let
-        dir = "/media";
-      in {
-        enable = true;
-        musicDirectory = "${dir}/Music";
-        playlistDirectory = "${dir}/Music/playlist";
-        network.listenAddress = "any";
-        extraConfig = ''
-          save_absolute_paths_in_playlists "yes"
-          audio_output {
-            type "pipewire"
-            name "MPDOUT"
-          }
-        '';
-      };
-    }
   ];
 }

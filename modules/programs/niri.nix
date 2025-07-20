@@ -13,9 +13,6 @@
       pkgs,
       ...
     }: {
-      programs.swaylock.package = pkgs.swaylock-effects;
-      programs.waybar.systemd.enable = true;
-
       programs.niri.settings = {
         # general
         prefer-no-csd = true;

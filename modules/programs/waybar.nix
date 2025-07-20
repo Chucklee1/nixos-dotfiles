@@ -141,4 +141,5 @@ let
   };
 in {
   desktop.home = [homeWayland];
+  laptop.home = [homeWayland];
 }

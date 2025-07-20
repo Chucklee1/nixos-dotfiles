@@ -155,12 +155,19 @@ in {
     core.pkgConfig
     core.homeConfig
   ];
+
   desktop.nix = [
     inputs.home-manager.nixosModules.home-manager
     core.linux
     drivers.nvidia
     drivers.tablet
   ];
+
+  laptop.nix = [
+    inputs.home-manager.nixosModules.home-manager
+    core.linux
+  ];
+
   macbook.nix = [
     inputs.home-manager.darwinModules.home-manager
     core.darwin

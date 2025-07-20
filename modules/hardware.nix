@@ -23,7 +23,16 @@ in {
     {
       boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
       boot.supportedFilesystems = ["ntfs"];
-      boot.loader.grub.gfxmodeEfi = "1920x1080x30,auto";
+      hardware.enableRedistributableFirmware = true;
+    }
+  ];
+
+  laptop.nix = [
+    inputs.disko.nixosModules.default
+    (import "${self}/assets/disko/ext-home.nix" {device = "/dev/nvme0n1";})
+    cpu.intel
+    {
+      boot.supportedFilesystems = ["ntfs"];
       hardware.enableRedistributableFirmware = true;
     }
   ];
