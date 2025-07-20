@@ -1,8 +1,23 @@
 let
-  linuxNix = {
-    networking.firewall = {
+  linux = {
+    nix.networking.firewall = {
       enable = true;
       allowedTCPPorts = [22 80 443];
+    };
+    mpd = dir: {
+      services.mpd = {
+        enable = true;
+        musicDirectory = "${dir}/Music";
+        playlistDirectory = "${dir}/Music/playlist";
+        network.listenAddress = "any";
+        extraConfig = ''
+          save_absolute_paths_in_playlists "yes"
+          audio_output {
+            type "pipewire"
+            name "MPDOUT"
+          }
+        '';
+      };
     };
   };
 in {
@@ -13,7 +28,7 @@ in {
 
   desktop = {
     nix = [
-      linuxNix
+      linux.nix
       ({
         lib,
         pkgs,
@@ -42,28 +57,13 @@ in {
         services.audiobookshelf.enable = true; # port = 8000;
       })
     ];
-    home = [
-      {
-        services.mpd = let
-          dir = "/media";
-        in {
-          enable = true;
-          musicDirectory = "${dir}/Music";
-          playlistDirectory = "${dir}/Music/playlist";
-          network.listenAddress = "any";
-          extraConfig = ''
-            save_absolute_paths_in_playlists "yes"
-            audio_output {
-              type "pipewire"
-              name "MPDOUT"
-            }
-          '';
-        };
-      }
-    ];
+    home = [(linux.mpd "/media")];
   };
 
-  laptop.nix = [linuxNix];
+  laptop = {
+    nix = [linux.nix];
+    home = [(linux.mpd "/media")];
+  };
 
   macbook.nix = [
     ({pkgs, ...}: {
