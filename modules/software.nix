@@ -89,7 +89,6 @@ in {
     nix = [
       linux.nix
       wayland.nix
-      {programs.river.enable = true;}
       # games
       ({pkgs, ...}: {
         environment.systemPackages = with pkgs; [
