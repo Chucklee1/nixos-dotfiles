@@ -2,6 +2,7 @@
   laptop = {
     nix = [
       ({pkgs, ...}: {
+        services.xserver.enable = true;
         programs.sway = {
           enable = true;
           xwayland.enable = true;
