@@ -31,7 +31,7 @@ let
   };
   homeLinux = {pkgs, ...}: {
     home.packages = with pkgs; [
-      #gimp
+      krita
       logisim-evolution
       musescore
       muse-sounds-manager
