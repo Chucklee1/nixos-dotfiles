@@ -1,5 +1,5 @@
 {
-  acer.home = [
+  laptop.home = [
     ({
       lib,
       config,

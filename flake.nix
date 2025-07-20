@@ -45,6 +45,12 @@
         mod = extlib.mergeProfiles "global" "desktop";
         user = "goat";
       };
+      laptop = {
+        system = "x86_64-linux";
+        builder = inputs.nixpkgs.lib.nixosSystem;
+        mod = extlib.mergeProfiles "global" "laptop";
+        user = "goat";
+      };
       umbra = {
         system = "x86_64-linux";
         builder = inputs.nixpkgs.lib.nixosSystem;
