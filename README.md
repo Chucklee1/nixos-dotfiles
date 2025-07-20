@@ -34,7 +34,7 @@
 - install to /mnt
 
 3: Install System
-`"sudo nixos---flake install --root /mnt --flake github:Chucklee1/nixos-dotfiles"`
+`"sudo nixos-install --root /mnt --flake github:Chucklee1/nixos-dotfiles"`
 
 - If 1st time installing, download the repo and link the hardware config properly
 - If you using the installer on a USB stick smaller than ~5-10 GB, make sure to disable niri, then build again with niri enabled or the installer will freeze
