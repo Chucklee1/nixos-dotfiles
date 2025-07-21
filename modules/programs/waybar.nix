@@ -5,7 +5,7 @@ let
     ...
   }: {
     # waybar
-    stylix.targets.waybar.enable = false;
+    #stylix.targets.waybar.enable = false;
     programs.waybar = with config.lib.stylix.colors.withHashtag; let
       merged = list: [(lib.mergeAttrsList list)];
       span = color: str: ''<span color="${color}" >${str}</span>'';
@@ -115,13 +115,6 @@ let
           	margin: 0;
           }
 
-          #waybar {
-          	color: ${base05};
-            background-color: alpha(${base00}, 0.8);
-          }
-          #workspaces button {
-          	color: ${base05};
-          }
           #window {
             padding-left: 2;
           }

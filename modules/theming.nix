@@ -106,6 +106,7 @@ in {
         image = painted-lake;
         base16Scheme = nordic;
         polarity = "dark";
+        opacity.desktop = 0.8;
 
         fonts = {
           monospace.package = pkgs.nerd-fonts.jetbrains-mono;
