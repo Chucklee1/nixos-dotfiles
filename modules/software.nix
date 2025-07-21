@@ -1,4 +1,7 @@
-let
+{inputs, ...}: let
+  nixvim.nix = {nixpkgs.overlays = [inputs.nix-vim.overlays.default];};
+  nixvim.home = {pkgs, ...}: {home.packages = [pkgs.nixvim.full];};
+
   linux = {
     nix = {pkgs, ...}: {
       environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
@@ -19,6 +22,7 @@ let
         kitty
       ];
       programs.librewolf.enable = true;
+      programs.keepassxc.enable = true;
       programs.vesktop.enable = true;
     };
   };
@@ -56,6 +60,7 @@ let
 in {
   global = {
     nix = [
+      nixvim.nix
       ({pkgs, ...}: {
         environment.systemPackages = with pkgs; [
           curl
@@ -69,6 +74,7 @@ in {
       })
     ];
     home = [
+      nixvim.home
       ({pkgs, ...}: {
         home.packages = [pkgs.rmpc];
         # programs
@@ -131,9 +137,7 @@ in {
         systemd.services.flatpak-repo = {
           wantedBy = ["multi-user.target"];
           path = [pkgs.flatpak];
-          script = ''
-            flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          '';
+          script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo '';
         };
       })
     ];
