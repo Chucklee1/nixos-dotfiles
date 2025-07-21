@@ -24,24 +24,30 @@
       };
     })
   ];
-  macbook.nix = [
-    ({config, ...}:
-      with config.lib.stylix.colors; let
-      in {
-        services.jankyborders = {
-          active_color = ''0xFF${base0D}'';
-          inactive_color = ''0x00${base0D}'';
-          style = "round";
-          width = 2.0;
-        };
-      })
-  ];
+  macbook = {
+    nix = [
+      ({config, ...}:
+        with config.lib.stylix.colors; let
+        in {
+          services.jankyborders = {
+            active_color = ''0xFF${base0D}'';
+            inactive_color = ''0x00${base0D}'';
+            style = "round";
+            width = 2.0;
+          };
+        })
+    ];
+    home = [
+      {
+        home.file.".hammerspoon".source = "${self}/assets/hammerspoon";
+        home.file.".config/sketchybar".source = "${self}/assets/sketchybar";
+      }
+    ];
+  };
 
   global.home = [
     {
       home.file.".config/rmpc".source = "${self}/assets/rmpc";
-      home.file.".hammerspoon".source = "${self}/assets/hammerspoon";
-      home.file.".config/sketchybar".source = "${self}/assets/sketchybar";
       programs = {
         git.userEmail = "kermitthefrog@kakao.com";
         git.userName = "Chucklee1";
