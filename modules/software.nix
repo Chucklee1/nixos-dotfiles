@@ -12,6 +12,7 @@
     };
     home = {pkgs, ...}: {
       home.packages = with pkgs; [
+        calibre
         krita
         logisim-evolution
         musescore
@@ -19,7 +20,6 @@
         picard
         qbittorrent
         tenacity
-        kitty
       ];
       programs.librewolf.enable = true;
       programs.keepassxc.enable = true;
@@ -83,6 +83,7 @@ in {
           btop.enable = true;
           direnv.enable = true;
           git.enable = true;
+          kitty.enable = true;
           oh-my-posh.enable = true;
           yazi.enable = true;
           zathura.enable = true;
