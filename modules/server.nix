@@ -39,10 +39,12 @@ in {
           dir = "/media";
         in
           mkJson {
-            MusicFolder = "${dir}/Music";
-            DataFolder = "${dir}/navidrome/data";
+            Address = "localhost";
             CacheFolder = "${dir}/navidrome/cache";
-            PlaylistsPath = "${dir}/Music/playlist";
+            DataFolder = "${dir}/navidrome/data";
+            MusicFolder = "${dir}/Music";
+            PlaylistsPath = "../playlist";
+            DefaultTheme = "Nord";
             CoverJpegQuality = "100";
           };
       in {
