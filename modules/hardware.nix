@@ -15,6 +15,7 @@
       boot.supportedFilesystems = ["ntfs"];
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
+      boot.loader.grub.useOSProber = true;
     }
   ];
 
