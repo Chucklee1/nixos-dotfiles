@@ -87,6 +87,12 @@ in {
           oh-my-posh.enable = true;
           yazi.enable = true;
           zathura.enable = true;
+          # find help
+          fzf.enable = true;
+          zoxide = {
+            enable = true;
+            options = ["--cmd cd"];
+          };
         };
       })
     ];
