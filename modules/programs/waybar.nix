@@ -5,7 +5,7 @@ let
     ...
   }: {
     # waybar
-    #stylix.targets.waybar.enable = false;
+    stylix.targets.waybar.addCss = false;
     programs.waybar = with config.lib.stylix.colors.withHashtag; let
       merged = list: [(lib.mergeAttrsList list)];
       span = color: str: ''<span color="${color}" >${str}</span>'';
@@ -109,10 +109,10 @@ let
           * {
             border: none;
             border-radius: 0;
-          	font-family: JetBrainsMono Nerd Font;
-          	font-size: 12px;
-          	padding: 0;
-          	margin: 0;
+            font-family: JetBrainsMono Nerd Font;
+            font-size: 12px;
+            padding: 0;
+            margin: 0;
           }
 
           #window {
