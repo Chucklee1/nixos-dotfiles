@@ -1,61 +1,100 @@
 {inputs, ...}: let
+  gaming.nix = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      # emulation
+      cemu
+      joycond
+      joycond-cemuhook
+      ryubing
+      # wine
+      zenity
+      wine
+      wineWowPackages.stagingFull
+      winetricks
+      # games
+      osu-lazer-bin
+      prismlauncher
+      openmw
+    ];
+    programs.gamemode = {
+      enable = true;
+      settings.general.desiredgov = "performance";
+      settings.general.renice = 10;
+    };
+    programs.steam = {
+      enable = true;
+      protontricks.enable = true;
+      gamescopeSession.enable = true;
+      extraCompatPackages = [pkgs.proton-ge-bin];
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+    };
+
+    # roblox
+    services.flatpak.enable = true;
+    systemd.services.flatpak-repo = {
+      nable = false;
+      wantedBy = ["multi-user.target"];
+      path = [pkgs.flatpak];
+      script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo '';
+    };
+  };
+  gaming.home = {programs.mangohud.enable = true;};
+
   nixvim.nix = {nixpkgs.overlays = [inputs.nix-vim.overlays.default];};
   nixvim.home = {pkgs, ...}: {home.packages = [pkgs.nixvim.full];};
 
-  linux = {
-    nix = {pkgs, ...}: {
-      environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
-      programs = {
-        nix-ld.enable = true;
-        dconf.enable = true;
-      };
-    };
-    home = {pkgs, ...}: {
-      home.packages = with pkgs; [
-        calibre
-        krita
-        logisim-evolution
-        musescore
-        muse-sounds-manager
-        picard
-        qbittorrent
-        tenacity
-      ];
-      programs.librewolf.enable = true;
-      programs.keepassxc.enable = true;
-      programs.vesktop.enable = true;
+  linux.nix = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
+    programs = {
+      nix-ld.enable = true;
+      dconf.enable = true;
     };
   };
-  wayland = {
-    nix = {pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        egl-wayland
-        qt5.qtwayland
-        qt6.qtwayland
-        brightnessctl
-        wev
-        wmenu
-        swaynotificationcenter
-        xwayland
-        xwayland-run
-        wl-color-picker
-        wl-clipboard
-      ];
+  linux.home = {pkgs, ...}: {
+    home.packages = with pkgs; [
+      calibre
+      krita
+      logisim-evolution
+      musescore
+      muse-sounds-manager
+      picard
+      qbittorrent
+      tenacity
+    ];
+    programs.librewolf.enable = true;
+    programs.keepassxc.enable = false;
+    programs.vesktop.enable = false;
+  };
+  wayland.nix = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      egl-wayland
+      qt5.qtwayland
+      qt6.qtwayland
+      brightnessctl
+      wev
+      wmenu
+      swaynotificationcenter
+      xwayland
+      xwayland-run
+      wl-color-picker
+      wl-clipboard
+    ];
 
-      # polkit n portals
-      security.polkit.enable = true;
-      xdg.portal.extraPortals = [
-        pkgs.xdg-desktop-portal-gnome
-        pkgs.xdg-desktop-portal-gtk
-      ];
-      xdg.portal.config.common.default = "gnome";
-    };
-    home = {pkgs, ...}: {
-      programs.swaylock.enable = true;
-      programs.swaylock.package = pkgs.swaylock-effects;
-      programs.waybar.enable = true;
-      programs.waybar.systemd.enable = true;
-    };
+    # polkit n portals
+    security.polkit.enable = true;
+    xdg.portal.extraPortals = [
+      pkgs.xdg-desktop-portal-gnome
+      pkgs.xdg-desktop-portal-gtk
+    ];
+    xdg.portal.config.common.default = "gnome";
+  };
+  wayland.home = {pkgs, ...}: {
+    programs.swaylock.enable = true;
+    programs.swaylock.package = pkgs.swaylock-effects;
+    programs.waybar.enable = true;
+    programs.waybar.systemd.enable = true;
   };
 in {
   global = {
@@ -98,67 +137,11 @@ in {
     ];
   };
 
-  desktop = {
-    nix = [
-      linux.nix
-      wayland.nix
-      # games
-      ({pkgs, ...}: {
-        environment.systemPackages = with pkgs; [
-          cemu
-          joycond
-          joycond-cemuhook
-          openmw
-          osu-lazer-bin
-          #prismlauncher
-          ryubing
-        ];
-        programs.gamemode = {
-          enable = true;
-          settings.general.desiredgov = "performance";
-          settings.general.renice = 10;
-        };
-        programs.steam = {
-          enable = true;
-          protontricks.enable = true;
-          gamescopeSession.enable = true;
-          extraCompatPackages = [pkgs.proton-ge-bin];
-          remotePlay.openFirewall = true;
-          dedicatedServer.openFirewall = true;
-          localNetworkGameTransfers.openFirewall = true;
-        };
-      })
-      # wine
-      ({pkgs, ...}: {
-        environment.systemPackages = with pkgs; [
-          zenity
-          samba
-          wine
-          wineWowPackages.stagingFull
-          winetricks
-        ];
-      })
-      # roblox
-      ({pkgs, ...}: {
-        services.flatpak.enable = true;
-        systemd.services.flatpak-repo = {
-          wantedBy = ["multi-user.target"];
-          path = [pkgs.flatpak];
-          script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo '';
-        };
-      })
-    ];
-    home = [
-      linux.home
-      wayland.home
-      {programs.mangohud.enable = true;}
-    ];
-  };
+  desktop.nix = [linux.nix wayland.nix];
+  desktop.home = [linux.home wayland.home];
 
-  laptop = {
-    nix = [linux.nix wayland.nix];
-    home = [linux.home wayland.home];
-  };
+  laptop.nix = [linux.nix wayland.nix];
+  laptop.home = [linux.home wayland.home];
 
   macbook.nix = [
     # bash
@@ -180,11 +163,7 @@ in {
         };
         caskArgs.no_quarantine = true;
         #brews = [ ];
-        casks = [
-          "kitty"
-          "librewolf"
-          "hammerspoon"
-        ];
+        casks = ["kitty" "ghostty" "hammerspoon"];
       };
     }
     # rice
