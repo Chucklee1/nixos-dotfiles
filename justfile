@@ -6,7 +6,7 @@ build_flags := "--impure --show-trace"
 format layout device:
     sudo {{nix_cmd}} run github:nix-community/disko -- \
         --mode disko {{pwd}}/assets/disko/{{layout}}.nix \
-        --arg device '"/dev/{{device}}"'
+        --arg device '"{{device}}"'
 
 show-hardware: 
     sudo nixos-generate-config \
