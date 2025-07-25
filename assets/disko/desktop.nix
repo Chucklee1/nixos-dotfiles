@@ -4,35 +4,23 @@
       type = "disk";
       device = "/dev/nvme0n1";
       content.type = "gpt";
-      content.partitions.esp = {
-        name = "ESP";
-        size = "1G";
-        type = "EF00";
-        content = {
-          type = "filesystem";
-          format = "vfat";
-          mountpoint = "/boot";
+      content.partitions = {
+        ESP = {
+          type = "EF00";
+          size = "1G";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+            mountOptions = [ "umask=0077" ];
+          };
         };
-      };
-      content.partitions.fedora_boot = {
-        size = "1G";
-        type = "8300";
-      };
-      content.partitions.root = {
-        size = "100%";
-        content = {
-          type = "btrfs";
-          extraArgs = [ "-f" ]; 
-          subvolumes = {
-            "/nixos".mountpoint = "/";
-            "/fedora" = { };
-            "/nix" = {
-              mountpoint = "/nix";
-              mountOptions = [
-                "compress=zstd"
-                "noatime"
-              ];
-            };
+        root = {
+          size = "100%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/";
           };
         };
       };

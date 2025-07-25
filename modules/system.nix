@@ -52,10 +52,11 @@
       time.timeZone = "America/Vancouver";
 
       # ---- user ----
-      users.users.${user} = {
-        name = "${user}";
+      users.users.goat = {
+        name = "goat";
         isNormalUser = true;
         extraGroups = [
+          "media" # /srv/media access
           "wheel"
           "networkmanager"
           "audio"
