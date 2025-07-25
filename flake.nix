@@ -11,7 +11,7 @@
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
 
   # ---- emphereal system ----
-  impermanence.url = "github:nix-community/impermanence";
+  inputs.impermanence.url = "github:nix-community/impermanence";
 
   # ---- macos ----
   inputs.nix-darwin.url = "github:LnL7/nix-darwin/master";
@@ -37,7 +37,7 @@
     # ---- additionals ----
     extlib = import ./outputs/libs.nix {inherit inputs self;};
     devShells = extlib.allSystemsWithPkgs (
-      pkgs: import ./outputs/devshells.nix {inherit pkgs;}
+      pkgs: import ./outputs/devshells.nix {inherit inputs pkgs;}
     );
 
     # ---- system  ----

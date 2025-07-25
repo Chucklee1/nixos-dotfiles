@@ -105,7 +105,6 @@ in {
           curl
           gcc
           gdb # GNU debugger
-          gnumake
           ffmpeg-full
           imagemagick
           python3
