@@ -10,6 +10,9 @@
   inputs.disko.url = "github:nix-community/disko";
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
 
+  # ---- emphereal system ----
+  impermanence.url = "github:nix-community/impermanence";
+
   # ---- macos ----
   inputs.nix-darwin.url = "github:LnL7/nix-darwin/master";
   inputs.nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
