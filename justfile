@@ -13,7 +13,7 @@ show-hardware:
         --no-filesystems --show-hardware-config \
         --root {{live_root}}
 
-install:
+install profile:
     sudo nixos-install \
         --root {{live_root}} \
         --flake {{pwd}}#{{profile}} \
@@ -22,7 +22,7 @@ install:
 update:
     nix flake update
 
-rebuild:
+rebuild profile:
     sudo nixos-rebuild switch \
         --flake {{pwd}}#profile \
         {{build_flags}}
