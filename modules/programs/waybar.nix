@@ -111,13 +111,17 @@
               border: none;
               border-radius: 0;
               font-family: JetBrainsMono Nerd Font;
-              font-size: 12px;
+              font-size: 14px;
               padding: 0;
               margin: 0;
             }
 
+            window#waybar {
+              background:  alpha(@base00, 0.8);
+            }
+
             #window {
-              padding-left: 2;
+              padding-left: 10;
             }
 
             #mpd,
