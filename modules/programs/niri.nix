@@ -1,4 +1,4 @@
-{inputs, ...}: let
+{inputs, ...}: {
   wayland = {
     nix = [
       inputs.niri.nixosModules.niri
@@ -162,20 +162,13 @@
         })
     ];
   };
-in {
-  desktop.nix = wayland.nix;
-  desktop.home =
-    wayland.home
-    ++ [
-      # display setup
-      {
-        programs.niri.settings.outputs."DP-1".mode = {
-          width = 1920;
-          height = 1080;
-          refresh = 165.001;
-        };
-      }
-    ];
-  laptop.nix = wayland.nix;
-  laptop.home = wayland.home;
+  desktop.home = [
+    {
+      programs.niri.settings.outputs."DP-1".mode = {
+        width = 1920;
+        height = 1080;
+        refresh = 165.001;
+      };
+    }
+  ];
 }

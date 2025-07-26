@@ -11,7 +11,6 @@
     homeConfig = {
       config,
       user,
-      ifSys,
       ...
     }: {
       home-manager.useGlobalPkgs = true;
@@ -19,7 +18,7 @@
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
           username = user;
-          homeDirectory = ifSys.linux "/home/${user}" "/Users/${user}";
+          homeDirectory = config.users.users.${user}.home;
         };
         imports = config._module.args.homeMods;
       };
@@ -56,12 +55,9 @@
         name = "goat";
         isNormalUser = true;
         extraGroups = [
-          "media" # /srv/media access
+          "media"
           "wheel"
           "networkmanager"
-          "audio"
-          "video"
-          "input"
           "gamemode"
           "libvirtd"
         ];

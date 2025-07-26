@@ -1,15 +1,7 @@
 {self, ...}: {
   global.nix = [
-    ({
-      machine,
-      ifSys,
-      ...
-    }: {
-      environment = let
-        root = "$HOME/nixos-dotfiles";
-        buildFlags = "--show-trace --impure";
-        buildType = ifSys.darwin "darwin" "nixos";
-      in {
+    ({machine, ...}: {
+      environment = {
         variables = {
           BASH_SILENCE_DEPRECATION_WARNING = "1";
           TERMINAL = "kitty";
@@ -17,16 +9,19 @@
         };
         shellAliases = {
           y = "yazi";
-          ny = "cd ${root} && yazi";
-          update-flake = "nix flake update --flake ${root}";
-          rebuild-flake = "sudo ${buildType}-rebuild switch --flake ${root}#${machine} ${buildFlags}";
+          rebuild-flake = "sudo nixos-rebuild switch --flake $HOME/nixos-dotfiles#${machine} --show-trace --impure";
         };
       };
     })
   ];
   macbook = {
     nix = [
-      ({config, ...}:
+      ({
+        lib,
+        config,
+        machine,
+        ...
+      }:
         with config.lib.stylix.colors; let
         in {
           services.jankyborders = {
@@ -34,6 +29,9 @@
             inactive_color = ''0x00${base0D}'';
             style = "round";
             width = 3.0;
+          };
+          shellAliases = {
+            rebuild-flake = lib.mkOverride "sudo darwin-rebuild switch --flake $HOME/nixos-dotfiles#${machine} --show-trace --impure";
           };
         })
     ];
