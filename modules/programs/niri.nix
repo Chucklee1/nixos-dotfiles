@@ -13,11 +13,12 @@
         lib,
         config,
         pkgs,
+        machine,
         ...
       }: {
         programs.niri.settings = {
           # general
-          prefer-no-csd = true;
+          prefer-no-csd = machine != "umbra";
           hotkey-overlay.skip-at-startup = true;
           screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
           environment = {
