@@ -44,31 +44,48 @@
     # ---- system  ----
     profiles = let
       mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
-      mapMods = mods: {
-        nix = builtins.concatLists (map (m: m.nix) mods);
-        home = builtins.concatLists (map (m: m.home) mods);
-      };
     in {
       nixos = {
         desktop = {
           system = "x86_64-linux";
-          modules = mapMods [mod.global mod.desktop];
+          modules = [
+            mod.desktop
+            mod.global
+            mod.linux
+            mod.metal
+            mod.wayland
+            mod.nvidia
+          ];
           user = "goat";
         };
         laptop = {
           system = "x86_64-linux";
-          modules = mapMods [mod.global mod.laptop mod.wayland];
+          modules = [
+            mod.laptop
+            mod.global
+            mod.linux
+            mod.metal
+            mod.wayland
+          ];
           user = "goat";
         };
         umbra = {
           system = "x86_64-linux";
-          modules = mapMods [mod.umbra];
+          modules = [
+            mod.umbra
+            mod.global
+            mod.linux
+            mod.wayland
+          ];
           user = "nixos";
         };
       };
       darwin.macbook = {
         system = "aarch64-darwin";
-        modules = mapMods [mod.global mod.macbook];
+        modules = [
+          mod.global
+          mod.macbook
+        ];
         user = "goat";
       };
     };
@@ -79,6 +96,10 @@
           if cfgs ? darwin
           then nix-darwin.lib.darwinSystem
           else nixpkgs.lib.nixosSystem;
+        mod = {
+          nix = builtins.concatLists (map (m: m.nix or []) cfg.modules);
+          home = builtins.concatLists (map (m: m.home or []) cfg.modules);
+        };
         specialArgs = {
           inherit machine;
           inherit (cfg) system user;
@@ -91,20 +112,22 @@
           modules =
             builtins.concatLists
             [
-              cfg.modules.nix
-              [{_module.args.homeMods = cfg.modules.home;}]
+              mod.nix
+              [{_module.args.homeMods = mod.home;}]
               [{home-manager.extraSpecialArgs = specialArgs;}]
             ];
         })
       cfgs;
-  in rec {
+  in {
     #inherit (self) outputs;
     inherit devShells extlib;
     nixosConfigurations = mkSystems profiles.nixos;
     darwinConfigurations = mkSystems profiles.darwin;
     apps.x86_64-linux.umbra = {
       type = "app";
-      program = "${nixosConfigurations."umbra".config.system.build.vm}/bin/run-nixos-vm";
+      program = "${self.nixosConfigurations."umbra".config.system.build.vm}/bin/run-nixos-vm";
     };
+    # custom installer iso
+    packages.x86_64-linux.installer = self.nixosConfigurations."umbra".config.system.build.isoImage;
   };
 }

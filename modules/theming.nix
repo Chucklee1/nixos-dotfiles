@@ -1,46 +1,46 @@
-{inputs, ...}: let
-  linux = {
-    nix = [
-      inputs.stylix.nixosModules.stylix
-      inputs.minegrub-theme.nixosModules.default
-      inputs.minesddm.nixosModules.default
-      ({pkgs, ...}: {
-        stylix.cursor = {
-          package = pkgs.bibata-cursors;
-          name = "Bibata-Modern-Classic";
-          size = 24;
-        };
+{inputs, ...}: {
+  linux.nix = [
+    inputs.stylix.nixosModules.stylix
+    ({pkgs, ...}: {
+      stylix.cursor = {
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Classic";
+        size = 24;
+      };
+    })
+  ];
+  linux.home = [
+    ({pkgs, ...}: {
+      stylix.iconTheme = {
+        enable = true;
+        package = pkgs.papirus-icon-theme;
+        dark = "Papirus-Dark";
+      };
+      gtk.enable = true;
+      qt.enable = true;
+    })
+  ];
+  metal.nix = [
+    inputs.minegrub-theme.nixosModules.default
+    inputs.minesddm.nixosModules.default
+    {
+      # ---- grub theme ----
+      stylix.targets.grub.enable = false;
+      boot.loader.grub.minegrub-theme = {
+        enable = true;
+        splash = "100% Flakes!";
+        background = "background_options/1.8  - [Classic Minecraft].png";
+        boot-options-count = 4;
+      };
 
-        # ---- grub theme ----
-        stylix.targets.grub.enable = false;
-        boot.loader.grub.minegrub-theme = {
-          enable = true;
-          splash = "100% Flakes!";
-          background = "background_options/1.8  - [Classic Minecraft].png";
-          boot-options-count = 4;
-        };
-
-        # ---- login theme ----
-        services.displayManager.sddm = {
-          enable = true;
-          wayland.enable = true;
-          theme = "minesddm";
-        };
-      })
-    ];
-    home = [
-      ({pkgs, ...}: {
-        stylix.iconTheme = {
-          enable = true;
-          package = pkgs.papirus-icon-theme;
-          dark = "Papirus-Dark";
-        };
-        gtk.enable = true;
-        qt.enable = true;
-      })
-    ];
-  };
-in {
+      # ---- login theme ----
+      services.displayManager.sddm = {
+        enable = true;
+        wayland.enable = true;
+        theme = "minesddm";
+      };
+    }
+  ];
   global.nix = [
     ({pkgs, ...}: let
       # helpers
@@ -128,7 +128,5 @@ in {
     })
   ];
 
-  desktop = {inherit (linux) nix home;};
-  laptop = {inherit (linux) nix home;};
   macbook.nix = [inputs.stylix.darwinModules.stylix];
 }

@@ -1,5 +1,5 @@
-let
-  nixvirt = [
+{
+  desktop.nix = [
     ({pkgs, ...}: {
       programs.virt-manager.enable = true;
       virtualisation = {
@@ -27,7 +27,7 @@ let
       };
     })
   ];
-  homevirt = [
+  desktop.home = [
     {
       dconf.settings."org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
@@ -35,7 +35,4 @@ let
       };
     }
   ];
-in {
-  desktop.nix = nixvirt;
-  desktop.home = homevirt;
 }

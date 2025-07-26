@@ -1,31 +1,7 @@
-{inputs, ...}: let
-  core = {
-    pkgConfig = {lib, ...}: {
-      nix.settings.experimental-features = "nix-command flakes";
-      nix.gc = {
-        automatic = lib.mkDefault true;
-        options = lib.mkDefault "--delete-older-than 7d";
-      };
-      nixpkgs.config.allowUnfree = true;
-    };
-    homeConfig = {
-      config,
-      user,
-      ...
-    }: {
-      home-manager.useGlobalPkgs = true;
-      home-manager.users.${user} = {
-        home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
-          username = user;
-          homeDirectory = config.users.users.${user}.home;
-        };
-        imports = config._module.args.homeMods;
-      };
-    };
-    linux = {
+{inputs, ...}: {
+  metal.nix = [
+    ({
       lib,
-      pkgs,
       user,
       machine,
       ...
@@ -62,8 +38,12 @@
           "libvirtd"
         ];
       };
+    })
+  ];
 
-      # ---- drivers ----
+  linux.nix = [
+    inputs.home-manager.nixosModules.home-manager
+    ({pkgs, ...}: {
       # gpu
       hardware.graphics = {
         enable = true;
@@ -104,8 +84,66 @@
         tumbler.enable = true;
         gvfs.enable = true;
       };
-    };
-    darwin = {user, ...}: {
+    })
+  ];
+
+  drivers = {
+    nvidia = [
+      ({config, ...}: {
+        nixpkgs.config.nvidia.acceptLicense = true;
+        services.xserver.videoDrivers = ["nvidia"];
+        hardware.nvidia = {
+          modesetting.enable = true;
+          package = config.boot.kernelPackages.nvidiaPackages.beta;
+          videoAcceleration = true;
+          open = false;
+        };
+        environment.variables = {
+          LIBVA_DRIVER_NAME = "nvidia";
+          NVD_BACKEND = "direct";
+          GBM_BACKEND = "nvidia-drm";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        };
+      })
+    ];
+    tablet = [
+      {
+        hardware.uinput.enable = true;
+        programs.weylus.enable = true;
+        services.udev.extraRules = ''KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput" '';
+      }
+    ];
+  };
+
+  global.nix = [
+    ({lib, ...}: {
+      nix.settings.experimental-features = "nix-command flakes";
+      nix.gc = {
+        automatic = lib.mkDefault true;
+        options = lib.mkDefault "--delete-older-than 7d";
+      };
+      nixpkgs.config.allowUnfree = true;
+    })
+    ({
+      config,
+      user,
+      ...
+    }: {
+      home-manager.useGlobalPkgs = true;
+      home-manager.users.${user} = {
+        home = {
+          stateVersion = "24.05"; # DO NOT CHANGE
+          username = user;
+          homeDirectory = config.users.users.${user}.home;
+        };
+        imports = config._module.args.homeMods;
+      };
+    })
+  ];
+
+  macbook.nix = [
+    inputs.home-manager.darwinModules.home-manager
+    ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
 
@@ -121,53 +159,7 @@
         home = "/Users/${user}";
         ignoreShellProgramCheck = true;
       };
-    };
-  };
-
-  drivers = {
-    nvidia = {config, ...}: {
-      nixpkgs.config.nvidia.acceptLicense = true;
-      services.xserver.videoDrivers = ["nvidia"];
-      hardware.nvidia = {
-        modesetting.enable = true;
-        package = config.boot.kernelPackages.nvidiaPackages.beta;
-        videoAcceleration = true;
-        open = false;
-      };
-      environment.variables = {
-        LIBVA_DRIVER_NAME = "nvidia";
-        NVD_BACKEND = "direct";
-        GBM_BACKEND = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      };
-    };
-    tablet = {
-      hardware.uinput.enable = true;
-      programs.weylus.enable = true;
-      services.udev.extraRules = ''KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput" '';
-    };
-  };
-in {
-  global.nix = [
-    core.pkgConfig
-    core.homeConfig
-  ];
-
-  desktop.nix = [
-    inputs.home-manager.nixosModules.home-manager
-    core.linux
-    drivers.nvidia
-    drivers.tablet
-  ];
-
-  laptop.nix = [
-    inputs.home-manager.nixosModules.home-manager
-    core.linux
-  ];
-
-  macbook.nix = [
-    inputs.home-manager.darwinModules.home-manager
-    core.darwin
+    })
     ({
       pkgs,
       user,
