@@ -64,4 +64,10 @@
       hardware.enableRedistributableFirmware = true;
     }
   ];
+
+  umbra.nix = [
+    ({modulesPath, ...}: {
+      imports = [(modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")];
+    })
+  ];
 }
