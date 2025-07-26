@@ -1,8 +1,4 @@
-{
-  inputs,
-  self,
-  ...
-}:
+{inputs, ...}:
 with inputs.nixpkgs.lib; rec {
   readDirRecursive = dir:
     concatMapAttrs (file:
@@ -43,7 +39,7 @@ with inputs.nixpkgs.lib; rec {
     (unique (attrNames a ++ attrNames b));
 
   # concats modules from imported files
-  mergeModules = dir: args: (pipe dir [
+  loadModules = dir: args: (pipe dir [
     readDirRecursive
     (filterAttrs (flip (const (hasSuffix ".nix"))))
     (mapAttrs (const import))
@@ -59,19 +55,8 @@ with inputs.nixpkgs.lib; rec {
     attrValues
   ]);
 
-  # concats profiles from singular module (subattrs under nix & home, eg desktop)
-  mergeProfiles = let
-    mod = mergeModules "${self}/modules" {inherit inputs self;};
-  in
-    prev: next: (genAttrs ["nix" "home"]
-      (type: mod.${prev}.${type} or [] ++ mod.${next}.${type} or []));
-
   # system helpers
-  withSystem.ifLinux = system: A: B:
-    if (hasSuffix "linux" "${system}")
-    then A
-    else B;
-  withSystem.ifDarwin = system: A: B:
+  withSystem.ifDarwinElseLinux = system: A: B:
     if (hasSuffix "darwin" "${system}")
     then A
     else B;
