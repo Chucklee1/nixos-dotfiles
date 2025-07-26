@@ -27,7 +27,7 @@ in {
     }
   ];
 
-  desktop.nix = [
+  laptop.nix = [
     ({
       lib,
       pkgs,
@@ -41,7 +41,7 @@ in {
           Address = "localhost";
           CacheFolder = "${dir}/navidrome/cache";
           DataFolder = "${dir}/navidrome/data";
-          MusicFolder = "${dir}/media/Music";
+          MusicFolder = "/media/Music";
           DefaultTheme = "Nord";
           CoverJpegQuality = "100";
         };
@@ -53,8 +53,8 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.writeShellScript "set perms" ''
-            chown -R goat:media /srv/media
-            chmod -R 750 /srv/media
+            chown -R goat:media /media
+            chmod -R 750 /media
 
           ''}";
         };
@@ -72,7 +72,7 @@ in {
   ];
   desktop.home = [(mpd "/srv/media")];
 
-  laptop.home = [(mpd "/home/media")];
+  laptop.home = [(mpd "/media")];
 
   macbook.nix = [
     ({pkgs, ...}: {
