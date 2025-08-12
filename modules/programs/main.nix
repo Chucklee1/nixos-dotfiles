@@ -1,9 +1,8 @@
 {self, ...}: {
   global.nix = [
     ({machine, ...}: {
-      # shell prompt
       programs.bash.promptInit = ''
-        PS1="\e[1;31m\]┌─[\[\e[0m\]\u\e[1;31m\]]\[\e[0m\] \[\e[1;36m\]\w\[\e[0m\]\n\[\e[1;31m\]└>\[\e[0m\] "
+        PS1="\e[1;31m\]┌─[\[\e[0m\]\u\e[1;31m\]]\[\e[0m\] \[\e[1;35m\]\w\[\e[0m\]\n\[\e[1;31m\]└>\[\e[0m\] "
       '';
       environment = {
         variables = {
