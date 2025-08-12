@@ -70,7 +70,10 @@
       imports = ["${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"];
       isoImage.squashfsCompression = "gzip";
       boot.zfs.forceImportRoot = false;
-      services.displayManager.autoLogin = true;
+      stylix.targets.grub.enable = false;
+      services.displayManager.cosmic-greeter.enable = true;
+      services.displayManager.autoLogin.enable = true;
+      services.displayManager.autoLogin.user = "nixos";
     })
   ];
 }
