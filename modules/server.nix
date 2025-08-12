@@ -22,7 +22,7 @@ in {
     {
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [22 80 443];
+        allowedTCPPorts = [22 80 443 8000 1901];
       };
     }
   ];
@@ -46,19 +46,6 @@ in {
           CoverJpegQuality = "100";
         };
     in {
-      systemd.services.set-perms = {
-        description = "set user permissions folders outside of $HOME";
-        wantedBy = ["multi-user.target"];
-        before = ["navidrome.service"];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.writeShellScript "set perms" ''
-            chown -R goat:media /media
-            chmod -R 750 /media
-
-          ''}";
-        };
-      };
       systemd.services.navidrome = {
         # port 4533
         enable = true;
@@ -71,7 +58,6 @@ in {
     })
   ];
   desktop.home = [(mpd "/srv/media")];
-
   laptop.home = [(mpd "/media")];
 
   macbook.nix = [
