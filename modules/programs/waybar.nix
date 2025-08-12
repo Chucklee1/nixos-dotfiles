@@ -10,7 +10,7 @@
       programs.waybar = with config.lib.stylix.colors.withHashtag; let
         merged = list: [(lib.mergeAttrsList list)];
         span = color: str: ''<span color="${color}" >${str}</span>'';
-        wms = ["hyprland" "niri" "sway"];
+        wm = "niri";
       in {
         settings = merged [
           # general
@@ -20,14 +20,14 @@
             height = 24;
           }
           # left
-          {modules-left = lib.concatMap (n: ["${n}/workspaces" "${n}/window"]) wms;}
-          (lib.concatMapAttrs (n: _: {
-            "${n}/window" = {
+          {
+            modules-left = ["${wm}/workspaces" "${wm}/window"];
+            "${wm}/window" = {
               tooltip = false;
               format = "{}";
               max-length = 150;
             };
-            "${n}/workspaces" = {
+            "${wm}/workspaces" = {
               disable-scroll = true;
               disable-markup = true;
               disable-click = true;
@@ -35,7 +35,7 @@
               format-icons.active = "";
               format-icons.default = "";
             };
-          }) (lib.genAttrs wms (_: {})))
+          }
           # center
           {
             modules-center = ["clock"];
