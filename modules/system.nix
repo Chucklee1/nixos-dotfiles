@@ -33,6 +33,7 @@
         extraGroups = [
           "media"
           "wheel"
+          "input"
           "networkmanager"
           "gamemode"
           "libvirtd"
