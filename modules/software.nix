@@ -67,8 +67,6 @@
         qbittorrent
         tenacity
       ];
-      programs.keepassxc.enable = false;
-      programs.vesktop.enable = false;
     })
   ];
 
@@ -130,7 +128,6 @@
         direnv.enable = true;
         git.enable = true;
         kitty.enable = true;
-        oh-my-posh.enable = true;
         yazi.enable = true;
         zathura.enable = true;
         # find help
@@ -144,14 +141,6 @@
   ];
 
   macbook.nix = [
-    # bash
-    {
-      programs.bash = {
-        completion.enable = true;
-        enable = true;
-        interactiveShellInit = "";
-      };
-    }
     {
       # homebrew
       homebrew = {
@@ -163,7 +152,7 @@
         };
         caskArgs.no_quarantine = true;
         #brews = [ ];
-        casks = ["kitty" "ghostty"];
+        casks = ["kitty"];
       };
     }
     # rice
