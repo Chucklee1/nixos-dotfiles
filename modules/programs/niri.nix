@@ -5,8 +5,7 @@
       ({pkgs, ...}: {
         nixpkgs.overlays = [inputs.niri.overlays.niri];
         programs.niri.package = pkgs.niri-unstable;
-        programs.niri.enable = false;
-        programs.sway.enable = true;
+        programs.niri.enable = true;
       })
     ];
     home = [
