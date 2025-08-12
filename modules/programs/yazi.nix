@@ -51,12 +51,6 @@
             rev = "4506f9d5032e714c0689be09d566dd877b9d464e";
             hash = "sha256-RWCqWBpbmU3sh/A+LBJPXL/AY292blKb/zZXGvIA5/o=";
           };
-          omp = pkgs.fetchFromGitHub {
-            owner = "saumyajyoti";
-            repo = "omp.yazi";
-            rev = "41f7e89b7f631d6186d1f085360fb6557924d685";
-            hash = "sha256-MvItTUorB0rWg7L3KXUsF3+1KE+wm38C1yAGSfpQ5gg=";
-          };
         };
 
         initLua =
@@ -80,7 +74,6 @@
                 },
               },
             })
-            require("omp"):setup({config = "${pkgs.oh-my-posh}/share/oh-my-posh/themes/pure.omp.json"})
           '';
 
         settings = {

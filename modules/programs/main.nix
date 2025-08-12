@@ -1,6 +1,10 @@
 {self, ...}: {
   global.nix = [
     ({machine, ...}: {
+      # shell prompt
+      programs.bash.promptInit = ''
+        PS1="\e[1;31m\]┌─[\[\e[0m\]\u\e[1;31m\]]\[\e[0m\] \[\e[1;36m\]\w\[\e[0m\]\n\[\e[1;31m\]└>\[\e[0m\] "
+      '';
       environment = {
         variables = {
           BASH_SILENCE_DEPRECATION_WARNING = "1";
@@ -50,7 +54,7 @@
         git.userName = "Chucklee1";
         lazygit.settings.notARepository = "skip";
         lazygit.settings.promptToReturnFromSubprocess = false;
-        oh-my-posh.useTheme = "pure";
+        kitty.shellIntegration.enableBashIntegration = false;
         kitty.settings = {
           cursor_shape = "beam";
           background_blur = 40;
