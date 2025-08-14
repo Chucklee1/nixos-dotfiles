@@ -6,51 +6,14 @@
   desktop.nix = [
     inputs.disko.nixosModules.default
     (import "${self}/assets/disko/desktop.nix")
-    /*
-    inputs.impermanence.nixosModules
-    ({pkgs, ...}: {
-      boot.initrd.systemd = {
-        enable = true;
-        services.initrd-rollback-root = {
-          after = ["zfs-import-rpool.service"];
-          wantedBy = ["initrd.target"];
-          before = ["sysroot.mount"];
-          path = [pkgs.zfs];
-          description = "Rollback root fs";
-          unitConfig.DefaultDependencies = "no";
-          serviceConfig.Type = "oneshot";
-          script = "zfs rollback -r rpool/root/emphereal@start";
-        };
-      };
-    })
     {
-      environment.persistence."/persist" = {
-        hideMounts = true;
-        directories = [
-          "/var/log"
-          "/var/lib/bluetooth"
-          "/var/lib/nixos"
-          "/var/lib/systemd/coredump"
-          "/etc/NetworkManager/system-connections"
-        ];
-        files = ["/etc/machine-id"];
-        users.goat.directories =
-          map (directory: {
-            inherit directory;
-            mode = "0700";
-          }) [
-            ".ssh"
-            "Repos"
-            "Documents"
-            "Downloads"
-            ".mozilla"
-            ".librewolf"
-            ".local/share/keyrings"
-            ".local/share/direnv"
-          ];
-      };
+      boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
+      boot.kernelModules = ["kvm-amd"];
+      boot.supportedFilesystems = ["ext4" "ntfs" "zfs"];
+      networking.hostId = "8425e349";
+      hardware.cpu.amd.updateMicrocode = true;
+      hardware.enableRedistributableFirmware = true;
     }
-    */
   ];
 
   laptop.nix = [

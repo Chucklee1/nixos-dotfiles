@@ -1,84 +1,92 @@
 {
-  disko.devices.disk.nvme = {
-    type = "disk";
-    device = "/dev/nvme0n1";
-    content.type = "gpt";
-    content.partitions = {
-      ESP = {
-        size = "1G"; # EFI system partition
-        type = "EF00"; # EFI partition type
-        content = {
-          type = "filesystem";
-          format = "vfat";
-          mountpoint = "/boot";
-          mountOptions = ["umask=0077"];
+  disko.devices = {
+    disk.nvme0n1 = {
+      type = "disk";
+      device = "/dev/nvme0n1";
+      content = {
+        type = "gpt";
+        partitions.ESP = {
+          size = "1G";
+          type = "EF00";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+            mountOptions = ["umask=0077"];
+          };
+        };
+        partitions.zfs = {
+          size = "100%";
+          content = {
+            type = "zfs";
+            pool = "rpool";
+          };
         };
       };
-      zfs_root = {
-        size = "remaining";
+    };
+    disk.sda = {
+      type = "disk";
+      device = "/dev/sda";
+      content = {
+        type = "gpt";
+        partitions.zfs = {
+          size = "100%";
+          content = {
+            type = "zfs";
+            pool = "rpool";
+          };
+        };
       };
     };
-  };
-
-  disko.devices.disk.sda = {
-    type = "disk";
-    device = "/dev/sda";
-    content.type = "gpt";
-    content.partitions = {
-      zfs_root = {
-        size = "remaining";
-      };
-    };
-  };
-
-  zpool = {
-    rpool = {
+    zpool.rpool = {
       type = "zpool";
-      options = {
-        ashift = "12";
-        autotrim = "on";
-      };
-      vdevs = [
-        {
-          type = "disk";
-          devices = ["/dev/nvme0n1p2" "/dev/sda1"];
-        }
-      ];
+      mode = "";
+      # Workaround: cannot import 'rpool': I/O error in disko tests
+      options.cachefile = "none";
       rootFsOptions = {
-        acltype = "posixacl";
-        canmount = "off";
-        compression = "zstd";
-        dnodesize = "auto";
-        normalization = "formD";
-        relatime = "on";
+        compression = "lz4";
+        atime = "off";
         xattr = "sa";
-        "com.sun:auto-snapshot" = "false";
+        "com.sun:auto-snapshot" = "true";
       };
+      postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^rpool@blank$' || zfs snapshot rpool@blank";
+
       datasets = {
         root = {
           type = "zfs_fs";
-          options.mountpoint = "none";
-        };
-        "root/emphereal" = {
-          type = "zfs_fs";
-          options.mountpoint = "legacy";
           mountpoint = "/";
-          postCreateHook = "zfs snapshot rpool/root/empty@start";
         };
-        "root/nix" = {
+        nix = {
           type = "zfs_fs";
-          options.mountpoint = "legacy";
           mountpoint = "/nix";
         };
-        "root/srv" = {
+        home = {
           type = "zfs_fs";
-          options.mountpoint = "legacy";
-          mountpoint = "/srv";
+          mountpoint = "/home";
+          options.relatime = "on";
         };
-        "root/persist" = {
+        opt = {
           type = "zfs_fs";
-          options.mountpoint = "legacy";
-          mountpoint = "/persist";
+          mountpoint = "/opt";
+        };
+        srv = {
+          type = "zfs_fs";
+          mountpoint = "/srv";
+          options = {
+            compression = "zstd";
+            recordsize = "1M";
+            xattr = "on";
+            "com.sun:auto-snapshot" = "false";
+          };
+        };
+        srv_secure = {
+          type = "zfs_fs";
+          options = {
+            mountpoint = "/srv/secure";
+            encryption = "aes-256-gcm";
+            keyformat = "raw";
+            keylocation = "file:///tmp/key/zfs.key";
+          };
         };
       };
     };
