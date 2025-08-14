@@ -4,7 +4,7 @@
 
 - desktop: desktop
 - macbook: macbook
-- umbra: vm testing
+- umbra: iso image
 
 ## TODO:
 
@@ -22,7 +22,8 @@
     - format disk:
         - `just format <layout> <device>`
         - layout expands to `pwd/assets/disko/<layout>.nix` (currently ext4 & desktop)
-        - device can be any format such as `/dev/sdx` or `/dev/disk/by-uuid/sdx`
+        - device can be any format such as `/dev/sdx`, or `/dev/disk/by-uuid/sdx`
+        - the device argument can be omitted if there selected config does not use device inputs
     - get hardware info:
         - `just show-hardware`
         - from there you can add that info to hardware.nix or use a preset

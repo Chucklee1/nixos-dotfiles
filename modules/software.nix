@@ -123,7 +123,6 @@
       home.packages = [pkgs.rmpc];
       # programs
       programs = {
-        bash.enable = true;
         btop.enable = true;
         direnv.enable = true;
         git.enable = true;

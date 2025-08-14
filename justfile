@@ -24,5 +24,5 @@ update:
 
 rebuild profile:
     sudo nixos-rebuild switch \
-        --flake {{pwd}}#profile \
+        --flake {{pwd}}#{{profile}} \
         {{build_flags}}
