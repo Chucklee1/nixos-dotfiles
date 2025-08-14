@@ -10,9 +10,6 @@
   inputs.disko.url = "github:nix-community/disko";
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
 
-  # ---- emphereal system ----
-  inputs.impermanence.url = "github:nix-community/impermanence";
-
   # ---- macos ----
   inputs.nix-darwin.url = "github:LnL7/nix-darwin/master";
   inputs.nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -29,100 +26,16 @@
   # ---- wayland ----
   inputs.niri.url = "github:sodiboo/niri-flake";
 
-  outputs = {
-    self,
-    nixpkgs,
-    nix-darwin,
-    ...
-  } @ inputs: let
+  outputs = {self, ...} @ inputs: let
     # ---- additionals ----
     extlib = import ./outputs/libs.nix {inherit inputs self;};
-    devShells = extlib.allSystemsWithPkgs (
-      pkgs: import ./outputs/devshells.nix {inherit inputs pkgs;}
-    );
-
-    # ---- system  ----
-    profiles = let
-      mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
-    in {
-      nixos = {
-        desktop = {
-          system = "x86_64-linux";
-          modules = [
-            mod.desktop
-            mod.global
-            mod.linux
-            mod.metal
-            mod.wayland
-            mod.nvidia
-          ];
-          user = "goat";
-        };
-        laptop = {
-          system = "x86_64-linux";
-          modules = [
-            mod.laptop
-            mod.global
-            mod.linux
-            mod.metal
-            mod.wayland
-          ];
-          user = "goat";
-        };
-        umbra = {
-          system = "x86_64-linux";
-          modules = [
-            mod.umbra
-            mod.global
-            mod.linux
-            mod.wayland
-          ];
-          user = "nixos";
-        };
-      };
-      darwin.macbook = {
-        system = "aarch64-darwin";
-        modules = [
-          mod.global
-          mod.macbook
-        ];
-        user = "goat";
-      };
-    };
-
-    mkSystems = cfgs:
-      nixpkgs.lib.mapAttrs (machine: cfg: let
-        builder =
-          if cfgs ? darwin
-          then nix-darwin.lib.darwinSystem
-          else nixpkgs.lib.nixosSystem;
-        mod = {
-          nix = builtins.concatLists (map (m: m.nix or []) cfg.modules);
-          home = builtins.concatLists (map (m: m.home or []) cfg.modules);
-        };
-        specialArgs = {
-          inherit machine;
-          inherit (cfg) system user;
-          MOL = A: B: extlib.withSystem.ifDarwinElseLinux cfg.system A B;
-        };
-      in
-        builder {
-          inherit (cfg) system;
-          inherit specialArgs;
-          modules =
-            builtins.concatLists
-            [
-              mod.nix
-              [{_module.args.homeMods = mod.home;}]
-              [{home-manager.extraSpecialArgs = specialArgs;}]
-            ];
-        })
-      cfgs;
+    devShells = extlib.allSystemsWithPkgs (pkgs: import ./outputs/devshells.nix {inherit inputs pkgs;});
+    sys = import ./outputs/profiles.nix {inherit inputs self extlib;};
   in {
     #inherit (self) outputs;
     inherit devShells extlib;
-    nixosConfigurations = mkSystems profiles.nixos;
-    darwinConfigurations = mkSystems profiles.darwin;
+    nixosConfigurations = sys.mkSystems sys.profiles.nixos;
+    darwinConfigurations = sys.mkSystems sys.profiles.darwin;
     apps.x86_64-linux.umbra = {
       type = "app";
       program = "${self.nixosConfigurations."umbra".config.system.build.vm}/bin/run-nixos-vm";
