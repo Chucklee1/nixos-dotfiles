@@ -14,7 +14,7 @@
         winetricks
         # games
         osu-lazer-bin
-        prismlauncher
+        #prismlauncher
         openmw
       ];
       programs.gamemode = {
@@ -35,7 +35,7 @@
       # roblox
       services.flatpak.enable = true;
       systemd.services.flatpak-repo = {
-        nable = false;
+        enable = false;
         wantedBy = ["multi-user.target"];
         path = [pkgs.flatpak];
         script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo '';
