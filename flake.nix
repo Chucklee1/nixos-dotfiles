@@ -5,6 +5,8 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.home-manager.url = "github:nix-community/home-manager";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nur.url = "github:nix-community/NUR";
+  inputs.nur.inputs.nixpkgs.follows = "nixpkgs";
 
   # ---- disk formatting ----
   inputs.disko.url = "github:nix-community/disko";
