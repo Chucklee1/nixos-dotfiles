@@ -1,27 +1,18 @@
 {inputs, ...}: {
-  global.nix = [{nixpkgs.overlays = [inputs.nur.overlay];}];
+  global.nix = [{nixpkgs.overlays = [inputs. nur.overlays.default];}];
   global.home = [
     ({pkgs, ...}: {
-      librewolf = {
+      stylix.targets.librewolf.profileNames = ["default"];
+      programs.librewolf = {
         settings = {
-          # security
-          "privacy.resistFingerprinting" = false;
-          "security.OCSP.require" = false;
-          # layout
           "sidebar.verticalTabs" = true;
           "sidebar.expandOnHover" = true;
           "sidebar.main.tools" = "history,bookmarks";
           "browser.toolbars.bookmarks.visibility" = "never";
         };
-        default = {
-          id = 0;
+        profiles.default = {
           name = "default";
           isDefault = true;
-          settings = {
-            "browser.startup.homepage" = "https://searx.aicampground.com";
-            "browser.search.defaultenginename" = "";
-            "browser.search.order.1" = "Searx";
-          };
           search = {
             force = true;
             default = "StartPage";
@@ -48,20 +39,20 @@
               };
               "NixOS Wiki" = {
                 urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
-                iconUpdateURL = "https://nixos.wiki/favicon.png";
+                icon = "https://nixos.wiki/favicon.png";
                 updateInterval = 24 * 60 * 60 * 1000; # every day
                 definedAliases = ["@nw"];
               };
               "MyNixOS" = {
                 urls = [{template = "https://mynixos.com/search?q={searchTerms}";}];
-                iconUpdateURL = "https://mynixos.com/static/icons/mnos-logo.svg";
+                icon = "https://mynixos.com/static/icons/mnos-logo.svg";
                 updateInterval = 24 * 60 * 60 * 1000; # every day
                 definedAliases = ["@mn"];
               };
               "StartPage".metaData.alias = "@sp"; # builtin engines only support specifying one additional alias
             };
           };
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
             ublock-origin
             darkreader
             vimium

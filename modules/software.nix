@@ -1,60 +1,37 @@
 {inputs, ...}: {
-  gaming.nix = [
+  global.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
-        # emulation
-        cemu
-        joycond
-        joycond-cemuhook
-        ryubing
-        # wine
-        zenity
-        wine
-        wineWowPackages.stagingFull
-        winetricks
-        # games
-        osu-lazer-bin
-        #prismlauncher
-        openmw
+        curl
+        gcc
+        gdb # GNU debugger
+        ffmpeg-full
+        imagemagick
+        python3
       ];
-      programs.gamemode = {
-        enable = true;
-        settings.general.desiredgov = "performance";
-        settings.general.renice = 10;
-      };
-      programs.steam = {
-        enable = true;
-        protontricks.enable = true;
-        gamescopeSession.enable = true;
-        extraCompatPackages = [pkgs.proton-ge-bin];
-        remotePlay.openFirewall = true;
-        dedicatedServer.openFirewall = true;
-        localNetworkGameTransfers.openFirewall = true;
-      };
-
-      # roblox
-      services.flatpak.enable = true;
-      systemd.services.flatpak-repo = {
-        enable = false;
-        wantedBy = ["multi-user.target"];
-        path = [pkgs.flatpak];
-        script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo '';
-      };
     })
   ];
-  gaming.home = [{programs.mangohud.enable = true;}];
+  global.home = [
+    {
+      programs = {
+        btop.enable = true;
+        direnv.enable = true;
+        git.enable = true;
+        kitty.enable = true;
+        yazi.enable = true;
+      };
+    }
+  ];
 
   linux.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
-      programs = {
-        nix-ld.enable = true;
-        dconf.enable = true;
-      };
+      programs.dconf.enable = true;
     })
   ];
   linux.home = [{programs.librewolf.enable = true;}];
 
+  metal.nix = [{programs.nix-ld.enable = true;}];
   metal.home = [
     ({pkgs, ...}: {
       home.packages = with pkgs; [
@@ -69,6 +46,70 @@
       ];
     })
   ];
+
+  additions = let
+    base = {nixpkgs.overlays = [inputs.nix-vim.overlays.default];};
+  in {
+    core.nix = [base ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.core];})];
+    full.nix = [base ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.full];})];
+    full.home = [
+      ({pkgs, ...}: {
+        home.packages = [pkgs.rmpc];
+        programs = {
+          zathura.enable = true;
+          fzf.enable = true;
+          zoxide = {
+            enable = true;
+            options = ["--cmd cd"];
+          };
+        };
+      })
+    ];
+    gaming.nix = [
+      ({pkgs, ...}: {
+        environment.systemPackages = with pkgs; [
+          # emulation
+          cemu
+          joycond
+          joycond-cemuhook
+          ryubing
+          # wine
+          zenity
+          wine
+          wineWowPackages.stagingFull
+          winetricks
+          # games
+          osu-lazer-bin
+          #prismlauncher
+          openmw
+        ];
+        programs.gamemode = {
+          enable = true;
+          settings.general.desiredgov = "performance";
+          settings.general.renice = 10;
+        };
+        programs.steam = {
+          enable = true;
+          protontricks.enable = true;
+          gamescopeSession.enable = true;
+          extraCompatPackages = [pkgs.proton-ge-bin];
+          remotePlay.openFirewall = true;
+          dedicatedServer.openFirewall = true;
+          localNetworkGameTransfers.openFirewall = true;
+        };
+
+        # roblox
+        services.flatpak.enable = true;
+        systemd.services.flatpak-repo = {
+          enable = false;
+          wantedBy = ["multi-user.target"];
+          path = [pkgs.flatpak];
+          script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo '';
+        };
+      })
+    ];
+    gaming.home = [{programs.mangohud.enable = true;}];
+  };
 
   wayland.nix = [
     ({pkgs, ...}: {
@@ -101,41 +142,6 @@
       programs.swaylock.package = pkgs.swaylock-effects;
       programs.waybar.enable = true;
       programs.waybar.systemd.enable = true;
-    })
-  ];
-
-  global.nix = [
-    ({pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        nixvim.full
-        curl
-        gcc
-        gdb # GNU debugger
-        ffmpeg-full
-        imagemagick
-        python3
-      ];
-    })
-    {nixpkgs.overlays = [inputs.nix-vim.overlays.default];}
-  ];
-  global.home = [
-    ({pkgs, ...}: {
-      home.packages = [pkgs.rmpc];
-      # programs
-      programs = {
-        btop.enable = true;
-        direnv.enable = true;
-        git.enable = true;
-        kitty.enable = true;
-        yazi.enable = true;
-        zathura.enable = true;
-        # find help
-        fzf.enable = true;
-        zoxide = {
-          enable = true;
-          options = ["--cmd cd"];
-        };
-      };
     })
   ];
 

@@ -40,6 +40,7 @@
         ];
       };
     })
+    {services.fstrim.enable = true;}
   ];
 
   linux.nix = [
@@ -81,15 +82,13 @@
       # misc
       services = {
         printing.enable = true;
-        fstrim.enable = true;
-        tumbler.enable = true;
         gvfs.enable = true;
       };
     })
   ];
 
   drivers = {
-    nvidia = [
+    nvidia.nix = [
       ({config, ...}: {
         nixpkgs.config.nvidia.acceptLicense = true;
         services.xserver.videoDrivers = ["nvidia"];
@@ -107,7 +106,7 @@
         };
       })
     ];
-    tablet = [
+    tablet.nix = [
       {
         hardware.uinput.enable = true;
         programs.weylus.enable = true;

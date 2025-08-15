@@ -11,23 +11,49 @@
     nixos = {
       desktop = {
         system = "x86_64-linux";
-        modules = with mod; [desktop global gaming linux metal wayland drivers.nvidia];
+        modules = with mod; [
+          global
+          desktop
+          linux
+          metal
+          wayland
+          drivers.nvidia
+          additions.full
+          additions.gaming
+        ];
         user = "goat";
       };
       laptop = {
         system = "x86_64-linux";
-        modules = with mod; [laptop global linux metal wayland];
+        modules = with mod; [
+          global
+          laptop
+          linux
+          metal
+          wayland
+          additions.full
+        ];
         user = "goat";
       };
       umbra = {
         system = "x86_64-linux";
-        modules = with mod; [umbra global linux wayland];
+        modules = with mod; [
+          global
+          umbra
+          linux
+          wayland
+          additions.core
+        ];
         user = "nixos";
       };
     };
     darwin.macbook = {
       system = "aarch64-darwin";
-      modules = with mod; [global macbook];
+      modules = with mod; [
+        global
+        macbook
+        additions.full
+      ];
       user = "goat";
     };
   };

@@ -15,10 +15,10 @@ let
     };
   };
 in {
-  global.nix = [{services.tailscale.enable = true;}];
-  global.home = [{services.syncthing.enable = true;}];
+  additions.full.nix = [{services.tailscale.enable = true;}];
+  additions.full.home = [{services.syncthing.enable = true;}];
 
-  linux.nix = [
+  metal.nix = [
     {
       networking.firewall = {
         enable = true;
@@ -57,8 +57,8 @@ in {
       services.audiobookshelf.enable = true; # port = 8000;
     })
   ];
-  desktop.home = [(mpd "/srv/media")];
   laptop.home = [(mpd "/media")];
+  desktop.home = [(mpd "/srv/media")];
 
   macbook.nix = [
     ({pkgs, ...}: {

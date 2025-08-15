@@ -1,54 +1,46 @@
-{self, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
   global.nix = [
-    ({machine, ...}: {
-      programs.zsh.enable = true;
-      programs.zsh.promptInit = ''
-        PS1="\e[1;31m\]┌─[\[\e[0m\]\u\e[1;31m\]]\[\e[0m\] \[\e[1;35m\]\w\[\e[0m\]\n\[\e[1;31m\]└>\[\e[0m\] "
-      '';
+    ({
+      pkgs,
+      machine,
+      ...
+    }: {
+      #shell
+      users.defaultUserShell = pkgs.zsh;
+      programs.zsh = {
+        enable = true;
+        syntaxHighlighting.enable = true;
+        promptInit = ''
+          PS1=$'%F{red}┌─[%f%n%F{red}]%f %F{magenta}%~\n%F{red}└> %f'
+        '';
+      };
+      # global shell opts
       environment = {
         variables = {
           BASH_SILENCE_DEPRECATION_WARNING = "1";
           TERMINAL = "kitty";
           EDITOR = "nvim";
         };
-        shellAliases = {
+        shellAliases = let
+          rebuild_cmd =
+            if machine == "macbook"
+            then "darwin-rebuild"
+            else "nixos-rebuild";
+        in {
           y = "yazi";
-          rebuild-flake = "sudo nixos-rebuild switch --flake $HOME/nixos-dotfiles#${machine} --show-trace --impure";
+          rebuild-flake = "sudo ${rebuild_cmd} switch --flake $HOME/nixos-dotfiles#${machine} --show-trace --impure";
         };
       };
     })
   ];
-  macbook = {
-    nix = [
-      ({
-        lib,
-        config,
-        machine,
-        ...
-      }:
-        with config.lib.stylix.colors; let
-        in {
-          services.jankyborders = {
-            active_color = ''0xFF${base0D}'';
-            inactive_color = ''0x00${base0D}'';
-            style = "round";
-            width = 3.0;
-          };
-          shellAliases = {
-            rebuild-flake = lib.mkOverride "sudo darwin-rebuild switch --flake $HOME/nixos-dotfiles#${machine} --show-trace --impure";
-          };
-        })
-    ];
-    home = [
-      {
-        home.file.".config/sketchybar".source = "${self}/assets/sketchybar";
-      }
-    ];
-  };
-
   global.home = [
     {
       home.file.".config/rmpc".source = "${self}/assets/rmpc";
+      home.file.".zshrc".text = ""; # '' '';
       programs = {
         git.userEmail = "kermitthefrog@kakao.com";
         git.userName = "Chucklee1";
@@ -66,4 +58,16 @@
       };
     }
   ];
+  macbook.nix = [
+    ({config, ...}:
+      with config.lib.stylix.colors; {
+        services.jankyborders = {
+          active_color = ''0xFF${base0D}'';
+          inactive_color = ''0x00${base0D}'';
+          style = "round";
+          width = 3.0;
+        };
+      })
+  ];
+  macbook.home = [{home.file.".config/sketchybar".source = "${self}/assets/sketchybar";}];
 }
