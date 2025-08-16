@@ -31,11 +31,16 @@
   umbra.nix = [
     ({modulesPath, ...}: {
       imports = ["${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"];
+      isoImage.showConfiguration = true;
       boot.zfs.forceImportRoot = false;
       stylix.targets.grub.enable = false;
+    })
+  ];
+  installer.graphical.nix = [
+    {
       services.displayManager.cosmic-greeter.enable = true;
       services.displayManager.autoLogin.enable = true;
       services.displayManager.autoLogin.user = "nixos";
-    })
+    }
   ];
 }
