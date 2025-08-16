@@ -2,23 +2,27 @@
   global.nix = [
     ({machine, ...}: {
       #shell
-      programs.zsh = {
-        syntaxHighlighting.enable = true;
-        promptInit =
-          #zsh
-          ''
-            if [ "$0" == "zsh" ]; then
-              PROMPT="%F{red}"
-              DIR=$'%F{magenta}%~\n'
-              PS1="$PROMPT┌─[%f%n$PROMPT] $DIR$PROMPT└> %f"
-            else
-              PROMPT="\033[1;31m"
-              DIR="\033[1;35m"
-              ESC="\033[0m"
-              PS1=$'%{PROMPT}┌─[$ESC\u$PROMPT] %{DIR}\w\n%{PROMPT}└> %{ESC}'
-            fi
-          '';
-      };
+      programs.zsh =
+        if machine == "macbook"
+        then {enableSyntaxHighlighting = true;}
+        else
+          {syntaxHighlighting.enable = true;}
+          // {
+            promptInit =
+              #zsh
+              ''
+                if [ "$0" == "zsh" ]; then
+                  PROMPT="%F{red}"
+                  DIR=$'%F{magenta}%~\n'
+                  PS1="$PROMPT┌─[%f%n$PROMPT] $DIR$PROMPT└> %f"
+                else
+                  PROMPT="\033[1;31m"
+                  DIR="\033[1;35m"
+                  ESC="\033[0m"
+                  PS1=$'%{PROMPT}┌─[$ESC\u$PROMPT] %{DIR}\w\n%{PROMPT}└> %{ESC}'
+                fi
+              '';
+          };
       # global shell opts
       environment = {
         variables = {
