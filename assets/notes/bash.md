@@ -8,7 +8,7 @@
     done
 ```
 
-- Output base-name of file without extension: `${name%*}`
+- Output base-name of file without extension: `${name%*.*}`
 
 # ---- ansi escape codes ----
 
@@ -37,8 +37,8 @@
 # --- FFMPEG Syntax ----
 
 - codec:
-  - `-c:a <codec>` or `-c:v <codec>`
-  - `-c` refers to the codec-type-flag
-  - part after the colon specifies which stream
-  - a -> audio ; v -> video
-  - `<codec>` where you would insert the codec
+    - `-c:a <codec>` or `-c:v <codec>`
+    - `-c` refers to the codec-type-flag
+    - part after the colon specifies which stream
+    - a -> audio ; v -> video
+    - `<codec>` where you would insert the codec
