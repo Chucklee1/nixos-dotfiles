@@ -41,8 +41,21 @@
           global
           umbra
           linux
-          wayland
           additions.core
+          {
+            isoImage.edition = "minimal";
+
+            specialisation.niri.configuration = {...}: {
+              imports = [
+                installer.graphical
+                wayland
+              ];
+              isoImage.configurationName = "Niri (Wayland Graphical)";
+            };
+            specialisation.minimal.configuration = {...}: {
+              isoImage.configurationName = "Minimal (tty)";
+            };
+          }
         ];
         user = "nixos";
       };
