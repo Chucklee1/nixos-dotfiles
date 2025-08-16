@@ -8,59 +8,57 @@
   profiles = let
     mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
   in {
-    nixos = {
-      desktop = {
-        system = "x86_64-linux";
-        modules = with mod; [
-          global
-          desktop
-          linux
-          metal
-          wayland
-          drivers.nvidia
-          additions.full
-          additions.gaming
-        ];
-        user = "goat";
-      };
-      laptop = {
-        system = "x86_64-linux";
-        modules = with mod; [
-          global
-          laptop
-          linux
-          metal
-          wayland
-          additions.full
-        ];
-        user = "goat";
-      };
-      umbra = {
-        system = "x86_64-linux";
-        modules = with mod; [
-          global
-          umbra
-          linux
-          additions.core
-          {
-            isoImage.edition = "minimal";
-
-            specialisation.niri.configuration = {...}: {
-              imports = [
-                installer.graphical
-                wayland
-              ];
-              isoImage.configurationName = "Niri (Wayland Graphical)";
-            };
-            specialisation.minimal.configuration = {...}: {
-              isoImage.configurationName = "Minimal (tty)";
-            };
-          }
-        ];
-        user = "nixos";
-      };
+    desktop = {
+      system = "x86_64-linux";
+      modules = with mod; [
+        global
+        desktop
+        linux
+        metal
+        wayland
+        drivers.nvidia
+        additions.full
+        additions.gaming
+      ];
+      user = "goat";
     };
-    darwin.macbook = {
+    laptop = {
+      system = "x86_64-linux";
+      modules = with mod; [
+        global
+        laptop
+        linux
+        metal
+        wayland
+        additions.full
+      ];
+      user = "goat";
+    };
+    umbra = {
+      system = "x86_64-linux";
+      modules = with mod; [
+        global
+        umbra
+        linux
+        additions.core
+        {
+          isoImage.edition = "minimal";
+
+          specialisation.niri.configuration = {...}: {
+            imports = [
+              installer.graphical
+              wayland
+            ];
+            isoImage.configurationName = "Niri (Wayland Graphical)";
+          };
+          specialisation.minimal.configuration = {...}: {
+            isoImage.configurationName = "Minimal (tty)";
+          };
+        }
+      ];
+      user = "nixos";
+    };
+    macbook = {
       system = "aarch64-darwin";
       modules = with mod; [
         global
@@ -74,7 +72,7 @@
   mkSystems = cfgs:
     inputs.nixpkgs.lib.mapAttrs (machine: cfg: let
       builder =
-        if cfgs ? darwin
+        if machine == "macbook"
         then inputs.nix-darwin.lib.darwinSystem
         else inputs.nixpkgs.lib.nixosSystem;
       mod = {
