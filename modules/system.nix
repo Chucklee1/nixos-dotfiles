@@ -165,9 +165,6 @@
       user,
       ...
     }: {
-      # no zsh
-      users.users.${user}.shell = pkgs.bash;
-
       # defaults
       system.defaults.WindowManager.StandardHideDesktopIcons = true;
       system.defaults.dock = {

@@ -30,7 +30,6 @@
   global.home = [
     ({pkgs, ...}: {
       programs.yazi = {
-        enableBashIntegration = true;
         shellWrapperName = "y";
 
         plugins = {

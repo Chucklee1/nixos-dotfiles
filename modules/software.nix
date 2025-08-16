@@ -71,7 +71,6 @@
         programs = {
           zathura.enable = true;
           fzf.enable = true;
-          bash.enable = true;
           zoxide = {
             enable = true;
             options = ["--cmd cd"];

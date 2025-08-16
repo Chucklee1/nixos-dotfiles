@@ -3,7 +3,6 @@
     ({machine, ...}: {
       #shell
       programs.zsh = {
-        enable = true;
         syntaxHighlighting.enable = true;
         promptInit =
           #zsh
@@ -47,7 +46,6 @@
         git.userName = "Chucklee1";
         lazygit.settings.notARepository = "skip";
         lazygit.settings.promptToReturnFromSubprocess = false;
-        kitty.shellIntegration.enableBashIntegration = false;
         kitty.settings = {
           cursor_shape = "beam";
           background_blur = 40;
