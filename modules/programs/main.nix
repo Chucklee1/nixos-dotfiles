@@ -1,22 +1,24 @@
-{
-  inputs,
-  self,
-  ...
-}: {
+{self, ...}: {
   global.nix = [
-    ({
-      pkgs,
-      machine,
-      ...
-    }: {
+    ({machine, ...}: {
       #shell
-      users.defaultUserShell = pkgs.zsh;
       programs.zsh = {
         enable = true;
         syntaxHighlighting.enable = true;
-        promptInit = ''
-          PS1=$'%F{red}┌─[%f%n%F{red}]%f %F{magenta}%~\n%F{red}└> %f'
-        '';
+        promptInit =
+          #zsh
+          ''
+            if [ "$0" == "zsh" ]; then
+              PROMPT="%F{red}"
+              DIR=$'%F{magenta}%~\n'
+              PS1="$PROMPT┌─[%f%n$PROMPT] $DIR$PROMPT└> %f"
+            else
+              PROMPT="\033[1;31m"
+              DIR="\033[1;35m"
+              ESC="\033[0m"
+              PS1=$'%{PROMPT}┌─[$ESC\u$PROMPT] %{DIR}\w\n%{PROMPT}└> %{ESC}'
+            fi
+          '';
       };
       # global shell opts
       environment = {
@@ -40,7 +42,6 @@
   global.home = [
     {
       home.file.".config/rmpc".source = "${self}/assets/rmpc";
-      home.file.".zshrc".text = ""; # '' '';
       programs = {
         git.userEmail = "kermitthefrog@kakao.com";
         git.userName = "Chucklee1";

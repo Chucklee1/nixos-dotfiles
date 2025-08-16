@@ -1,6 +1,10 @@
 {inputs, ...}: {
+  /*
+  ---- global ----
+  */
   global.nix = [
     ({pkgs, ...}: {
+      programs.zsh.enable = true;
       environment.systemPackages = with pkgs; [
         curl
         gcc
@@ -19,10 +23,14 @@
         git.enable = true;
         kitty.enable = true;
         yazi.enable = true;
+        zsh.enable = true;
       };
     }
   ];
 
+  /*
+  ---- linux ----
+  */
   linux.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
@@ -31,6 +39,9 @@
   ];
   linux.home = [{programs.librewolf.enable = true;}];
 
+  /*
+  ---- metal ----
+  */
   metal.nix = [{programs.nix-ld.enable = true;}];
   metal.home = [
     ({pkgs, ...}: {
@@ -46,7 +57,9 @@
       ];
     })
   ];
-
+  /*
+  ---- additions ----
+  */
   additions = let
     base = {nixpkgs.overlays = [inputs.nix-vim.overlays.default];};
   in {
@@ -58,11 +71,18 @@
         programs = {
           zathura.enable = true;
           fzf.enable = true;
+          bash.enable = true;
           zoxide = {
             enable = true;
             options = ["--cmd cd"];
           };
         };
+      })
+    ];
+    emacs.home = [
+      ({pkgs, ...}: {
+        programs.emacs.enable = true;
+        programs.emacs.package = pkgs.emacs-nox;
       })
     ];
     gaming.nix = [
@@ -111,6 +131,9 @@
     gaming.home = [{programs.mangohud.enable = true;}];
   };
 
+  /*
+  ---- wayland ----
+  */
   wayland.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -145,6 +168,9 @@
     })
   ];
 
+  /*
+  ---- profile specific ----
+  */
   macbook.nix = [
     {
       # homebrew
