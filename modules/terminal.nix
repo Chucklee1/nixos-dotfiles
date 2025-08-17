@@ -1,7 +1,6 @@
 {
   global.nix = [
     ({pkgs, ...}: {
-      users.defaultUserShell = pkgs.zsh;
       environment.shells = with pkgs; [bash zsh];
 
       programs.zsh = {
@@ -33,6 +32,20 @@
   ];
   global.home = [{programs.zsh.enable = true;}];
 
-  linux.nix = [{programs.zsh.syntaxHighlighting.enable = true;}];
-  macbook.nix = [{programs.zsh.enableSyntaxHighlighting = true;}];
+  linux.nix = [
+    ({pkgs, ...}: {
+      users.defaultUserShell = pkgs.zsh;
+      programs.zsh.syntaxHighlighting.enable = true;
+    })
+  ];
+  macbook.nix = [
+    ({
+      pkgs,
+      user,
+      ...
+    }: {
+      users.users.${user}.shell = pkgs.zsh;
+      programs.zsh.enableSyntaxHighlighting = true;
+    })
+  ];
 }
