@@ -1,8 +1,4 @@
-{
-  inputs,
-  self,
-  ...
-}: {
+{ self, ... }: {
   global.home = [
     {
       programs = {
@@ -38,30 +34,12 @@
     }
   ];
 
-  additions = let
-    base = {nixpkgs.overlays = [inputs.nix-vim.overlays.default];};
-  in {
-    core.nix = [base ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.core];})];
-    full.nix = [
-      base
-      ({
-        pkgs,
-        machine,
-        ...
-      }: {
-        environment.systemPackages =
-          if machine == "macbook"
-          then [pkgs.nixvim.darwin]
-          else [pkgs.nixvim.full];
-      })
-    ];
-    full.home = [
-      ({pkgs, ...}: {
-        home.packages = [pkgs.rmpc];
-        home.file.".config/rmpc".source = "${self}/assets/rmpc";
-      })
-    ];
-  };
+  additions.full.home = [
+    ({pkgs, ...}: {
+      home.packages = [pkgs.rmpc];
+      home.file.".config/rmpc".source = "${self}/assets/rmpc";
+    })
+  ];
 
   macbook.nix = [
     ({config, ...}:
