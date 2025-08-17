@@ -64,8 +64,9 @@
       modules = with mod; [
         global
         macbook
-        additions.full
-      ];
+        emacs
+	additions.full      
+    ];
       user = "goat";
     };
   };
