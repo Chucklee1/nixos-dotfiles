@@ -14,6 +14,7 @@
       ...
     }: {
       home-manager.useGlobalPkgs = true;
+      home-manager.backupFileExtension = "backup";
       home-manager.users.${user} = {
         home = {
           stateVersion = "24.05"; # DO NOT CHANGE
