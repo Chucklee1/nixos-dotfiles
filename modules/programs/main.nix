@@ -1,4 +1,4 @@
-{ self, ... }: {
+{self, ...}: {
   global.home = [
     {
       programs = {
@@ -40,19 +40,4 @@
       home.file.".config/rmpc".source = "${self}/assets/rmpc";
     })
   ];
-
-  macbook.nix = [
-    ({config, ...}:
-      with config.lib.stylix.colors; {
-        services.sketchybar.enable = true;
-        services.jankyborders = {
-          enable = true;
-          active_color = ''0xFF${base0D}'';
-          inactive_color = ''0x00${base0D}'';
-          style = "round";
-          width = 3.0;
-        };
-      })
-  ];
-  macbook.home = [{home.file.".config/sketchybar".source = "${self}/assets/sketchybar";}];
 }
