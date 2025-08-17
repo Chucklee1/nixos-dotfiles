@@ -9,7 +9,7 @@
     {
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm-amd"];
-      boot.supportedFilesystems = ["ext4" "ntfs" "zfs"];
+      boot.supportedFilesystems = ["btrfs" "ext4" "ntfs" "zfs"];
       networking.hostId = "8425e349";
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;

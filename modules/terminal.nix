@@ -31,6 +31,7 @@
       };
     })
   ];
+  global.home = [{programs.zsh.enable = true;}];
 
   linux.nix = [{programs.zsh.syntaxHighlighting.enable = true;}];
   macbook.nix = [{programs.zsh.enableSyntaxHighlighting = true;}];
