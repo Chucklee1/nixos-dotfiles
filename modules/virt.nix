@@ -1,5 +1,5 @@
 {
-  desktop.nix = [
+  virt.nix = [
     # docker
     ({pkgs, ...}: {
       virtualisation.containers.enable = true;
@@ -45,7 +45,7 @@
       };
     })
   ];
-  desktop.home = [
+  virt.home = [
     {
       dconf.settings."org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];

@@ -1,4 +1,30 @@
 {inputs, ...}: {
+  global.nix = [
+    ({lib, ...}: {
+      nix.settings.experimental-features = "nix-command flakes";
+      nix.gc = {
+        automatic = lib.mkDefault true;
+        options = lib.mkDefault "--delete-older-than 7d";
+      };
+      nixpkgs.config.allowUnfree = true;
+    })
+    ({
+      config,
+      user,
+      ...
+    }: {
+      home-manager.useGlobalPkgs = true;
+      home-manager.users.${user} = {
+        home = {
+          stateVersion = "24.05"; # DO NOT CHANGE
+          username = user;
+          homeDirectory = config.users.users.${user}.home;
+        };
+        imports = config._module.args.homeMods;
+      };
+    })
+  ];
+
   metal.nix = [
     ({
       lib,
@@ -40,106 +66,9 @@
         ];
       };
     })
-    {services.fstrim.enable = true;}
   ];
 
-  linux.nix = [
-    inputs.home-manager.nixosModules.home-manager
-    ({pkgs, ...}: {
-      # gpu
-      hardware.graphics = {
-        enable = true;
-        enable32Bit = true;
-        extraPackages = with pkgs; [
-          vulkan-tools
-          vulkan-loader
-          libvdpau-va-gl
-        ];
-      };
-
-      # audio
-      security.rtkit.enable = true;
-      services.pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-      };
-
-      # bluetooth
-      hardware.bluetooth.enable = true;
-      services.blueman.enable = true;
-
-      # ssh
-      services.openssh = {
-        enable = true;
-        settings = {
-          PasswordAuthentication = false;
-          PermitRootLogin = "prohibit-password";
-        };
-      };
-
-      # misc
-      services = {
-        printing.enable = true;
-        gvfs.enable = true;
-      };
-    })
-  ];
-
-  drivers = {
-    nvidia.nix = [
-      ({config, ...}: {
-        nixpkgs.config.nvidia.acceptLicense = true;
-        services.xserver.videoDrivers = ["nvidia"];
-        hardware.nvidia = {
-          modesetting.enable = true;
-          package = config.boot.kernelPackages.nvidiaPackages.beta;
-          videoAcceleration = true;
-          open = false;
-        };
-        environment.variables = {
-          LIBVA_DRIVER_NAME = "nvidia";
-          NVD_BACKEND = "direct";
-          GBM_BACKEND = "nvidia-drm";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        };
-      })
-    ];
-    tablet.nix = [
-      {
-        hardware.uinput.enable = true;
-        programs.weylus.enable = true;
-        services.udev.extraRules = ''KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput" '';
-      }
-    ];
-  };
-
-  global.nix = [
-    ({lib, ...}: {
-      nix.settings.experimental-features = "nix-command flakes";
-      nix.gc = {
-        automatic = lib.mkDefault true;
-        options = lib.mkDefault "--delete-older-than 7d";
-      };
-      nixpkgs.config.allowUnfree = true;
-    })
-    ({
-      config,
-      user,
-      ...
-    }: {
-      home-manager.useGlobalPkgs = true;
-      home-manager.users.${user} = {
-        home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
-          username = user;
-          homeDirectory = config.users.users.${user}.home;
-        };
-        imports = config._module.args.homeMods;
-      };
-    })
-  ];
+  linux.nix = [inputs.home-manager.nixosModules.home-manager];
 
   macbook.nix = [
     inputs.home-manager.darwinModules.home-manager
@@ -160,11 +89,7 @@
         ignoreShellProgramCheck = true;
       };
     })
-    ({
-      pkgs,
-      user,
-      ...
-    }: {
+    {
       # defaults
       system.defaults.WindowManager.StandardHideDesktopIcons = true;
       system.defaults.dock = {
@@ -201,6 +126,6 @@
 
       # Add ability to used TouchID for sudo authentication
       security.pam.services.sudo_local.touchIdAuth = true;
-    })
+    }
   ];
 }

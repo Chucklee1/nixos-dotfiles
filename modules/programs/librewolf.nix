@@ -1,9 +1,10 @@
 {inputs, ...}: {
-  global.nix = [{nixpkgs.overlays = [inputs. nur.overlays.default];}];
-  global.home = [
+  linux.nix = [{nixpkgs.overlays = [inputs.nur.overlays.default];}];
+  linux.home = [
     ({pkgs, ...}: {
       stylix.targets.librewolf.profileNames = ["default"];
       programs.librewolf = {
+        enable = true;
         settings = {
           "sidebar.verticalTabs" = true;
           "sidebar.expandOnHover" = true;

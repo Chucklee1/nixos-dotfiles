@@ -1,61 +1,74 @@
-{self, ...}: {
-  global.nix = [
-    ({machine, ...}: {
-      #shell
-      programs.zsh =
-        if machine == "macbook"
-        then {enableSyntaxHighlighting = true;}
-        else
-          {syntaxHighlighting.enable = true;}
-          // {
-            promptInit = ''
-              PROMPT="%F{red}"
-              DIR=$'%F{magenta}%~\n'
-              PS1="$PROMPT┌─[%f%n$PROMPT] $DIR$PROMPT└> %f"
-            '';
-          };
-      # global shell opts
-      environment = {
-        variables = {
-          BASH_SILENCE_DEPRECATION_WARNING = "1";
-          TERMINAL = "kitty";
-          EDITOR = "nvim";
-        };
-        shellAliases = let
-          rebuild_cmd =
-            if machine == "macbook"
-            then "darwin-rebuild"
-            else "nixos-rebuild";
-        in {
-          y = "yazi";
-          rebuild-flake = "sudo ${rebuild_cmd} switch --flake $HOME/nixos-dotfiles#${machine} --show-trace --impure";
-        };
-      };
-    })
-  ];
+{
+  inputs,
+  self,
+  ...
+}: {
   global.home = [
     {
-      home.file.".config/rmpc".source = "${self}/assets/rmpc";
       programs = {
-        git.userEmail = "kermitthefrog@kakao.com";
-        git.userName = "Chucklee1";
-        lazygit.settings.notARepository = "skip";
-        lazygit.settings.promptToReturnFromSubprocess = false;
-        kitty.settings = {
-          cursor_shape = "beam";
-          background_blur = 40;
-          confirm_os_window_close = 0;
-          tab_bar_edge = "bottom";
-          tab_bar_style = "powerline";
-          tab_powerline_style = "round";
+        git = {
+          enable = true;
+          userEmail = "kermitthefrog@kakao.com";
+          userName = "Chucklee1";
+        };
+        lazygit = {
+          enable = true;
+          settings.notARepository = "skip";
+          settings.promptToReturnFromSubprocess = false;
+        };
+        kitty = {
+          enable = true;
+          settings = {
+            cursor_shape = "beam";
+            background_blur = 40;
+            confirm_os_window_close = 0;
+            tab_bar_edge = "bottom";
+            tab_bar_style = "powerline";
+            tab_powerline_style = "round";
+          };
+        };
+        btop.enable = true;
+        direnv.enable = true;
+        fzf.enable = true;
+        zoxide = {
+          enable = true;
+          options = ["--cmd cd"];
         };
       };
     }
   ];
+
+  additions = let
+    base = {nixpkgs.overlays = [inputs.nix-vim.overlays.default];};
+  in {
+    core.nix = [base ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.core];})];
+    full.nix = [
+      base
+      ({
+        pkgs,
+        machine,
+        ...
+      }: {
+        environment.systemPackages =
+          if machine == "macbook"
+          then [pkgs.nixvim.darwin]
+          else [pkgs.nixvim.full];
+      })
+    ];
+    full.home = [
+      ({pkgs, ...}: {
+        home.packages = [pkgs.rmpc];
+        home.file.".config/rmpc".source = "${self}/assets/rmpc";
+      })
+    ];
+  };
+
   macbook.nix = [
     ({config, ...}:
       with config.lib.stylix.colors; {
+        services.sketchybar.enable = true;
         services.jankyborders = {
+          enable = true;
           active_color = ''0xFF${base0D}'';
           inactive_color = ''0x00${base0D}'';
           style = "round";

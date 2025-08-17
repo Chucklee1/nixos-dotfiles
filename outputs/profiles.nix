@@ -14,11 +14,12 @@
         global
         desktop
         linux
+        gaming
         metal
         wayland
+        virt
         drivers.nvidia
         additions.full
-        additions.gaming
       ];
       user = "goat";
     };
