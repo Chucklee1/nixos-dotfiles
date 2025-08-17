@@ -4,9 +4,9 @@
       environment.systemPackages = with pkgs; [
         calc
         curl
+        ffmpeg-full
         gcc
         gdb # GNU debugger
-        ffmpeg-full
         imagemagick
         python3
       ];
