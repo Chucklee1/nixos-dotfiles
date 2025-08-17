@@ -1527,11 +1527,11 @@
         "nixvim": "nixvim_3"
       },
       "locked": {
-        "lastModified": 1755412159,
-        "narHash": "sha256-5HtXADuAA6iTXA5hH5gyS2+pwMHWIGtqFZhJlKTEyuc=",
+        "lastModified": 1755442772,
+        "narHash": "sha256-qN9sak85N2imTB3eUK7wCsb90qS/iiFwzztM8Ymqta4=",
         "owner": "Chucklee1",
         "repo": "nix-vim",
-        "rev": "9b080a20193b922bc1956951546269e0cd4d1d1e",
+        "rev": "b04017735db524a4256d7a5ab51306e5fd2ca911",
         "type": "github"
       },
       "original": {
