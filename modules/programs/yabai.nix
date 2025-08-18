@@ -1,6 +1,10 @@
 {
   macbook.nix = [
-    ({config, ...}:
+    ({
+      config,
+      pkgs,
+      ...
+    }:
       with config.lib.stylix.colors; let
         bar_height = 26;
       in {
@@ -10,7 +14,7 @@
           config = {
             # general
             layout = "stack";
-            external_bar = "all:0:${bar_height}";
+            external_bar = "all:0:${builtins.toString bar_height}";
             # gaps n padding
             window_gap = 0;
             top_padding = 0;
@@ -24,6 +28,7 @@
         };
         services.spacebar = {
           enable = true;
+          package = pkgs.spacebar;
           config = {
             # general
             position = "top";
@@ -68,12 +73,19 @@
             space_icon_color_tertiary = "0xff${base0A}";
           };
         };
+      })
+  ];
+  macbook.home = [
+    ({config, ...}:
+      with config.lib.stylix.colors; {
         services.jankyborders = {
           enable = true;
-          active_color = ''0xFF${base0D}'';
-          inactive_color = ''0x00${base0D}'';
-          style = "round";
-          width = 3.0;
+          settings = {
+            width = 3.0;
+            style = "square";
+            active_color = ''0xFF${base0D}'';
+            inactive_color = ''0x00${base0D}'';
+          };
         };
       })
   ];
