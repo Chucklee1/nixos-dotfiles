@@ -41,21 +41,7 @@
         global
         umbra
         linux
-        additions.core
-        {
-          isoImage.edition = "minimal";
-
-          specialisation.niri.configuration = {...}: {
-            imports = [
-              installer.graphical
-              wayland
-            ];
-            isoImage.configurationName = "Niri (Wayland Graphical)";
-          };
-          specialisation.minimal.configuration = {...}: {
-            isoImage.configurationName = "Minimal (tty)";
-          };
-        }
+        wayland
       ];
       user = "nixos";
     };
@@ -65,8 +51,8 @@
         global
         macbook
         emacs
-	additions.full      
-    ];
+        additions.full
+      ];
       user = "goat";
     };
   };

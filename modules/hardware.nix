@@ -31,16 +31,17 @@
   umbra.nix = [
     ({modulesPath, ...}: {
       imports = ["${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"];
-      isoImage.showConfiguration = true;
       boot.zfs.forceImportRoot = false;
+      isoImage = {
+        showConfiguration = true;
+        configurationName = "niri wayland (zsh + zfs)";
+      };
       stylix.targets.grub.enable = false;
+      services.displayManager = {
+        cosmic-greeter.enable = true;
+        autoLogin.enable = true;
+        autoLogin.user = "nixos";
+      };
     })
-  ];
-  installer.graphical.nix = [
-    {
-      services.displayManager.cosmic-greeter.enable = true;
-      services.displayManager.autoLogin.enable = true;
-      services.displayManager.autoLogin.user = "nixos";
-    }
   ];
 }
