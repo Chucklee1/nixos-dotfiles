@@ -49,7 +49,7 @@
         };
         caskArgs.no_quarantine = true;
         #brews = [ ];
-        casks = ["kitty" "skim"];
+        casks = ["kitty" "skim" "utm"];
       };
     }
   ];

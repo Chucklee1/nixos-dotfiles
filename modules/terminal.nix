@@ -30,12 +30,18 @@
       };
     })
   ];
-  global.home = [{programs.zsh.enable = true;}];
+  global.home = [
+    {
+      programs.zsh = {
+        enable = true;
+        syntaxHighlighting.enable = true;
+      };
+    }
+  ];
 
   linux.nix = [
     ({pkgs, ...}: {
       users.defaultUserShell = pkgs.zsh;
-      programs.zsh.syntaxHighlighting.enable = true;
     })
   ];
   macbook.nix = [
@@ -45,7 +51,6 @@
       ...
     }: {
       users.users.${user}.shell = pkgs.zsh;
-      programs.zsh.enableSyntaxHighlighting = true;
     })
   ];
 }

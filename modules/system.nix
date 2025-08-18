@@ -116,6 +116,9 @@
         AppleInterfaceStyle = "Dark";
         AppleInterfaceStyleSwitchesAutomatically = false;
         NSDocumentSaveNewDocumentsToCloud = false; # do not save to icloud by default
+        # no autocorrections
+        NSAutomaticCapitalizationEnabled = false;
+        NSAutomaticSpellingCorrectionEnabled = false;
       };
 
       # misc
