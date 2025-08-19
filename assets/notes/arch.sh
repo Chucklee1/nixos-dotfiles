@@ -38,3 +38,6 @@ useradd -mG wheel "$USERNAME"
 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=ARCH
 grub-mkconfig -o /boot/grub/grub.cfg
+
+systemctl enable NetworkManager 
+exit

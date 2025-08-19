@@ -25,6 +25,9 @@
   # ---- neovim ----
   inputs.nix-vim.url = "github:Chucklee1/nix-vim";
 
+  # ---- emacs ----
+  inputs.emacs-overlay.url = "github:nix-community/emacs-overlay";
+
   # ---- wayland ----
   inputs.niri.url = "github:sodiboo/niri-flake";
 
