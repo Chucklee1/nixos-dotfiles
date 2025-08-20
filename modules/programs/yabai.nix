@@ -23,8 +23,8 @@
       };
     })
     ({user, ...}: {
-      system.activationScripts.postUserActivation.text = ''
-        defaults write org.hammerspoon.Hammerspoon MJConfigFile "/Users/${user}/.config/hammerspoon/init.lua"
+      system.activationScripts.hammerspoon-setup.text = ''
+        defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
         sudo killall Dock
       '';
     })
@@ -46,15 +46,36 @@
       home.file.".config/sketchybar".source = "${self}/assets/sketchybar";
       programs.sketchybar.enable = true;
     }
-    ({config, ...}: {
-      xdg.configFile."hammerspoon/".source = "${self}/assets/hammerspoon";
-      home.activation.reloadHammerspoon =
-        config.home-manager.users.${config.user}.lib.dag.entryAfter ["writeBoundary"]
+    {
+      xdg.configFile."hammerspoon/init.lua".text =
+        #lua
         ''
-          $DRY_RUN_CMD /Applications/Hammerspoon.app/Contents/Frameworks/hs/hs -c "hs.reload()"
-          $DRY_RUN_CMD sleep 1
-          $DRY_RUN_CMD /Applications/Hammerspoon.app/Contents/Frameworks/hs/hs -c "hs.console.clearConsole()"
+          require("hs.ipc")
+
+          hs.hotkey.bind({ "alt" }, "return", function()
+              hs.application.launchOrFocus("kitty")
+          end)
+          hs.hotkey.bind({ "alt" }, "space", function()
+            hs.application.launchOrFocus("dmenu-mac")
+
+            -- Wait a short time to let the app open
+            hs.timer.doAfter(0.5, function()
+                local app = hs.appfinder.appFromName("dmenuMac")
+                if app then
+                    local win = app:mainWindow()
+                    if win then
+                        -- Bring the window above everything else
+                        win:setLevel(hs.window.level.floating)
+                    end
+                end
+            end)
+          end)
         '';
-    })
+      home.activation.reloadHammerspoon = ''
+        $DRY_RUN_CMD /Applications/Hammerspoon.app/Contents/Frameworks/hs/hs -c "hs.reload()"
+        $DRY_RUN_CMD sleep 1
+        $DRY_RUN_CMD /Applications/Hammerspoon.app/Contents/Frameworks/hs/hs -c "hs.console.clearConsole()"
+      '';
+    }
   ];
 }
