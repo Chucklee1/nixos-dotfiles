@@ -43,17 +43,6 @@
             with pkgs; [
               # vim clone
               epkgs.evil
-              # auto-completion
-              epkgs.company
-              epkgs.company-auctex
-              # tree sitter
-              epkgs.tree-sitter
-              epkgs.tree-sitter-langs
-              # lsp
-              epkgs.lsp-mode
-              epkgs.lsp-ui
-              # lang specific
-              epkgs.nix-mode
               epkgs.auctex
               # lsps/other-related-ish
               nixd
@@ -71,21 +60,8 @@
               (evil-mode 1)
 
               ;; setup latex
-              (setq TeX-view-program-selection '((output-pdf "Skim")))
               (setq TeX-source-correlate-method 'synctex)
               (setq TeX-source-correlate-start-server t)
-
-              (use-package tree-sitter
-                :hook ((nix-mode) . tree-sitter-mode)
-                :config
-                (use-package tree-sitter-langs))
-
-              (use-package lsp-mode
-                :commands lsp
-                :hook ((nix-mode) . lsp)
-                :config
-                (use-package lsp-ui
-                  :commands lsp-ui-mode))
 
               (use-package company
                 :config
