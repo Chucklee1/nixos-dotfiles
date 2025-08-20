@@ -50,7 +50,6 @@
       modules = with mod; [
         global
         macbook
-        emacs
         additions.full
       ];
       user = "goat";

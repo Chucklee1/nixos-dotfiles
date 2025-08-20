@@ -19,11 +19,13 @@
   inputs.mac-app-util.url = "github:hraban/mac-app-util";
   inputs.mac-app-util.inputs.nixpkgs.follows = "nixpkgs";
 
-  # ---- macods - homebrew ----
+  # ---- macos - taps ----
   inputs.homebrew-core.url = "github:homebrew/homebrew-core";
   inputs.homebrew-core. flake = false;
   inputs.homebrew-cask.url = "github:homebrew/homebrew-cask";
   inputs.homebrew-cask.flake = false;
+  inputs.homebrew-emcasmacport.url = "github:railwaycat/homebrew-emacsmacport";
+  inputs.homebrew-emcasmacport.flake = false;
 
   # ---- theming ----
   inputs.stylix.url = "github:danth/stylix";

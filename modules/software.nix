@@ -50,6 +50,7 @@
         taps = {
           "homebrew/homebrew-core" = inputs.homebrew-core;
           "homebrew/homebrew-cask" = inputs.homebrew-cask;
+          "railwaycat/homebrew-emacsmacport" = inputs.homebrew-emcasmacport;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
         mutableTaps = false;
@@ -73,6 +74,9 @@
           "kitty"
           "utm"
           "hammerspoon"
+          "xquartz"
+          "freetype"
+          "emacs-mac"
         ];
       };
     })
