@@ -72,6 +72,7 @@
   linux.nix = [inputs.home-manager.nixosModules.home-manager];
 
   macbook.nix = [
+    inputs.mac-app-util.darwinModules.default
     inputs.home-manager.darwinModules.home-manager
     ({user, ...}: {
       # nix issue fix
@@ -132,4 +133,5 @@
       security.pam.services.sudo_local.touchIdAuth = true;
     }
   ];
+  macbook.home = [inputs.mac-app-util.homeManagerModules.default];
 }

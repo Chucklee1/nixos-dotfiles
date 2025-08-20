@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   global.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -38,8 +38,24 @@
   ];
 
   macbook.nix = [
-    {
-      # homebrew
+    inputs.nix-homebrew.darwinModules.nix-homebrew
+    ({user, ...}: {
+      nix-homebrew = {
+        inherit user; # User owning the Homebrew prefix
+        enable = true;
+        autoMigrate = true;
+        enableRosetta = true;
+
+        # Declarative tap management
+        taps = {
+          "homebrew/homebrew-core" = inputs.homebrew-core;
+          "homebrew/homebrew-cask" = inputs.homebrew-cask;
+        };
+        # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
+        mutableTaps = false;
+      };
+    })
+    ({config, ...}: {
       homebrew = {
         enable = true;
         onActivation = {
@@ -47,13 +63,18 @@
           upgrade = true;
           cleanup = "zap";
         };
-        caskArgs.no_quarantine = true;
+
         #brews = [ ];
+
+        taps = builtins.attrNames config.nix-homebrew.taps; #Align homebrew taps config with nix-homebrew
+
+        caskArgs.no_quarantine = true;
         casks = [
           "kitty"
           "utm"
+          "hammerspoon"
         ];
       };
-    }
+    })
   ];
 }

@@ -12,9 +12,18 @@
   inputs.disko.url = "github:nix-community/disko";
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
 
-  # ---- macos ----
+  # ---- macos - base ----
   inputs.nix-darwin.url = "github:LnL7/nix-darwin/master";
+  inputs.nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   inputs.nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.mac-app-util.url = "github:hraban/mac-app-util";
+  inputs.mac-app-util.inputs.nixpkgs.follows = "nixpkgs";
+
+  # ---- macods - homebrew ----
+  inputs.homebrew-core.url = "github:homebrew/homebrew-core";
+  inputs.homebrew-core. flake = false;
+  inputs.homebrew-cask.url = "github:homebrew/homebrew-cask";
+  inputs.homebrew-cask.flake = false;
 
   # ---- theming ----
   inputs.stylix.url = "github:danth/stylix";
@@ -22,13 +31,9 @@
   inputs.minesddm.url = "github:Chucklee1/sddm-theme-minesddm";
   inputs.minesddm.inputs.nixpkgs.follows = "nixpkgs";
 
-  # ---- neovim ----
+  # ---- programs ----
   inputs.nix-vim.url = "github:Chucklee1/nix-vim";
-
-  # ---- emacs ----
   inputs.emacs-overlay.url = "github:nix-community/emacs-overlay";
-
-  # ---- wayland ----
   inputs.niri.url = "github:sodiboo/niri-flake";
 
   outputs = {self, ...} @ inputs: let
