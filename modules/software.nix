@@ -65,9 +65,14 @@
           cleanup = "zap";
         };
 
-        #brews = [ ];
-
         taps = builtins.attrNames config.nix-homebrew.taps; #Align homebrew taps config with nix-homebrew
+
+        brews = [
+          "freetype"
+          "libapplewm"
+          "libxft"
+          "libxinerama"
+        ];
 
         caskArgs.no_quarantine = true;
         casks = [
@@ -75,8 +80,8 @@
           "utm"
           "hammerspoon"
           "xquartz"
-          "freetype"
           "emacs-mac"
+          "dmenu-mac"
         ];
       };
     })
