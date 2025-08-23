@@ -14,4 +14,4 @@
 
 ;; Integrate use-package
 (straight-use-package 'use-package)
-(setq straight-use-package-by-default t)c
+(setq straight-use-package-by-default t)

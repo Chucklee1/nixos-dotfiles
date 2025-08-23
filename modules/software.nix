@@ -76,11 +76,9 @@
 
         caskArgs.no_quarantine = true;
         casks = [
-          "kitty"
           "utm"
           "hammerspoon"
           "xquartz"
-          "emacs-mac"
           "dmenu-mac"
         ];
       };

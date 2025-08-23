@@ -51,6 +51,7 @@
         global
         macbook
         additions.full
+        emacs
       ];
       user = "goat";
     };
