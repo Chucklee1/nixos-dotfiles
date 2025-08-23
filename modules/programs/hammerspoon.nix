@@ -1,4 +1,4 @@
-let
+{self, ...}: let
   BAR_HEIGHT = "32";
 in {
   macbook.nix = [
@@ -47,21 +47,10 @@ in {
     {
       programs.sketchybar.enable = true;
       programs.sketchybar.configType = "lua";
-      programs.sketchybar.config =
-        #lua
-        ''
-          sbar.bar({
-            height = ${BAR_HEIGHT},
-            --color = colors.bar.bg,
-            --border_color = colors.bar.border,
-            shadow = true,
-            sticky = true,
-            padding_right = 10,
-            padding_left = 10,
-            blur_radius=20,
-            topmost="window",
-          })
-        '';
+      programs.sketchybar.config = {
+        source = "${self}/assets/sketchybar";
+        recursive = true;
+      };
     }
     {
       xdg.configFile."hammerspoon/init.lua".text =

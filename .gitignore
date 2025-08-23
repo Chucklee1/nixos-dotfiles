@@ -1,3 +1,4 @@
 .direnv
 assets/emacs/eln-cache
 assets/emacs/straight
+assets/emacs/url
