@@ -20,6 +20,7 @@
         virt
         drivers.nvidia
         additions.full
+        editor.emacs
       ];
       user = "goat";
     };
@@ -32,6 +33,7 @@
         metal
         wayland
         additions.full
+        editor.emacs
       ];
       user = "goat";
     };
@@ -51,7 +53,7 @@
         global
         macbook
         additions.full
-        emacs
+        editor.emacs
       ];
       user = "goat";
     };
