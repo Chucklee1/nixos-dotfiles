@@ -36,6 +36,8 @@ in {
         mouse_action1 = "move";
         mouse_action2 = "resize";
         mouse_drop_action = "swap";
+        window_rule = ["emacs manage=on"];
+        space = ["1" "2"];
       };
       system.activationScripts.hammerspoon-setup.text = ''
         defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
@@ -52,11 +54,12 @@ in {
         recursive = true;
       };
     }
-    {
+    ({pkgs, ...}: {
       xdg.configFile."hammerspoon/init.lua".text =
         #lua
         ''
           require("hs.ipc")
+          local yabai = "${pkgs.yabai}/bin/yabai"
 
           hs.hotkey.bind({ "alt" }, "return", function()
               hs.application.launchOrFocus("kitty")
@@ -64,12 +67,50 @@ in {
           hs.hotkey.bind({ "alt" }, "space", function()
             hs.application.launchOrFocus("dmenu-mac")
           end)
+
+          -- Fill screen: alt + m
+          hs.hotkey.bind({ "alt" }, "m", function()
+            hs.execute(yabai .. "-m window --toggle zoom-parent")
+          end)
+
+          -- Fullscreen: alt + shift + m
+          hs.hotkey.bind({ "alt", "shift" }, "m", function()
+            hs.execute(yabai .. "-m window --toggle zoom-fullscreen")
+          end)
+
+          -- Focus window in direction: alt + arrow
+          hs.hotkey.bind({ "alt" }, "up", function()
+            hs.execute(yabai .. "-m window --focus north")
+          end)
+          hs.hotkey.bind({ "alt" }, "down", function()
+            hs.execute(yabai .. "-m window --focus south")
+          end)
+          hs.hotkey.bind({ "alt" }, "left", function()
+            hs.execute(yabai .. "-m window --focus west")
+          end)
+          hs.hotkey.bind({ "alt" }, "right", function()
+            hs.execute(yabai .. "-m window --focus east")
+          end)
+
+          -- Move window in direction: alt + shift + arrow
+          hs.hotkey.bind({ "alt", "shift" }, "up", function()
+            hs.execute(yabai .. "-m window --swap north")
+          end)
+          hs.hotkey.bind({ "alt", "shift" }, "down", function()
+            hs.execute(yabai .. "-m window --swap south")
+          end)
+          hs.hotkey.bind({ "alt", "shift" }, "left", function()
+            hs.execute(yabai .. "-m window --swap west")
+          end)
+          hs.hotkey.bind({ "alt", "shift" }, "right", function()
+            hs.execute(yabai .. "-m window --swap east")
+          end)
         '';
       home.activation.reloadHammerspoon = ''
         $DRY_RUN_CMD /Applications/Hammerspoon.app/Contents/Frameworks/hs/hs -c "hs.reload()"
         $DRY_RUN_CMD sleep 1
         $DRY_RUN_CMD /Applications/Hammerspoon.app/Contents/Frameworks/hs/hs -c "hs.console.clearConsole()"
       '';
-    }
+    })
   ];
 }
