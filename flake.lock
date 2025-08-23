@@ -1102,22 +1102,6 @@
         "type": "github"
       }
     },
-    "homebrew-emcasmacport": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1749770685,
-        "narHash": "sha256-9UPgnr+Wd2oIpxksx6EoffcfkZ0i8kJ1mYdLOESLk2U=",
-        "owner": "railwaycat",
-        "repo": "homebrew-emacsmacport",
-        "rev": "98f2c3f99c2af1f456f03bc77c16da13d2ccf62a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "railwaycat",
-        "repo": "homebrew-emacsmacport",
-        "type": "github"
-      }
-    },
     "ixx": {
       "inputs": {
         "flake-utils": [
@@ -2394,7 +2378,6 @@
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
-        "homebrew-emcasmacport": "homebrew-emcasmacport",
         "minegrub-theme": "minegrub-theme",
         "minesddm": "minesddm",
         "niri": "niri",

@@ -22,8 +22,6 @@
   inputs.homebrew-core.flake = false;
   inputs.homebrew-cask.url = "github:homebrew/homebrew-cask";
   inputs.homebrew-cask.flake = false;
-  inputs.homebrew-emcasmacport.url = "github:railwaycat/homebrew-emacsmacport";
-  inputs.homebrew-emcasmacport.flake = false;
 
   # ---- theming ----
   inputs.stylix.url = "github:danth/stylix";
