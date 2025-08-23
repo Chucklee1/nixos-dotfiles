@@ -4,9 +4,39 @@
   ...
 }: {
   desktop.nix = [
-    inputs.disko.nixosModules.default
-    (import "${self}/assets/disko/desktop.nix")
     {
+      fileSystems."/" = { 
+          device = "/dev/disk/by-label/WD_ROOT";
+          fsType = "btrfs";
+          options = [ "subvol=@nixos" ];
+        };
+
+      fileSystems."/nix" = {
+          device = "/dev/disk/by-label/WD_ROOT";
+          fsType = "btrfs";
+          options = [ "subvol=@nix" ];
+        };
+
+      fileSystems."/srv" = {
+          device = "/dev/disk/by-label/BLUE_SATA";
+          fsType = "btrfs";
+          options = [ "subvol=@srv" ];
+        };
+
+      fileSystems."/opt" = {
+          device = "/dev/disk/by-label/BLUE_SATA";
+          fsType = "btrfs";
+          options = [ "subvol=@opt" ];
+        };
+
+      fileSystems."/boot" = {
+          device = "/dev/disk/by-label/WD_BOOT";
+          fsType = "vfat";
+          options = [ "fmask=0022" "dmask=0022" ];
+        };
+
+      swapDevices = [ ];
+
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm-amd"];
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs" "zfs"];
