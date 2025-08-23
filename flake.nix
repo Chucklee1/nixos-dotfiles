@@ -16,8 +16,6 @@
   inputs.nix-darwin.url = "github:LnL7/nix-darwin/master";
   inputs.nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   inputs.nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.mac-app-util.url = "github:hraban/mac-app-util";
-  inputs.mac-app-util.inputs.nixpkgs.follows = "nixpkgs";
 
   # ---- macos - taps ----
   inputs.homebrew-core.url = "github:homebrew/homebrew-core";

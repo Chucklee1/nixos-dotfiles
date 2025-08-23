@@ -72,7 +72,6 @@
   linux.nix = [inputs.home-manager.nixosModules.home-manager];
 
   macbook.nix = [
-    inputs.mac-app-util.darwinModules.default
     inputs.home-manager.darwinModules.home-manager
     ({user, ...}: {
       # nix issue fix
@@ -90,6 +89,31 @@
         home = "/Users/${user}";
         ignoreShellProgramCheck = true;
       };
+    })
+    # symlink nix & home manager apps to /Applications
+    # lets spotlight or dmenu-mac finally acess nix apps
+    ({
+      lib,
+      config,
+      user,
+      ...
+    }: {
+      system.activationScripts.applications.text = lib.mkForce ''
+        appDirPrev="${config.users.users.${user}.home}/Applications/Home Manager Apps"
+        appDirFinal="/Applications"
+        for i in "$appDirPrev"/*; do
+          [ -e "$i" ] || continue
+          dest="$appDirFinal/$(basename "$i")"
+
+          # Remove existing app or alias
+          if [ -e "$dest" ]; then
+            rm -rf "$dest"
+          fi
+
+          # Copy new app/alias
+          cp -R "$i" "$appDirFinal"/
+        done
+      '';
     })
     {
       # defaults
@@ -133,5 +157,4 @@
       security.pam.services.sudo_local.touchIdAuth = true;
     }
   ];
-  macbook.home = [inputs.mac-app-util.homeManagerModules.default];
 }
