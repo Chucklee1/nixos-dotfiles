@@ -4,11 +4,9 @@ local battery = sbar.add("item", {
   position = "right",
   icon = {
     font = {
-      style = "Regular",
-      size = 19.0,
+      size = 15.0,
     }
   },
-  label = { drawing = false },
   update_freq = 120,
 })
 
@@ -42,4 +40,4 @@ local function battery_update()
 end
 
 
-battery:subscribe({"routine", "power_source_change", "system_woke"}, battery_update)
+battery:subscribe({ "routine", "power_source_change", "system_woke" }, battery_update)
