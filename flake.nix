@@ -19,7 +19,7 @@
 
   # ---- macos - taps ----
   inputs.homebrew-core.url = "github:homebrew/homebrew-core";
-  inputs.homebrew-core. flake = false;
+  inputs.homebrew-core.flake = false;
   inputs.homebrew-cask.url = "github:homebrew/homebrew-cask";
   inputs.homebrew-cask.flake = false;
   inputs.homebrew-emcasmacport.url = "github:railwaycat/homebrew-emacsmacport";
