@@ -1,4 +1,6 @@
 .direnv
+assets/emacs/auto-save-list
 assets/emacs/eln-cache
 assets/emacs/straight
+assets/emacs/transient
 assets/emacs/url
