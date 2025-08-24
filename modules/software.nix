@@ -51,7 +51,6 @@
         taps = {
           "homebrew/homebrew-core" = inputs.homebrew-core;
           "homebrew/homebrew-cask" = inputs.homebrew-cask;
-          "railwaycat/homebrew-emacsmacport" = inputs.homebrew-emcasmacport;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
         mutableTaps = false;
@@ -68,19 +67,14 @@
 
         taps = builtins.attrNames config.nix-homebrew.taps; #Align homebrew taps config with nix-homebrew
 
-        brews = [
-          "freetype"
-          "libapplewm"
-          "libxft"
-          "libxinerama"
-        ];
-
         caskArgs.no_quarantine = true;
         casks = [
-          "utm"
-          "hammerspoon"
-          "xquartz"
           "dmenu-mac"
+          "hammerspoon"
+          "krita"
+          "tailscale"
+          "utm"
+          "xquartz"
         ];
       };
     })

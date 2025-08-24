@@ -15,10 +15,10 @@ let
     };
   };
 in {
-  additions.full.nix = [{services.tailscale.enable = true;}];
   additions.full.home = [{services.syncthing.enable = true;}];
 
   metal.nix = [
+    {services.tailscale.enable = true;}
     {
       networking.firewall = {
         enable = true;
