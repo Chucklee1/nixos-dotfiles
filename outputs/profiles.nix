@@ -72,7 +72,6 @@
       specialArgs = {
         inherit machine;
         inherit (cfg) system user;
-        MOL = A: B: extlib.withSystem.ifDarwinElseLinux cfg.system A B;
       };
     in
       builder {
