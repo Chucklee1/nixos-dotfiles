@@ -26,7 +26,7 @@
   (scroll-conservatively 10) ;; Smooth scrolling
   (scroll-margin 8)
 
-  
+
   (tab-width 4)
 
   (make-backup-files nil) ;; Stop creating ~ backup files
@@ -48,10 +48,10 @@
   )
 
 ;; transparent background
-;; font              
-(set-face-attribute 'default nil                                                           
+;; font
+(set-face-attribute 'default nil
                 :font "JetBrainsMono Nerd Font"
-                    :height 120                                             
+                    :height 120
                     :weight 'medium)
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font"))
 (setq-default line-spacing 0.12)
@@ -59,15 +59,15 @@
 (set-frame-parameter (selected-frame) 'alpha-background 80)
 (add-to-list 'default-frame-alist '(alpha-background . 80))
 
-;; nerd font                                                                        
-(use-package nerd-icons                                                                  
+;; nerd font
+(use-package nerd-icons
   :if (display-graphic-p))
- 
-(use-package nerd-icons-dired                                                            
-  :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))                              
-                                                                                           
-(use-package nerd-icons-ibuffer                                                            
-  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))  
+
+(use-package nerd-icons-dired
+  :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
+
+(use-package nerd-icons-ibuffer
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 (load-file "~/.config/emacs/evil.el")
 
@@ -94,7 +94,7 @@
     "b s" '(consult-buffer :wk "Switch buffer")
     "b i" '(ibuffer :wk "Ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer"))
-    
+
   (general-define-key
     :states '(normal visual motion)
     :keymaps 'override
@@ -155,37 +155,19 @@
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+(add-hook 'before-save-hook
+          'delete-trailing-whitespace)
 
 ;; magit
-(use-package magit                                                                        
-  :defer                                                                                  
-  :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff                       
-  :config (define-key transient-map (kbd "<escape>") 'transient-quit-one) ;; Make escape quit magit prompts                                                                        
-  )                                                                                       
-                                                                                            
-(use-package pdf-tools                                                                    
-  :defer t                                                                                
-  :config                                                                                 
-  (pdf-tools-install t))                                                                  
-                                                                                          
-(use-package auctex                                                                       
-  :defer t                                                                                
-  :after pdf-tools                                                                        
-  :init                                                                                   
-  ;(add-to-list 'exec-path "/Library/TeX/texbin")                                          
-  ;(setenv "PATH" (concat "/Library/TeX/texbin:" (getenv "PATH")))                         
-  :config                                                                                 
-  (setq TeX-PDF-mode t                                                                    
-        TeX-view-program-selection '((output-pdf "PDF Tools"))                            
-        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))                    
-        TeX-source-correlate-start-server t)                                              
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))      
-                                                                                          
-(add-hook 'pdf-view-mode-hook                                                             
-          (lambda ()                                                                      
-            (display-line-numbers-mode 0)))                                               
-                                                                                          
-;; Make gc pauses faster by decreasing the threshold.                                     
-(setq gc-cons-threshold (* 2 1000 1000))                                                  
-;; Increase the amount of data which Emacs reads from the process                         
-(setq read-process-output-max (* 1024 1024)) ;; 1mb  
+(use-package magit
+  :defer
+  :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff
+  :config (define-key transient-map (kbd "<escape>") 'transient-quit-one) ;; Make escape quit magit prompts
+  )
+
+(load-file "~/.config/emacs/latex.el")
+
+;; make gc pauses faster by decreasing the threshold.
+(setq gc-cons-threshold (* 2 1000 1000))
+;; increase the amount of data which emacs reads from the process
+(setq read-process-output-max (* 1024 1024)) ;; 1mb

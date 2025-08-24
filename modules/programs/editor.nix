@@ -14,16 +14,16 @@ in {
         programs.emacs = {
           enable = true;
           package = pkgs.emacs-pgtk;
-          extraPackages = epkgs:
-            with pkgs; [
-              nixd
-              alejandra
-              #haskell-language-server
-              #lemminx # xml lsp
-              #stylua
-              #vscode-langservers-extracted # soyjack lsps
+          extraPackages = epkgs: [
+              epkgs.eat
+              pkgs.nixd
+              pkgs.alejandra
+              pkgs.haskell-language-server
+              pkgs.lemminx # xml lsp
+              pkgs.vscode-langservers-extracted # soyjack lsps
             ];
         };
+        home.packages = [pkgs.poppler-utils pkgs.texlive.combined.scheme-full];
       })
     ];
   };
