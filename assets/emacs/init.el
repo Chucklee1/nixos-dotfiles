@@ -1,6 +1,4 @@
-(add-to-list 'load-path "~/nixos-dotfiles/assets/emacs/")
-
-(require 'straight-bootstrap)
+(load-file "~/.config/emacs/straight-bootstrap.el")
 
 ;; general
 (use-package emacs
@@ -50,33 +48,28 @@
   )
 
 ;; transparent background
-(add-hook 'emacs-startup-hook
-          (lambda ()
-(set-frame-parameter nil 'alpha-background 90)
-(add-to-list 'default-frame-alist '(alpha-background . 90))))
+;; font              
+(set-face-attribute 'default nil                                                           
+                :font "JetBrainsMono Nerd Font"
+                    :height 120                                             
+                    :weight 'medium)
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font"))
+(setq-default line-spacing 0.12)
 
-;; evil
-(use-package evil
-  :init
-  (evil-mode)
-  :config
-  (evil-set-initial-state 'eat-mode 'insert) ;; Set initial state in eat terminal to insert mode
-  :custom
-  (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
-  (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
-  (evil-want-C-i-jump nil)      ;; Disables C-i jump
-  (evil-undo-system 'undo-redo) ;; C-r to redo
-  ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
-  :bind (:map evil-motion-state-map
-              ("SPC" . nil)
-              ("RET" . nil)
-              ("TAB" . nil)))
-(use-package evil-collection
-  :after evil
-  :config
-  ;; Setting where to use evil-collection
-  (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
-  (evil-collection-init))
+(set-frame-parameter (selected-frame) 'alpha-background 80)
+(add-to-list 'default-frame-alist '(alpha-background . 80))
+
+;; nerd font                                                                        
+(use-package nerd-icons                                                                  
+  :if (display-graphic-p))
+ 
+(use-package nerd-icons-dired                                                            
+  :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))                              
+                                                                                           
+(use-package nerd-icons-ibuffer                                                            
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))  
+
+(load-file "~/.config/emacs/evil.el")
 
 ;; keybinds
 (use-package general
@@ -93,18 +86,8 @@
     "." '(find-file :wk "Find file")
     ;"TAB" '(comment-line :wk "Comment lines")
     ;"q" '(flymake-show-buffer-diagnostics :wk "Flymake buffer diagnostic")
-    "c" '(eat :wk "Eat terminal")
 	"c" '(kill-current-buffer :wk "Kill current buffer")
     "e" '(dired-jump :wk "Open dired at current buffer"))
-
-  (start/leader-keys
-    "s" '(:ignore t :wk "Search")
-    "s c" '((lambda () (interactive) (find-file "~/.config/emacs/init.org")) :wk "Find emacs Config")
-    "s r" '(consult-recent-file :wk "Search recent files")
-    "s f" '(consult-fd :wk "Search files with fd")
-    "s g" '(consult-ripgrep :wk "Search with ripgrep")
-    "s l" '(consult-line :wk "Search line")
-    "s i" '(consult-imenu :wk "Search Imenu buffer locations")) ;; This one is really cool
 
   (start/leader-keys
     "b" '(:ignore t :wk "Buffers")
@@ -131,10 +114,78 @@
 
   (start/leader-keys
     "t" '(:ignore t :wk "Toggle")
+    "t t" '(eat :wk "Eat terminal")
     "t t" '(visual-line-mode :wk "Toggle truncated lines (wrap)")
     "t l" '(display-line-numbers-mode :wk "Toggle line numbers"))
   )
 
 ;; lang specific modes
-(use-package nix-mode
-  :mode "\\.nix\\'")
+(use-package haskell-mode :mode "\\.hs\\'")
+(use-package kdl-mode :mode "\\.kdl\\'")
+(use-package lua-mode :mode "\\.lua\\'")
+(use-package markdown-mode :mode "\\.md\\'")
+(use-package nix-mode :mode "\\.nix\\'")
+(use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
+
+(use-package helpful
+  :bind
+  ;; Note that the built-in `describe-function' includes both functions
+  ;; and macros. `helpful-function' is functions only, so we provide
+  ;; `helpful-callable' as a drop-in replacement.
+  ("C-h f" . helpful-callable)
+  ("C-h v" . helpful-variable)
+  ("C-h k" . helpful-key)
+  ("C-h x" . helpful-command)
+  )
+
+(use-package which-key
+  :ensure nil ;; Don't install which-key because it's now built-in
+  :init
+  (which-key-mode 1)
+  :diminish
+  :custom
+  (which-key-side-window-location 'bottom)
+  (which-key-sort-order #'which-key-key-order-alpha) ;; Same as default, except single characters are sorted alphabetically
+  (which-key-sort-uppercase-first nil)
+  (which-key-add-column-padding 1) ;; Number of spaces to add to the left of each column
+  (which-key-min-display-lines 6)  ;; Increase the minimum lines to display because the default is only 1
+  (which-key-idle-delay 0.8)       ;; Set the time delay (in seconds) for the which-key popup to appear
+  (which-key-max-description-length 25)
+  (which-key-allow-imprecise-window-fit nil)) ;; Fixes which-key window slipping out in Emacs Daemon
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; magit
+(use-package magit                                                                        
+  :defer                                                                                  
+  :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff                       
+  :config (define-key transient-map (kbd "<escape>") 'transient-quit-one) ;; Make escape quit magit prompts                                                                        
+  )                                                                                       
+                                                                                            
+(use-package pdf-tools                                                                    
+  :defer t                                                                                
+  :config                                                                                 
+  (pdf-tools-install t))                                                                  
+                                                                                          
+(use-package auctex                                                                       
+  :defer t                                                                                
+  :after pdf-tools                                                                        
+  :init                                                                                   
+  ;(add-to-list 'exec-path "/Library/TeX/texbin")                                          
+  ;(setenv "PATH" (concat "/Library/TeX/texbin:" (getenv "PATH")))                         
+  :config                                                                                 
+  (setq TeX-PDF-mode t                                                                    
+        TeX-view-program-selection '((output-pdf "PDF Tools"))                            
+        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))                    
+        TeX-source-correlate-start-server t)                                              
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))      
+                                                                                          
+(add-hook 'pdf-view-mode-hook                                                             
+          (lambda ()                                                                      
+            (display-line-numbers-mode 0)))                                               
+                                                                                          
+;; Make gc pauses faster by decreasing the threshold.                                     
+(setq gc-cons-threshold (* 2 1000 1000))                                                  
+;; Increase the amount of data which Emacs reads from the process                         
+(setq read-process-output-max (* 1024 1024)) ;; 1mb  
