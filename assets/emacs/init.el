@@ -1,4 +1,9 @@
-(load-file "~/.config/emacs/straight-bootstrap.el")
+;; Add a directory to Emacs PATH
+(let ((_path (expand-file-name "~/.nix-profile/bin")))
+  (setenv "PATH" (concat _path ":" (getenv "PATH")))
+  (add-to-list 'exec-path _path))
+
+(load-file (expand-file-name"~/.config/emacs/straight-bootstrap.el"))
 
 ;; general
 (use-package emacs
@@ -69,7 +74,7 @@
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
-(load-file "~/.config/emacs/evil.el")
+(load-file (expand-file-name "~/.config/emacs/evil.el"))
 
 ;; keybinds
 (use-package general
@@ -172,7 +177,7 @@
   :config (define-key transient-map (kbd "<escape>") 'transient-quit-one) ;; Make escape quit magit prompts
   )
 
-(load-file "~/.config/emacs/latex.el")
+(load-file (expand-file-name "~/.config/emacs/latex.el"))
 
 ;; make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
