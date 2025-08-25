@@ -14,10 +14,14 @@
   ;; (setenv "PATH" (concat "/Library/TeX/texbin:" (getenv "PATH")))
   )
 
-(setq TeX-engine 'lualatex)
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
         TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
 		TeX-source-correlate-start-server t)
 
 (add-hook 'TeX-after-compilation-finished-functions
 		  #'TeX-revert-document-buffer)
+
+(add-hook 'pdf-view-mode-hook (lambda ()
+                                (setq-local truncate-lines t)
+                                (visual-line-mode -1)
+                                (word-wrap nil)))

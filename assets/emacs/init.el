@@ -119,6 +119,13 @@
     "t l" '(display-line-numbers-mode :wk "Toggle line numbers"))
   )
 
+;; eat
+(add-hook 'eat-mode-hook (lambda ()
+                           (setq-local truncate-lines t)
+                           (visual-line-mode -1)
+                           (word-wrap nil)))
+
+
 ;; lang specific modes
 (use-package haskell-mode :mode "\\.hs\\'")
 (use-package kdl-mode :mode "\\.kdl\\'")
