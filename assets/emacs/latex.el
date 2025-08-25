@@ -1,8 +1,13 @@
 (use-package auctex
   :ensure t
   :defer t
-  :hook (LaTeX-mode . (lambda ()
-			(push (list 'output-pdf "Zathura")
-			      TeX-view-program-selection))))
+  )
 
+(setq TeX-view-program-list
+      '(("Zathura" "zathura %o")))
+
+(setq TeX-view-program-selection
+      '((output-pdf "Zathura")
+        (output-dvi "xdvi")
+        (output-html "xdg-open")))
 (setq TeX-engine 'luatex)

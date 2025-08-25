@@ -37,6 +37,7 @@
 
   additions.full.home = [
     ({pkgs, ...}: {
+      programs.zathura.enable = true;
       home.packages = [pkgs.rmpc];
       home.file.".config/rmpc".source = "${self}/assets/rmpc";
     })
