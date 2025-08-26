@@ -1,9 +1,26 @@
 ;; Add a directory to Emacs PATH
-(let ((_path (expand-file-name "~/.nix-profile/bin")))
-  (setenv "PATH" (concat _path ":" (getenv "PATH")))
-  (add-to-list 'exec-path _path))
+(let ((my/path (expand-file-name "~/.nix-profile/bin")))
+  (setenv "PATH" (concat my/path ":" (getenv "PATH")))
+  (add-to-list 'exec-path my/path))
 
-(load-file (expand-file-name"~/.config/emacs/straight-bootstrap.el"))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
 ;; general
 (use-package emacs
@@ -11,33 +28,29 @@
   (menu-bar-mode nil)         ;; Disable the menu bar
   (scroll-bar-mode nil)       ;; Disable the scroll bar
   (tool-bar-mode nil)         ;; Disable the tool bar
-  ;;(inhibit-startup-screen t)  ;; Disable welcome screen
+  (inhibit-startup-screen t)  ;; Disable welcome screen
 
   (delete-selection-mode t)   ;; Select text and delete it by typing.
   (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
-  (electric-pair-mode t)      ;; Turns on automatic parens pairing
+  (savehist-mode) ;; Enables save history mode
 
   (blink-cursor-mode nil)     ;; Don't blink cursor
   (global-auto-revert-mode t) ;; Automatically reload file and show changes if the file has changed
 
-  ;;(dired-kill-when-opening-new-dired-buffer t) ;; Dired don't create new buffer
-  ;;(recentf-mode t) ;; Enable recent file mode
-
-  ;;(global-visual-line-mode t)           ;; Enable truncated lines
-  ;;(display-line-numbers-type 'relative) ;; Relative line numbers
-  (global-display-line-numbers-mode t)  ;; Display line numbers
+  (dired-kill-when-opening-new-dired-buffer t) ;; Dired don't create new buffer
+  (recentf-mode t) ;; Enable recent file mode
 
   (mouse-wheel-progressive-speed nil) ;; Disable progressive speed when scrolling
   (scroll-conservatively 10) ;; Smooth scrolling
   (scroll-margin 8)
-
 
   (tab-width 4)
 
   (make-backup-files nil) ;; Stop creating ~ backup files
   (auto-save-default nil) ;; Stop creating # auto save files
   :hook
-  (prog-mode . (lambda () (hs-minor-mode t))) ;; Enable folding hide/show globally
+  (prog-mode . (lambda () (display-line-numbers-mode t)))
+  (text-mode . (lambda () (display-line-numbers-mode t)))
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -52,15 +65,15 @@
          )
   )
 
-;; transparent background
 ;; font
 (set-face-attribute 'default nil
-                :font "JetBrainsMono Nerd Font"
+					:font "JetBrainsMono Nerd Font"
                     :height 120
                     :weight 'medium)
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font"))
 (setq-default line-spacing 0.12)
 
+;; transparent background
 (set-frame-parameter (selected-frame) 'alpha-background 80)
 (add-to-list 'default-frame-alist '(alpha-background . 80))
 
@@ -74,7 +87,28 @@
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
-(load-file (expand-file-name "~/.config/emacs/evil.el"))
+;; evil mode
+(use-package evil
+  :init
+  (evil-mode)
+  :config
+  (evil-set-initial-state 'eat-mode 'insert) ;; Set initial state in eat terminal to insert mode
+  :custom
+  (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
+  (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
+  (evil-want-C-i-jump nil)      ;; Disables C-i jump
+  (evil-undo-system 'undo-redo) ;; C-r to redo
+  ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
+  :bind (:map evil-motion-state-map
+              ("SPC" . nil)
+              ("RET" . nil)
+              ("TAB" . nil)))
+(use-package evil-collection
+  :after evil
+  :config
+  ;; Setting where to use evil-collection
+  (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
+  (evil-collection-init))
 
 ;; keybinds
 (use-package general
@@ -89,46 +123,32 @@
 
   (start/leader-keys
     "." '(find-file :wk "Find file")
-    ;"TAB" '(comment-line :wk "Comment lines")
-    ;"q" '(flymake-show-buffer-diagnostics :wk "Flymake buffer diagnostic")
+    "TAB" '(comment-line :wk "Comment lines")
+										;"q" '(flymake-show-buffer-diagnostics :wk "Flymake buffer diagnostic")
+    "g" '(magit-status :wk "Magit status")
+	"e" '(dired-jump :wk "Open dired at current buffer")
+    "T" '(eat :wk "Eat terminal")
 	"c" '(kill-current-buffer :wk "Kill current buffer")
-    "e" '(dired-jump :wk "Open dired at current buffer"))
+    "Q" '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
+    "R" '((lambda () (interactive)
+			(load-file "~/.config/emacs/init.el"))
+          :wk "Reload Emacs config"))
 
   (start/leader-keys
     "b" '(:ignore t :wk "Buffers")
-    "b s" '(consult-buffer :wk "Switch buffer")
     "b i" '(ibuffer :wk "Ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer"))
 
   (general-define-key
-    :states '(normal visual motion)
-    :keymaps 'override
-    "L" '(next-buffer :wk "Next buffer")
-    "H" '(previous-buffer :wk "Previous buffer"))
-
-  (start/leader-keys
-    "g" '(:ignore t :wk "Git")
-    "g g" '(magit-status :wk "Magit status"))
-
-  (start/leader-keys
-    "h" '(:ignore t :wk "Help") ;; To get more help use C-h commands (describe variable, function, etc.)
-    "h q" '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
-    "h r" '((lambda () (interactive)
-              (load-file "~/.config/emacs/init.el"))
-            :wk "Reload Emacs config"))
-
-  (start/leader-keys
-    "t" '(:ignore t :wk "Toggle")
-    "t t" '(eat :wk "Eat terminal")
-    "t t" '(visual-line-mode :wk "Toggle truncated lines (wrap)")
-    "t l" '(display-line-numbers-mode :wk "Toggle line numbers"))
-  )
+   :states '(normal visual motion emacs)
+   :keymaps 'override
+   "L" '(next-buffer :wk "Next buffer")
+   "H" '(previous-buffer :wk "Previous buffer")))
 
 ;; eat
-(add-hook 'eat-mode-hook (lambda ()
-                           (setq-local truncate-lines t)
-                           (visual-line-mode -1)
-                           (word-wrap nil)))
+(add-hook 'eat-mode-hook
+		  (lambda () (setq-local truncate-lines t)
+			(visual-line-mode -1)))
 
 
 ;; lang specific modes
@@ -139,6 +159,122 @@
 (use-package nix-mode :mode "\\.nix\\'")
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 
+(use-package eglot
+  :ensure nil
+  :hook ((haskell-mode
+		  kdl-mode
+		  lua-mode
+		  markdown-mode
+		  nix-mode
+		  web-mode)
+         . eglot-ensure)
+  :custom
+  ;; Good default
+  (eglot-events-buffer-size 0) ;; No event buffers (LSP server logs)
+  (eglot-autoshutdown t);; Shutdown unused servers.
+  (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
+  )
+
+(use-package apheleia
+  :config
+  (add-to-list 'apheleia-mode-alist '(nix-mode . alejandra))
+  (apheleia-global-mode +1))
+
+
+
+(use-package sideline-flymake
+  :hook (flymake-mode . sideline-mode)
+  :custom
+  (sideline-flymake-display-mode 'line) ;; Show errors on the current line
+  (sideline-backends-right '(sideline-flymake)))
+(use-package corfu
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-auto-prefix 2)          ;; Minimum length of prefix for auto completion.
+  (corfu-popupinfo-mode t)       ;; Enable popup information
+  (corfu-popupinfo-delay 0.5)    ;; Lower popup info delay to 0.5 seconds from 2 seconds
+  (corfu-separator ?\s)          ;; Orderless field separator, Use M-SPC to enter separator
+  (completion-ignore-case t)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function.
+  ;; Try `cape-dict' as an alternative.
+  (text-mode-ispell-word-completion nil)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
+
+  (corfu-preview-current nil) ;; Don't insert completion without confirmation
+  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
+  ;; be used globally (M-/).  See also the customization variable
+  ;; `global-corfu-modes' to exclude certain modes.
+  :init
+  (global-corfu-mode))
+
+(use-package nerd-icons-corfu
+  :after corfu
+  :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package cape
+  :after corfu
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
+  (add-hook 'completion-at-point-functions #'cape-dict) ;; Dictionary completion
+  (add-hook 'completion-at-point-functions #'cape-file) ;; Path completion
+  (add-hook 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
+  (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
+  (add-hook 'completion-at-point-functions #'cape-elisp-symbol) ;; Complete Elisp symbol
+  (add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
+  )
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+(use-package vertico
+  :init
+  (vertico-mode))
+
+(use-package marginalia
+  :after vertico
+  :init
+  (marginalia-mode))
+
+(use-package nerd-icons-completion
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  :hook
+  ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
+
+;; latex
+(use-package auctex
+  :ensure t
+  :defer t
+  )
+(setq TeX-view-program-list
+      '(("Zathura" "zathura %o")))
+(setq TeX-view-program-selection
+      '((output-pdf "Zathura")
+        (output-dvi "xdvi")
+        (output-html "xdg-open")))
+(setq TeX-engine 'luatex)
+
+;; magit
+(use-package magit
+  :defer
+  :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff
+  :config (define-key transient-map (kbd "<escape>") 'transient-quit-one) ;; Make escape quit magit prompts
+  )
+
+(use-package diff-hl
+  :hook ((dired-mode         . diff-hl-dired-mode-unless-remote)
+         (magit-post-refresh . diff-hl-magit-post-refresh))
+  :init (global-diff-hl-mode))
+
+;; help!
 (use-package helpful
   :bind
   ;; Note that the built-in `describe-function' includes both functions
@@ -165,19 +301,11 @@
   (which-key-max-description-length 25)
   (which-key-allow-imprecise-window-fit nil)) ;; Fixes which-key window slipping out in Emacs Daemon
 
+;; colorful brackets
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 (add-hook 'before-save-hook
           'delete-trailing-whitespace)
-
-;; magit
-(use-package magit
-  :defer
-  :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff
-  :config (define-key transient-map (kbd "<escape>") 'transient-quit-one) ;; Make escape quit magit prompts
-  )
-
-(load-file (expand-file-name "~/.config/emacs/latex.el"))
 
 ;; make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))

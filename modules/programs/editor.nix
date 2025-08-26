@@ -15,15 +15,19 @@ in {
           enable = true;
           package = pkgs.emacs-pgtk;
           extraPackages = epkgs: [
-              epkgs.eat
-              pkgs.nixd
-              pkgs.alejandra
-              pkgs.haskell-language-server
-              pkgs.lemminx # xml lsp
-              pkgs.vscode-langservers-extracted # soyjack lsps
-            ];
+            epkgs.eat
+            epkgs.org
+          ];
         };
-        home.packages = [pkgs.poppler-utils pkgs.texlive.combined.scheme-full];
+        home.packages = [
+          pkgs.poppler-utils
+          pkgs.texlive.combined.scheme-full
+          pkgs.nixd
+          pkgs.alejandra
+          pkgs.haskell-language-server
+          pkgs.lemminx # xml lsp
+          pkgs.vscode-langservers-extracted # soyjack lsps
+        ];
       })
     ];
   };
