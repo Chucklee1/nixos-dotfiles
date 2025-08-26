@@ -159,21 +159,20 @@
 (use-package nix-mode :mode "\\.nix\\'")
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 
-(use-package eglot
+(use-package org
   :ensure nil
-  :hook ((haskell-mode
-		  kdl-mode
-		  lua-mode
-		  markdown-mode
-		  nix-mode
-		  web-mode)
-         . eglot-ensure)
   :custom
-  ;; Good default
-  (eglot-events-buffer-size 0) ;; No event buffers (LSP server logs)
-  (eglot-autoshutdown t);; Shutdown unused servers.
-  (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
+  (org-edit-src-content-indentation 4) ;; Set src block automatic indent to 4 instead of 2.
+  (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
+  :hook
+  (org-mode . org-indent-mode) ;; Indent text
   )
+(use-package toc-org
+  :commands toc-org-enable
+  :hook (org-mode . toc-org-mode))
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode))
 
 (use-package apheleia
   :config
