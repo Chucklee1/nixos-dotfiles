@@ -16,10 +16,11 @@
   - [[#dired][Dired]]
   - [[#eat][Eat]]
 - [[#nerd][Nerd]]
-  - [[#language-specific-modes][Language-Specific Modes]]
+  - [[#tree-sitter][Tree-sitter]]
+  - [[#misc-language-specific-modes][Misc Language-Specific Modes]]
+  - [[#nix-mode][Nix Mode]]
   - [[#org-mode][Org Mode]]
   - [[#auctex][Auctex]]
-  - [[#tree-sitter][Tree-sitter]]
   - [[#apheleia][Apheleia]]
 - [[#late-load][Late Load]]
   - [[#git][Git]]
@@ -223,17 +224,29 @@
 #+end_src
 
 * Nerd
-** Language-Specific Modes
+** Tree-sitter
+#+begin_src emacs-lisp
+    (use-package tree-sitter
+      :hook ((prog-mode . turn-on-tree-sitter-mode)
+             (tree-sitter-after-on . tree-sitter-hl-mode)))
+
+    (use-package tree-sitter-langs
+      :after tree-sitter)
+#+end_src
+** Misc Language-Specific Modes
 #+begin_src emacs-lisp
     (use-package haskell-mode :mode "\\.hs\\'")
     (use-package kdl-mode :mode "\\.kdl\\'")
     (use-package lua-mode :mode "\\.lua\\'")
     (use-package markdown-mode :mode "\\.md\\'")
+    (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
+#+end_src
+** Nix Mode
+#+begin_src emacs-lisp
     (use-package nix-mode
-      :mode "\\.nix\\'"
+      :mode ("\\.nix\\'" "\\.nix.in\\'")
       :hook (nix-mode . (lambda ()
     					  (add-hook 'before-save-hook #'nix-mode-format nil t))))
-    (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 #+end_src
 ** Org Mode
 #+begin_src emacs-lisp
@@ -308,15 +321,6 @@
             (output-dvi "xdvi")
             (output-html "xdg-open")))
     (setq TeX-engine 'luatex)
-#+end_src
-** Tree-sitter
-#+begin_src emacs-lisp
-    (use-package tree-sitter
-      :hook ((prog-mode . turn-on-tree-sitter-mode)
-             (tree-sitter-after-on . tree-sitter-hl-mode)))
-
-    (use-package tree-sitter-langs
-      :after tree-sitter)
 #+end_src
 ** Apheleia
 - Code Formatter

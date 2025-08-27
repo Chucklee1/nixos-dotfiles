@@ -127,15 +127,23 @@
 						   (setq-local truncate-lines t)
 						   (visual-line-mode -1)))
 
+(use-package tree-sitter
+  :hook ((prog-mode . turn-on-tree-sitter-mode)
+         (tree-sitter-after-on . tree-sitter-hl-mode)))
+
+(use-package tree-sitter-langs
+  :after tree-sitter)
+
 (use-package haskell-mode :mode "\\.hs\\'")
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
+(use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
+
 (use-package nix-mode
-  :mode "\\.nix\\'"
+  :mode ("\\.nix\\'" "\\.nix.in\\'")
   :hook (nix-mode . (lambda ()
 					  (add-hook 'before-save-hook #'nix-mode-format nil t))))
-(use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 
 (use-package org
   :ensure nil ;; provided by nixpkgs
@@ -198,13 +206,6 @@
         (output-dvi "xdvi")
         (output-html "xdg-open")))
 (setq TeX-engine 'luatex)
-
-(use-package tree-sitter
-  :hook ((prog-mode . turn-on-tree-sitter-mode)
-         (tree-sitter-after-on . tree-sitter-hl-mode)))
-
-(use-package tree-sitter-langs
-  :after tree-sitter)
 
 (use-package apheleia
   :ensure t
