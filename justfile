@@ -8,7 +8,7 @@ format layout device:
         --mode disko {{pwd}}/assets/disko/{{layout}}.nix \
         --arg device '"{{device}}"'
 
-show-hardware: 
+show-hardware:
     sudo nixos-generate-config \
         --no-filesystems --show-hardware-config \
         --root {{live_root}}
@@ -23,6 +23,12 @@ update:
     nix flake update
 
 rebuild profile:
-    sudo nixos-rebuild switch \
-        --flake {{pwd}}#{{profile}} \
-        {{build_flags}}
+    if [ "{{profile}}" = "macbook" ]; then \
+        sudo darwin-rebuild switch \
+            --flake {{pwd}}#{{profile}} \
+            {{build_flags}}; \
+    else \
+        sudo nixos-rebuild switch \
+            --flake {{pwd}}#{{profile}} \
+            {{build_flags}}; \
+    fi
