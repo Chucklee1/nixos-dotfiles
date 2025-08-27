@@ -1,14 +1,3 @@
-(defun start/org-babel-tangle-config ()
-  "Automatically tangle our init.org config file and refresh package-quickstart when we save it. Credit to Emacs From Scratch for this one!"
-  (interactive)
-  (when (string-equal (file-name-directory (buffer-file-name))
-					  (expand-file-name user-emacs-directory))
-	;; Dynamic scoping to the rescue
-	(let ((org-confirm-babel-evaluate nil))
-	  (org-babel-tangle))))
-
-(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'start/org-babel-tangle-config)))
-
 (let ((my/path (expand-file-name "~/.nix-profile/bin")))
   (setenv "PATH" (concat my/path ":" (getenv "PATH")))
   (add-to-list 'exec-path my/path))
@@ -182,22 +171,36 @@
   :hook (org-mode . org-superstar-mode))
 (add-hook 'org-mode-hook
 		  (lambda ()
+			(display-line-numbers-mode t)
+
 			;; Turn on variable-pitch for the buffer
 			(variable-pitch-mode 1)
 
 			;; Set the variable-pitch (body text) font
-			(set-face-attribute 'variable-pitch nil :family "Noto Sans" :height 120)
+			(set-face-attribute 'variable-pitch nil :family "Noto Sans CJK TC" :height 120)
 
 			;; Keep fixed-pitch faces for code blocks, tables, etc.
 			(dolist (face '(org-block
 							org-block-begin-line
-							org-block-end-line
-							org-code
-							org-verbatim
+                            org-block-end-line
+                            org-code
+                            org-verbatim
 							org-meta-line
 							org-special-keyword
 							org-table))
 			  (set-face-attribute face nil :family "JetBrainsMono Nerd Font" :height 120))))
+
+(defun start/org-sync-config ()
+  "Automatically tangle init.org when saving it."
+  (when (string-equal (buffer-file-name)
+					  (expand-file-name "~/nixos-dotfiles/assets/emacs/init.org")) ;; adjust path
+	(org-babel-tangle)))
+
+;; sync init.org to init.el on save
+(add-hook 'org-mode-hook
+		  (lambda ()
+			(add-hook 'after-save-hook #'start/org-sync-config nil 'local)))
+(require 'ox-latex)
 
 (use-package auctex
   :ensure t

@@ -4,7 +4,6 @@
 
 * Table of Contents :toc:
 - [[#early-load][Early Load]]
-  - [[#auto-tangle][auto-tangle]]
   - [[#add-directory-to-emacs-path][add directory to emacs PATH]]
   - [[#bootstrap-straightel-as-package-manager][bootstrap straight.el as package manager]]
 - [[#base-settings][Base Settings]]
@@ -25,21 +24,6 @@
   - [[#the-rest][the rest...]]
 
 * Early Load
-** auto-tangle
-- taken from kickstart.emacs
-#+begin_src emacs-lisp
-    (defun start/org-babel-tangle-config ()
-      "Automatically tangle our init.org config file and refresh package-quickstart when we save it. Credit to Emacs From Scratch for this one!"
-      (interactive)
-      (when (string-equal (file-name-directory (buffer-file-name))
-    					  (expand-file-name user-emacs-directory))
-    	;; Dynamic scoping to the rescue
-    	(let ((org-confirm-babel-evaluate nil))
-    	  (org-babel-tangle))))
-
-    (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'start/org-babel-tangle-config)))
-#+end_src
-
 ** add directory to emacs PATH
 - MacOS does not import Nix's PATH, so we must manually add it here...
 #+begin_src emacs-lisp
@@ -202,7 +186,6 @@
        :keymaps 'override
        "L" '(next-buffer :wk "Next buffer")
        "H" '(previous-buffer :wk "Previous buffer")))
-
 #+end_src
 
 ** Eat Terminal Hook
@@ -248,23 +231,36 @@
       :hook (org-mode . org-superstar-mode))
     (add-hook 'org-mode-hook
     		  (lambda ()
+    			(display-line-numbers-mode t)
+
     			;; Turn on variable-pitch for the buffer
     			(variable-pitch-mode 1)
 
     			;; Set the variable-pitch (body text) font
-    			(set-face-attribute 'variable-pitch nil :family "Noto Sans" :height 120)
+    			(set-face-attribute 'variable-pitch nil :family "Noto Sans CJK TC" :height 120)
 
     			;; Keep fixed-pitch faces for code blocks, tables, etc.
     			(dolist (face '(org-block
     							org-block-begin-line
-    							org-block-end-line
-    							org-code
-    							org-verbatim
+                                org-block-end-line
+                                org-code
+                                org-verbatim
     							org-meta-line
     							org-special-keyword
     							org-table))
     			  (set-face-attribute face nil :family "JetBrainsMono Nerd Font" :height 120))))
 
+    (defun start/org-sync-config ()
+      "Automatically tangle init.org when saving it."
+      (when (string-equal (buffer-file-name)
+    					  (expand-file-name "~/nixos-dotfiles/assets/emacs/init.org")) ;; adjust path
+    	(org-babel-tangle)))
+
+    ;; sync init.org to init.el on save
+    (add-hook 'org-mode-hook
+    		  (lambda ()
+    			(add-hook 'after-save-hook #'start/org-sync-config nil 'local)))
+    (require 'ox-latex)
 #+end_src
 *** latex
 #+begin_src emacs-lisp
@@ -279,7 +275,6 @@
             (output-dvi "xdvi")
             (output-html "xdg-open")))
     (setq TeX-engine 'luatex)
-
 #+end_src
 
 
@@ -373,7 +368,6 @@
       (nerd-icons-completion-mode)
       :hook
       ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
-
 #+end_src
 
 
@@ -390,7 +384,6 @@
       :hook ((dired-mode         . diff-hl-dired-mode-unless-remote)
              (magit-post-refresh . diff-hl-magit-post-refresh))
       :init (global-diff-hl-mode))
-
 #+end_src
 
 ** help!
@@ -420,7 +413,6 @@
       (which-key-idle-delay 0.8)       ;; Set the time delay (in seconds) for the which-key popup to appear
       (which-key-max-description-length 25)
       (which-key-allow-imprecise-window-fit nil)) ;; Fixes which-key window slipping out in Emacs Daemon
-
 #+end_src
 
 ** the rest...
