@@ -1,7 +1,22 @@
-;; Add a directory to Emacs PATH
+(defun start/org-babel-tangle-config ()
+  "Automatically tangle our init.org config file and refresh package-quickstart when we save it. Credit to Emacs From Scratch for this one!"
+  (interactive)
+  (when (string-equal (file-name-directory (buffer-file-name))
+					  (expand-file-name user-emacs-directory))
+	;; Dynamic scoping to the rescue
+	(let ((org-confirm-babel-evaluate nil))
+	  (org-babel-tangle))))
+
+(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'start/org-babel-tangle-config)))
+
 (let ((my/path (expand-file-name "~/.nix-profile/bin")))
   (setenv "PATH" (concat my/path ":" (getenv "PATH")))
   (add-to-list 'exec-path my/path))
+
+;; make gc pauses faster by decreasing the threshold.
+(setq gc-cons-threshold (* 2 1000 1000))
+;; increase the amount of data which emacs reads from the process
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 (setq package-enable-at-startup nil)
 
@@ -24,7 +39,6 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-;; general
 (use-package emacs
   :custom
   (menu-bar-mode nil)         ;; Disable the menu bar
@@ -67,14 +81,6 @@
          )
   )
 
-;; font
-(set-face-attribute 'default nil
-					:font "JetBrainsMono Nerd Font"
-                    :height 120
-                    :weight 'medium)
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font"))
-(setq-default line-spacing 0.12)
-
 ;; transparent background
 (set-frame-parameter (selected-frame) 'alpha-background 80)
 (add-to-list 'default-frame-alist '(alpha-background . 80))
@@ -89,7 +95,6 @@
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
-;; evil mode
 (use-package evil
   :init
   (evil-mode)
@@ -104,7 +109,7 @@
   :bind (:map evil-motion-state-map
               ("SPC" . nil)
               ("RET" . nil)
-              ("TAB" . nil)))
+			  ("TAB" . nil)))
 (use-package evil-collection
   :after evil
   :config
@@ -112,7 +117,6 @@
   (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
   (evil-collection-init))
 
-;; keybinds
 (use-package general
   :config
   (general-evil-setup)
@@ -126,9 +130,8 @@
   (start/leader-keys
     "." '(find-file :wk "Find file")
     "TAB" '(comment-line :wk "Comment lines")
-										;"q" '(flymake-show-buffer-diagnostics :wk "Flymake buffer diagnostic")
     "g" '(magit-status :wk "Magit status")
-	"e" '(dired-jump :wk "Open dired at current buffer")
+    "e" '(dired-jump :wk "Open dired at current buffer")
     "T" '(eat :wk "Eat terminal")
 	"c" '(kill-current-buffer :wk "Kill current buffer")
     "Q" '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
@@ -139,7 +142,7 @@
   (start/leader-keys
     "b" '(:ignore t :wk "Buffers")
     "b i" '(ibuffer :wk "Ibuffer")
-    "b r" '(revert-buffer :wk "Reload buffer"))
+	"b r" '(revert-buffer :wk "Reload buffer"))
 
   (general-define-key
    :states '(normal visual motion emacs)
@@ -147,13 +150,10 @@
    "L" '(next-buffer :wk "Next buffer")
    "H" '(previous-buffer :wk "Previous buffer")))
 
-;; eat
 (add-hook 'eat-mode-hook
 		  (lambda () (setq-local truncate-lines t)
 			(visual-line-mode -1)))
 
-
-;; lang specific modes
 (use-package haskell-mode :mode "\\.hs\\'")
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package lua-mode :mode "\\.lua\\'")
@@ -162,7 +162,6 @@
   :mode "\\.nix\\'"
   :hook (nix-mode . (lambda ()
 					  (add-hook 'before-save-hook #'nix-mode-format nil t))))
-
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 
 (use-package org
@@ -178,7 +177,46 @@
   :hook (org-mode . toc-org-mode))
 (use-package org-superstar
   :after org
+  :config
+  (setq org-superstar-headline-bullets-list '("◉" "○" "⚬" "◈" "◇"))
   :hook (org-mode . org-superstar-mode))
+(add-hook 'org-mode-hook
+		  (lambda ()
+			;; Turn on variable-pitch for the buffer
+			(variable-pitch-mode 1)
+
+			;; Set the variable-pitch (body text) font
+			(set-face-attribute 'variable-pitch nil :family "Noto Sans" :height 120)
+
+			;; Keep fixed-pitch faces for code blocks, tables, etc.
+			(dolist (face '(org-block
+							org-block-begin-line
+							org-block-end-line
+							org-code
+							org-verbatim
+							org-meta-line
+							org-special-keyword
+							org-table))
+			  (set-face-attribute face nil :family "JetBrainsMono Nerd Font" :height 120))))
+
+(use-package auctex
+  :ensure t
+  :defer t
+  )
+(setq TeX-view-program-list
+      '(("Zathura" "zathura %o")))
+(setq TeX-view-program-selection
+      '((output-pdf "Zathura")
+        (output-dvi "xdvi")
+        (output-html "xdg-open")))
+(setq TeX-engine 'luatex)
+
+(use-package tree-sitter
+  :hook ((prog-mode . turn-on-tree-sitter-mode)
+         (tree-sitter-after-on . tree-sitter-hl-mode)))
+
+(use-package tree-sitter-langs
+  :after tree-sitter)
 
 (use-package apheleia
   :ensure t
@@ -190,6 +228,7 @@
   :custom
   (sideline-flymake-display-mode 'line) ;; Show errors on the current line
   (sideline-backends-right '(sideline-flymake)))
+
 (use-package corfu
   ;; Optional customizations
   :custom
@@ -252,20 +291,6 @@
   :hook
   ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
 
-;; latex
-(use-package auctex
-  :ensure t
-  :defer t
-  )
-(setq TeX-view-program-list
-      '(("Zathura" "zathura %o")))
-(setq TeX-view-program-selection
-      '((output-pdf "Zathura")
-        (output-dvi "xdvi")
-        (output-html "xdg-open")))
-(setq TeX-engine 'luatex)
-
-;; magit
 (use-package magit
   :defer
   :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff
@@ -277,7 +302,6 @@
          (magit-post-refresh . diff-hl-magit-post-refresh))
   :init (global-diff-hl-mode))
 
-;; help!
 (use-package helpful
   :bind
   ;; Note that the built-in `describe-function' includes both functions
@@ -309,8 +333,3 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 (add-hook 'before-save-hook
           'delete-trailing-whitespace)
-
-;; make gc pauses faster by decreasing the threshold.
-(setq gc-cons-threshold (* 2 1000 1000))
-;; increase the amount of data which emacs reads from the process
-(setq read-process-output-max (* 1024 1024)) ;; 1mb

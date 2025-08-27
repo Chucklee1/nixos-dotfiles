@@ -17,6 +17,7 @@ in {
           extraPackages = epkgs: [
             epkgs.eat
             epkgs.org
+            epkgs.tree-sitter-langs
           ];
         };
         home.packages = [
