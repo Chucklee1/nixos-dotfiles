@@ -3,6 +3,8 @@
   (setenv "PATH" (concat my/path ":" (getenv "PATH")))
   (add-to-list 'exec-path my/path))
 
+(setq package-enable-at-startup nil)
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -156,7 +158,11 @@
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
-(use-package nix-mode :mode "\\.nix\\'")
+(use-package nix-mode
+  :mode "\\.nix\\'"
+  :hook (nix-mode . (lambda ()
+					  (add-hook 'before-save-hook #'nix-mode-format nil t))))
+
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 
 (use-package org
@@ -175,11 +181,9 @@
   :hook (org-mode . org-superstar-mode))
 
 (use-package apheleia
+  :ensure t
   :config
-  (add-to-list 'apheleia-mode-alist '(nix-mode . alejandra))
-  (apheleia-global-mode +1))
-
-
+  (apheleia-global-mode t))
 
 (use-package sideline-flymake
   :hook (flymake-mode . sideline-mode)
@@ -193,7 +197,7 @@
   (corfu-auto t)                 ;; Enable auto completion
   (corfu-auto-prefix 2)          ;; Minimum length of prefix for auto completion.
   (corfu-popupinfo-mode t)       ;; Enable popup information
-  (corfu-popupinfo-delay 0.5)    ;; Lower popup info delay to 0.5 seconds from 2 seconds
+  (corfu-popupinfo-delay 2.0)    ;; Lower popup info delay to 0.5 seconds from 2 seconds
   (corfu-separator ?\s)          ;; Orderless field separator, Use M-SPC to enter separator
   (completion-ignore-case t)
 
