@@ -3,42 +3,6 @@
 in {
   macbook.nix = [
     {
-      services.yabai.enable = true;
-      services.yabai.enableScriptingAddition = true;
-      services.yabai.config = {
-        external_bar = "off:${BAR_HEIGHT}:0";
-        menubar_opacity = 1.0;
-        mouse_follows_focus = "off";
-        focus_follows_mouse = "off";
-        display_arrangement_order = "default";
-        window_origin_display = "default";
-        window_placement = "second_child";
-        window_insertion_point = "focused";
-        window_zoom_persist = "on";
-        window_shadow = "on";
-        window_animation_duration = 0.0;
-        window_animation_easing = "ease_out_circ";
-        window_opacity_duration = 0.0;
-        active_window_opacity = 1.0;
-        normal_window_opacity = 0.90;
-        window_opacity = "off";
-        insert_feedback_color = "0xffd75f5f";
-        split_ratio = 0.50;
-        split_type = "auto";
-        auto_balance = "off";
-        top_padding = 2;
-        bottom_padding = 2;
-        left_padding = 2;
-        right_padding = 2;
-        window_gap = 0;
-        layout = "bsp";
-        mouse_modifier = "fn";
-        mouse_action1 = "move";
-        mouse_action2 = "resize";
-        mouse_drop_action = "swap";
-        window_rule = ["emacs manage=on"];
-        space = ["1" "2"];
-      };
       system.activationScripts.hammerspoon-setup.text = ''
         defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
         sudo killall Dock
@@ -47,6 +11,7 @@ in {
   ];
   macbook.home = [
     {
+      programs.aerospace.enable = true;
       programs.sketchybar.enable = true;
       programs.sketchybar.configType = "lua";
       programs.sketchybar.config = {
@@ -54,56 +19,56 @@ in {
         recursive = true;
       };
     }
-    ({pkgs, ...}: {
-      xdg.configFile."hammerspoon/init.lua".text =
-        #lua
-        ''
+    ({pkgs, ...}:  {
+      xdg.configFile."hammerspoon/init.lua".text = ''
           require("hs.ipc")
-          local yabai = "${pkgs.yabai}/bin/yabai"
+          local wmctl = "${pkgs.aerospace}/bin/aerospace"
+          local mod = { "alt" }
+          local modShift = { mod, "shift" }
 
-          hs.hotkey.bind({ "alt" }, "return", function()
+          hs.hotkey.bind(mod, "return", function()
               hs.application.launchOrFocus("kitty")
           end)
-          hs.hotkey.bind({ "alt" }, "space", function()
-            hs.application.launchOrFocus("dmenu-mac")
+          hs.hotkey.bind(mod, "space", function()
+          hs.application.launchOrFocus("dmenu-mac")
           end)
 
           -- Fill screen: alt + m
-          hs.hotkey.bind({ "alt" }, "m", function()
-            hs.execute(yabai .. "-m window --toggle zoom-parent")
+          hs.hotkey.bind(mod, "m", function()
+          hs.execute(winctl .. " fullscreen")
           end)
 
           -- Fullscreen: alt + shift + m
-          hs.hotkey.bind({ "alt", "shift" }, "m", function()
-            hs.execute(yabai .. "-m window --toggle zoom-fullscreen")
+          hs.hotkey.bind(modShift, "m", function()
+          hs.execute(winctl .. " macos-native-fullscreen")
           end)
 
           -- Focus window in direction: alt + arrow
-          hs.hotkey.bind({ "alt" }, "up", function()
-            hs.execute(yabai .. "-m window --focus north")
+          hs.hotkey.bind(mod, "up", function()
+          hs.execute(winctl .. " focus up")
           end)
-          hs.hotkey.bind({ "alt" }, "down", function()
-            hs.execute(yabai .. "-m window --focus south")
+          hs.hotkey.bind(mod, "down", function()
+          hs.execute(winctl .. " focus down")
           end)
-          hs.hotkey.bind({ "alt" }, "left", function()
-            hs.execute(yabai .. "-m window --focus west")
+          hs.hotkey.bind(mod, "left", function()
+          hs.execute(winctl .. " focus left")
           end)
-          hs.hotkey.bind({ "alt" }, "right", function()
-            hs.execute(yabai .. "-m window --focus east")
+          hs.hotkey.bind(mod, "right", function()
+          hs.execute(winctl .. " focus right")
           end)
 
           -- Move window in direction: alt + shift + arrow
-          hs.hotkey.bind({ "alt", "shift" }, "up", function()
-            hs.execute(yabai .. "-m window --swap north")
+          hs.hotkey.bind(modShift, "up", function()
+          hs.execute(winctl .. " move up")
           end)
-          hs.hotkey.bind({ "alt", "shift" }, "down", function()
-            hs.execute(yabai .. "-m window --swap south")
+          hs.hotkey.bind(modShift, "down", function()
+          hs.execute(winctl .. " move down")
           end)
-          hs.hotkey.bind({ "alt", "shift" }, "left", function()
-            hs.execute(yabai .. "-m window --swap west")
+          hs.hotkey.bind(modShift, "left", function()
+          hs.execute(winctl .. " move left")
           end)
-          hs.hotkey.bind({ "alt", "shift" }, "right", function()
-            hs.execute(yabai .. "-m window --swap east")
+          hs.hotkey.bind(modShift, "right", function()
+          hs.execute(winctl .. " move right")
           end)
         '';
       home.activation.reloadHammerspoon = ''
