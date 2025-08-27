@@ -1,8 +1,8 @@
 {
   laptop.nix = [
-    ({config, ...}: {
+    ({config, pkgs, ...}: {
+      services.libinput.enable = true;
       services.libinput.touchpad = {
-        enable = true;
         naturalScrolling = true;
       };
 
@@ -11,7 +11,7 @@
       services.xserver.windowManager.dwm = {
         enable = true;
         package = pkgs.dwm.overrideAttrs {
-          src = "${config.users.users.goat.home}/Repos/dwm";
+          src = ./dwm;
         };
       };
     })
