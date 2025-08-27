@@ -31,6 +31,8 @@
 
   # ---- programs ----
   inputs.nix-vim.url = "github:Chucklee1/nix-vim";
+  inputs.dwm.url = "github:Chucklee1/dwm";
+  inputs.dwm.flake = false;
   inputs.emacs-overlay.url = "github:nix-community/emacs-overlay";
   inputs.niri.url = "github:sodiboo/niri-flake";
 

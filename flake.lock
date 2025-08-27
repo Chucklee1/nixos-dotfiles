@@ -352,6 +352,22 @@
         "type": "github"
       }
     },
+    "dwm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1756325529,
+        "narHash": "sha256-ZffOx9znAfKdedpzq1/kNqZQago5F1BdvPqEXTzwQ5k=",
+        "owner": "Chucklee1",
+        "repo": "dwm",
+        "rev": "4559386ab1f9ac4f5e288cf3388ba39804b6a38b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Chucklee1",
+        "repo": "dwm",
+        "type": "github"
+      }
+    },
     "emacs-overlay": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -2374,6 +2390,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
+        "dwm": "dwm",
         "emacs-overlay": "emacs-overlay",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
