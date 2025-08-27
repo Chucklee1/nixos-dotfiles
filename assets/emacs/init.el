@@ -40,12 +40,10 @@
          )
   )
 
-;; transparent background
 (add-hook 'window-setup-hook (lambda ()
 		  (set-frame-parameter (selected-frame) 'alpha-background 80)
 		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
 
-;; nerd font
 (use-package nerd-icons
   :if (display-graphic-p))
 
@@ -158,8 +156,6 @@
 
 (add-hook 'org-mode-hook
 		  (lambda ()
-			(display-line-numbers-mode nil)
-
 			;; Turn on variable-pitch for the buffer
 			(variable-pitch-mode 1)
 
@@ -181,7 +177,7 @@
 
 (defun config/sync-with-org ()
   (when (string-equal (file-truename buffer-file-name)
-					  (file-truename orgcfg-path))
+					  (file-truename ORGCFG_PATH))
 	(org-babel-tangle)))
 
 (add-hook 'org-mode-hook
@@ -215,17 +211,10 @@
   :config
   (apheleia-global-mode t))
 
-(use-package sideline-flymake
-  :hook (flymake-mode . sideline-mode)
-  :custom
-  (sideline-flymake-display-mode 'line) ;; Show errors on the current line
-  (sideline-backends-right '(sideline-flymake)))
-
 (use-package magit
   :defer
   :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff
-  :config (define-key transient-map (kbd "<escape>") 'transient-quit-one) ;; Make escape quit magit prompts
-  )
+  :config (define-key transient-map (kbd "<escape>") 'transient-quit-one)) ;; Make escape quit magit prompts
 
 (use-package diff-hl
   :hook ((dired-mode         . diff-hl-dired-mode-unless-remote)
@@ -240,8 +229,7 @@
   ("C-h f" . helpful-callable)
   ("C-h v" . helpful-variable)
   ("C-h k" . helpful-key)
-  ("C-h x" . helpful-command)
-  )
+  ("C-h x" . helpful-command))
 
 (use-package which-key
   :ensure nil ;; Don't install which-key because it's now built-in
@@ -258,7 +246,6 @@
   (which-key-max-description-length 25)
   (which-key-allow-imprecise-window-fit nil)) ;; Fixes which-key window slipping out in Emacs Daemon
 
-;; colorful brackets
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 (add-hook 'before-save-hook
