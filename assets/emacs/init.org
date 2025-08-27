@@ -4,37 +4,29 @@
 
 * Table of Contents :toc:
 - [[#early-load][Early Load]]
-  - [[#add-directory-to-emacs-path][add directory to emacs PATH]]
   - [[#bootstrap-straightel-as-package-manager][bootstrap straight.el as package manager]]
+  - [[#global-variables][Global Variables]]
+  - [[#add-directory-to-emacs-path][add directory to emacs PATH]]
 - [[#base-settings][Base Settings]]
   - [[#emacs][Emacs]]
   - [[#appearance][Appearance]]
   - [[#evil-mode][Evil Mode]]
   - [[#keybinds][keybinds]]
+  - [[#dired][Dired]]
   - [[#eat-terminal-hook][Eat Terminal Hook]]
 - [[#nerd][Nerd]]
   - [[#language-specific-modes][Language-Specific Modes]]
   - [[#tree-sitter][tree-sitter]]
   - [[#code-formatter][code formatter]]
   - [[#flymake][flymake]]
-  - [[#completion][completion]]
 - [[#late-load][Late Load]]
   - [[#magit][magit]]
   - [[#help][help!]]
   - [[#the-rest][the rest...]]
 
 * Early Load
-** add directory to emacs PATH
-- MacOS does not import Nix's PATH, so we must manually add it here...
-#+begin_src emacs-lisp
-    (let ((my/path (expand-file-name "~/.nix-profile/bin")))
-      (setenv "PATH" (concat my/path ":" (getenv "PATH")))
-      (add-to-list 'exec-path my/path))
-
-#+end_src
-
 ** bootstrap straight.el as package manager
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle ./early-init.el
     ;; make gc pauses faster by decreasing the threshold.
     (setq gc-cons-threshold (* 2 1000 1000))
     ;; increase the amount of data which emacs reads from the process
@@ -61,7 +53,18 @@
     (straight-use-package 'use-package)
     (setq straight-use-package-by-default t)
 #+end_src
-
+** Global Variables
+#+begin_src emacs-lisp :tangle ./early-init.el
+    (defconst CONFIG_PATH (expand-file-name "~/.emacs.d/init.el"))
+    (defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
+#+end_src
+** add directory to emacs PATH
+- MacOS does not import Nix's PATH, so we must manually add it here...
+#+begin_src emacs-lisp :tangle ./early-init.el
+    (let ((my/path (expand-file-name "~/.nix-profile/bin")))
+      (setenv "PATH" (concat my/path ":" (getenv "PATH")))
+      (add-to-list 'exec-path my/path))
+#+end_src
 
 * Base Settings
 ** Emacs
@@ -108,12 +111,12 @@
              )
       )
 #+end_src
-
 ** Appearance
 #+begin_src emacs-lisp
     ;; transparent background
-    (set-frame-parameter (selected-frame) 'alpha-background 80)
-    (add-to-list 'default-frame-alist '(alpha-background . 80))
+    (add-hook 'window-setup-hook (lambda ()
+    		  (set-frame-parameter (selected-frame) 'alpha-background 80)
+    		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
 
     ;; nerd font
     (use-package nerd-icons
@@ -125,7 +128,6 @@
     (use-package nerd-icons-ibuffer
       :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 #+end_src
-
 ** Evil Mode
 - Vim Clone
 #+begin_src emacs-lisp
@@ -151,7 +153,6 @@
       (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
       (evil-collection-init))
 #+end_src
-
 ** keybinds
 #+begin_src emacs-lisp
     (use-package general
@@ -173,7 +174,7 @@
     	"c" '(kill-current-buffer :wk "Kill current buffer")
         "Q" '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
         "R" '((lambda () (interactive)
-    			(load-file "~/.config/emacs/init.el"))
+    			(load-file CONFIG_PATH))
               :wk "Reload Emacs config"))
 
       (start/leader-keys
@@ -187,14 +188,32 @@
        "L" '(next-buffer :wk "Next buffer")
        "H" '(previous-buffer :wk "Previous buffer")))
 #+end_src
+** Dired
+- Changes to imitate file managers like yazi for ranger:
+  - highlight current line
+  - Set C-left/C-right to navigate files
+#+begin_src emacs-lisp
+    (use-package dired
+      :straight (:type built-in)
+      :ensure nil
+      :config
+      (general-define-key
+       :keymaps 'dired-mode-map
+       "<C-right>" 'dired-find-file
+       "<C-left>" 'dired-up-directory)
 
+      ;; Remove cursor and use highlight line
+      (add-hook 'dired-mode-hook
+    			(lambda ()
+    			  (setq cursor-type nil)        ;; Hide cursor
+    			  (hl-line-mode 1))))           ;; Highlight current line
+
+#+end_src
 ** Eat Terminal Hook
 #+begin_src emacs-lisp
-    (add-hook 'eat-mode-hook
-    		  (lambda () (setq-local truncate-lines t)
-    			(visual-line-mode -1)))
-
-
+    (add-hook 'eat-mode-hook (lambda ()
+    						   (setq-local truncate-lines t)
+    						   (visual-line-mode -1)))
 #+end_src
 
 
@@ -214,7 +233,7 @@
 *** Org Mode
 #+begin_src emacs-lisp
     (use-package org
-      :ensure nil
+      :ensure nil ;; provided by nixpkgs
       :custom
       (org-edit-src-content-indentation 4) ;; Set src block automatic indent to 4 instead of 2.
       (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
@@ -229,9 +248,13 @@
       :config
       (setq org-superstar-headline-bullets-list '("◉" "○" "⚬" "◈" "◇"))
       :hook (org-mode . org-superstar-mode))
+
+#+end_src
+General settings for org mode via hook
+#+begin_src emacs-lisp
     (add-hook 'org-mode-hook
     		  (lambda ()
-    			(display-line-numbers-mode t)
+    			(display-line-numbers-mode nil)
 
     			;; Turn on variable-pitch for the buffer
     			(variable-pitch-mode 1)
@@ -242,25 +265,30 @@
     			;; Keep fixed-pitch faces for code blocks, tables, etc.
     			(dolist (face '(org-block
     							org-block-begin-line
-                                org-block-end-line
-                                org-code
-                                org-verbatim
+    							org-block-end-line
+    							org-code
+    							org-verbatim
     							org-meta-line
     							org-special-keyword
     							org-table))
     			  (set-face-attribute face nil :family "JetBrainsMono Nerd Font" :height 120))))
 
-    (defun start/org-sync-config ()
-      "Automatically tangle init.org when saving it."
-      (when (string-equal (buffer-file-name)
-    					  (expand-file-name "~/nixos-dotfiles/assets/emacs/init.org")) ;; adjust path
+    (require 'ox-latex)
+#+end_src
+Save hook to sync init.org with init.el
+#+begin_src emacs-lisp
+    (defun config/sync-with-org ()
+      (when (string-equal (file-truename buffer-file-name)
+    					  (file-truename orgcfg-path))
     	(org-babel-tangle)))
 
-    ;; sync init.org to init.el on save
     (add-hook 'org-mode-hook
     		  (lambda ()
-    			(add-hook 'after-save-hook #'start/org-sync-config nil 'local)))
-    (require 'ox-latex)
+    			(add-hook 'after-save-hook
+    					  (lambda ()
+    						(config/sync-with-org))
+    					  nil t)))
+
 #+end_src
 *** latex
 #+begin_src emacs-lisp
@@ -269,7 +297,7 @@
       :defer t
       )
     (setq TeX-view-program-list
-          '(("Zathura" "zathura %o")))
+          '(("Zathura" "zathura %")))
     (setq TeX-view-program-selection
           '((output-pdf "Zathura")
             (output-dvi "xdvi")
@@ -304,72 +332,6 @@
       (sideline-flymake-display-mode 'line) ;; Show errors on the current line
       (sideline-backends-right '(sideline-flymake)))
 #+end_src
-
-** completion
-#+begin_src emacs-lisp
-    (use-package corfu
-      ;; Optional customizations
-      :custom
-      (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-      (corfu-auto t)                 ;; Enable auto completion
-      (corfu-auto-prefix 2)          ;; Minimum length of prefix for auto completion.
-      (corfu-popupinfo-mode t)       ;; Enable popup information
-      (corfu-popupinfo-delay 2.0)    ;; Lower popup info delay to 0.5 seconds from 2 seconds
-      (corfu-separator ?\s)          ;; Orderless field separator, Use M-SPC to enter separator
-      (completion-ignore-case t)
-
-      ;; Emacs 30 and newer: Disable Ispell completion function.
-      ;; Try `cape-dict' as an alternative.
-      (text-mode-ispell-word-completion nil)
-
-      ;; Enable indentation+completion using the TAB key.
-      ;; `completion-at-point' is often bound to M-TAB.
-      (tab-always-indent 'complete)
-
-      (corfu-preview-current nil) ;; Don't insert completion without confirmation
-      ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
-      ;; be used globally (M-/).  See also the customization variable
-      ;; `global-corfu-modes' to exclude certain modes.
-      :init
-      (global-corfu-mode))
-
-    (use-package nerd-icons-corfu
-      :after corfu
-      :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-
-    (use-package cape
-      :after corfu
-      :init
-      (add-hook 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
-      (add-hook 'completion-at-point-functions #'cape-dict) ;; Dictionary completion
-      (add-hook 'completion-at-point-functions #'cape-file) ;; Path completion
-      (add-hook 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
-      (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
-      (add-hook 'completion-at-point-functions #'cape-elisp-symbol) ;; Complete Elisp symbol
-      (add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
-      )
-
-    (use-package orderless
-      :custom
-      (completion-styles '(orderless basic))
-      (completion-category-overrides '((file (styles basic partial-completion)))))
-    (use-package vertico
-      :init
-      (vertico-mode))
-
-    (use-package marginalia
-      :after vertico
-      :init
-      (marginalia-mode))
-
-    (use-package nerd-icons-completion
-      :after marginalia
-      :config
-      (nerd-icons-completion-mode)
-      :hook
-      ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
-#+end_src
-
 
 * Late Load
 ** magit
