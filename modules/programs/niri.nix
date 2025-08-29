@@ -98,7 +98,7 @@
         in {
           # programs
           "${mod}+Return" = sh "kitty";
-          "${mod}+E" = sh "Emacs";
+          "${mod}+E" = sh "emacs";
           "${mod}+Shift+B" = sh "librewolf";
           "${mod}+Space" = sh ''wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"'';
           "${mod}+Shift+L" = sh "swaylock";
