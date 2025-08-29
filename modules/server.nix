@@ -1,28 +1,33 @@
-let
-  mpd = dir: {
-    services.mpd = {
-      enable = true;
-      musicDirectory = "${dir}/Music";
-      playlistDirectory = "${dir}/Music/playlist";
-      network.listenAddress = "any";
-      extraConfig = ''
-        save_absolute_paths_in_playlists "yes"
-        audio_output {
+{
+  additions.full.home = [{services.syncthing.enable = true;}];
+
+  linux.nix = [
+    {
+      services.mpd = let
+        dir = "/srv/media";
+      in {
+        enable = true;
+        musicDirectory = "${dir}/Music";
+        playlistDirectory = "${dir}/Music/playlist";
+        network.listenAddress = "any";
+        extraConfig = ''
+          save_absolute_paths_in_playlists "yes"
+          audio_output {
           type "pipewire"
           name "MPDOUT"
-        }
-      '';
-    };
-  };
-in {
-  additions.full.home = [{services.syncthing.enable = true;}];
+          }
+        '';
+      };
+
+    }
+  ];
 
   metal.nix = [
     {services.tailscale.enable = true;}
     {
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [22 80 443 8000 1901];
+        allowedTCPPorts = [22 80 443];
       };
     }
   ];
@@ -35,16 +40,16 @@ in {
     }: let
       mkJson = set: pkgs.writeText "navidrome-config.json" (lib.generators.toJSON {} set);
       navidromeCFG = let
-        dir = "/srv";
+        dir = "/srv/media";
       in
-        mkJson {
-          Address = "localhost";
-          CacheFolder = "${dir}/navidrome/cache";
-          DataFolder = "${dir}/navidrome/data";
-          MusicFolder = "/media/Music";
-          DefaultTheme = "Nord";
-          CoverJpegQuality = "100";
-        };
+      mkJson {
+        Address = "localhost";
+        CacheFolder = "${dir}/navidrome/cache";
+        DataFolder = "${dir}/navidrome/data";
+        MusicFolder = "${dir}/Music";
+        DefaultTheme = "Nord";
+        CoverJpegQuality = "100";
+      };
     in {
       systemd.services.navidrome = {
         # port 4533
@@ -57,8 +62,6 @@ in {
       services.audiobookshelf.enable = true; # port = 8000;
     })
   ];
-  laptop.home = [(mpd "/media")];
-  desktop.home = [(mpd "/srv/media")];
 
   macbook.nix = [
     ({pkgs, ...}: {
@@ -78,14 +81,14 @@ in {
           follow_inside_symlinks  "yes"
 
           audio_output {
-              type                  "osx"
-              name                  "CoreAudio"
-              mixer_type            "software"
+          type                  "osx"
+          name                  "CoreAudio"
+          mixer_type            "software"
           }
 
           decoder {
-              plugin                "mp4ff"
-              enabled               "no"
+          plugin                "mp4ff"
+          enabled               "no"
           }
         '';
       in {
