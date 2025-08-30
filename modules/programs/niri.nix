@@ -44,6 +44,10 @@
           ];
           # input
           input = {
+            keyboard = {
+              xkb.options = "ctrl:nocaps";
+              numlock = true;
+            };
             mouse.accel-speed = 0.0;
             tablet.map-to-output = "eDP-1";
             touch.map-to-output = "eDP-1";
