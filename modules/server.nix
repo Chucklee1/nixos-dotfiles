@@ -70,8 +70,8 @@
 
       services.nfs.server.enable = true;
       services.nfs.server.exports = ''
-        /srv            100.72.49.100(rw,fsid=0,no_subtree_check)
-        /srv/media      100.72.49.100(rw,nohide,insecure,no_subtree_check)
+        /srv            100.72.49.100(rw,fsid=0,no_subtree_check) 100.113.241.101(rw,fsid=0,no_subtree_check)
+        /srv/media      100.72.49.100(rw,nohide,insecure,no_subtree_check) 100.113.241.101(rw,nohide,insecure,no_subtree_check)
       '';
     }
   ];
