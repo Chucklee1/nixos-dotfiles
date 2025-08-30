@@ -54,6 +54,7 @@
               click-method = "clickfinger";
             };
           };
+          cursor.hide-after-inactive-ms = 5000;
           # layout n theming
           layout = {
             gaps = 0;
