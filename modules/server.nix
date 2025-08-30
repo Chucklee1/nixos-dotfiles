@@ -27,7 +27,7 @@
     {
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [22 80 443];
+        allowedTCPPorts = [22 80 443 2049];
       };
     }
   ];
@@ -61,6 +61,19 @@
       };
       services.audiobookshelf.enable = true; # port = 8000;
     })
+    # nfs
+    {
+      fileSystems."/srv/media" = {
+        device = "/mnt/media";
+        options = ["bind"];
+      };
+
+      services.nfs.server.enable = true;
+      services.nfs.server.exports = ''
+        /srv            100.72.49.100(rw,fsid=0,no_subtree_check)
+        /srv/media      100.72.49.100(rw,nohide,insecure,no_subtree_check)
+      '';
+    }
   ];
 
   macbook.nix = [
