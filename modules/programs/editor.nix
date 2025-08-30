@@ -14,14 +14,8 @@ in {
         programs.emacs = {
           enable = true;
           package = pkgs.emacs-pgtk;
-          extraPackages = epkgs: [
-            epkgs.eat
-            epkgs.org
-            epkgs.tree-sitter-langs
-          ];
         };
         home.packages = [
-          pkgs.poppler-utils
           pkgs.texlive.combined.scheme-full
           pkgs.nixd
           pkgs.alejandra
