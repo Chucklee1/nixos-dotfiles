@@ -9,6 +9,7 @@
         ryubing
         # wine
         zenity
+        jq
         wine
         wineWowPackages.stagingFull
         winetricks
@@ -30,17 +31,7 @@
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
-      };
-
-      # roblox
-      services.flatpak.enable = true;
-      systemd.services.flatpak-repo = {
-        enable = false;
-        wantedBy = ["multi-user.target"];
-        path = [pkgs.flatpak];
-        script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo '';
-      };
-    })
+      };})
   ];
   gaming.home = [{programs.mangohud.enable = true;}];
 }
