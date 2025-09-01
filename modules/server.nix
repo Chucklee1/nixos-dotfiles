@@ -1,7 +1,7 @@
 {
   additions.full.home = [{services.syncthing.enable = true;}];
 
-  linux.nix = [
+  linux.home = [
     {
       services.mpd = let
         dir = "/srv/media";
