@@ -78,7 +78,6 @@
 (use-package general
   :config
   (general-evil-setup)
-  ;; 'SPC' as vim leader, 'C-SPC' as global leader
   (general-create-definer start/leader-keys
     :states '(normal visual motion)
     :keymaps 'override
@@ -90,38 +89,38 @@
     "TAB" '(comment-line :wk "Comment lines")
     "g" '(magit-status :wk "Magit status")
     "e" '(dired-jump :wk "Open dired at current buffer")
-    "T" '(eat :wk "Eat terminal")
-	"c" '(kill-current-buffer :wk "Kill current buffer")
+    "c" '(kill-current-buffer :wk "Kill current buffer")
     "Q" '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
     "R" '((lambda () (interactive)
-			(load-file CONFIG_PATH))
+            (load-file CONFIG_PATH))
           :wk "Reload Emacs config"))
+
+  (general-define-key
+   :states '(normal insert motion emacs)
+   :keymaps 'global
+   "C-RET" '(eat :which-key "Open eat terminal"))
+
 
   (start/leader-keys
     "b" '(:ignore t :wk "Buffers")
     "b i" '(ibuffer :wk "Ibuffer")
-	"b r" '(revert-buffer :wk "Reload buffer"))
+    "b r" '(revert-buffer :wk "Reload buffer"))
 
   (general-define-key
    :states '(normal visual motion emacs)
    :keymaps 'override
    "L" '(next-buffer :wk "Next buffer")
-   "H" '(previous-buffer :wk "Previous buffer")))
+   "H" '(previous-buffer :wk "Previous buffer"))
 
-(use-package dired
-  :straight (:type built-in)
-  :ensure nil
+  (start/leader-keys
+    "t" '(:ignore t :wk "Toggle")
+    "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
+    "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
+    "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline")))
+
+(use-package ranger
   :config
-  (general-define-key
-   :keymaps 'dired-mode-map
-   "<C-right>" 'dired-find-file
-   "<C-left>" 'dired-up-directory)
-
-  ;; Remove cursor and use highlight line
-  (add-hook 'dired-mode-hook
-			(lambda ()
-			  (setq cursor-type nil)        ;; Hide cursor
-			  (hl-line-mode 1))))           ;; Highlight current line
+  (ranger-override-dired-mode t))
 
 (straight-use-package
  '(eat :type git
@@ -209,13 +208,18 @@
   :ensure t
   :defer t
   )
-(setq TeX-view-program-list
-      '(("Zathura" "zathura %")))
 (setq TeX-view-program-selection
       '((output-pdf "Zathura")
         (output-dvi "xdvi")
         (output-html "xdg-open")))
 (setq TeX-engine 'luatex)
+
+(defun my/org-to-pdf-view ()
+  (interactive)
+  (let ((pdf-file (org-latex-export-to-pdf)))
+	(when pdf-file
+	  (setq TeX-master pdf-file)
+	  (TeX-view))))
 
 (use-package apheleia
   :ensure t
