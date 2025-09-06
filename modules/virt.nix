@@ -1,5 +1,5 @@
 {
-  virt.nix = [
+  virt.containers.nix = [
     # docker
     ({pkgs, ...}: {
       virtualisation.containers.enable = true;
@@ -18,34 +18,34 @@
         #podman-compose # start group of containers for dev
       ];
     })
+  ];
+  virt.qemu.nix = [
     ({pkgs, ...}: {
+      users.groups.libvirtd.members = ["goat"];
+      users.groups.kvm.members = ["goat"];
       programs.virt-manager.enable = true;
       virtualisation = {
         spiceUSBRedirection.enable = true;
         libvirtd = {
-          onBoot = "ignore";
-          onShutdown = "shutdown";
           enable = true;
+          onBoot = "ignore";
           qemu = {
             package = pkgs.qemu_kvm;
             runAsRoot = true;
             swtpm.enable = true;
             ovmf = {
               enable = true;
-              packages = [
-                (pkgs.OVMF.override {
-                  secureBoot = true;
-                  tpmSupport = true;
-                })
-                .fd
-              ];
+              packages = [(pkgs.OVMF.override {
+                secureBoot = true;
+                tpmSupport = true;
+              }).fd];
             };
           };
         };
       };
     })
   ];
-  virt.home = [
+  virt.qemu.home = [
     {
       dconf.settings."org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];

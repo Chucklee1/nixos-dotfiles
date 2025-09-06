@@ -17,7 +17,7 @@
         gaming
         metal
         wayland
-        virt
+        virt.qemu
         drivers.nvidia
         additions.full
         editor.emacs
@@ -60,11 +60,11 @@
   };
 
   mkSystems = cfgs:
-    inputs.nixpkgs.lib.mapAttrs (machine: cfg: let
-      builder =
-        if machine == "macbook"
-        then inputs.nix-darwin.lib.darwinSystem
-        else inputs.nixpkgs.lib.nixosSystem;
+  inputs.nixpkgs.lib.mapAttrs (machine: cfg: let
+    builder =
+      if machine == "macbook"
+      then inputs.nix-darwin.lib.darwinSystem
+      else inputs.nixpkgs.lib.nixosSystem;
       mod = {
         nix = builtins.concatLists (map (m: m.nix or []) cfg.modules);
         home = builtins.concatLists (map (m: m.home or []) cfg.modules);
@@ -73,17 +73,17 @@
         inherit machine;
         inherit (cfg) system user;
       };
-    in
-      builder {
-        inherit (cfg) system;
-        inherit specialArgs;
-        modules =
-          builtins.concatLists
-          [
-            mod.nix
-            [{_module.args.homeMods = mod.home;}]
-            [{home-manager.extraSpecialArgs = specialArgs;}]
-          ];
-      })
-    cfgs;
+  in
+  builder {
+    inherit (cfg) system;
+    inherit specialArgs;
+    modules =
+      builtins.concatLists
+      [
+        mod.nix
+        [{_module.args.homeMods = mod.home;}]
+        [{home-manager.extraSpecialArgs = specialArgs;}]
+      ];
+  })
+  cfgs;
 }
