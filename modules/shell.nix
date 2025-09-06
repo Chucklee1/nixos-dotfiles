@@ -17,7 +17,6 @@
         variables = {
           BASH_SILENCE_DEPRECATION_WARNING = "1"; # fix for macOS
           TERMINAL = "kitty";
-          EDITOR = "nvim";
         };
         shellAliases = let
           rebuild_cmd =

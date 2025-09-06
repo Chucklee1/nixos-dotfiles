@@ -1,13 +1,27 @@
 {inputs, self, ...}: let
-  base = {nixpkgs.overlays = [inputs.nix-vim.overlays.default];};
+  base = {
+    nixpkgs.overlays = [inputs.nix-vim.overlays.default];
+    environment.variables.EDITOR = "nvim";
+  };
 in {
-  umbra.nix = [base ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.core];})];
-  editor.nixvim.nix = [base ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.full];})];
+  umbra.nix = [
+    base
+    ({pkgs, ...}: {
+      environment.systemPackages = [pkgs.nixvim.core];
+    })
+  ];
+  editor.nixvim.nix = [
+    base
+    ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.full];})
+  ];
+
   editor.emacs = {
     nix = [
       # overlay
       {nixpkgs.overlays = [(import self.inputs.emacs-overlay)];}
       {services.emacs.enable = true;}
+      # set default
+      {environment.variables.EDITOR = "emacs -nw";}
     ];
     home = [
       ({pkgs, ...}: {

@@ -1,5 +1,8 @@
 {inputs, ...}: {
-  linux.nix = [{nixpkgs.overlays = [inputs.nur.overlays.default];}];
+  linux.nix = [
+    {nixpkgs.overlays = [inputs.nur.overlays.default];}
+    {environment.variables.BROWSER = "librwolf";}
+  ];
   linux.home = [
     ({pkgs, ...}: {
       stylix.targets.librewolf.profileNames = ["default"];
