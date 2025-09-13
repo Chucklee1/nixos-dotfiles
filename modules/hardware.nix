@@ -24,15 +24,15 @@
       };
 
       fileSystems."/opt" = {
-        device = "/dev/disk/by-uuid/ed8922cf-d9fc-41c5-aae4-3449e71626cc";
+        device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
         fsType = "btrfs";
-        options = [ "subvol=opt" "compress=zstd" "relatime" ];
+        options = [ "subvol=EVO/opt" "compress=zstd" "relatime" ];
       };
 
       fileSystems."/srv" = {
-        device = "/dev/disk/by-uuid/ed8922cf-d9fc-41c5-aae4-3449e71626cc";
+        device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
         fsType = "btrfs";
-        options = [ "subvol=srv" "compress=zstd" "relatime" ];
+        options = [ "subvol=EVO/srv" "compress=zstd" "relatime" ];
       };
 
       swapDevices = [ ];
