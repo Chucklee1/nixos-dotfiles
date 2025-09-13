@@ -20,7 +20,7 @@
         virt.qemu
         drivers.nvidia
         additions.full
-        editor.emacs
+        editor.nixvim
       ];
       user = "goat";
     };
