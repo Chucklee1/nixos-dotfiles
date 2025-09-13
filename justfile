@@ -23,12 +23,6 @@ update:
     nix flake update
 
 rebuild profile:
-    if [ "{{profile}}" = "macbook" ]; then \
-        sudo darwin-rebuild switch \
-            --flake {{pwd}}#{{profile}} \
-            {{build_flags}}; \
-    else \
-        sudo nixos-rebuild switch \
-            --flake {{pwd}}#{{profile}} \
-            {{build_flags}}; \
-    fi
+    sudo nixos-rebuild switch \
+        --flake {{pwd}}#{{profile}} \
+        {{build_flags}}; \
