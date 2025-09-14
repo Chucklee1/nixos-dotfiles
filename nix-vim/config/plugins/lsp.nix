@@ -11,6 +11,7 @@
     lua_ls.enable = true;
     marksman.enable = true;
     nixd.enable = true;
+    qmlls.enable = true;
   };
 
   # ---- LANG QOL ----
