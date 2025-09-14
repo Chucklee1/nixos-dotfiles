@@ -6,34 +6,47 @@
   desktop.nix = [
     {
       fileSystems."/" = {
-        device = "/dev/disk/by-uuid/87f9df33-72a9-4841-9326-5200086e5f03";
+        device = "/dev/disk/by-uuid/ff111615-41d4-4836-8adc-c9374e08bee9";
         fsType = "btrfs";
-        options = [ "subvol=@nixos" "compress=zstd" "relatime" ];
-      };
-
-      fileSystems."/nix" = {
-        device = "/dev/disk/by-uuid/87f9df33-72a9-4841-9326-5200086e5f03";
-        fsType = "btrfs";
-        options = [ "subvol=@nix" "compress=zstd" "noatime" ];
+        options = [ "subvol=WD/nixos" "compress=zstd" "relatime" ];
       };
 
       fileSystems."/boot" = {
-        device = "/dev/disk/by-uuid/AA80-5227";
+        device = "/dev/disk/by-uuid/5F4E-A7BB";
         fsType = "vfat";
         options = [ "fmask=0022" "dmask=0022" ];
+      };
+
+      fileSystems."/nix" = {
+        device = "/dev/disk/by-uuid/ff111615-41d4-4836-8adc-c9374e08bee9";
+        fsType = "btrfs";
+        options = [ "subvol=WD/nix" "noatime" "compress=zstd" ];
       };
 
       fileSystems."/opt" = {
         device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
         fsType = "btrfs";
-        options = [ "subvol=EVO/opt" "compress=zstd" "relatime" ];
+        options = [ "subvol=EVO/opt" "relatime" "compress=zstd" ];
       };
 
       fileSystems."/srv" = {
         device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
         fsType = "btrfs";
-        options = [ "subvol=EVO/srv" "compress=zstd" "relatime" ];
+        options = [ "subvol=EVO/srv" "relatime" "compress=zstd"];
       };
+
+      fileSystems."/.snapshots/WD" = { 
+        device = "/dev/disk/by-uuid/ff111615-41d4-4836-8adc-c9374e08bee9";
+        fsType = "btrfs";
+        options = [ "subvol=WD/.snapshots" "relatime" "compress=zstd" ];
+      };
+
+      fileSystems."/.snapshots/EVO" = {
+        device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
+        fsType = "btrfs";
+        options = [ "subvol=EVO/.snapshots" "relatime" "compress=zstd" ];
+      };
+
 
       swapDevices = [ ];
 
