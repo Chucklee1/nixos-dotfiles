@@ -9,6 +9,7 @@
         gcc
         gdb # GNU debugger
         imagemagick
+        just
         lua
         python3
       ];

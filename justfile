@@ -1,7 +1,9 @@
 nix_cmd := "nix --extra-experimental-features 'nix-command flakes'"
-pwd := env("PWD")
-live_root := "/mnt"
 build_flags := "--impure --show-trace"
+pwd := env("PWD")
+mdir := "/mnt"
+
+# installation
 
 format layout device:
     sudo {{nix_cmd}} run github:nix-community/disko -- \
@@ -10,14 +12,16 @@ format layout device:
 
 show-hardware:
     sudo nixos-generate-config \
-        --no-filesystems --show-hardware-config \
-        --root {{live_root}}
+        --show-hardware-config \
+        --root {{mdir}}
 
 install profile:
     sudo nixos-install \
-        --root {{live_root}} \
+        --root {{mdir}} \
         --flake {{pwd}}#{{profile}} \
         {{build_flags}}
+
+# General
 
 update:
     nix flake update
@@ -26,3 +30,7 @@ rebuild profile:
     sudo nixos-rebuild switch \
         --flake {{pwd}}#{{profile}} \
         {{build_flags}}; \
+
+# btrfs
+snapshot:
+    sudo {{pwd}}/assets/scripts/mkSnapshot

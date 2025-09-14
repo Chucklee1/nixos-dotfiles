@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+if [ "$EUID" != "0" ]; then
+    echo "Please run with sudo or as root"
+    exit 0
+fi
+
+read -rp "Please enter the partition label: " label
+read -rp "Please enter the subvolume name: " subvol
+
+# will mount target at /mnt for following reasons:
+# - Matches with label/subvol syntax
+# - with subvolumes mounted at /, this won't work
+
+mdir="/mnt"
+target="$mdir/$label/$subvol"
+out="/.snapshots/$label/$subvol-$(date +%Y-%m-%d-%H%M)"
+
+printf "\n%s\n" "Script will execute the following: "
+echo "- mount /dev/disk/by-label/$label at $mdir"
+echo "- snapshot $target at $out"
+
+read -rp "Do you wish to continue (Y/N): " choice
+
+if [[ "$choice" == "Y" || "$choice" == "y" ]]; then
+    { [ -e "$mdir" ] && mkdir "$mdir"; }
+
+    mount "/dev/disk/by-label/$label" "$mdir" && {
+        btrfs subvolume snapshot -r "$target" "$out"
+        umount "$mdir"
+    }
+fi
+
+echo "Script finished"
+exit 0
