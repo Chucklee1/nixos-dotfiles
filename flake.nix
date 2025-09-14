@@ -30,7 +30,7 @@
   inputs.minesddm.inputs.nixpkgs.follows = "nixpkgs";
 
   # ---- programs ----
-  inputs.nix-vim.url = "github:Chucklee1/nix-vim";
+  inputs.nix-vim.url = "path:./nix-vim";
   inputs.dwm.url = "github:Chucklee1/dwm";
   inputs.dwm.flake = false;
   inputs.emacs-overlay.url = "github:nix-community/emacs-overlay";
