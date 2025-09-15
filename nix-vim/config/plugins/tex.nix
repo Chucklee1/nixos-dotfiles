@@ -34,8 +34,8 @@ in {
     plugins.treesitter.settings.highlight.disable = ["latex"];
     plugins.vimtex = {
       enable = true;
-      texlivePackage = pkgs.texlive.combined.scheme-full;
-      zathuraPackage = pkgs.zathura;
+      texlivePackage = null;
+      zathuraPackage = null;
       settings = {
         view_method = "zathura";
         # quiet log

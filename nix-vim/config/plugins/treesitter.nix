@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   plugins = {
     treesitter = {
       enable = true;
@@ -8,6 +8,4 @@
       };
     };
   };
-
-  extraPackages = with pkgs; [tree-sitter];
 }

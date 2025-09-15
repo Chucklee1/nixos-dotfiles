@@ -27,11 +27,4 @@
   };
 
   extraPlugins = with pkgs.vimPlugins; [plenary-nvim];
-  extraPackages = with pkgs; [
-    alejandra
-    haskell-language-server
-    lemminx # xml lsp
-    stylua
-    vscode-langservers-extracted # soyjack lsps
-  ];
 }
