@@ -1,7 +1,9 @@
 {
   # ----- OPTIONS -----
   nixpkgs.config.allowUnfree = true;
+  withNodeJs = false;
   withPerl = false;
+  withPython3 = false;
   withRuby = false;
   opts = {
     # numbers/general
@@ -50,16 +52,16 @@
     spelllang = ["en_us"]; # Spell check languages
 
     # history
-    clipboard = {
-      providers = {
-        wl-copy.enable = true; # wayland
-        xsel.enable = true; # X11
-      };
-      register = "unnamedplus";
-    };
     swapfile = false;
     backup = false;
     undofile = true;
+  };
+  clipboard = {
+    providers = {
+      wl-copy.enable = true; # wayland
+      xsel.enable = true; # X11
+    };
+    register = "unnamedplus";
   };
   # command aliases
   userCommands = {
