@@ -40,12 +40,14 @@
 in {
   umbra.nix = [
     base
+    coreDependants
     ({pkgs, ...}: {
       environment.systemPackages = [pkgs.nixvim.core];
     })
   ];
   editor.nixvim.nix = [
     base
+    fullDependants
     ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.full];})
   ];
 

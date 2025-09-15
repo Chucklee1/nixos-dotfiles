@@ -1,6 +1,18 @@
 {self, ...}: {
   global.home = [
     {
+      xdg.desktopEntries = {
+        emacs = {
+          name = "Emacs";
+          genericName = "OS in a Text Editor";
+          exec = "emacs %F";
+          terminal = true;
+          categories = ["Application" "TextEditor"];
+          mimeType = ["text/org" "text/el" "text/tex" "text/sty"];
+        };
+      };
+    }
+    {
       programs = {
         git = {
           enable = true;
