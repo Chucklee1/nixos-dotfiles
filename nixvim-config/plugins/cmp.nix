@@ -19,10 +19,12 @@ in {
     ];
     plugins = {
       # breadcrumbs
-      lspsaga.enable = false;
-      lspsaga.lightbulb = {
-        enable = false;
-        virtualText = false;
+      lspsaga = {
+        enable = true;
+        settings.lightbulb = {
+          virtual_text = false;
+          enable = false;
+        };
       };
 
       # ai

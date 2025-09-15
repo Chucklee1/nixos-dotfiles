@@ -1,10 +1,6 @@
-{
-  inputs,
-  self,
-  ...
-}: let
+{self, ...}: let
   base = {
-    nixpkgs.overlays = [inputs.nix-vim.overlays.default];
+    nixpkgs.overlays = [self.overlays.default];
     environment.variables.EDITOR = "nvim";
   };
   coreDependants = {pkgs, ...}: {
@@ -16,27 +12,25 @@
       nixd
     ];
   };
-  fullDependants =
-    coreDependants
-    // ({pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        # lsps
-        asm-lsp # GAS/GO assembly
-        clang-tools
-        jdtls # java
-        lemminx # xml
-        kdePackages.qtdeclarative
-        typescript-language-server
-        vscode-langservers-extracted
-        # diagnostics
-        statix
-        # formatters
-        alejandra
-        html-tidy
-        nodePackages.prettier
-        shfmt
-      ];
-    });
+  fullDependants = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      # lsps
+      asm-lsp # GAS/GO assembly
+      clang-tools
+      jdt-language-server # java
+      lemminx # xml
+      kdePackages.qtdeclarative
+      typescript-language-server
+      vscode-langservers-extracted
+      # diagnostics
+      statix
+      # formatters
+      alejandra
+      html-tidy
+      nodePackages.prettier
+      shfmt
+    ];
+  };
 in {
   umbra.nix = [
     base
@@ -47,6 +41,7 @@ in {
   ];
   editor.nixvim.nix = [
     base
+    coreDependants
     fullDependants
     ({pkgs, ...}: {environment.systemPackages = [pkgs.nixvim.full];})
   ];

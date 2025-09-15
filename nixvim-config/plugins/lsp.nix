@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   profile,
   ...
@@ -7,7 +6,7 @@
   # ---- LSP ----
   plugins.lsp.enable = true;
   lsp.servers = let
-    full = lib.mkIf (profile == "full");
+    full = (profile == "full");
   in (builtins.mapAttrs (_: v:
       v // {package = null;})
     {

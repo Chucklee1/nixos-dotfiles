@@ -29,8 +29,12 @@
   inputs.minesddm.url = "github:Chucklee1/sddm-theme-minesddm";
   inputs.minesddm.inputs.nixpkgs.follows = "nixpkgs";
 
+  # ---- nixvim ----
+  inputs.nixvim.url = "github:nix-community/nixvim";
+  inputs.en_us-dictionary.url = "github:dwyl/english-words";
+  inputs.en_us-dictionary.flake = false;
+
   # ---- programs ----
-  inputs.nix-vim.url = "path:./nix-vim";
   inputs.dwm.url = "github:Chucklee1/dwm";
   inputs.dwm.flake = false;
   inputs.emacs-overlay.url = "github:nix-community/emacs-overlay";
@@ -40,17 +44,31 @@
     # ---- additionals ----
     extlib = import ./outputs/libs.nix {inherit inputs self;};
     devShells = extlib.allSystemsWithPkgs (pkgs: import ./outputs/devshells.nix {inherit inputs pkgs;});
+    nvlib = import ./outputs/nixvim.nix {inherit self;};
     sys = import ./outputs/profiles.nix {inherit inputs self extlib;};
   in {
     #inherit (self) outputs;
     inherit devShells extlib;
+
     nixosConfigurations = sys.mkSystems sys.profiles;
     darwinConfigurations = sys.mkSystems sys.profiles;
+
     apps.x86_64-linux.umbra = {
       type = "app";
       program = "${self.nixosConfigurations."umbra".config.system.build.vm}/bin/run-nixos-vm";
     };
-    # custom installer iso
-    packages.x86_64-linux.installer = self.nixosConfigurations."umbra".config.system.build.isoImage;
+
+    packages = extlib.allSystems (system: {
+      # custom installer iso
+      installer = self.nixosConfigurations."umbra".config.system.build.isoImage;
+      nixvim = {
+        core = nvlib.mkModule system "core";
+        full = nvlib.mkModule system "full";
+      };
+    });
+    overlays.default = self: prev: {
+      nixvim.core = nvlib.mkModule self.system "core";
+      nixvim.full = nvlib.mkModule self.system "full";
+    };
   };
 }
