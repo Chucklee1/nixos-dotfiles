@@ -21,10 +21,9 @@
     })
   ];
   metal.nix = [
+    # ---- grub theme ----
     inputs.minegrub-theme.nixosModules.default
-    inputs.minesddm.nixosModules.default
     {
-      # ---- grub theme ----
       stylix.targets.grub.enable = false;
       boot.loader.grub.minegrub-theme = {
         enable = true;
@@ -32,14 +31,30 @@
         background = "background_options/1.8  - [Classic Minecraft].png";
         boot-options-count = 4;
       };
-
+    }
+    # ---- sddm theme ----
+    ({
+      pkgs,
+      spkgs,
+      ...
+    }: {
+      # using package from source to force
+      # pkg instance to use nixpkgs 25.05 stable
+      environment.systemPackages = with spkgs; [
+        inputs.minesddm.packages.${pkgs.stdenv.system}.default
+        qt5.qtbase
+        qt5.qtquickcontrols2
+        qt5.qtgraphicaleffects
+        libsForQt5.layer-shell-qt
+      ];
       # ---- login theme ----
       services.displayManager.sddm = {
         enable = true;
+        package = spkgs.kdePackages.sddm;
         wayland.enable = true;
         theme = "minesddm";
       };
-    }
+    })
   ];
   global.nix = [
     ({pkgs, ...}: let

@@ -3,7 +3,7 @@
 
   # ---- main pkg providers ----
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.nixpkgs-2025-07-06= "github:NixOS/nixpkgs/20075955deac2583bb12f07151c2df830ef346b4?narHash=sha256-HMwfAJBdrr8wXAkbGhtcby1zGFvs%2BStOp19xNsbqdOg%3D";
+  inputs.nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
   inputs.home-manager.url = "github:nix-community/home-manager";
   inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
   inputs.nur.url = "github:nix-community/NUR";
@@ -28,7 +28,6 @@
   inputs.stylix.url = "github:danth/stylix";
   inputs.minegrub-theme.url = "github:Lxtharia/minegrub-theme";
   inputs.minesddm.url = "github:Chucklee1/sddm-theme-minesddm";
-  inputs.minesddm.inputs.nixpkgs.follows = "nixpkgs-2025-07-06";
 
   # ---- nixvim ----
   inputs.nixvim.url = "github:nix-community/nixvim";

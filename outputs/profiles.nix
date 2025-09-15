@@ -72,6 +72,7 @@
       };
       specialArgs = {
         inherit machine;
+        spkgs = import inputs.nixpkgs-stable {inherit (cfg) system;};
         inherit (cfg) system user;
       };
     in
