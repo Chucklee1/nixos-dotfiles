@@ -24,7 +24,9 @@ install profile:
 # General
 
 update:
-    nix flake update
+    nix-shell -p gh --run \
+        nix flake update \
+        --option access-tokens "github.com=$(gh auth token)"
 
 rebuild profile:
     sudo nixos-rebuild switch \
