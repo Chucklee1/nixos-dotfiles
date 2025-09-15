@@ -204,6 +204,16 @@
 						(config/sync-with-org))
 					  nil t)))
 
+(use-package org-super-agenda
+			  :after org-agenda
+			  :init
+			  (org-super-agenda-mode)
+			  :config
+			  (setq org-super-agenda-header-map (make-sparse-keymap)))
+
+(setq org-agenda-files
+	  '("~/org/agenda.org"))
+
 (use-package auctex
   :ensure t
   :defer t

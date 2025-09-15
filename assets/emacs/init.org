@@ -324,6 +324,21 @@
     					  nil t)))
 
 #+end_src
+- And fix org agenda to work with evil mode
+#+begin_src emacs-lisp
+    (use-package org-super-agenda
+    			  :after org-agenda
+    			  :init
+    			  (org-super-agenda-mode)
+    			  :config
+    			  (setq org-super-agenda-header-map (make-sparse-keymap)))
+#+end_src
++ Org Agenda Files
+#+begin_src emacs-lisp
+    (setq org-agenda-files
+    	  '("~/org/agenda.org"))
+#+end_src
+
 ** Auctex
 - LaTeX tool for emacs, like vimtex
 - Requires distribution of texlive
