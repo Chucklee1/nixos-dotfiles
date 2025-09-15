@@ -1,11 +1,13 @@
 {
   plugins = {
     aerial.enable = true;
-    web-devicons.enable = true;
-    trouble.enable = true;
-    scrollview.enable = true;
-    which-key.enable = true;
+    kitty-navigator.enable = true;
     presence-nvim.enable = true;
+    rainbow.enable = true;
+    scrollview.enable = true;
+    trouble.enable = true;
+    web-devicons.enable = true;
+    which-key.enable = true;
     # git
     gitsigns.enable = true;
     lazygit.enable = true;
