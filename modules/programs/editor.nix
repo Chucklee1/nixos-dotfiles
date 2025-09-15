@@ -1,8 +1,42 @@
-{inputs, self, ...}: let
+{
+  inputs,
+  self,
+  ...
+}: let
   base = {
     nixpkgs.overlays = [inputs.nix-vim.overlays.default];
     environment.variables.EDITOR = "nvim";
   };
+  coreDependants = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      # lsps
+      bash-language-server
+      lua-language-server
+      marksman
+      nixd
+    ];
+  };
+  fullDependants =
+    coreDependants
+    // ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        # lsps
+        asm-lsp # GAS/GO assembly
+        clang-tools
+        jdtls # java
+        lemminx # xml
+        kdePackages.qtdeclarative
+        typescript-language-server
+        vscode-langservers-extracted
+        # diagnostics
+        statix
+        # formatters
+        alejandra
+        html-tidy
+        nodePackages.prettier
+        shfmt
+      ];
+    });
 in {
   umbra.nix = [
     base
@@ -20,8 +54,6 @@ in {
       # overlay
       {nixpkgs.overlays = [(import self.inputs.emacs-overlay)];}
       {services.emacs.enable = true;}
-      # set default
-      {environment.variables.EDITOR = "emacs -nw";}
     ];
     home = [
       ({pkgs, ...}: {
@@ -29,14 +61,6 @@ in {
           enable = true;
           package = pkgs.emacs-pgtk;
         };
-        home.packages = [
-          pkgs.texlive.combined.scheme-full
-          pkgs.nixd
-          pkgs.alejandra
-          pkgs.haskell-language-server
-          pkgs.lemminx # xml lsp
-          pkgs.vscode-langservers-extracted # soyjack lsps
-        ];
       })
     ];
   };
