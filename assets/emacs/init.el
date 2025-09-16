@@ -147,6 +147,7 @@
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
+(use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 
 (use-package nix-mode
