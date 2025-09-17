@@ -33,24 +33,12 @@
       };
     }
     # ---- sddm theme ----
-    ({
-      pkgs,
-      spkgs,
-      ...
-    }: {
-      # using package from source to force
-      # pkg instance to use nixpkgs 25.05 stable
-      environment.systemPackages = with spkgs; [
-        inputs.minesddm.packages.${pkgs.stdenv.system}.default
-        qt5.qtbase
-        qt5.qtquickcontrols2
-        qt5.qtgraphicaleffects
-        libsForQt5.layer-shell-qt
-      ];
+    inputs.minesddm.nixosModules.default
+    ({pkgs, ...}: {
       # ---- login theme ----
       services.displayManager.sddm = {
         enable = true;
-        package = spkgs.kdePackages.sddm;
+        package = pkgs.kdePackages.sddm;
         wayland.enable = true;
         theme = "minesddm";
       };
