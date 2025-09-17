@@ -8,53 +8,50 @@
       fileSystems."/" = {
         device = "/dev/disk/by-uuid/ff111615-41d4-4836-8adc-c9374e08bee9";
         fsType = "btrfs";
-        options = [ "subvol=WD/nixos" "compress=zstd" "relatime" ];
+        options = ["subvol=WD/nixos" "compress=zstd" "relatime"];
       };
 
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/5F4E-A7BB";
         fsType = "vfat";
-        options = [ "fmask=0022" "dmask=0022" ];
+        options = ["fmask=0022" "dmask=0022"];
       };
 
       fileSystems."/nix" = {
         device = "/dev/disk/by-uuid/ff111615-41d4-4836-8adc-c9374e08bee9";
         fsType = "btrfs";
-        options = [ "subvol=WD/nix" "noatime" "compress=zstd" ];
+        options = ["subvol=WD/nix" "noatime" "compress=zstd"];
       };
 
       fileSystems."/opt" = {
         device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
         fsType = "btrfs";
-        options = [ "subvol=EVO/opt" "relatime" "compress=zstd" ];
+        options = ["subvol=EVO/opt" "relatime" "compress=zstd"];
       };
 
       fileSystems."/srv" = {
         device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
         fsType = "btrfs";
-        options = [ "subvol=EVO/srv" "relatime" "compress=zstd"];
+        options = ["subvol=EVO/srv" "relatime" "compress=zstd"];
       };
 
-      fileSystems."/.snapshots/WD" = { 
+      fileSystems."/.snapshots/WD" = {
         device = "/dev/disk/by-uuid/ff111615-41d4-4836-8adc-c9374e08bee9";
         fsType = "btrfs";
-        options = [ "subvol=WD/.snapshots" "relatime" "compress=zstd" ];
+        options = ["subvol=WD/.snapshots" "relatime" "compress=zstd"];
       };
 
       fileSystems."/.snapshots/EVO" = {
         device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
         fsType = "btrfs";
-        options = [ "subvol=EVO/.snapshots" "relatime" "compress=zstd" ];
+        options = ["subvol=EVO/.snapshots" "relatime" "compress=zstd"];
       };
 
-
-      swapDevices = [ ];
+      swapDevices = [];
 
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
-      boot.kernelParams = ["amd_iommu=on" "iommu=pt"];
       boot.kernelModules = ["kvm" "kvm_amd"];
-      boot.supportedFilesystems = ["btrfs" "ext4" "ntfs" "zfs"];
-      networking.hostId = "8425e349";
+      boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
     }
