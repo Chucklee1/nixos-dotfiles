@@ -27,7 +27,7 @@
   # ---- theming ----
   inputs.stylix.url = "github:danth/stylix";
   inputs.minegrub-theme.url = "github:Lxtharia/minegrub-theme";
-  inputs.minesddm.url = "github:Chucklee1/sddm-theme-minesddm";
+  inputs.minesddm.url = "github:Davi-S/sddm-theme-minesddm/development";
 
   # ---- nixvim ----
   inputs.nixvim.url = "github:nix-community/nixvim";
