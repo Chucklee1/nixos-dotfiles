@@ -78,13 +78,18 @@
 (use-package general
   :config
   (general-evil-setup)
-  (general-create-definer start/leader-keys
+
+  (general-create-definer global/noprefix
+   :states '(normal insert motion emacs)
+   :keymaps 'override)
+
+  (general-create-definer vim/leader
     :states '(normal visual motion)
     :keymaps 'override
     :prefix "SPC"
     :global-prefix "C-SPC")
 
-  (start/leader-keys
+  (vim/leader
     "." '(find-file :wk "Find file")
     "TAB" '(comment-line :wk "Comment lines")
     "g" '(magit-status :wk "Magit status")
@@ -95,32 +100,34 @@
             (load-file CONFIG_PATH))
           :wk "Reload Emacs config"))
 
-  (general-define-key
-   :states '(normal insert motion emacs)
-   :keymaps 'global
+  (global/noprefix
    "C-RET" '(eat :which-key "Open eat terminal"))
 
-
-  (start/leader-keys
+  (vim/leader
     "b" '(:ignore t :wk "Buffers")
     "b i" '(ibuffer :wk "Ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer"))
 
   (general-define-key
-   :states '(normal visual motion emacs)
-   :keymaps 'override
+	:states '(normal motion)
+	:keymaps 'dired-mode-map
+	"<left>" 'dired-up-directory
+	"<right>" 'dired-find-file
+	"TAB" 'dirvish-subtree-toggle)
+
+  (global/noprefix
    "L" '(next-buffer :wk "Next buffer")
    "H" '(previous-buffer :wk "Previous buffer"))
 
-  (start/leader-keys
+  (vim/leader
     "t" '(:ignore t :wk "Toggle")
     "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
     "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
     "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline")))
 
-(use-package ranger
+(use-package dirvish
   :config
-  (ranger-override-dired-mode t))
+  (dirvish-override-dired-mode))
 
 (straight-use-package
  '(eat :type git
@@ -332,3 +339,5 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 (add-hook 'before-save-hook
           'delete-trailing-whitespace)
+
+(use-package rainbow-mode)
