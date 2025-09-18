@@ -37,27 +37,11 @@
       lib,
       pkgs,
       ...
-    }: let
-      mkJson = set: pkgs.writeText "navidrome-config.json" (lib.generators.toJSON {} set);
-      navidromeCFG = let
-        dir = "/srv/media";
-      in
-      mkJson {
-        Address = "localhost";
-        CacheFolder = "${dir}/navidrome/cache";
-        DataFolder = "${dir}/navidrome/data";
-        MusicFolder = "${dir}/Music";
-        DefaultTheme = "Nord";
-        CoverJpegQuality = "100";
-      };
-    in {
-      systemd.services.navidrome = {
-        # port 4533
+    }: {
+      services.navidrome = {
         enable = true;
-        after = ["network.target"];
-        wantedBy = ["default.target"];
-        description = "Music-hosting service";
-        serviceConfig.ExecStart = "${pkgs.navidrome}/bin/navidrome --configfile ${navidromeCFG}";
+        settings.Address = "localhost";
+        settings.MusicFolder = "/srv/media/Music";
       };
       services.audiobookshelf.enable = true; # port = 8000;
     })
