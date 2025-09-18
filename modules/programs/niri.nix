@@ -171,7 +171,7 @@
   desktop.home = [
     ({lib, ...}: {
       programs.niri.settings = {
-        linput.keyboard.xkb.options = lib.mkForce "ctrl:nocaps,altwin:swap_alt_win";
+        input.keyboard.xkb.options = lib.mkForce "ctrl:nocaps,altwin:swap_alt_win";
         outputs."DP-1".mode = {
           width = 1920;
           height = 1080;

@@ -4,7 +4,7 @@
   ...
 }: {
   desktop.nix = [
-    {
+    ({pkgs, ...}: {
       fileSystems."/" = {
         device = "/dev/disk/by-uuid/ff111615-41d4-4836-8adc-c9374e08bee9";
         fsType = "btrfs";
@@ -54,7 +54,7 @@
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
-    }
+    })
   ];
 
   laptop.nix = [
