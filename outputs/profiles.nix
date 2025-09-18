@@ -38,6 +38,19 @@
       ];
       user = "goat";
     };
+    inspiron = {
+      system = "x86_64-linux";
+      modules = with mod; [
+        global
+        inspiron
+        linux
+        metal
+        dwm
+        editor.emacs
+        additions.full
+      ];
+      user = "goat";
+    };
     umbra = {
       system = "x86_64-linux";
       modules = with mod; [

@@ -24,7 +24,7 @@
   ];
   linux.home = [{programs.zathura.enable = true;}];
 
-  metal.nix = [
+  desktop.nix = [
     {programs.nix-ld.enable = true;}
     ({pkgs, ...}: {
       services.flatpak.enable = true;

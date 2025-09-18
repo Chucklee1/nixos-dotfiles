@@ -53,10 +53,10 @@ in {
       {services.emacs.enable = true;}
     ];
     home = [
-      ({pkgs, ...}: {
+      ({pkgs, machine, ...}: {
         programs.emacs = {
           enable = true;
-          package = pkgs.emacs-pgtk;
+          package = if (machine != "inspiron") then pkgs.emacs-pgtk else pkgs.emacs;
         };
       })
     ];
