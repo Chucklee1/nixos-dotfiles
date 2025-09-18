@@ -7,14 +7,7 @@
         enable32Bit = true;
         extraPackages = with pkgs; [
           libvdpau-va-gl
-          vulkan-loader
-          vulkan-validation-layers
           vulkan-tools
-          vkbasalt
-        ];
-        extraPackages32 = with pkgs.pkgsi686Linux; [
-          vulkan-loader
-          vulkan-validation-layers
           vkbasalt
         ];
       };
@@ -57,7 +50,7 @@
         nixpkgs.config.nvidia.acceptLicense = true;
         services.xserver.videoDrivers = ["nvidia"];
         hardware.nvidia = {
-          package = config.boot.kernelPackages.nvidiaPackages.production;
+          package = config.boot.kernelPackages.nvidiaPackages.beta;
           modesetting.enable = true;
           powerManagement.enable = false;
           powerManagement.finegrained = false;

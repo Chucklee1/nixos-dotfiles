@@ -28,10 +28,12 @@
         protontricks.enable = true;
         gamescopeSession.enable = true;
         extraCompatPackages = [pkgs.proton-ge-bin];
+        fontPackages = [pkgs.xlsfonts];
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
-      };})
+      };
+    })
   ];
   gaming.home = [{programs.mangohud.enable = true;}];
 }
