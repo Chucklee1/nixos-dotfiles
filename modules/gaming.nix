@@ -10,9 +10,6 @@
         # wine
         zenity
         jq
-        wine
-        wineWowPackages.stagingFull
-        winetricks
         # games
         osu-lazer-bin
         #prismlauncher
@@ -35,5 +32,22 @@
       };
     })
   ];
-  gaming.home = [{programs.mangohud.enable = true;}];
+  gaming.home = [
+    {programs.mangohud.enable = true;}
+    # Lazy shortcut for MO2
+    ({
+      config,
+      pkgs,
+      ...
+    }: {
+      home.packages = [
+        (pkgs.writeShellScriptBin
+          "MO2"
+          ''
+            protontricks-launch --appid 489830 \
+            ${config.home.homeDirectory}/SSE/MO2/modorganizer2/ModOrganizer.exe
+          '')
+      ];
+    })
+  ];
 }
