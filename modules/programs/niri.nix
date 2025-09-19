@@ -98,14 +98,21 @@
           programs.niri.settings.binds = let
             # helpers
             sh = x: {action = spawn "sh" "-c" x;};
-            # defaults
+            wmenu = ''
+              wmenu-run -N \
+              "${base00}" \
+              -n "${base07}" \
+              -S "${base0D}" \
+              -s "${base00}"
+            '';
+            # mod def
             mod = "Mod";
           in {
             # programs
             "${mod}+Return" = sh "kitty";
             "${mod}+E" = sh "emacs";
             "${mod}+Shift+B" = sh "librewolf";
-            "${mod}+Space" = sh ''wmenu-run -N "${base00}" -n "${base07}" -S "${base0D}" -s "${base00}"'';
+            "${mod}+Space" = sh wmenu;
             "${mod}+Shift+L" = sh "swaylock";
             "${mod}+W" = sh ''systemctl --user restart waybar.service'';
 
