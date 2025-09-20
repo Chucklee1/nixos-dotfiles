@@ -3,7 +3,7 @@
     aerial.enable = true;
     kitty-navigator.enable = true;
     presence-nvim.enable = true;
-    rainbow.enable = true;
+    rainbow-delimiters.enable = true;
     scrollview.enable = true;
     trouble.enable = true;
     web-devicons.enable = true;
