@@ -29,6 +29,12 @@
         options = ["subvol=EVO/opt" "relatime" "compress=zstd"];
       };
 
+      fileSystems."/home/goat/SSE" = {
+        device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
+        fsType = "btrfs";
+        options = ["subvol=EVO/SSE"];
+      };
+
       fileSystems."/srv" = {
         device = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
         fsType = "btrfs";
