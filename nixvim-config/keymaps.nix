@@ -15,6 +15,18 @@
     key("n", "<leader>fg", ":Telescope live_grep<CR>",  {desc = "Telescope grep search"})
     key("n", "<leader>fn", ":Telescope nerdy<CR>",      {desc = "Telescope nerd-icon search"})
 
+     -- folding
+    key('n', 'zR', require('ufo').openAllFolds)
+    key('n', 'zM', require('ufo').closeAllFolds)
+    key('n', 'zr', require('ufo').openFoldsExceptKinds)
+    key('n', 'zm', require('ufo').closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+    key('n', 'K', function()
+        local winid = require('ufo').peekFoldedLinesUnderCursor()
+        if not winid then
+            vim.lsp.buf.hover()
+        end
+    end)
+
      -- Buffer
      key("n",  "<S-l>",      ":bn<CR>",  {desc = "Goto next buffer"})
      key("n",  "<S-h>",      ":bp<CR>",  {desc = "Goto previous buffer"})

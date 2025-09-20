@@ -10,7 +10,6 @@
       cmp.enable = true;
       formatting.enable = true;
       formatting.autoFormat = false;
-      latex.enable = true;
       telescope.enable = true;
       telescope.nerdIconLookup = true;
     }

@@ -114,6 +114,12 @@
       ];
       command = "setlocal tabstop=2 shiftwidth=2 softtabstop=2";
     }
+    {
+      desc = "set qt style sheet files to use qml highlighting";
+      event = ["FileType"];
+      pattern = [ "qss" ];
+      command = "setlocal filetype=qml";
+    }
   ];
 
   # ---- DIAGNOSTICS ----
