@@ -4,6 +4,8 @@
   (scroll-bar-mode nil)       ;; Disable the scroll bar
   (tool-bar-mode nil)         ;; Disable the tool bar
   (inhibit-startup-screen t)  ;; Disable welcome screen
+  (initial-buffer-choice (lambda () (dired "~/")))
+  (use-short-answers t)       ;; Use y/n instead of yes/no
 
   (delete-selection-mode t)   ;; Select text and delete it by typing.
   (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
@@ -40,19 +42,6 @@
          )
   )
 
-(add-hook 'window-setup-hook (lambda ()
-		  (set-frame-parameter (selected-frame) 'alpha-background 80)
-		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
-
-(use-package nerd-icons
-  :if (display-graphic-p))
-
-(use-package nerd-icons-dired
-  :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
-
-(use-package nerd-icons-ibuffer
-  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
-
 (use-package evil
   :init
   (evil-mode)
@@ -79,9 +68,14 @@
   :config
   (general-evil-setup)
 
-  (general-create-definer global/noprefix
-   :states '(normal insert motion emacs)
+  (general-create-definer noleader
+   :states '(normal Special Messages)
    :keymaps 'override)
+
+  (general-create-definer emacs/leader
+   :states '(normal Special Messages org)
+   :keymaps 'override
+   :prefix "C-")
 
   (general-create-definer vim/leader
     :states '(normal visual motion)
@@ -92,6 +86,7 @@
   (vim/leader
     "." '(find-file :wk "Find file")
     "TAB" '(comment-line :wk "Comment lines")
+	"RET" '(eat :which-key "Open eat terminal")
     "g" '(magit-status :wk "Magit status")
     "e" '(dired-jump :wk "Open dired at current buffer")
     "c" '(kill-current-buffer :wk "Kill current buffer")
@@ -100,8 +95,6 @@
             (load-file CONFIG_PATH))
           :wk "Reload Emacs config"))
 
-  (global/noprefix
-   "C-RET" '(eat :which-key "Open eat terminal"))
 
   (vim/leader
     "b" '(:ignore t :wk "Buffers")
@@ -111,13 +104,19 @@
   (general-define-key
 	:states '(normal motion)
 	:keymaps 'dired-mode-map
+	"h" 'dired-up-directory
 	"<left>" 'dired-up-directory
+	"l" 'dired-find-file
 	"<right>" 'dired-find-file
 	"TAB" 'dirvish-subtree-toggle)
 
-  (global/noprefix
+  (general-define-key
+   :states '(normal Special Messages)
+   :keymaps 'override
+   "H" '(previous-buffer :wk "Previous buffer")
+   "<S-left>" '(previous-buffer :wk "Previous buffer")
    "L" '(next-buffer :wk "Next buffer")
-   "H" '(previous-buffer :wk "Previous buffer"))
+   "<S-right>" '(next-buffer :wk "Next buffer"))
 
   (vim/leader
     "t" '(:ignore t :wk "Toggle")
@@ -142,6 +141,48 @@
 (add-hook 'eat-mode-hook (lambda ()
 						   (setq-local truncate-lines t)
 						   (visual-line-mode -1)))
+
+(add-hook 'window-setup-hook (lambda ()
+		  (set-frame-parameter (selected-frame) 'alpha-background 80)
+		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
+
+(defun set-default-font (face)
+  "Set's default font attributes"
+  (set-face-attribute face nil
+					  :family "JetBrains Nerd Font Propo"
+					  :height 120
+					  :weight 'semibold))
+
+(set-default-font 'default)
+
+(add-hook 'org-mode-hook
+          (lambda ()
+			(variable-pitch-mode 1)
+			;; body font
+			(set-face-attribute 'variable-pitch nil
+								:family "Noto Sans CJK TC"
+								:height 130
+								:weight 'normal)
+			;; fixed-pitch for blocks
+			(dolist (face
+					 '(org-block org-block-begin-line org-block-end-line
+								 org-code org-verbatim org-meta-line
+								 org-special-keyword org-table))
+			  (set-default-font face))))
+
+(use-package nerd-icons
+  :if (display-graphic-p))
+
+(use-package nerd-icons-dired
+  :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
+
+(use-package nerd-icons-ibuffer
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
+
+(setq doom-modeline-buffer-encoding nil)
 
 (use-package tree-sitter
   :hook ((prog-mode . turn-on-tree-sitter-mode)
@@ -178,27 +219,6 @@
   :config
   (setq org-superstar-headline-bullets-list '("◉" "○" "⚬" "◈" "◇"))
   :hook (org-mode . org-superstar-mode))
-
-(add-hook 'org-mode-hook
-		  (lambda ()
-			;; Turn on variable-pitch for the buffer
-			(variable-pitch-mode 1)
-
-			;; Set the variable-pitch (body text) font
-			(set-face-attribute 'variable-pitch nil :family "Noto Sans CJK TC" :height 120)
-
-			;; Keep fixed-pitch faces for code blocks, tables, etc.
-			(dolist (face '(org-block
-							org-block-begin-line
-							org-block-end-line
-							org-code
-							org-verbatim
-							org-meta-line
-							org-special-keyword
-							org-table))
-			  (set-face-attribute face nil :family "JetBrainsMono Nerd Font" :height 120))))
-
-(require 'ox-latex)
 
 (defun config/sync-with-org ()
   (when (string-equal (file-truename buffer-file-name)
@@ -341,3 +361,4 @@
           'delete-trailing-whitespace)
 
 (use-package rainbow-mode)
+(setq rainbow-x-colors nil)

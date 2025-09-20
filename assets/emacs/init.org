@@ -9,12 +9,15 @@
   - [[#add-directory-to-emacs-path][add directory to emacs PATH]]
 - [[#base-settings][Base Settings]]
   - [[#emacs][Emacs]]
-  - [[#transparent-background][Transparent Background]]
-  - [[#nerd-font][Nerd Font]]
   - [[#evil-mode][Evil Mode]]
   - [[#general][General]]
   - [[#dirvish][Dirvish]]
   - [[#eat][Eat]]
+-  [[#appearance][Appearance]]
+  - [[#transparent-background][Transparent Background]]
+  - [[#font][Font]]
+  - [[#nerd-font][Nerd Font]]
+  - [[#doom-modeline][Doom-modeline]]
 - [[#nerd][Nerd]]
   - [[#tree-sitter][Tree-sitter]]
   - [[#misc-language-specific-modes][Misc Language-Specific Modes]]
@@ -29,8 +32,7 @@
   - [[#oderless][Oderless]]
 - [[#late-load][Late Load]]
   - [[#git][Git]]
-  - [[#helpful][Helpful]]
-  - [[#which-key][Which-key]]
+  - [[#help][Help]]
   - [[#rainbow-delimiters][Rainbow-delimiters]]
 
 * Early Load
@@ -75,6 +77,7 @@
       (add-to-list 'exec-path my/path))
 #+end_src
 
+
 * Base Settings
 ** Emacs
 #+begin_src emacs-lisp
@@ -84,6 +87,8 @@
       (scroll-bar-mode nil)       ;; Disable the scroll bar
       (tool-bar-mode nil)         ;; Disable the tool bar
       (inhibit-startup-screen t)  ;; Disable welcome screen
+      (initial-buffer-choice (lambda () (dired "~/")))
+      (use-short-answers t)       ;; Use y/n instead of yes/no
 
       (delete-selection-mode t)   ;; Select text and delete it by typing.
       (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
@@ -119,63 +124,48 @@
              ("<C-wheel-down>" . text-scale-decrease)
              )
       )
-#+end_src
-** Transparent Background
-#+begin_src emacs-lisp
-    (add-hook 'window-setup-hook (lambda ()
-    		  (set-frame-parameter (selected-frame) 'alpha-background 80)
-    		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
-#+end_src
-** Nerd Font
-#+begin_src emacs-lisp
-    (use-package nerd-icons
-      :if (display-graphic-p))
-
-    (use-package nerd-icons-dired
-      :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
-
-    (use-package nerd-icons-ibuffer
-      :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
-#+end_src
+    #+end_src
 ** Evil Mode
-- Vim Clone
-#+begin_src emacs-lisp
-    (use-package evil
-      :init
-      (evil-mode)
-      :config
-      (evil-set-initial-state 'eat-mode 'insert) ;; Set initial state in eat terminal to insert mode
-      :custom
-      (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
-      (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
-      (evil-want-C-i-jump nil)      ;; Disables C-i jump
-      (evil-undo-system 'undo-redo) ;; C-r to redo
-      ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
-      :bind (:map evil-motion-state-map
-                  ("SPC" . nil)
-                  ("RET" . nil)
-    			  ("TAB" . nil)))
-    (use-package evil-collection
-      :after evil
-      :config
-      ;; Setting where to use evil-collection
-      (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
-      (evil-collection-init))
+    - Vim Clone
+    #+begin_src emacs-lisp
+        (use-package evil
+          :init
+          (evil-mode)
+          :config
+          (evil-set-initial-state 'eat-mode 'insert) ;; Set initial state in eat terminal to insert mode
+          :custom
+          (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
+          (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
+          (evil-want-C-i-jump nil)      ;; Disables C-i jump
+          (evil-undo-system 'undo-redo) ;; C-r to redo
+          ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
+          :bind (:map evil-motion-state-map
+                      ("SPC" . nil)
+                      ("RET" . nil)
+        			  ("TAB" . nil)))
+        (use-package evil-collection
+          :after evil
+          :config
+          ;; Setting where to use evil-collection
+          (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
+          (evil-collection-init))
 #+end_src
 ** General
 - Sensible keybind manager
-- Note:
-- RET = return, can also use <Return>
-- C- = control prefix
-- SPC = space
 #+begin_src emacs-lisp
+
     (use-package general
       :config
       (general-evil-setup)
 
-      (general-create-definer global/noprefix
-       :states '(normal insert motion emacs)
+      (general-create-definer noleader
+       :states '(normal Special Messages)
        :keymaps 'override)
+
+      (general-create-definer emacs/leader
+       :states '(normal Special Messages org)
+       :keymaps 'override
+       :prefix "C-")
 
       (general-create-definer vim/leader
         :states '(normal visual motion)
@@ -186,6 +176,7 @@
       (vim/leader
         "." '(find-file :wk "Find file")
         "TAB" '(comment-line :wk "Comment lines")
+    	"RET" '(eat :which-key "Open eat terminal")
         "g" '(magit-status :wk "Magit status")
         "e" '(dired-jump :wk "Open dired at current buffer")
         "c" '(kill-current-buffer :wk "Kill current buffer")
@@ -194,8 +185,6 @@
                 (load-file CONFIG_PATH))
               :wk "Reload Emacs config"))
 
-      (global/noprefix
-       "C-RET" '(eat :which-key "Open eat terminal"))
 
       (vim/leader
         "b" '(:ignore t :wk "Buffers")
@@ -205,13 +194,19 @@
       (general-define-key
     	:states '(normal motion)
     	:keymaps 'dired-mode-map
+    	"h" 'dired-up-directory
     	"<left>" 'dired-up-directory
+    	"l" 'dired-find-file
     	"<right>" 'dired-find-file
     	"TAB" 'dirvish-subtree-toggle)
 
-      (global/noprefix
+      (general-define-key
+       :states '(normal Special Messages)
+       :keymaps 'override
+       "H" '(previous-buffer :wk "Previous buffer")
+       "<S-left>" '(previous-buffer :wk "Previous buffer")
        "L" '(next-buffer :wk "Next buffer")
-       "H" '(previous-buffer :wk "Previous buffer"))
+       "<S-right>" '(next-buffer :wk "Next buffer"))
 
       (vim/leader
         "t" '(:ignore t :wk "Toggle")
@@ -243,6 +238,59 @@
     (add-hook 'eat-mode-hook (lambda ()
     						   (setq-local truncate-lines t)
     						   (visual-line-mode -1)))
+#+end_src
+
+
+*  Appearance
+** Transparent Background
+#+begin_src emacs-lisp
+    (add-hook 'window-setup-hook (lambda ()
+    		  (set-frame-parameter (selected-frame) 'alpha-background 80)
+    		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
+#+end_src
+** Font
+#+begin_src emacs-lisp
+    (defun set-default-font (face)
+      "Set's default font attributes"
+      (set-face-attribute face nil
+    					  :family "JetBrains Nerd Font Propo"
+    					  :height 120
+    					  :weight 'semibold))
+
+    (set-default-font 'default)
+
+    (add-hook 'org-mode-hook
+              (lambda ()
+    			(variable-pitch-mode 1)
+    			;; body font
+    			(set-face-attribute 'variable-pitch nil
+    								:family "Noto Sans CJK TC"
+    								:height 130
+    								:weight 'normal)
+    			;; fixed-pitch for blocks
+    			(dolist (face
+    					 '(org-block org-block-begin-line org-block-end-line
+    								 org-code org-verbatim org-meta-line
+    								 org-special-keyword org-table))
+    			  (set-default-font face))))
+#+end_src
+** Nerd Font
+#+begin_src emacs-lisp
+    (use-package nerd-icons
+      :if (display-graphic-p))
+
+    (use-package nerd-icons-dired
+      :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
+
+    (use-package nerd-icons-ibuffer
+      :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+#+end_src
+** Doom-modeline
+#+begin_src emacs-lisp
+    (use-package doom-modeline
+      :init (doom-modeline-mode 1))
+
+    (setq doom-modeline-buffer-encoding nil)
 #+end_src
 
 * Nerd
@@ -292,28 +340,6 @@
 
 #+end_src
 - General settings for org mode via hook
-#+begin_src emacs-lisp
-    (add-hook 'org-mode-hook
-    		  (lambda ()
-    			;; Turn on variable-pitch for the buffer
-    			(variable-pitch-mode 1)
-
-    			;; Set the variable-pitch (body text) font
-    			(set-face-attribute 'variable-pitch nil :family "Noto Sans CJK TC" :height 120)
-
-    			;; Keep fixed-pitch faces for code blocks, tables, etc.
-    			(dolist (face '(org-block
-    							org-block-begin-line
-    							org-block-end-line
-    							org-code
-    							org-verbatim
-    							org-meta-line
-    							org-special-keyword
-    							org-table))
-    			  (set-face-attribute face nil :family "JetBrainsMono Nerd Font" :height 120))))
-
-    (require 'ox-latex)
-#+end_src
 - Save hook to sync init.org with init.el
 #+begin_src emacs-lisp
     (defun config/sync-with-org ()
@@ -385,6 +411,7 @@ Additional pre-made snippets
     (use-package yasnippet-snippets)
 #+end_src
 
+
 * Completion
 ** Corfu
 #+begin_src emacs-lisp
@@ -442,6 +469,8 @@ Additional pre-made snippets
       (completion-styles '(orderless basic))
       (completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
+
+
 * Late Load
 ** Git
 *** Magit
@@ -458,7 +487,8 @@ Additional pre-made snippets
              (magit-post-refresh . diff-hl-magit-post-refresh))
       :init (global-diff-hl-mode))
 #+end_src
-** Helpful
+** Help
+*** Helpful
 #+begin_src emacs-lisp
     (use-package helpful
       :bind
@@ -471,7 +501,7 @@ Additional pre-made snippets
       ("C-h x" . helpful-command))
 
 #+end_src
-** Which-key
+*** Which-key
 #+begin_src emacs-lisp
     (use-package which-key
       :ensure nil ;; Don't install which-key because it's now built-in
@@ -489,6 +519,7 @@ Additional pre-made snippets
       (which-key-allow-imprecise-window-fit nil)) ;; Fixes which-key window slipping out in Emacs Daemon
 #+end_src
 ** Rainbow-delimiters
+
 colorful brackets
 #+begin_src emacs-lisp
     (use-package rainbow-delimiters
@@ -497,4 +528,5 @@ colorful brackets
               'delete-trailing-whitespace)
 
     (use-package rainbow-mode)
+    (setq rainbow-x-colors nil)
 #+end_src
