@@ -142,6 +142,22 @@
 						   (setq-local truncate-lines t)
 						   (visual-line-mode -1)))
 
+(when (not (string-match-p "NixOS"
+                         (shell-command-to-string "cat /etc/os-release")))
+  (use-package doom-themes
+  :ensure t
+  :custom
+  ;; Global settings (defaults)
+  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  :config
+  (load-theme 'doom-nord t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)))
+
 (add-hook 'window-setup-hook (lambda ()
 		  (set-frame-parameter (selected-frame) 'alpha-background 80)
 		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
@@ -149,7 +165,7 @@
 (defun set-default-font (face)
   "Set's default font attributes"
   (set-face-attribute face nil
-					  :family "JetBrains Nerd Font Propo"
+					  :family "JetBrainsMono Nerd Font Propo"
 					  :height 120
 					  :weight 'semibold))
 

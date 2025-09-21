@@ -14,6 +14,7 @@
   - [[#dirvish][Dirvish]]
   - [[#eat][Eat]]
 -  [[#appearance][Appearance]]
+  - [[#theme][Theme]]
   - [[#transparent-background][Transparent Background]]
   - [[#font][Font]]
   - [[#nerd-font][Nerd Font]]
@@ -242,6 +243,24 @@
 
 
 *  Appearance
+** Theme
+#+begin_src emacs-lisp
+(when (not (string-match-p "NixOS"
+                         (shell-command-to-string "cat /etc/os-release")))
+  (use-package doom-themes
+  :ensure t
+  :custom
+  ;; Global settings (defaults)
+  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  :config
+  (load-theme 'doom-nord t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)))
+#+end_src
 ** Transparent Background
 #+begin_src emacs-lisp
     (add-hook 'window-setup-hook (lambda ()
@@ -253,7 +272,7 @@
     (defun set-default-font (face)
       "Set's default font attributes"
       (set-face-attribute face nil
-    					  :family "JetBrains Nerd Font Propo"
+    					  :family "JetBrainsMono Nerd Font Propo"
     					  :height 120
     					  :weight 'semibold))
 
