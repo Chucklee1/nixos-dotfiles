@@ -9,10 +9,51 @@
       programs.librewolf = {
         enable = true;
         settings = {
-          "sidebar.verticalTabs" = true;
-          "sidebar.expandOnHover" = true;
+          # allow css customization
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          # sidebar
+          "sidebar.new-sidebar.has-used" = true;
+          "sidebar.revampt" = true;
+          "sidebar.visibility" = "expand-on-hover";
           "sidebar.main.tools" = "history,bookmarks";
+          # security
+          # Would of kept defaults but half the sites don't work cause of it
+          "dom.security.https_only_mode_ever_enabled" = true;
+          "security.OCSP.require" = false;
+          "security.tls.enable_0rtt_data" = false;
+          # toolbar
           "browser.toolbars.bookmarks.visibility" = "never";
+          "browser.uiCustomization.state" = ''
+            {
+              "placements": {
+                "widget-overflow-fixed-list": [],
+                "unified-extensions-area": [],
+                "nav-bar": [
+                  "sidebar-button",
+                  "unified-extensions-button",
+                  "back-button",
+                  "forward-button",
+                  "stop-reload-button",
+                  "urlbar-container",
+                  "history-panelmenu",
+                  "downloads-button",
+                  "vertical-spacer"
+                ],
+                "toolbar-menubar": ["menubar-items"],
+                "TabsToolbar": [],
+                "vertical-tabs": ["tabbrowser-tabs"],
+                "PersonalToolbar": ["personal-bookmarks"]
+              },
+              "seen": ["developer-button","screenshot-button"],
+              "dirtyAreaCache": [
+                "nav-bar",
+                "TabsToolbar",
+                "vertical-tabs",
+                "toolbar-menubar",
+                "PersonalToolbar"
+              ],
+            }
+          '';
         };
         profiles.default = {
           name = "default";
@@ -56,11 +97,7 @@
               "StartPage".metaData.alias = "@sp"; # builtin engines only support specifying one additional alias
             };
           };
-          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
-            ublock-origin
-            darkreader
-            vimium
-          ];
+          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [ublock-origin];
         };
       };
     })
