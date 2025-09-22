@@ -6,3 +6,6 @@ assets/emacs/transient
 assets/emacs/url
 /assets/emacs/recentf
 assets/emacs/tramp
+/.DS_Store
+/assets/emacs/org-persist/
+/assets/emacs/custom-vars.el

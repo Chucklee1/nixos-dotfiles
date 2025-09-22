@@ -71,7 +71,7 @@
     (defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
 #+end_src
 ** add directory to emacs PATH
-- MacOS does not import Nix's PATH, so we must manually add it here...
++ MacOS does not import Nix's PATH, so we must manually add it here...
 #+begin_src emacs-lisp :tangle ./early-init.el
     (let ((my/path (expand-file-name "~/.nix-profile/bin")))
       (setenv "PATH" (concat my/path ":" (getenv "PATH")))
@@ -127,7 +127,7 @@
       )
     #+end_src
 ** Evil Mode
-    - Vim Clone
+    + Vim Clone
     #+begin_src emacs-lisp
         (use-package evil
           :init
@@ -152,7 +152,7 @@
           (evil-collection-init))
 #+end_src
 ** General
-- Sensible keybind manager
++ Sensible keybind manager
 #+begin_src emacs-lisp
 
     (use-package general
@@ -175,16 +175,17 @@
         :global-prefix "C-SPC")
 
       (vim/leader
-        "." '(find-file :wk "Find file")
+        "."   '(find-file :wk "Find file")
         "TAB" '(comment-line :wk "Comment lines")
-    	"RET" '(eat :which-key "Open eat terminal")
-        "g" '(magit-status :wk "Magit status")
-        "e" '(dired-jump :wk "Open dired at current buffer")
-        "c" '(kill-current-buffer :wk "Kill current buffer")
-        "Q" '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
-        "R" '((lambda () (interactive)
-                (load-file CONFIG_PATH))
-              :wk "Reload Emacs config"))
+    	"RET" '(eat :wk "Eat terminal")
+        "g"   '(magit-status :wk "Magit status")
+        "a"   '(org-agenda-list :wk "Org Agenda")
+        "e"   '(dired-jump :wk "Dired at Current Buffer")
+        "c"   '(kill-current-buffer :wk "Kill Current Buffer")
+        "Q"   '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
+        "R"   '((lambda () (interactive)
+    			  (load-file CONFIG_PATH))
+    			:wk "Reload Emacs config"))
 
 
       (vim/leader
@@ -223,8 +224,8 @@
       (dirvish-override-dired-mode))
 #+end_src
 ** Eat
-- Terminal Emulator
-- Not calling pkg as it is provided via nixpkgs in my config
++ Terminal Emulator
++ Not calling pkg as it is provided via nixpkgs in my config
 #+begin_src emacs-lisp
     (straight-use-package
      '(eat :type git
@@ -240,7 +241,6 @@
     						   (setq-local truncate-lines t)
     						   (visual-line-mode -1)))
 #+end_src
-
 
 *  Appearance
 ** Theme
@@ -269,29 +269,37 @@
 #+end_src
 ** Font
 #+begin_src emacs-lisp
-    (defun set-default-font (face)
+    (defun set--font (face)
       "Set's default font attributes"
       (set-face-attribute face nil
     					  :family "JetBrainsMono Nerd Font Propo"
-    					  :height 120
-    					  :weight 'semibold))
+    					  :height 130))
 
-    (set-default-font 'default)
+    ;; macos + arch: no sans font hook cause noto-no work (hahaha...)
+    (set-face-attribute 'default nil
+    					:family "JetBrainsMono Nerd Font Propo"
+    					:height 150)
 
-    (add-hook 'org-mode-hook
-              (lambda ()
-    			(variable-pitch-mode 1)
-    			;; body font
-    			(set-face-attribute 'variable-pitch nil
-    								:family "Noto Sans CJK TC"
-    								:height 130
-    								:weight 'normal)
-    			;; fixed-pitch for blocks
-    			(dolist (face
-    					 '(org-block org-block-begin-line org-block-end-line
-    								 org-code org-verbatim org-meta-line
-    								 org-special-keyword org-table))
-    			  (set-default-font face))))
+
+    (when (string-match-p "NixOS"
+    					  (shell-command-to-string "cat /etc/os-release"))
+
+      (set-nixos-font 'default)
+
+      (add-hook 'org-mode-hook
+    			(lambda ()
+    			  (variable-pitch-mode 1)
+    			  ;; body font
+    			  (set-face-attribute 'variable-pitch nil
+    								  :family "Noto Sans Mono CJK TC"
+    								  :height 140
+    								  :weight 'normal)
+    			  ;; fixed-pitch for blocks
+    			  (dolist (face
+    					   '(org-block org-block-begin-line org-block-end-line
+    								   org-code org-verbatim org-meta-line
+    								   org-special-keyword org-table))
+    				(set-nixos-font face)))))
 #+end_src
 ** Nerd Font
 #+begin_src emacs-lisp
@@ -311,6 +319,7 @@
 
     (setq doom-modeline-buffer-encoding nil)
 #+end_src
+
 
 * Nerd
 ** Tree-sitter
@@ -358,8 +367,8 @@
       :hook (org-mode . org-superstar-mode))
 
 #+end_src
-- General settings for org mode via hook
-- Save hook to sync init.org with init.el
++ General settings for org mode via hook
++ Save hook to sync init.org with init.el
 #+begin_src emacs-lisp
     (defun config/sync-with-org ()
       (when (string-equal (file-truename buffer-file-name)
@@ -374,7 +383,7 @@
     					  nil t)))
 
 #+end_src
-- And fix org agenda to work with evil mode
++ And fix org agenda to work with evil mode
 #+begin_src emacs-lisp
     (use-package org-super-agenda
     			  :after org-agenda
@@ -383,20 +392,15 @@
     			  :config
     			  (setq org-super-agenda-header-map (make-sparse-keymap)))
 #+end_src
-+ Org Agenda Files
-#+begin_src emacs-lisp
-    (setq org-agenda-files
-    	  '("~/org/agenda.org"))
-#+end_src
 
 ** Auctex
-- LaTeX tool for emacs, like vimtex
-- Requires distribution of texlive
++ LaTeX tool for emacs, like vimtex
++ Requires distribution of texlive
 #+begin_src emacs-lisp
     (use-package auctex
       :ensure t
-      :defer t
-      )
+      :defer t)
+
     (setq TeX-view-program-selection
           '((output-pdf "Zathura")
             (output-dvi "xdvi")
@@ -411,7 +415,7 @@
     	  (TeX-view))))
 #+end_src
 ** Apheleia
-- Code Formatter
++ Code Formatter
 #+begin_src emacs-lisp
     (use-package apheleia
       :ensure t
@@ -425,7 +429,7 @@
       (yas-global-mode 1))
 
 #+end_src
-Additional pre-made snippets
++ Additional pre-made snippets
 #+begin_src emacs-lisp
     (use-package yasnippet-snippets)
 #+end_src
@@ -538,8 +542,7 @@ Additional pre-made snippets
       (which-key-allow-imprecise-window-fit nil)) ;; Fixes which-key window slipping out in Emacs Daemon
 #+end_src
 ** Rainbow-delimiters
-
-colorful brackets
++ colorful brackets
 #+begin_src emacs-lisp
     (use-package rainbow-delimiters
       :hook (prog-mode . rainbow-delimiters-mode))

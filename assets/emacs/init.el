@@ -84,16 +84,17 @@
     :global-prefix "C-SPC")
 
   (vim/leader
-    "." '(find-file :wk "Find file")
+    "."   '(find-file :wk "Find file")
     "TAB" '(comment-line :wk "Comment lines")
-	"RET" '(eat :which-key "Open eat terminal")
-    "g" '(magit-status :wk "Magit status")
-    "e" '(dired-jump :wk "Open dired at current buffer")
-    "c" '(kill-current-buffer :wk "Kill current buffer")
-    "Q" '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
-    "R" '((lambda () (interactive)
-            (load-file CONFIG_PATH))
-          :wk "Reload Emacs config"))
+	"RET" '(eat :wk "Eat terminal")
+    "g"   '(magit-status :wk "Magit status")
+    "a"   '(org-agenda-list :wk "Org Agenda")
+    "e"   '(dired-jump :wk "Dired at Current Buffer")
+    "c"   '(kill-current-buffer :wk "Kill Current Buffer")
+    "Q"   '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
+    "R"   '((lambda () (interactive)
+			  (load-file CONFIG_PATH))
+			:wk "Reload Emacs config"))
 
 
   (vim/leader
@@ -162,29 +163,37 @@
 		  (set-frame-parameter (selected-frame) 'alpha-background 80)
 		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
 
-(defun set-default-font (face)
+(defun set--font (face)
   "Set's default font attributes"
   (set-face-attribute face nil
 					  :family "JetBrainsMono Nerd Font Propo"
-					  :height 120
-					  :weight 'semibold))
+					  :height 130))
 
-(set-default-font 'default)
+;; macos + arch: no sans font hook cause noto-no work (hahaha...)
+(set-face-attribute 'default nil
+					:family "JetBrainsMono Nerd Font Propo"
+					:height 150)
 
-(add-hook 'org-mode-hook
-          (lambda ()
-			(variable-pitch-mode 1)
-			;; body font
-			(set-face-attribute 'variable-pitch nil
-								:family "Noto Sans CJK TC"
-								:height 130
-								:weight 'normal)
-			;; fixed-pitch for blocks
-			(dolist (face
-					 '(org-block org-block-begin-line org-block-end-line
-								 org-code org-verbatim org-meta-line
-								 org-special-keyword org-table))
-			  (set-default-font face))))
+
+(when (string-match-p "NixOS"
+					  (shell-command-to-string "cat /etc/os-release"))
+
+  (set-nixos-font 'default)
+
+  (add-hook 'org-mode-hook
+			(lambda ()
+			  (variable-pitch-mode 1)
+			  ;; body font
+			  (set-face-attribute 'variable-pitch nil
+								  :family "Noto Sans Mono CJK TC"
+								  :height 140
+								  :weight 'normal)
+			  ;; fixed-pitch for blocks
+			  (dolist (face
+					   '(org-block org-block-begin-line org-block-end-line
+								   org-code org-verbatim org-meta-line
+								   org-special-keyword org-table))
+				(set-nixos-font face)))))
 
 (use-package nerd-icons
   :if (display-graphic-p))
@@ -255,13 +264,10 @@
 			  :config
 			  (setq org-super-agenda-header-map (make-sparse-keymap)))
 
-(setq org-agenda-files
-	  '("~/org/agenda.org"))
-
 (use-package auctex
   :ensure t
-  :defer t
-  )
+  :defer t)
+
 (setq TeX-view-program-selection
       '((output-pdf "Zathura")
         (output-dvi "xdvi")
