@@ -1,0 +1,127 @@
+[
+  {
+    "backlight": {
+      "format": "{percent}% <span color=\"#ebcb8b\" >{icon}</span>",
+      "format-icons": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "battery": {
+      "format": "{capacity}% <span color=\"#a3be8c\" >{icon}</span>",
+      "format-alt": "{icon} {time}",
+      "format-charging": "{capacity}% <span color=\"#a3be8c\" >󱐋{icon}</span>",
+      "format-charging-critical": "{capacity}% <span color=\"#bf616a\" >󱐋{icon}</span>",
+      "format-charging-warning": "{capacity}% <span color=\"#d08770\" >󱐋{icon}</span>",
+      "format-critical": "{capacity}% <span color=\"#bf616a\" >{icon}</span>",
+      "format-icons": [
+        " ",
+        " ",
+        " ",
+        " ",
+        " "
+      ],
+      "format-warning": "{capacity}% <span color=\"#d08770\" >{icon}</span>",
+      "interval": 30,
+      "states": {
+        "critical": 20,
+        "warning": 40
+      },
+      "tooltip": false
+    },
+    "clock": {
+      "format": "{:%F | %X}",
+      "interval": 1,
+      "tooltip": false
+    },
+    "height": 24,
+    "keyboard-state": {
+      "capslock": true,
+      "format": {
+        "capslock": "C {icon}",
+        "numlock": "N {icon}"
+      },
+      "format-icons": {
+        "locked": "<span color=\"#bf616a\" > </span>",
+        "unlocked": "<span color=\"#8fbcbb\" > </span>"
+      },
+      "numlock": true
+    },
+    "layer": "top",
+    "modules-center": [
+      "clock"
+    ],
+    "modules-left": [
+      "niri/workspaces",
+      "niri/window"
+    ],
+    "modules-right": [
+      "keyboard-state",
+      "mpd",
+      "pulseaudio",
+      "network",
+      "backlight",
+      "battery",
+      "tray"
+    ],
+    "mpd": {
+      "format": "{stateIcon}",
+      "format-disconnected": "󰝛",
+      "format-stopped": "<span color=\"#bf616a\" ></span>",
+      "interval": 10,
+      "states-icons": {
+        "paused": "",
+        "playing": ""
+      },
+      "tooltip": false
+    },
+    "network": {
+      "format-disconnected": "<span color=\"#ebcb8b\" >⚠</span>",
+      "format-ethernet": "<span color=\"#ebcb8b\" ></span>",
+      "format-wifi": "<span color=\"#8fbcbb\" ></span>",
+      "tooltip": false
+    },
+    "niri/window": {
+      "format": "{}",
+      "max-length": 150,
+      "tooltip": false
+    },
+    "niri/workspaces": {
+      "disable-click": true,
+      "disable-markup": true,
+      "disable-scroll": true,
+      "format": "{icon}",
+      "format-icons": {
+        "active": "",
+        "default": ""
+      }
+    },
+    "position": "top",
+    "pulseaudio": {
+      "format": "{volume}% {icon}",
+      "format-bluetooth": "{volume}% {icon}",
+      "format-icons": {
+        "default": [
+          "",
+          "",
+          ""
+        ]
+      },
+      "format-muted": "<span color=\"#bf616a\" ></span>",
+      "format-source": "{volume}% ",
+      "format-source-muted": "<span color=\"#bf616a\" ></span>",
+      "tooltip": false
+    },
+    "tray": {
+      "icon-size": 18,
+      "spacing": 15
+    }
+  }
+]

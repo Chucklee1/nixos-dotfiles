@@ -1,0 +1,42 @@
+* {
+    font-family: "JetBrainsMono Nerd Font Mono";
+    font-size: 11pt;
+}
+
+@define-color base00 #191d24; @define-color base01 #242933;
+@define-color base02 #3b4252; @define-color base03 #4c566a;
+@define-color base04 #d8dee9; @define-color base05 #e5e9f0;
+@define-color base06 #eceff4; @define-color base07 #8fbcbb;
+
+@define-color base08 #bf616a; @define-color base09 #d08770;
+@define-color base0A #ebcb8b; @define-color base0B #a3be8c;
+@define-color base0C #88c0d0; @define-color base0D #81a1c1;
+@define-color base0E #b48ead; @define-color base0F #c0c8d8;
+
+* {
+  border: none;
+  border-radius: 0;
+  font-family: JetBrainsMono Nerd Font;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+}
+
+window#waybar {
+  background:  alpha(@base00, 0.8);
+}
+
+#window {
+  padding-left: 10;
+}
+
+#mpd,
+#pulseaudio,
+#battery,
+#backlight,
+#network,
+#bluetooth,
+#idle_inhibitor,
+#tray {
+  padding: 0 10 0 10
+}
