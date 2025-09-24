@@ -36,3 +36,11 @@ rebuild profile:
 # btrfs
 snapshot:
     sudo {{pwd}}/assets/scripts/mkSnapshot
+
+# tmp util for arch
+
+sync_waybar:
+    cat $HOME/.config/waybar/config \
+    >> $HOME/nixos-dotfiles/assets/arch/config.jsonc 
+    cat $HOME/.config/waybar/style.css \
+    >> $HOME/nixos-dotfiles/assets/arch/style.css
