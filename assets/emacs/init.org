@@ -198,7 +198,7 @@
     	"o"     '(:ignore t :wk "Org")
     	"o a"   '(org-agenda-list :wk "Agenda")
     	"o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
-        "o l" '(org-latex-preview :wk "Global Preview"))
+        "o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
 
       (general-define-key
     	:states '(normal motion)
@@ -219,6 +219,7 @@
 
       (vim/leader
         "t" '(:ignore t :wk "Toggle")
+        "t i" '(org-toggle-inline-images :wk "Org Inline Images"))
         "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
         "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
         "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline")))
