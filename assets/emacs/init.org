@@ -177,11 +177,10 @@
       (vim/leader
         "."   '(find-file :wk "Find file")
         "TAB" '(comment-line :wk "Comment lines")
-    	"RET" '(eat :wk "Eat terminal")
+    	"RET" '(term :wk "terminal")
         "g"   '(magit-status :wk "Magit status")
-        "a"   '(org-agenda-list :wk "Org Agenda")
         "e"   '(dired-jump :wk "Dired at Current Buffer")
-        "c"   '(kill-current-buffer :wk "Kill Current Buffer")
+        "w"   '(evil-write :wk "Write Current Buffer")
         "Q"   '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
         "R"   '((lambda () (interactive)
     			  (load-file CONFIG_PATH))
@@ -189,9 +188,17 @@
 
 
       (vim/leader
-        "b" '(:ignore t :wk "Buffers")
+        "b"   '(:ignore t :wk "Buffers")
         "b i" '(ibuffer :wk "Ibuffer")
+        "b d" '(kill-current-buffer :wk "Buffer Delete")
+        "b D" '(kill-buffer (current-buffer) :wk "Buffer Delete Forced")
         "b r" '(revert-buffer :wk "Reload buffer"))
+
+      (vim/leader
+    	"o"     '(:ignore t :wk "Org")
+    	"o a"   '(org-agenda-list :wk "Agenda")
+    	"o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
+        "o l" '(org-latex-preview :wk "Global Preview"))
 
       (general-define-key
     	:states '(normal motion)
