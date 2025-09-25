@@ -33,14 +33,19 @@
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
   :bind (
-         ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
-         ;; Zooming In/Out
-         ("C-+" . text-scale-increase)
-         ("C--" . text-scale-decrease)
-         ("<C-wheel-up>" . text-scale-increase)
-         ("<C-wheel-down>" . text-scale-decrease)
-         )
-  )
+		 ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
+		 ;; Zooming In/Out
+		 ("C-+" . text-scale-increase)
+		 ("C--" . text-scale-decrease)
+		 ("<C-wheel-up>" . text-scale-increase)
+		 ("<C-wheel-down>" . text-scale-decrease)))
+
+(when (eq system-type 'darwin)
+  (use-package ultra-scroll
+	:init
+	(setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
+	:config
+	(ultra-scroll-mode 1)))
 
 (use-package evil
   :init
@@ -171,37 +176,43 @@
 		  (set-frame-parameter (selected-frame) 'alpha-background 80)
 		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
 
-(defun set--font (face)
+(defun set-default-font (face height)
   "Set's default font attributes"
   (set-face-attribute face nil
 					  :family "JetBrainsMono Nerd Font Propo"
-					  :height 130))
-
-;; macos + arch: no sans font hook cause noto-no work (hahaha...)
-(set-face-attribute 'default nil
-					:family "JetBrainsMono Nerd Font Propo"
-					:height 150)
+					  :height height))
 
 
-(when (string-match-p "NixOS"
-					  (shell-command-to-string "cat /etc/os-release"))
 
-  (set-nixos-font 'default)
+(set-default-font 'default 130)
 
-  (add-hook 'org-mode-hook
-			(lambda ()
-			  (variable-pitch-mode 1)
-			  ;; body font
-			  (set-face-attribute 'variable-pitch nil
-								  :family "Noto Sans Mono CJK TC"
-								  :height 140
-								  :weight 'normal)
-			  ;; fixed-pitch for blocks
-			  (dolist (face
-					   '(org-block org-block-begin-line org-block-end-line
-								   org-code org-verbatim org-meta-line
-								   org-special-keyword org-table))
-				(set-nixos-font face)))))
+;; MacOS - bigger font
+(when (eq system-type 'darwin)
+  (set-default-font 'default 150))
+
+(add-hook 'org-mode-hook
+		  (lambda ()
+			(variable-pitch-mode 1)
+			;; body font
+			(set-face-attribute 'variable-pitch nil
+								:family "Noto Sans Mono CJK TC"
+								:height 140
+								:weight 'normal)
+			;; fixed-pitch for blocks
+			(dolist (face
+					 '(org-block org-block-begin-line org-block-end-line
+								 org-code org-verbatim org-meta-line
+								 org-special-keyword org-table))
+			  (set-default-font face 130))
+
+			;; MacOS Overrides
+			(when (eq system-type 'darwin)
+			  (set-default-font 'variable-pitch 150)
+			(dolist (face
+					 '(org-block org-block-begin-line org-block-end-line
+								 org-code org-verbatim org-meta-line
+								 org-special-keyword org-table))
+			  (set-default-font face 150)))))
 
 (use-package nerd-icons
   :if (display-graphic-p))
