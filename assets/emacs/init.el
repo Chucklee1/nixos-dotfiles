@@ -40,13 +40,6 @@
 		 ("<C-wheel-up>" . text-scale-increase)
 		 ("<C-wheel-down>" . text-scale-decrease)))
 
-(when (eq system-type 'darwin)
-  (use-package ultra-scroll
-	:init
-	(setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
-	:config
-	(ultra-scroll-mode 1)))
-
 (use-package evil
   :init
   (evil-mode)
@@ -403,3 +396,10 @@
 
 (use-package rainbow-mode)
 (setq rainbow-x-colors nil)
+
+(when (eq system-type 'darwin)
+  (use-package ultra-scroll
+	:init
+	(setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
+	:config
+	(ultra-scroll-mode 1)))
