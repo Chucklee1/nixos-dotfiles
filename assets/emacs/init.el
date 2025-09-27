@@ -1,3 +1,12 @@
+;; functions ;;
+(defun my/when-!nixos (cmd)
+  (when (not (string-match-p "NixOS"
+							 (shell-command-to-string "cat /etc/os-release"))) cmd))
+  ;; variables ;;
+(defvar my/fheight (if (eq system-type 'darwin) 150 130))
+(defvar my/opacity (if (eq system-type 'darwin) 40 80))
+(defvar my/mono-font "JetBrainsMono Nerd Font Propo")
+
 (use-package emacs
   :custom
   (menu-bar-mode nil)         ;; Disable the menu bar
@@ -105,7 +114,8 @@
 	"o"     '(:ignore t :wk "Org")
 	"o a"   '(org-agenda-list :wk "Agenda")
 	"o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
-    "o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
+	"o l" '(org-latex-preview :wk "Preview LaTeX stuff")
+	"o m" '(org-latex-preview :wk "Preview MathJax stuff"))
 
   (general-define-key
 	:states '(normal motion)
@@ -149,8 +159,7 @@
 						   (setq-local truncate-lines t)
 						   (visual-line-mode -1)))
 
-(when (not (string-match-p "NixOS"
-                         (shell-command-to-string "cat /etc/os-release")))
+(my/when-!nixos
   (use-package doom-themes
   :ensure t
   :custom
@@ -165,25 +174,16 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)))
 
-(if (eq system-type 'darwin)
-	(defvar opacity 40)
-  (defvar opacity 80))
-
 (add-hook 'window-setup-hook (lambda ()
-		  (set-frame-parameter (selected-frame) 'alpha-background opacity)
-		  (add-to-list 'default-frame-alist '(alpha-background . opacity))))
+		  (set-frame-parameter (selected-frame) 'alpha-background my/opacity)
+		  (add-to-list 'default-frame-alist '(alpha-background . my/opacity))))
 
-(defun set-default-font (face height)
-  "Set's default font attributes"
+(defun my/setfont (face)
   (set-face-attribute face nil
-					  :family "JetBrainsMono Nerd Font Propo"
-					  :height height))
+					  :family my/mono-font
+					  :height my/fheight))
 
-(set-default-font 'default 130)
-
-;; MacOS - bigger font
-(when (eq system-type 'darwin)
-  (set-default-font 'default 150))
+(my/setfont 'default)
 
 (add-hook 'org-mode-hook
 		  (lambda ()
@@ -198,16 +198,12 @@
 					 '(org-block org-block-begin-line org-block-end-line
 								 org-code org-verbatim org-meta-line
 								 org-special-keyword org-table))
-			  (set-default-font face 130))
+			  (my/setfont face))
 
 			;; MacOS Overrides
 			(when (eq system-type 'darwin)
-			  (set-default-font 'variable-pitch 150)
-			(dolist (face
-					 '(org-block org-block-begin-line org-block-end-line
-								 org-code org-verbatim org-meta-line
-								 org-special-keyword org-table))
-			  (set-default-font face 150)))))
+			  (my/setfont 'default))
+			))
 
 (use-package nerd-icons
   :if (display-graphic-p))
@@ -247,12 +243,9 @@
   :custom
   (org-edit-src-content-indentation 4) ;; Set src block automatic indent to 4 instead of 2.
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
+  (org-agenda-files '(expand-file-name "~/org/agenda.org"))
   :hook
-  (org-mode . org-indent-mode) ;; Indent text
-  )
-(use-package toc-org
-  :commands toc-org-enable
-  :hook (org-mode . toc-org-mode))
+  (org-mode . org-indent-mode))
 
 (defun config/sync-with-org ()
   (when (string-equal (file-truename buffer-file-name)
@@ -265,6 +258,10 @@
 					  (lambda ()
 						(config/sync-with-org))
 					  nil t)))
+
+(use-package toc-org
+  :commands toc-org-enable
+  :hook (org-mode . toc-org-mode))
 
 ;; Minimal UI
 (use-package org-modern)
@@ -306,16 +303,15 @@
 	  (setq TeX-master pdf-file)
 	  (TeX-view))))
 
+(let ((math-preview-path (string-trim (shell-command-to-string "which math-preview"))))
+  (if (not (string-empty-p math-preview-path))
+    (use-package math-preview
+      :custom (math-preview-command math-preview-path))))
+
 (use-package apheleia
   :ensure t
   :config
   (apheleia-global-mode t))
-
-(use-package yasnippet
-  :config
-  (yas-global-mode 1))
-
-(use-package yasnippet-snippets)
 
 (use-package corfu
   :init
@@ -360,6 +356,12 @@
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package yasnippet
+  :config
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets)
 
 (use-package magit
   :defer

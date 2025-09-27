@@ -8,6 +8,7 @@
   - [[#global-variables][Global Variables]]
   - [[#add-directory-to-emacs-path][add directory to emacs PATH]]
 - [[#base-settings][Base Settings]]
+  - [[#custom-stuff][Custom Stuff]]
   - [[#emacs][Emacs]]
   - [[#evil-mode][Evil Mode]]
   - [[#general][General]]
@@ -25,12 +26,13 @@
   - [[#nix-mode][Nix Mode]]
   - [[#org-mode][Org Mode]]
   - [[#auctex][Auctex]]
+  - [[#math-preview][Math Preview]]
   - [[#apheleia][Apheleia]]
-  - [[#yasnippet][Yasnippet]]
 - [[#completion][Completion]]
   - [[#corfu][Corfu]]
   - [[#cape][Cape]]
   - [[#oderless][Oderless]]
+  - [[#yasnippet][Yasnippet]]
 - [[#late-load][Late Load]]
   - [[#git][Git]]
   - [[#help][Help!]]
@@ -81,6 +83,18 @@
 
 
 * Base Settings
+** Custom Stuff
+#+begin_src emacs-lisp
+    ;; functions ;;
+    (defun my/when-!nixos (cmd)
+      (when (not (string-match-p "NixOS"
+    							 (shell-command-to-string "cat /etc/os-release"))) cmd))
+      ;; variables ;;
+    (defvar my/fheight (if (eq system-type 'darwin) 150 130))
+    (defvar my/opacity (if (eq system-type 'darwin) 40 80))
+    (defvar my/mono-font "JetBrainsMono Nerd Font Propo")
+#+end_src
+
 ** Emacs
 #+begin_src emacs-lisp
     (use-package emacs
@@ -197,7 +211,8 @@
     	"o"     '(:ignore t :wk "Org")
     	"o a"   '(org-agenda-list :wk "Agenda")
     	"o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
-        "o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
+    	"o l" '(org-latex-preview :wk "Preview LaTeX stuff")
+    	"o m" '(org-latex-preview :wk "Preview MathJax stuff"))
 
       (general-define-key
     	:states '(normal motion)
@@ -249,11 +264,11 @@
     						   (visual-line-mode -1)))
 #+end_src
 
+
 *  Appearance
 ** Theme
 #+begin_src emacs-lisp
-(when (not (string-match-p "NixOS"
-                         (shell-command-to-string "cat /etc/os-release")))
+(my/when-!nixos
   (use-package doom-themes
   :ensure t
   :custom
@@ -270,27 +285,18 @@
 #+end_src
 ** Transparent Background
 #+begin_src emacs-lisp
-    (if (eq system-type 'darwin)
-    	(defvar opacity 40)
-      (defvar opacity 80))
-
     (add-hook 'window-setup-hook (lambda ()
-    		  (set-frame-parameter (selected-frame) 'alpha-background opacity)
-    		  (add-to-list 'default-frame-alist '(alpha-background . opacity))))
+    		  (set-frame-parameter (selected-frame) 'alpha-background my/opacity)
+    		  (add-to-list 'default-frame-alist '(alpha-background . my/opacity))))
 #+end_src
 ** Font
 #+begin_src emacs-lisp
-    (defun set-default-font (face height)
-      "Set's default font attributes"
+    (defun my/setfont (face)
       (set-face-attribute face nil
-    					  :family "JetBrainsMono Nerd Font Propo"
-    					  :height height))
+    					  :family my/mono-font
+    					  :height my/fheight))
 
-    (set-default-font 'default 130)
-
-    ;; MacOS - bigger font
-    (when (eq system-type 'darwin)
-      (set-default-font 'default 150))
+    (my/setfont 'default)
 
     (add-hook 'org-mode-hook
     		  (lambda ()
@@ -305,18 +311,12 @@
     					 '(org-block org-block-begin-line org-block-end-line
     								 org-code org-verbatim org-meta-line
     								 org-special-keyword org-table))
-    			  (set-default-font face 130))
+    			  (my/setfont face))
 
     			;; MacOS Overrides
     			(when (eq system-type 'darwin)
-    			  (set-default-font 'variable-pitch 150)
-    			(dolist (face
-    					 '(org-block org-block-begin-line org-block-end-line
-    								 org-code org-verbatim org-meta-line
-    								 org-special-keyword org-table))
-    			  (set-default-font face 150)))))
-
-
+    			  (my/setfont 'default))
+    			))
 #+end_src
 ** Nerd Font
 #+begin_src emacs-lisp
@@ -371,12 +371,9 @@
       :custom
       (org-edit-src-content-indentation 4) ;; Set src block automatic indent to 4 instead of 2.
       (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
+      (org-agenda-files '(expand-file-name "~/org/agenda.org"))
       :hook
-      (org-mode . org-indent-mode) ;; Indent text
-      )
-    (use-package toc-org
-      :commands toc-org-enable
-      :hook (org-mode . toc-org-mode))
+      (org-mode . org-indent-mode))
 #+end_src
 + General settings for org mode via hook
 + Save hook to sync init.org with init.el
@@ -394,7 +391,14 @@
     					  nil t)))
 
 #+end_src
-+ And fix org agenda to work with evil mode
+*** Org TOC
+#+begin_src emacs-lisp
+    (use-package toc-org
+      :commands toc-org-enable
+      :hook (org-mode . toc-org-mode))
+#+end_src
+
+*** Org Modern
 #+begin_src emacs-lisp
     ;; Minimal UI
     (use-package org-modern)
@@ -419,7 +423,6 @@
       :config ; add late to hook
       (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 #+end_src
-
 ** Auctex
 + LaTeX tool for emacs, like vimtex
 + Requires distribution of texlive
@@ -441,6 +444,14 @@
     	  (setq TeX-master pdf-file)
     	  (TeX-view))))
 #+end_src
+** Math Preview
++ Must have npm math-preview installed
+#+begin_src emacs-lisp
+    (let ((math-preview-path (string-trim (shell-command-to-string "which math-preview"))))
+      (if (not (string-empty-p math-preview-path))
+        (use-package math-preview
+          :custom (math-preview-command math-preview-path))))
+#+end_src
 ** Apheleia
 + Code Formatter
 #+begin_src emacs-lisp
@@ -448,17 +459,6 @@
       :ensure t
       :config
       (apheleia-global-mode t))
-#+end_src
-** Yasnippet
-#+begin_src emacs-lisp
-    (use-package yasnippet
-      :config
-      (yas-global-mode 1))
-
-#+end_src
-+ Additional pre-made snippets
-#+begin_src emacs-lisp
-    (use-package yasnippet-snippets)
 #+end_src
 
 
@@ -512,6 +512,17 @@
       :custom
       (completion-styles '(orderless basic))
       (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+** Yasnippet
+#+begin_src emacs-lisp
+    (use-package yasnippet
+      :config
+      (yas-global-mode 1))
+
+#+end_src
++ Additional pre-made snippets
+#+begin_src emacs-lisp
+    (use-package yasnippet-snippets)
 #+end_src
 
 
