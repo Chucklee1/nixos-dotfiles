@@ -165,17 +165,19 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)))
 
+(if (eq system-type 'darwin)
+	(defvar opacity 40)
+  (defvar opacity 80))
+
 (add-hook 'window-setup-hook (lambda ()
-		  (set-frame-parameter (selected-frame) 'alpha-background 80)
-		  (add-to-list 'default-frame-alist '(alpha-background . 80))))
+		  (set-frame-parameter (selected-frame) 'alpha-background opacity)
+		  (add-to-list 'default-frame-alist '(alpha-background . opacity))))
 
 (defun set-default-font (face height)
   "Set's default font attributes"
   (set-face-attribute face nil
 					  :family "JetBrainsMono Nerd Font Propo"
 					  :height height))
-
-
 
 (set-default-font 'default 130)
 
@@ -188,7 +190,7 @@
 			(variable-pitch-mode 1)
 			;; body font
 			(set-face-attribute 'variable-pitch nil
-								:family "Noto Sans Mono CJK TC"
+								:family "Noto Sans CJK KR"
 								:height 140
 								:weight 'normal)
 			;; fixed-pitch for blocks
@@ -251,11 +253,6 @@
 (use-package toc-org
   :commands toc-org-enable
   :hook (org-mode . toc-org-mode))
-(use-package org-superstar
-  :after org
-  :config
-  (setq org-superstar-headline-bullets-list '("◉" "○" "⚬" "◈" "◇"))
-  :hook (org-mode . org-superstar-mode))
 
 (defun config/sync-with-org ()
   (when (string-equal (file-truename buffer-file-name)
@@ -269,12 +266,28 @@
 						(config/sync-with-org))
 					  nil t)))
 
-(use-package org-super-agenda
-			  :after org-agenda
-			  :init
-			  (org-super-agenda-mode)
-			  :config
-			  (setq org-super-agenda-header-map (make-sparse-keymap)))
+;; Minimal UI
+(use-package org-modern)
+
+(setq
+ ;; Edit settings
+ org-auto-align-tags nil
+ org-tags-column 0
+ org-catch-invisible-edits 'show-and-error
+ org-special-ctrl-a/e t
+ org-insert-heading-respect-content t
+
+ ;; Org styling, hide markup etc.
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-agenda-tags-column 0
+ org-ellipsis "…")
+
+(global-org-modern-mode)
+(use-package org-modern-indent
+  :straight (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
+  :config ; add late to hook
+  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 
 (use-package auctex
   :ensure t
@@ -322,12 +335,6 @@
   (corfu-auto-prefix 2)          ;; Minimum length of prefix for auto completion.
   (corfu-popupinfo-mode t)       ;; Enable popup information
   (corfu-separator ?\s)          ;; Orderless field separator, Use M-SPC to enter separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
   (completion-ignore-case t)
 
   ;; Emacs 30 and newer: Disable Ispell completion function.
