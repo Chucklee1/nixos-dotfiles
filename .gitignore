@@ -10,3 +10,4 @@ assets/emacs/tramp
 /assets/emacs/org-persist/
 /assets/emacs/custom-vars.el
 /assets/emacs/tree-sitter/
+/assets/.DS_Store
