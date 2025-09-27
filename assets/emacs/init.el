@@ -114,8 +114,7 @@
 	"o"     '(:ignore t :wk "Org")
 	"o a"   '(org-agenda-list :wk "Agenda")
 	"o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
-	"o l" '(org-latex-preview :wk "Preview LaTeX stuff")
-	"o m" '(org-latex-preview :wk "Preview MathJax stuff"))
+	"o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
 
   (general-define-key
 	:states '(normal motion)
@@ -302,11 +301,6 @@
 	(when pdf-file
 	  (setq TeX-master pdf-file)
 	  (TeX-view))))
-
-(let ((math-preview-path (string-trim (shell-command-to-string "which math-preview"))))
-  (if (not (string-empty-p math-preview-path))
-    (use-package math-preview
-      :custom (math-preview-command math-preview-path))))
 
 (use-package apheleia
   :ensure t
