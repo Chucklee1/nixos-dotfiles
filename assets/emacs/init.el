@@ -3,9 +3,9 @@
   (when (not (string-match-p "NixOS"
 							 (shell-command-to-string "cat /etc/os-release"))) cmd))
   ;; variables ;;
-(defvar my/fheight (if (eq system-type 'darwin) 150 130))
-(defvar my/opacity (if (eq system-type 'darwin) 40 80))
-(defvar my/mono-font "JetBrainsMono Nerd Font Propo")
+(defvar g/fheight (if (eq system-type 'darwin) 150 130))
+(defvar g/ffamily "JetBrainsMono Nerd Font Propo")
+(defvar g/opacity (if (eq system-type 'darwin) 40 80))
 
 (use-package emacs
   :custom
@@ -174,35 +174,14 @@
   (doom-themes-org-config)))
 
 (add-hook 'window-setup-hook (lambda ()
-		  (set-frame-parameter (selected-frame) 'alpha-background my/opacity)
-		  (add-to-list 'default-frame-alist '(alpha-background . my/opacity))))
+		  (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
+		  (add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
 
-(defun my/setfont (face)
-  (set-face-attribute face nil
-					  :family my/mono-font
-					  :height my/fheight))
-
-(my/setfont 'default)
-
-(add-hook 'org-mode-hook
-		  (lambda ()
-			(variable-pitch-mode 1)
-			;; body font
-			(set-face-attribute 'variable-pitch nil
-								:family "Noto Sans CJK KR"
-								:height 140
-								:weight 'normal)
-			;; fixed-pitch for blocks
-			(dolist (face
-					 '(org-block org-block-begin-line org-block-end-line
-								 org-code org-verbatim org-meta-line
-								 org-special-keyword org-table))
-			  (my/setfont face))
-
-			;; MacOS Overrides
-			(when (eq system-type 'darwin)
-			  (my/setfont 'default))
-			))
+(set-face-attribute 'default nil
+                    :font   g/ffamily
+                    :height g/fheight
+                    :weight 'medium)
+(setq-default line-spacing 0.12)
 
 (use-package nerd-icons
   :if (display-graphic-p))
