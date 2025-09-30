@@ -179,6 +179,33 @@
 
 (setq doom-modeline-buffer-encoding nil)
 
+(use-package projectile
+  :config
+  (projectile-mode)
+  :custom
+  (projectile-run-use-comint-mode t)
+  (projectile-switch-project-action #'projectile-dired)
+  (projectile-project-search-path '("~/Documents/" "~/Repos/")))
+
+(use-package eglot
+  :ensure nil ;; Don't install eglot because it's now built-in
+  :hook ((c-mode
+    	  c++-mode
+		  haskell-mode
+		  kdl-mode
+    	  lua-mode
+		  markdown-mode
+		  nix-mode
+		  qml-mode
+		  web-mode)
+         . eglot-ensure)
+  :custom
+  ;; Good default
+  (eglot-events-buffer-size 0) ;; No event buffers (LSP server logs)
+  (eglot-autoshutdown t);; Shutdown unused servers.
+  (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
+  )
+
 (use-package tree-sitter
   :hook ((prog-mode . turn-on-tree-sitter-mode)
          (tree-sitter-after-on . tree-sitter-hl-mode)))

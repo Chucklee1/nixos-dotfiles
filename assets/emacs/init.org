@@ -20,6 +20,8 @@
   - [[#nerd-font][Nerd Font]]
   - [[#doom-modeline][Doom-modeline]]
 - [[#nerd][Nerd]]
+  - [[#projectile][Projectile]]
+  - [[#eglot][Eglot]]
   - [[#tree-sitter][Tree-sitter]]
   - [[#misc-language-specific-modes][Misc Language-Specific Modes]]
   - [[#nix-mode][Nix Mode]]
@@ -289,8 +291,40 @@
     (setq doom-modeline-buffer-encoding nil)
 #+end_src
 
-
 * Nerd
+** Projectile
++ Hmmm, project-ile, maybe has to do with projects?
+#+begin_src emacs-lisp
+    (use-package projectile
+      :config
+      (projectile-mode)
+      :custom
+      (projectile-run-use-comint-mode t)
+      (projectile-switch-project-action #'projectile-dired)
+      (projectile-project-search-path '("~/Documents/" "~/Repos/")))
+#+end_src
+** Eglot
+#+begin_src emacs-lisp
+    (use-package eglot
+      :ensure nil ;; Don't install eglot because it's now built-in
+      :hook ((c-mode
+        	  c++-mode
+    		  haskell-mode
+    		  kdl-mode
+        	  lua-mode
+    		  markdown-mode
+    		  nix-mode
+    		  qml-mode
+    		  web-mode)
+             . eglot-ensure)
+      :custom
+      ;; Good default
+      (eglot-events-buffer-size 0) ;; No event buffers (LSP server logs)
+      (eglot-autoshutdown t);; Shutdown unused servers.
+      (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
+      )
+#+end_src
+
 ** Tree-sitter
 #+begin_src emacs-lisp
     (use-package tree-sitter
