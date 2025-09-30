@@ -11,3 +11,5 @@ assets/emacs/tramp
 /assets/emacs/custom-vars.el
 /assets/emacs/tree-sitter/
 /assets/.DS_Store
+/assets/emacs/history
+/assets/emacs/projectile-bookmarks.eld

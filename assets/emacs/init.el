@@ -35,8 +35,9 @@
   (make-backup-files nil) ;; Stop creating ~ backup files
   (auto-save-default nil) ;; Stop creating # auto save files
   :hook
-  (prog-mode . (lambda () (display-line-numbers-mode t)))
-  (text-mode . (lambda () (display-line-numbers-mode t)))
+  (prog-mode   . (lambda () (display-line-numbers-mode t)))
+  (text-mode   . (lambda () (display-line-numbers-mode t)))
+  (before-save . (lambda () (delete-trailing-whitespace)))
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -50,34 +51,28 @@
 		 ("<C-wheel-down>" . text-scale-decrease)))
 
 (use-package evil
-  :init
-  (evil-mode)
-  :config
-  (evil-set-initial-state 'eat-mode 'insert) ;; Set initial state in eat terminal to insert mode
-  :custom
-  (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
-  (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
-  (evil-want-C-i-jump nil)      ;; Disables C-i jump
-  (evil-undo-system 'undo-redo) ;; C-r to redo
-  ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
-  :bind (:map evil-motion-state-map
-              ("SPC" . nil)
-              ("RET" . nil)
-			  ("TAB" . nil)))
+    :init
+    (evil-mode)
+    :custom
+    (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
+    (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
+    (evil-want-C-i-jump nil)      ;; Disables C-i jump
+    (evil-undo-system 'undo-redo) ;; C-r to redo
+    ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
+    :bind (:map evil-motion-state-map
+                ("SPC" . nil)
+                ("RET" . nil)
+                            ("TAB" . nil)))
 (use-package evil-collection
-  :after evil
-  :config
-  ;; Setting where to use evil-collection
-  (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
-  (evil-collection-init))
+    :after evil
+    :config
+    ;; Setting where to use evil-collection
+    (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
+    (evil-collection-init))
 
 (use-package general
   :config
   (general-evil-setup)
-
-  (general-create-definer noleader
-   :states '(normal Special Messages)
-   :keymaps 'override)
 
   (general-create-definer emacs/leader
    :states '(normal Special Messages org)
@@ -102,6 +97,8 @@
 			  (load-file CONFIG_PATH))
 			:wk "Reload Emacs config"))
 
+  (emacs/leader
+	"TAB" '(company-indent-or-complete-common))
 
   (vim/leader
     "b"   '(:ignore t :wk "Buffers")
@@ -116,7 +113,14 @@
 	"o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
 	"o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
 
-  (general-define-key
+  (vim/leader
+    "t" '(:ignore t :wk "Toggle")
+    "t i" '(org-toggle-inline-images :wk "Org Inline Images")
+    "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
+    "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
+    "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline")))
+
+(general-define-key
 	:states '(normal motion)
 	:keymaps 'dired-mode-map
 	"h" 'dired-up-directory
@@ -133,34 +137,12 @@
    "L" '(next-buffer :wk "Next buffer")
    "<S-right>" '(next-buffer :wk "Next buffer"))
 
-  (vim/leader
-    "t" '(:ignore t :wk "Toggle")
-    "t i" '(org-toggle-inline-images :wk "Org Inline Images")
-    "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
-    "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
-    "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline")))
-
 (use-package dirvish
   :config
   (dirvish-override-dired-mode))
 
-(straight-use-package
- '(eat :type git
-	  :host codeberg
-	  :repo "akib/emacs-eat"
-	  :files ("*.el" ("term" "term/*.el") "*.texi"
-			  "*.ti" ("terminfo/e" "terminfo/e/*")
-			  ("terminfo/65" "terminfo/65/*")
-			  ("integration" "integration/*")
-			  (:exclude ".dir-locals.el" "*-tests.el"))))
-
-(add-hook 'eat-mode-hook (lambda ()
-						   (setq-local truncate-lines t)
-						   (visual-line-mode -1)))
-
 (my/when-!nixos
   (use-package doom-themes
-  :ensure t
   :custom
   ;; Global settings (defaults)
   (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
@@ -217,11 +199,21 @@
 					  (add-hook 'before-save-hook #'nix-mode-format nil t))))
 
 (use-package org
-  :ensure nil ;; provided by nixpkgs
   :custom
-  (org-edit-src-content-indentation 4) ;; Set src block automatic indent to 4 instead of 2.
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
-  (org-agenda-files '(expand-file-name "~/org/agenda.org"))
+  (setq
+   ;; Edit settings
+   org-auto-align-tags nil
+   org-tags-column 0
+   org-catch-invisible-edits 'show-and-error
+   org-special-ctrl-a/e t
+   org-insert-heading-respect-content t
+
+   ;; Org styling, hide markup etc.
+   org-hide-emphasis-markers t
+   org-pretty-entities t
+   org-agenda-tags-column 0
+   org-ellipsis "…")
   :hook
   (org-mode . org-indent-mode))
 
@@ -244,19 +236,6 @@
 ;; Minimal UI
 (use-package org-modern)
 
-(setq
- ;; Edit settings
- org-auto-align-tags nil
- org-tags-column 0
- org-catch-invisible-edits 'show-and-error
- org-special-ctrl-a/e t
- org-insert-heading-respect-content t
-
- ;; Org styling, hide markup etc.
- org-hide-emphasis-markers t
- org-pretty-entities t
- org-agenda-tags-column 0
- org-ellipsis "…")
 
 (global-org-modern-mode)
 (use-package org-modern-indent
@@ -378,8 +357,6 @@
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
-(add-hook 'before-save-hook
-          'delete-trailing-whitespace)
 
 (use-package rainbow-mode)
 (setq rainbow-x-colors nil)
