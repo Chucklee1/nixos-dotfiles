@@ -24,10 +24,8 @@
   - [[#eglot][Eglot]]
   - [[#tree-sitter][Tree-sitter]]
   - [[#misc-language-specific-modes][Misc Language-Specific Modes]]
-  - [[#nix-mode][Nix Mode]]
   - [[#org-mode][Org Mode]]
   - [[#auctex][Auctex]]
-  - [[#apheleia][Apheleia]]
 - [[#completion][Completion]]
   - [[#company][Company]]
   - [[#cape][Cape]]
@@ -340,36 +338,31 @@
     (use-package kdl-mode :mode "\\.kdl\\'")
     (use-package lua-mode :mode "\\.lua\\'")
     (use-package markdown-mode :mode "\\.md\\'")
+    (use-package nix-mode :mode "\\.nix\\'")
     (use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
     (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 #+end_src
-** Nix Mode
-#+begin_src emacs-lisp
-    (use-package nix-mode
-      :mode ("\\.nix\\'" "\\.nix.in\\'")
-      :hook (nix-mode . (lambda ()
-    					  (add-hook 'before-save-hook #'nix-mode-format nil t))))
-#+end_src
 ** Org Mode
 #+begin_src emacs-lisp
-    (use-package org
-      :custom
-      (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
-      (setq
-       ;; Edit settings
-       org-auto-align-tags nil
-       org-tags-column 0
-       org-catch-invisible-edits 'show-and-error
-       org-special-ctrl-a/e t
-       org-insert-heading-respect-content t
+  (use-package org
+    :custom
+    (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
+    :hook
+    (org-mode . org-indent-mode)
+    (org-mode . (lambda () (setq
+  						  ;; Edit settings
+  						  org-auto-align-tags nil
+  						  org-tags-column 0
+  						  org-catch-invisible-edits 'show-and-error
+  						  org-special-ctrl-a/e t
+  						  org-insert-heading-respect-content t
 
-       ;; Org styling, hide markup etc.
-       org-hide-emphasis-markers t
-       org-pretty-entities t
-       org-agenda-tags-column 0
-       org-ellipsis "…")
-      :hook
-      (org-mode . org-indent-mode))
+  						  ;; Org styling, hide markup etc.
+  						  org-hide-emphasis-markers t
+  						  org-pretty-entities t
+  						  org-agenda-tags-column 0
+  						  org-ellipsis "…")
+  				)))
 #+end_src
 *** Org-Babel Hook
 + General settings for org mode via hook
@@ -426,14 +419,6 @@
     	  (setq TeX-master pdf-file)
     	  (TeX-view))))
 #+end_src
-** Apheleia
-+ Code Formatter
-#+begin_src emacs-lisp
-    (use-package apheleia
-      :config
-      (apheleia-global-mode t))
-#+end_src
-
 * Completion
 ** Company
 + Provides a mini-buffer for completion

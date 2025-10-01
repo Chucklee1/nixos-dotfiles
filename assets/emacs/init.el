@@ -217,32 +217,29 @@
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
+(use-package nix-mode :mode "\\.nix\\'")
 (use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
-
-(use-package nix-mode
-  :mode ("\\.nix\\'" "\\.nix.in\\'")
-  :hook (nix-mode . (lambda ()
-					  (add-hook 'before-save-hook #'nix-mode-format nil t))))
 
 (use-package org
   :custom
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
-  (setq
-   ;; Edit settings
-   org-auto-align-tags nil
-   org-tags-column 0
-   org-catch-invisible-edits 'show-and-error
-   org-special-ctrl-a/e t
-   org-insert-heading-respect-content t
-
-   ;; Org styling, hide markup etc.
-   org-hide-emphasis-markers t
-   org-pretty-entities t
-   org-agenda-tags-column 0
-   org-ellipsis "…")
   :hook
-  (org-mode . org-indent-mode))
+  (org-mode . org-indent-mode)
+  (org-mode . (lambda () (setq
+						  ;; Edit settings
+						  org-auto-align-tags nil
+						  org-tags-column 0
+						  org-catch-invisible-edits 'show-and-error
+						  org-special-ctrl-a/e t
+						  org-insert-heading-respect-content t
+
+						  ;; Org styling, hide markup etc.
+						  org-hide-emphasis-markers t
+						  org-pretty-entities t
+						  org-agenda-tags-column 0
+						  org-ellipsis "…")
+				)))
 
 (defun config/sync-with-org ()
   (when (string-equal (file-truename buffer-file-name)
@@ -286,10 +283,6 @@
 	(when pdf-file
 	  (setq TeX-master pdf-file)
 	  (TeX-view))))
-
-(use-package apheleia
-  :config
-  (apheleia-global-mode t))
 
 (use-package company
   :custom
