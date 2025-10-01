@@ -1,42 +1,51 @@
 ;; functions ;;
 (defun my/when-!nixos (cmd)
   (when (not (string-match-p "NixOS"
-							 (shell-command-to-string "cat /etc/os-release"))) cmd))
+						   (shell-command-to-string "cat /etc/os-release")))
+  cmd))
   ;; variables ;;
 (defvar g/fheight (if (eq system-type 'darwin) 150 130))
 (defvar g/ffamily "JetBrainsMono Nerd Font Propo")
-(defvar g/opacity (if (eq system-type 'darwin) 40 80))
+(defvar g/opacity (if (eq system-type 'darwin) 40 90))
 
 (use-package emacs
   :custom
+  ;; ui
   (menu-bar-mode nil)         ;; Disable the menu bar
   (scroll-bar-mode nil)       ;; Disable the scroll bar
   (tool-bar-mode nil)         ;; Disable the tool bar
   (inhibit-startup-screen t)  ;; Disable welcome screen
   (initial-buffer-choice (lambda () (dired "~/")))
-  (use-short-answers t)       ;; Use y/n instead of yes/no
-
-  (delete-selection-mode t)   ;; Select text and delete it by typing.
-  (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
-  (savehist-mode) ;; Enables save history mode
-
   (blink-cursor-mode nil)     ;; Don't blink cursor
+
+  ;; selection
+  (use-short-answers t)       ;; Use y/n instead of yes/no
+  (delete-selection-mode t)   ;; Select text and delete it by typing.
+
+  ;; behavior
+  (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
+  (tab-width 4)
+
+
   (global-auto-revert-mode t) ;; Automatically reload file and show changes if the file has changed
 
   (dired-kill-when-opening-new-dired-buffer t) ;; Dired don't create new buffer
   (recentf-mode t) ;; Enable recent file mode
 
+  ;; scrolling
   (mouse-wheel-progressive-speed nil) ;; Disable progressive speed when scrolling
   (scroll-conservatively 10) ;; Smooth scrolling
   (scroll-margin 8)
 
-  (tab-width 4)
 
+  (savehist-mode) ;; Enables save history mode
   (make-backup-files nil) ;; Stop creating ~ backup files
   (auto-save-default nil) ;; Stop creating # auto save files
+
   :hook
   (prog-mode   . (lambda () (display-line-numbers-mode t)))
   (text-mode   . (lambda () (display-line-numbers-mode t)))
+  (org-mode    . (lambda () (display-line-numbers-mode nil)))
   (before-save . (lambda () (delete-trailing-whitespace)))
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
@@ -51,33 +60,33 @@
 		 ("<C-wheel-down>" . text-scale-decrease)))
 
 (use-package evil
-    :init
-    (evil-mode)
-    :custom
-    (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
-    (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
-    (evil-want-C-i-jump nil)      ;; Disables C-i jump
-    (evil-undo-system 'undo-redo) ;; C-r to redo
-    ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
-    :bind (:map evil-motion-state-map
-                ("SPC" . nil)
-                ("RET" . nil)
-                            ("TAB" . nil)))
+  :init
+  (evil-mode)
+  :custom
+  (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
+  (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
+  (evil-want-C-i-jump nil)      ;; Disables C-i jump
+  (evil-undo-system 'undo-redo) ;; C-r to redo
+  ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
+  :bind (:map evil-motion-state-map
+              ("SPC" . nil)
+              ("RET" . nil)
+			  ("TAB" . nil)))
 (use-package evil-collection
-    :after evil
-    :config
-    ;; Setting where to use evil-collection
-    (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
-    (evil-collection-init))
+  :after evil
+  :config
+  ;; Setting where to use evil-collection
+  (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
+  (evil-collection-init))
 
 (use-package general
   :config
   (general-evil-setup)
 
   (general-create-definer emacs/leader
-   :states '(normal Special Messages org)
-   :keymaps 'override
-   :prefix "C-")
+	:states '(normal Special Messages org)
+	:keymaps 'override
+	:prefix "C-")
 
   (general-create-definer vim/leader
     :states '(normal visual motion)
@@ -98,7 +107,7 @@
 			:wk "Reload Emacs config"))
 
   (emacs/leader
-	"TAB" '(company-indent-or-complete-common))
+	"C-<TAB>" '(company-indent-or-complete-common))
 
   (vim/leader
     "b"   '(:ignore t :wk "Buffers")
@@ -121,39 +130,38 @@
     "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline")))
 
 (general-define-key
-	:states '(normal motion)
-	:keymaps 'dired-mode-map
-	"h" 'dired-up-directory
-	"<left>" 'dired-up-directory
-	"l" 'dired-find-file
-	"<right>" 'dired-find-file
-	"TAB" 'dirvish-subtree-toggle)
+ :states '(normal motion)
+ :keymaps 'dired-mode-map
+ "h" 'dired-up-directory
+ "<left>" 'dired-up-directory
+ "l" 'dired-find-file
+ "<right>" 'dired-find-file
+ "TAB" 'dirvish-subtree-toggle)
 
-  (general-define-key
-   :states '(normal Special Messages)
-   :keymaps 'override
-   "H" '(previous-buffer :wk "Previous buffer")
-   "<S-left>" '(previous-buffer :wk "Previous buffer")
-   "L" '(next-buffer :wk "Next buffer")
-   "<S-right>" '(next-buffer :wk "Next buffer"))
+(general-define-key
+ :states '(normal Special Messages)
+ :keymaps 'override
+ "H" '(previous-buffer :wk "Previous buffer")
+ "<S-left>" '(previous-buffer :wk "Previous buffer")
+ "L" '(next-buffer :wk "Next buffer")
+ "<S-right>" '(next-buffer :wk "Next buffer"))
 
 (use-package dirvish
   :config
   (dirvish-override-dired-mode))
 
-(my/when-!nixos
-  (use-package doom-themes
-  :custom
-  ;; Global settings (defaults)
-  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
-  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  :config
-  (load-theme 'doom-nord t)
+(use-package doom-themes
+:custom
+;; Global settings (defaults)
+(doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+(doom-themes-enable-italic t) ; if nil, italics is universally disabled
+:config
+(load-theme 'doom-nord t)
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)))
+;; Enable flashing mode-line on errors
+(doom-themes-visual-bell-config)
+;; Corrects (and improves) org-mode's native fontification.
+(doom-themes-org-config))
 
 (add-hook 'window-setup-hook (lambda ()
 		  (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
@@ -175,9 +183,12 @@
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1))
-
-(setq doom-modeline-buffer-encoding nil)
+  :custom
+  (display-time-24hr-format t)
+  (display-time-mode t)
+  (doom-modeline-spc-face-overrides nil)
+  (doom-modeline-buffer-encoding nil)
+  :hook (after-init . doom-modeline-mode))
 
 (use-package projectile
   :config
@@ -190,10 +201,10 @@
 (use-package eglot
   :ensure nil ;; Don't install eglot because it's now built-in
   :hook ((c-mode
-    	  c++-mode
+		  c++-mode
 		  haskell-mode
 		  kdl-mode
-    	  lua-mode
+		  lua-mode
 		  markdown-mode
 		  nix-mode
 		  qml-mode
