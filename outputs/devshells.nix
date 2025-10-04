@@ -28,4 +28,19 @@ in {
       ${std "Loaded remote env"}
     '';
   };
+  crossComp = let
+    CROSS_ARCH = "aarch64-multiplatform";
+    cpkgs = pkgsCross.${CROSS_ARCH}.buildPackages;
+  in
+    mkShell {
+      nativeBuildInputs = [
+        qemu
+        cpkgs.gcc
+        cpkgs.binutils
+      ];
+      shellHook = ''
+
+        ${std "Loaded crossComp env for arch: ${CROSS_ARCH}"}
+      '';
+    };
 }
