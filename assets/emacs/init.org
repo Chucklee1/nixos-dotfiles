@@ -145,63 +145,63 @@
 + Sensible keybind manager
 #+begin_src emacs-lisp
   (use-package general
-    :init
+    :config
     (general-evil-setup)
-    :custom
-    (general-create-definer 'vim/leader
+    (general-create-definer vim/leader
       :states '(normal visual motion)
       :keymaps 'override
       :prefix "SPC"
       :global-prefix "C-SPC")
 
     (vim/leader
-      "."   '(find-file :wk "Find file")
-      "TAB" '(comment-line :wk "Comment lines")
-  	"RET" '(term :wk "terminal")
-      "g"   '(magit-status :wk "Magit status")
-      "e"   '(dired-jump :wk "Dired at Current Buffer")
-      "w"   '(evil-write :wk "Write Current Buffer")
-      "Q"   '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
-      "R"   '((lambda () (interactive)
-  			  (load-file CONFIG_PATH))
-  			:wk "Reload Emacs config"))
+     "."   '(find-file :wk "Find file")
+     "TAB" '(comment-line :wk "Comment lines")
+     "RET" '(term :wk "terminal")
+     "g"   '(magit-status :wk "Magit status")
+     "e"   '(dired-jump :wk "Dired at Current Buffer")
+     "w"   '(evil-write :wk "Write Current Buffer")
+     "Q"   '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
+     "R"   '((lambda () (interactive)
+  			 (load-file CONFIG_PATH))
+  		   :wk "Reload Emacs config"))
 
     (vim/leader
-      "b"   '(:ignore t :wk "Buffers")
-      "b i" '(ibuffer :wk "Ibuffer")
-      "b d" '(kill-current-buffer :wk "Buffer Delete")
-      "b D" '(kill-buffer (current-buffer) :wk "Buffer Delete Forced")
-      "b r" '(revert-buffer :wk "Reload buffer"))
+     "b"   '(:ignore t :wk "Buffers")
+     "b i" '(ibuffer :wk "Ibuffer")
+     "b d" '(kill-current-buffer :wk "Buffer Delete")
+     "b D" '(kill-buffer (current-buffer) :wk "Buffer Delete Forced")
+     "b r" '(revert-buffer :wk "Reload buffer"))
 
     (vim/leader
-  	"o"     '(:ignore t :wk "Org")
-  	"o a"   '(org-agenda-list :wk "Agenda")
-  	"o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
-  	"o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
+     "o"     '(:ignore t :wk "Org")
+     "o a"   '(org-agenda-list :wk "Agenda")
+     "o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
+     "o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
 
     (vim/leader
-      "t" '(:ignore t :wk "Toggle")
-      "t i" '(org-toggle-inline-images :wk "Org Inline Images")
-      "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
-      "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
-      "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline"))
+     "t" '(:ignore t :wk "Toggle")
+     "t i" '(org-toggle-inline-images :wk "Org Inline Images")
+     "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
+     "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
+     "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline"))
 
-  (general-define-key
-   :states '(normal motion)
-   :keymaps 'dired-mode-map
-   "h" 'dired-up-directory
-   "<left>" 'dired-up-directory
-   "l" 'dired-find-file
-   "<right>" 'dired-find-file
-   "TAB" 'dirvish-subtree-toggle)
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'dired-mode-map
+     "h" 'dired-up-directory
+     "<left>" 'dired-up-directory
+     "l" 'dired-find-file
+     "<right>" 'dired-find-file
+     "TAB" 'dirvish-subtree-toggle)
 
-  (general-define-key
-   :states '(normal Special Messages)
-   :keymaps 'override
-   "H" '(previous-buffer :wk "Previous buffer")
-   "<S-left>" '(previous-buffer :wk "Previous buffer")
-   "L" '(next-buffer :wk "Next buffer")
-   "<S-right>" '(next-buffer :wk "Next buffer")))
+    (general-define-key
+     :states '(normal Special Messages)
+     :keymaps 'override
+     "H" '(previous-buffer :wk "Previous buffer")
+     "<S-left>" '(previous-buffer :wk "Previous buffer")
+     "L" '(next-buffer :wk "Next buffer")
+     "<S-right>" '(next-buffer :wk "Next buffer"))
+    )
 #+end_src
 ** Dirvish
 #+begin_src emacs-lisp
