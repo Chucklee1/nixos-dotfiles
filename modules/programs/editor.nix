@@ -1,4 +1,8 @@
-{self, ...}: let
+{
+  inputs,
+  self,
+  ...
+}: let
   base = {
     nixpkgs.overlays = [self.overlays.default];
     environment.variables.EDITOR = "nvim";
@@ -49,16 +53,50 @@ in {
   editor.emacs = {
     nix = [
       # overlay
-      {nixpkgs.overlays = [(import self.inputs.emacs-overlay)];}
-      {services.emacs.enable = true;}
+      ({machine, ...}: {
+        nixpkgs.overlays = [
+          (import self.inputs.emacs-overlay)
+          (final: prev: {
+            emacs-final = final.emacsWithPackagesFromUsePackage {
+              package =
+                if (machine != "inspiron")
+                then final.emacs-pgtk
+                else final.emacs;
+              config = "${self}/assets/emacs/init.el";
+
+              # substitution:
+              #   defaultInitFile = pkgs.substituteAll {
+              #     name = "default.el";
+              #     src = ./emacs.el;
+              #     inherit (config.xdg) configHome dataHome;
+              #   };
+              defaultInitFile = true;
+
+              # make sure to include `(setq use-package-always-ensure t)` in config
+              alwaysEnsure = true;
+              # alwaysTangle = true;
+
+              extraEmacsPackages = ep:
+                with ep; [
+                  (trivialBuild {
+                    pname = "org-modern-indent";
+                    version = "main";
+                    src = inputs.org-modern-indent;
+                  })
+                  tree-sitter
+                  treesit-grammars.with-all-grammars
+                ];
+            };
+          })
+        ];
+      })
+      ({pkgs, ...}: {
+        services.emacs.enable = true;
+        services.emacs.package = pkgs.emacs-final;
+      })
     ];
     home = [
-      ({pkgs, machine, ...}: {
-        programs.emacs = {
-          enable = true;
-          package = if (machine != "inspiron") then pkgs.emacs-pgtk else pkgs.emacs;
-        };
-      })
+
     ];
   };
 }

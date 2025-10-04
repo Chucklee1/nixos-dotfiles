@@ -1,3 +1,11 @@
+(setq use-package-always-ensure t)
+(defconst CONFIG_PATH (expand-file-name "~/.emacs.d/init.el"))
+(defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
+
+(let ((my/path (expand-file-name "~/.nix-profile/bin")))
+  (setenv "PATH" (concat my/path ":" (getenv "PATH")))
+  (add-to-list 'exec-path my/path))
+
 ;; functions ;;
 (defun my/when-!nixos (cmd)
   (when (not (string-match-p "NixOS"
@@ -80,15 +88,10 @@
   (evil-collection-init))
 
 (use-package general
-  :config
+  :init
   (general-evil-setup)
-
-  (general-create-definer emacs/leader
-	:states '(normal Special Messages org)
-	:keymaps 'override
-	:prefix "C-")
-
-  (general-create-definer vim/leader
+  :custom
+  (general-create-definer 'vim/leader
     :states '(normal visual motion)
     :keymaps 'override
     :prefix "SPC"
@@ -105,9 +108,6 @@
     "R"   '((lambda () (interactive)
 			  (load-file CONFIG_PATH))
 			:wk "Reload Emacs config"))
-
-  (emacs/leader
-	"C-<TAB>" '(company-indent-or-complete-common))
 
   (vim/leader
     "b"   '(:ignore t :wk "Buffers")
@@ -127,7 +127,7 @@
     "t i" '(org-toggle-inline-images :wk "Org Inline Images")
     "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
     "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
-    "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline")))
+    "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline"))
 
 (general-define-key
  :states '(normal motion)
@@ -144,7 +144,7 @@
  "H" '(previous-buffer :wk "Previous buffer")
  "<S-left>" '(previous-buffer :wk "Previous buffer")
  "L" '(next-buffer :wk "Next buffer")
- "<S-right>" '(next-buffer :wk "Next buffer"))
+ "<S-right>" '(next-buffer :wk "Next buffer")))
 
 (use-package dirvish
   :config
@@ -217,13 +217,6 @@
   (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
   )
 
-(use-package tree-sitter
-  :hook ((prog-mode . turn-on-tree-sitter-mode)
-         (tree-sitter-after-on . tree-sitter-hl-mode)))
-
-(use-package tree-sitter-langs
-  :after tree-sitter)
-
 (use-package haskell-mode :mode "\\.hs\\'")
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package lua-mode :mode "\\.lua\\'")
@@ -271,29 +264,17 @@
 ;; Minimal UI
 (use-package org-modern)
 
-
 (global-org-modern-mode)
-(use-package org-modern-indent
-  :straight (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
-  :config ; add late to hook
-  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
+(require 'org-modern-indent)
+(add-hook 'org-mode-hook #'org-modern-indent-mode 90)
 
-(use-package auctex
-  :ensure t
-  :defer t)
+(use-package auctex)
 
 (setq TeX-view-program-selection
       '((output-pdf "Zathura")
         (output-dvi "xdvi")
         (output-html "xdg-open")))
 (setq TeX-engine 'luatex)
-
-(defun my/org-to-pdf-view ()
-  (interactive)
-  (let ((pdf-file (org-latex-export-to-pdf)))
-	(when pdf-file
-	  (setq TeX-master pdf-file)
-	  (TeX-view))))
 
 (use-package company
   :custom
@@ -303,25 +284,11 @@
 
 (use-package cape
   :init
-  ;; Add to the global default value of `completion-at-point-functions' which is
-  ;; used by `completion-at-point'.  The order of the functions matters, the
-  ;; first function returning a result wins.  Note that the list of buffer-local
-  ;; completion functions takes precedence over the global list.
-
-  ;; The functions that are added later will be the first in the list
   (add-hook 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
   (add-hook 'completion-at-point-functions #'cape-dict) ;; Dictionary completion
   (add-hook 'completion-at-point-functions #'cape-file) ;; Path completion
   (add-hook 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
   (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
-
-  ;;(add-hook 'completion-at-point-functions #'cape-abbrev) ;; Complete abbreviation
-  ;;(add-hook 'completion-at-point-functions #'cape-history) ;; Complete from Eshell, Comint or minibuffer history
-  ;;(add-hook 'completion-at-point-functions #'cape-line) ;; Complete entire line from current buffer
-  ;;(add-hook 'completion-at-point-functions #'cape-elisp-symbol) ;; Complete Elisp symbol
-  ;;(add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
-  ;;(add-hook 'completion-at-point-functions #'cape-sgml) ;; Complete Unicode char from SGML entity, e.g., &alpha
-  ;;(add-hook 'completion-at-point-functions #'cape-rfc1345) ;; Complete Unicode char using RFC 1345 mnemonics
   )
 
 (use-package orderless
@@ -352,7 +319,6 @@
 (use-package yasnippet-snippets)
 
 (use-package magit
-  :defer
   :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff
   :config (define-key transient-map (kbd "<escape>") 'transient-quit-one)) ;; Make escape quit magit prompts
 
@@ -363,9 +329,6 @@
 
 (use-package helpful
   :bind
-  ;; Note that the built-in `describe-function' includes both functions
-  ;; and macros. `helpful-function' is functions only, so we provide
-  ;; `helpful-callable' as a drop-in replacement.
   ("C-h f" . helpful-callable)
   ("C-h v" . helpful-variable)
   ("C-h k" . helpful-key)

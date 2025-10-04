@@ -34,10 +34,14 @@
   inputs.en_us-dictionary.url = "github:dwyl/english-words";
   inputs.en_us-dictionary.flake = false;
 
+  # ---- emacs ----
+  inputs.emacs-overlay.url = "github:nix-community/emacs-overlay";
+  inputs.org-modern-indent.url = "github:jdtsmith/org-modern-indent";
+  inputs.org-modern-indent.flake = false;
+
   # ---- programs ----
   inputs.dwm.url = "github:Chucklee1/dwm";
   inputs.dwm.flake = false;
-  inputs.emacs-overlay.url = "github:nix-community/emacs-overlay";
   inputs.niri.url = "github:sodiboo/niri-flake";
 
   outputs = {self, ...} @ inputs: let
