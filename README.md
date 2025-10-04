@@ -8,15 +8,16 @@
 
 ## TODO:
 
-- [x] continue to be as indecisive as possible
-- [ ] find replacement for horrid recursiveMerge in libs.nix
+- [x] Continue to be as indecisive as possible
+- [ ] Find replacement for horrid recursiveMerge in libs.nix
+- [ ] Integrate the simpler path-to-attrs function for config use instead of overly-complex
+      module-path-but-modules-dont-align-with-the-file-name current setup
 - [ ] Work on iso image profile for easy booting onto any computer (still thinking of good name)
 - [ ] work on expanding umbra functionality
 
 ## Want to use my setup?
 
 - on metal:
-
     - clone this repo with `git clone https://github.com/Chucklee1/nixos-dotfiles`
     - make sure you are in the repository directory so you can use just
     - format disk:
@@ -30,7 +31,6 @@
     - install system: `just install <profile>`
 
 - virtual machine:
-
     - run `nix run github:Chucklee1/nixos-dotfiles#<profile>`
     - add `--extra-experimental-features 'nix-command flakes'` after nix if the command did not work
     - umbra is currently the only vm profile
