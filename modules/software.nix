@@ -2,6 +2,7 @@
   global.nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
+        # programs
         age
         calc
         curl
@@ -12,6 +13,33 @@
         just
         lua
         python3
+        # lsps
+        bash-language-server
+        lua-language-server
+        marksman
+        nixd
+      ];
+    })
+  ];
+
+  additions.full.nix = [
+    ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        # lsps
+        asm-lsp # GAS/GO assembly
+        clang-tools
+        jdt-language-server # java
+        lemminx # xml
+        kdePackages.qtdeclarative
+        typescript-language-server
+        vscode-langservers-extracted
+        # diagnostics
+        statix
+        # formatters
+        alejandra
+        html-tidy
+        nodePackages.prettier
+        shfmt
       ];
     })
   ];

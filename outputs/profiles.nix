@@ -16,10 +16,11 @@
         global desktop linux metal
         virt.qemu drivers.nvidia
         wayland additions.full
-        editor.nixvim editor.emacs
         # testing new function
         (with new_mod; new_load_mod_wrapper [
           gaming
+          editor.emacs
+          editor.nixvim
           programs.librewolf
           programs.niri
           programs.waybar
