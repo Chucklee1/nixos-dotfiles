@@ -1,50 +1,9 @@
-{inputs, ...}: {
-  linux.nix = [
-    inputs.stylix.nixosModules.stylix
-    ({pkgs, ...}: {
-      stylix.cursor = {
-        package = pkgs.bibata-cursors;
-        name = "Bibata-Modern-Classic";
-        size = 24;
-      };
-    })
-  ];
-  linux.home = [
-    ({pkgs, ...}: {
-      stylix.iconTheme = {
-        enable = true;
-        package = pkgs.papirus-icon-theme;
-        dark = "Papirus-Dark";
-      };
-      gtk.enable = true;
-      qt.enable = true;
-    })
-  ];
-  metal.nix = [
-    # ---- grub theme ----
-    inputs.minegrub-theme.nixosModules.default
-    {
-      stylix.targets.grub.enable = false;
-      boot.loader.grub.minegrub-theme = {
-        enable = true;
-        splash = "100% Flakes!";
-        background = "background_options/1.8  - [Classic Minecraft].png";
-        boot-options-count = 4;
-      };
-    }
-    # ---- sddm theme ----
-    inputs.minesddm.nixosModules.default
-    ({pkgs, ...}: {
-      # ---- login theme ----
-      services.displayManager.sddm = {
-        enable = true;
-        package = pkgs.kdePackages.sddm;
-        wayland.enable = true;
-        theme = "minesddm";
-      };
-    })
-  ];
-  global.nix = [
+{inputs, extlib, ...}: {
+  nix = [
+    (extlib.darwinOrLinux
+      inputs.stylix.darwinModules.stylix
+      inputs.stylix.nixosModules.stylix
+    )
     ({pkgs, ...}: let
       # helpers
       hideHashtag = set: builtins.mapAttrs (_: v: builtins.replaceStrings ["#"] [""] v) set;
@@ -129,7 +88,24 @@
         };
       };
     })
+    ({lib, pkgs, ...}: lib.mkIf pkgs.stdenv.isLinux {
+      stylix.cursor = {
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Classic";
+        size = 24;
+      };
+    })
   ];
 
-  macbook.nix = [inputs.stylix.darwinModules.stylix];
+  home = [
+    ({lib, pkgs, ...}: lib.mkIf pkgs.stdenv.isLinux {
+      stylix.iconTheme = {
+        enable = true;
+        package = pkgs.papirus-icon-theme;
+        dark = "Papirus-Dark";
+      };
+      gtk.enable = true;
+      qt.enable = true;
+    })
+  ];
 }

@@ -1,4 +1,4 @@
-{inputs, ...}:
+{inputs, self, ...}:
 with inputs.nixpkgs.lib; rec {
   readDirRecursive = dir:
     concatMapAttrs (file:
@@ -89,8 +89,8 @@ with inputs.nixpkgs.lib; rec {
   ]);
 
   # system helpers
-  withSystem.ifDarwinElseLinux = system: A: B:
-    if (hasSuffix "darwin" "${system}")
+  darwinOrLinux = A: B:
+    if (builtins.match ".*-darwin" builtins.currentSystem != null)
     then A
     else B;
 

@@ -6,9 +6,10 @@
 }: {
   # ---- system  ----
   profiles = let
-    mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
+    extArgs = {inherit self inputs extlib;};
+    mod = extlib.loadModules "${self}/modules" extArgs;
     new_mod = extlib.readDirRecursiveToAttrset "${self}/new_modules";
-    new_load_mod_wrapper = mods: extlib.new_loadModules mods {inherit self inputs;};
+    new_load_mod_wrapper = mods: extlib.new_loadModules mods extArgs;
   in {
     desktop = {
       system = "x86_64-linux";
@@ -26,6 +27,8 @@
           programs.niri
           programs.waybar
           programs.yazi
+          theming.blockgame
+          theming.stylix
           virt.qemu
         ])
       ];
