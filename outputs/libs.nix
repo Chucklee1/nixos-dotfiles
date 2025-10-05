@@ -53,24 +53,41 @@ with inputs.nixpkgs.lib; rec {
     attrValues
   ]);
 
-  /*
-     - Given a root path, will return an attribute set
-       with the following rules:
-       - If the key ==
-         directory -> will call function again
-         file -> set value to full-file-path
-         directory AND is empty -> key is ignored in output
-         symlink -> key is ignored in output
-  */
-  pathsToAttrsets = root_dir: builtins.foldl' (acc: key:
-    lib.recursiveUpdate acc
-      (
-        lib.setAttrByPath
-          (lib.splitString "/" key)
-          (lib.getAttr key root_dir)
-      )
-  ) { } (builtins.readDir root_dir);
+  # basename clone for nix
+  basename = file: pipe file [
+    (replaceString ".nix" "")
+    (splitString "/")
+    last
+  ];
 
+  /*
+     - reworked readDirRecursive to return in a
+       nested attrset format
+     - i like it cause it makes it easy to import
+       files like attrsets
+     - example: for file `modules/subfolder/file.nix`
+       using `readDirRecursiveToAttrset "modules"`
+       as mod would allow for accessing `file.nix` as
+       `mod.subfolder.file`
+  */
+  readDirRecursiveToAttrset = dir: args:
+    concatMapAttrs (file:
+      flip getAttr {
+        directory = {
+          "${basename file}" = mapAttrs'
+            (subpath: nameValuePair "${subpath}")
+            (readDirRecursive "${dir}/${file}");
+        };
+        regular = {
+          # only add args if file is NOT a pure attrset
+          # also won't check for .nix, risky but
+          # I am not going to nest if statements
+          "${basename file}" =
+            if isFunction path then import "${dir}/${file}" args
+            else import "${dir}/${file}";
+        };
+        symlink = {};
+      }) (builtins.readDir dir);
 
   # system helpers
   withSystem.ifDarwinElseLinux = system: A: B:
