@@ -7,33 +7,27 @@
   # ---- system  ----
   profiles = let
     mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
+    new_mod = extlib.pathsToAttrsets "${self}/new_modules";
   in {
     desktop = {
       system = "x86_64-linux";
       modules = with mod; [
-        global
-        desktop
-        linux
-        gaming
-        metal
-        wayland
-        virt.qemu
-        drivers.nvidia
-        additions.full
-        editor.nixvim
-        editor.emacs
+        global desktop linux metal
+        virt.qemu drivers.nvidia
+        gaming wayland additions.full
+        niri waybar
+        editor.nixvim editor.emacs
+        # testing new function
+        new_mod.yazi
       ];
       user = "goat";
     };
     laptop = {
       system = "x86_64-linux";
       modules = with mod; [
-        global
-        laptop
-        linux
-        metal
-        wayland
-        additions.full
+        global laptop linux metal
+        wayland additions.full
+        niri waybar
         editor.emacs
       ];
       user = "goat";
@@ -41,31 +35,26 @@
     inspiron = {
       system = "x86_64-linux";
       modules = with mod; [
-        global
-        inspiron
-        linux
-        metal
+        global inspiron linux metal
+        additions.full
         dwm
         editor.emacs
-        additions.full
       ];
       user = "goat";
     };
     umbra = {
       system = "x86_64-linux";
       modules = with mod; [
-        global
-        umbra
-        linux
+        global umbra linux
         wayland
+        niri waybar
       ];
       user = "nixos";
     };
     macbook = {
       system = "aarch64-darwin";
       modules = with mod; [
-        global
-        macbook
+        global macbook
         additions.full
         editor.emacs
       ];
@@ -84,7 +73,7 @@
         home = builtins.concatLists (map (m: m.home or []) cfg.modules);
       };
       specialArgs = {
-        inherit machine;
+        inherit self inputs extlib machine;
         spkgs = import inputs.nixpkgs-stable {inherit (cfg) system;};
         inherit (cfg) system user;
       };
