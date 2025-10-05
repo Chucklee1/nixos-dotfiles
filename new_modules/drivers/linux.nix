@@ -8,7 +8,7 @@
           libvdpau-va-gl
           vulkan-tools
         ];
-      } // (lib.mkif pkgs.stdenv.isx86_64 {enable32Bit = true;});
+      } // (lib.mkIf pkgs.stdenv.isx86_64 {enable32Bit = true;});
 
       # audio
       security.rtkit.enable = true;

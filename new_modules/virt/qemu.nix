@@ -1,5 +1,5 @@
 {
-  virt.qemu.nix = [
+  nix = [
     ({pkgs, user, ...}: {
       users.groups.libvirtd.members = [user];
       users.groups.kvm.members = [user];
@@ -25,7 +25,8 @@
       };
     })
   ];
-  virt.qemu.home = [
+
+  home = [
     {
       dconf.settings."org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];

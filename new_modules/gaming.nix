@@ -34,6 +34,7 @@
       };
     })
   ];
+
   home = [
     {programs.mangohud.enable = true;}
     # Lazy shortcut for MO2

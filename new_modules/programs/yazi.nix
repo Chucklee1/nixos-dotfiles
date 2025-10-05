@@ -26,7 +26,6 @@
     })
   ];
 
-  # yazi
   home = [
     ({pkgs, ...}: {
       programs.yazi = {

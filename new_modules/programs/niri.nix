@@ -7,14 +7,9 @@
       programs.niri.enable = true;
     })
   ];
+
   home = [
-    ({
-      lib,
-        config,
-        pkgs,
-        machine,
-        ...
-    }: {
+    ({lib, config, pkgs, machine, ...}: {
       programs.niri.settings = {
         # general
         hotkey-overlay.skip-at-startup = machine != "umbra";

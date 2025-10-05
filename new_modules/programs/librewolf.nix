@@ -3,6 +3,7 @@
     {nixpkgs.overlays = [inputs.nur.overlays.default];}
     {environment.variables.BROWSER = "librwolf";}
   ];
+
   home = [
     ({pkgs, ...}: {
       stylix.targets.librewolf.profileNames = ["default"];
