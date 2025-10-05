@@ -14,17 +14,19 @@
       system = "x86_64-linux";
       modules = with mod; [
         global desktop linux metal
-        virt.qemu drivers.nvidia
         wayland additions.full
         # testing new function
         (with new_mod; new_load_mod_wrapper [
           gaming
+          drivers.linux
+          drivers.nvidia
           editor.emacs
           editor.nixvim
           programs.librewolf
           programs.niri
           programs.waybar
           programs.yazi
+          virt.qemu
         ])
       ];
       user = "goat";
