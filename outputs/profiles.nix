@@ -6,68 +6,73 @@
 }: {
   # ---- system  ----
   profiles = let
-    mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
+    extArgs = {inherit self inputs extlib;};
+    mod = extlib.readDirRecursiveToAttrset "${self}/modules";
+    load_mods = mods: [(extlib.loadModulesFromAttrset mods extArgs)];
   in {
     desktop = {
       system = "x86_64-linux";
-      modules = with mod; [
-        global
-        desktop
-        linux
-        gaming
-        metal
-        wayland
+      modules = with mod; load_mods [
+        hosts.desktop
+        net.mpd net.syncthing net.tailscale
+
+        programs.librewolf
+        programs.editor.emacs programs.editor.nixvim
+        programs.git programs.kitty programs.yazi
+        programs.niri programs.waybar
+
+        software.apps
+        software.dev
+        software.flatpak
+        software.gaming
+        software.qol
+        software.wayland
+
+        system.boot
+        system.home system.users
+        system.pkgconfig system.sys-specs
+        system.drivers.linux system.drivers.nvidia
+        system.shell.variables system.shell.zsh
+        system.theming.blockgame system.theming.stylix
+
         virt.qemu
-        drivers.nvidia
-        additions.full
-        editor.nixvim
-        editor.emacs
       ];
       user = "goat";
     };
-    laptop = {
-      system = "x86_64-linux";
-      modules = with mod; [
-        global
-        laptop
-        linux
-        metal
-        wayland
-        additions.full
-        editor.emacs
-      ];
-      user = "goat";
-    };
-    inspiron = {
-      system = "x86_64-linux";
-      modules = with mod; [
-        global
-        inspiron
-        linux
-        metal
-        dwm
-        editor.emacs
-        additions.full
-      ];
-      user = "goat";
-    };
-    umbra = {
-      system = "x86_64-linux";
-      modules = with mod; [
-        global
-        umbra
-        linux
-        wayland
-      ];
-      user = "nixos";
-    };
-    macbook = {
+    # laptop = {
+    #   system = "x86_64-linux";
+    #   modules = with mod; [
+    #     global laptop linux metal
+    #     wayland additions.full
+    #     niri waybar
+    #     editor.emacs
+    #   ];
+    #   user = "goat";
+    # };
+    # inspiron = {
+    #   system = "x86_64-linux";
+    #   modules = with mod; [
+    #     global inspiron linux metal
+    #     additions.full
+    #     dwm
+    #     editor.emacs
+    #   ];
+    #   user = "goat";
+    # };
+    # umbra = {
+    #   system = "x86_64-linux";
+    #   modules = with mod; [
+    #     global umbra linux
+    #     wayland
+    #     niri waybar
+    #   ];
+    #   user = "nixos";
+    # };
+    # macbook = {
       system = "aarch64-darwin";
       modules = with mod; [
-        global
-        macbook
-        additions.full
-        editor.emacs
+        hosts.macbook
+        programs.editor.emacs
       ];
       user = "goat";
     };
@@ -84,7 +89,7 @@
         home = builtins.concatLists (map (m: m.home or []) cfg.modules);
       };
       specialArgs = {
-        inherit machine;
+        inherit self inputs extlib machine;
         spkgs = import inputs.nixpkgs-stable {inherit (cfg) system;};
         inherit (cfg) system user;
       };

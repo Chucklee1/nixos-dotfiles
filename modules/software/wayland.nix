@@ -1,5 +1,5 @@
 {
-  wayland.nix = [
+  nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         egl-wayland
@@ -24,7 +24,7 @@
       xdg.portal.config.common.default = "gnome";
     })
   ];
-  wayland.home = [
+  home = [
     ({pkgs, ...}: {
       programs.swaylock.enable = true;
       programs.swaylock.package = pkgs.swaylock-effects;

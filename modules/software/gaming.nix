@@ -1,5 +1,5 @@
 {
-  gaming.nix = [
+  nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # emulation
@@ -10,6 +10,8 @@
         # wine
         zenity
         jq
+        # shader util
+        vkbasalt
         # games
         osu-lazer-bin
         #prismlauncher
@@ -32,7 +34,8 @@
       };
     })
   ];
-  gaming.home = [
+
+  home = [
     {programs.mangohud.enable = true;}
     # Lazy shortcut for MO2
     ({

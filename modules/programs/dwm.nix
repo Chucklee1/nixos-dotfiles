@@ -1,6 +1,6 @@
 {inputs, ...}: {
-  dwm.nix = [
-    ({lib, config, pkgs, ...}: {
+  nix = [
+    ({config, pkgs, ...}: {
       services.libinput.enable = true;
       services.libinput.touchpad = {
         naturalScrolling = true;
@@ -17,7 +17,8 @@
       };
     })
   ];
-  dwm.home = [
+
+  home = [
     ({pkgs, ...}: {
       home.packages = with pkgs; [dmenu];
 

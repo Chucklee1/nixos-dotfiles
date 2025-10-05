@@ -1,5 +1,5 @@
 {
-  global.nix = [
+  nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # info helpers
@@ -26,8 +26,7 @@
     })
   ];
 
-  # yazi
-  global.home = [
+  home = [
     ({pkgs, ...}: {
       programs.yazi = {
         enable = true;

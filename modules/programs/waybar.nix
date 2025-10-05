@@ -1,16 +1,12 @@
 {
-  wayland.home = [
-    ({
-      lib,
-      config,
-      ...
-    }: {
+  home = [
+    ({lib, config, ...}: {
       # waybar
       stylix.targets.waybar.addCss = false;
       programs.waybar = with config.lib.stylix.colors.withHashtag; let
         merged = list: [(lib.mergeAttrsList list)];
         span = color: str: ''<span color="${color}" >${str}</span>'';
-        wm = "niri";
+        wms = ["niri" "hyprland"];
       in {
         settings = merged [
           # general
@@ -20,7 +16,7 @@
             height = 24;
           }
           # left
-          {
+          (lib.concatMapAttrs (wm: _: {
             modules-left = ["${wm}/workspaces" "${wm}/window"];
             "${wm}/window" = {
               tooltip = false;
@@ -35,7 +31,8 @@
               format-icons.active = "";
               format-icons.default = "";
             };
-          }
+          }) (lib.genAttrs wms (wm: wm)))
+
           # center
           {
             modules-center = ["clock"];
@@ -47,7 +44,7 @@
           }
           # right
           {
-            modules-right = ["keyboard-state" "mpd" "pulseaudio" "network" "backlight" "battery" "tray"];
+            modules-right = ["keyboard-state" "pulseaudio" "network" "backlight" "battery" "tray"];
             keyboard-state = {
               numlock = true;
               capslock = true;
