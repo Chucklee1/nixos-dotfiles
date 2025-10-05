@@ -137,15 +137,6 @@
         ShowPathbar = true;
       };
 
-      system.defaults.NSGlobalDomain = {
-        AppleInterfaceStyle = "Dark";
-        AppleInterfaceStyleSwitchesAutomatically = false;
-        NSDocumentSaveNewDocumentsToCloud = false; # do not save to icloud by default
-        # no autocorrections
-        NSAutomaticCapitalizationEnabled = false;
-        NSAutomaticSpellingCorrectionEnabled = false;
-      };
-
       # misc
       system.defaults.CustomUserPreferences = {
         "com.apple.desktopservices".DSDontWriteNetworkStores = true;
