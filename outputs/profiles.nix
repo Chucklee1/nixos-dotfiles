@@ -7,82 +7,72 @@
   # ---- system  ----
   profiles = let
     extArgs = {inherit self inputs extlib;};
-    mod = extlib.readDirRecursiveToAttrset "${self}/new_modules";
-    load_mod_wrapper = mods: extlib.new_loadModules mods extArgs;
+    mod = extlib.readDirRecursiveToAttrset "${self}/modules";
+    load_mods = mods: [(extlib.loadModulesFromAttrset mods extArgs)];
   in {
     desktop = {
       system = "x86_64-linux";
-      modules = with mod; [ (load_mod_wrapper [ hosts.desktop
+      modules = with mod; load_mods [
+        hosts.desktop
+        net.mpd net.syncthing net.tailscale
 
-          net.mpd net.syncthing net.tailscale
+        programs.librewolf
+        programs.editor.emacs programs.editor.nixvim
+        programs.git programs.kitty programs.yazi
+        programs.niri programs.waybar
 
-          programs.editor.emacs programs.editor.nixvim programs.git
-          programs.kitty programs.librewolf
-          programs.niri
-          programs.waybar
-          programs.yazi
+        software.apps
+        software.dev
+        software.flatpak
+        software.gaming
+        software.qol
+        software.wayland
 
-          software.apps
-          software.dev
-          software.flatpak
-          software.gaming
-          software.qol
-          software.wayland
+        system.boot
+        system.home system.users
+        system.pkgconfig system.sys-specs
+        system.drivers.linux system.drivers.nvidia
+        system.shell.variables system.shell.zsh
+        system.theming.blockgame system.theming.stylix
 
-          system.boot
-          system.home
-          system.pkgconfig
-          system.sys-specs
-          system.users
-
-          system.drivers.linux
-          system.drivers.nvidia
-
-          system.shell.variables
-          system.shell.zsh
-
-          system.theming.blockgame
-          system.theming.stylix
-
-          virt.qemu
-      ]) ];
-      user = "goat";
-    };
-    laptop = {
-      system = "x86_64-linux";
-      modules = with mod; [
-        global laptop linux metal
-        wayland additions.full
-        niri waybar
-        editor.emacs
+        virt.qemu
       ];
       user = "goat";
     };
-    inspiron = {
-      system = "x86_64-linux";
-      modules = with mod; [
-        global inspiron linux metal
-        additions.full
-        dwm
-        editor.emacs
-      ];
-      user = "goat";
-    };
-    umbra = {
-      system = "x86_64-linux";
-      modules = with mod; [
-        global umbra linux
-        wayland
-        niri waybar
-      ];
-      user = "nixos";
-    };
-    macbook = {
+    # laptop = {
+    #   system = "x86_64-linux";
+    #   modules = with mod; [
+    #     global laptop linux metal
+    #     wayland additions.full
+    #     niri waybar
+    #     editor.emacs
+    #   ];
+    #   user = "goat";
+    # };
+    # inspiron = {
+    #   system = "x86_64-linux";
+    #   modules = with mod; [
+    #     global inspiron linux metal
+    #     additions.full
+    #     dwm
+    #     editor.emacs
+    #   ];
+    #   user = "goat";
+    # };
+    # umbra = {
+    #   system = "x86_64-linux";
+    #   modules = with mod; [
+    #     global umbra linux
+    #     wayland
+    #     niri waybar
+    #   ];
+    #   user = "nixos";
+    # };
+    # macbook = {
       system = "aarch64-darwin";
       modules = with mod; [
-        global macbook
-        additions.full
-        editor.emacs
+        hosts.macbook
+        programs.editor.emacs
       ];
       user = "goat";
     };

@@ -82,7 +82,7 @@ with inputs.nixpkgs.lib; rec {
         symlink = {};
       }) (builtins.readDir dir);
 
-  new_loadModules = mods: args: (pipe mods [
+  loadModulesFromAttrset = mods: args: (pipe mods [
     (map import)
     (map (flip toFunction args))
     (builtins.foldl' mergeAllRecursive {})
