@@ -10,6 +10,8 @@
         # wine
         zenity
         jq
+        # shader util
+        vkbasalt
         # games
         osu-lazer-bin
         #prismlauncher
