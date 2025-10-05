@@ -7,31 +7,45 @@
   # ---- system  ----
   profiles = let
     extArgs = {inherit self inputs extlib;};
-    mod = extlib.loadModules "${self}/modules" extArgs;
-    new_mod = extlib.readDirRecursiveToAttrset "${self}/new_modules";
-    new_load_mod_wrapper = mods: extlib.new_loadModules mods extArgs;
+    mod = extlib.readDirRecursiveToAttrset "${self}/new_modules";
+    load_mod_wrapper = mods: extlib.new_loadModules mods extArgs;
   in {
     desktop = {
       system = "x86_64-linux";
-      modules = with mod; [
-        global desktop linux metal
-        wayland additions.full
-        # testing new function
-        (with new_mod; new_load_mod_wrapper [
-          programs.editor.emacs
-          programs.editor.nixvim
-          programs.librewolf
+      modules = with mod; [ (load_mod_wrapper [ hosts.desktop
+
+          net.mpd net.syncthing net.tailscale
+
+          programs.editor.emacs programs.editor.nixvim programs.git
+          programs.kitty programs.librewolf
           programs.niri
           programs.waybar
           programs.yazi
+
+          software.apps
+          software.dev
+          software.flatpak
           software.gaming
+          software.qol
+          software.wayland
+
+          system.boot
+          system.home
+          system.pkgconfig
+          system.sys-specs
+          system.users
+
           system.drivers.linux
           system.drivers.nvidia
+
+          system.shell.variables
+          system.shell.zsh
+
           system.theming.blockgame
           system.theming.stylix
+
           virt.qemu
-        ])
-      ];
+      ]) ];
       user = "goat";
     };
     laptop = {
