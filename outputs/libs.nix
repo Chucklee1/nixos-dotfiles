@@ -70,7 +70,7 @@ with inputs.nixpkgs.lib; rec {
        as mod would allow for accessing `file.nix` as
        `mod.subfolder.file`
   */
-  readDirRecursiveToAttrset = dir: args:
+  readDirRecursiveToAttrset = dir:
     concatMapAttrs (file:
       flip getAttr {
         directory = {
@@ -82,12 +82,16 @@ with inputs.nixpkgs.lib; rec {
           # only add args if file is NOT a pure attrset
           # also won't check for .nix, risky but
           # I am not going to nest if statements
-          "${basename file}" =
-            if isFunction path then import "${dir}/${file}" args
-            else import "${dir}/${file}";
+          "${basename file}" = "${dir}/${file}";
         };
         symlink = {};
       }) (builtins.readDir dir);
+
+  new_loadModules = mods: args: (pipe mods [
+    (map import)
+    (map (flip toFunction args))
+    (builtins.foldl' mergeAllRecursive {})
+  ]);
 
   # system helpers
   withSystem.ifDarwinElseLinux = system: A: B:

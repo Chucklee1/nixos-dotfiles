@@ -7,7 +7,7 @@
   # ---- system  ----
   profiles = let
     mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
-    new_mod = extlib.readDirRecursiveToAttrset "${self}/new_modules" {inherit inputs self;};
+    new_mod = extlib.readDirRecursiveToAttrset "${self}/new_modules";
   in {
     desktop = {
       system = "x86_64-linux";
@@ -17,8 +17,11 @@
         gaming wayland additions.full
         editor.nixvim editor.emacs
         # testing new function
-        new_mod.niri new_mod.waybar
-        new_mod.yazi new_mod.librewolf
+        (extlib.new_loadModules [
+          new_mod.niri
+          new_mod.waybar
+          new_mod.yazi new_mod.librewolf
+        ] {inherit self inputs;})
       ];
       user = "goat";
     };

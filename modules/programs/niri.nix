@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  _niri = {
+  niri = {
     nix = [
       inputs.niri.nixosModules.niri
       ({pkgs, ...}: {
