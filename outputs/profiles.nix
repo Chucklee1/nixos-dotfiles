@@ -8,20 +8,23 @@
   profiles = let
     mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
     new_mod = extlib.readDirRecursiveToAttrset "${self}/new_modules";
+    new_load_mod_wrapper = mods: extlib.new_loadModules mods {inherit self inputs;};
   in {
     desktop = {
       system = "x86_64-linux";
       modules = with mod; [
         global desktop linux metal
         virt.qemu drivers.nvidia
-        gaming wayland additions.full
+        wayland additions.full
         editor.nixvim editor.emacs
         # testing new function
-        (extlib.new_loadModules [
-          new_mod.niri
-          new_mod.waybar
-          new_mod.yazi new_mod.librewolf
-        ] {inherit self inputs;})
+        (with new_mod; new_load_mod_wrapper [
+          gaming
+          programs.librewolf
+          programs.niri
+          programs.waybar
+          programs.yazi
+        ])
       ];
       user = "goat";
     };
