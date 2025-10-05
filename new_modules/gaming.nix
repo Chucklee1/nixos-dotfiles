@@ -1,5 +1,5 @@
 {
-  gaming.nix = [
+  nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # emulation
@@ -32,7 +32,7 @@
       };
     })
   ];
-  gaming.home = [
+  home = [
     {programs.mangohud.enable = true;}
     # Lazy shortcut for MO2
     ({

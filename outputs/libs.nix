@@ -74,14 +74,9 @@ with inputs.nixpkgs.lib; rec {
     concatMapAttrs (file:
       flip getAttr {
         directory = {
-          "${basename file}" = mapAttrs'
-            (subpath: nameValuePair "${subpath}")
-            (readDirRecursive "${dir}/${file}");
+          "${basename file}" = (readDirRecursiveToAttrset "${dir}/${file}");
         };
         regular = {
-          # only add args if file is NOT a pure attrset
-          # also won't check for .nix, risky but
-          # I am not going to nest if statements
           "${basename file}" = "${dir}/${file}";
         };
         symlink = {};
