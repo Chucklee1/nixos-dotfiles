@@ -18,17 +18,17 @@
         wayland additions.full
         # testing new function
         (with new_mod; new_load_mod_wrapper [
-          gaming
-          drivers.linux
-          drivers.nvidia
-          editor.emacs
-          editor.nixvim
+          programs.editor.emacs
+          programs.editor.nixvim
           programs.librewolf
           programs.niri
           programs.waybar
           programs.yazi
-          theming.blockgame
-          theming.stylix
+          software.gaming
+          system.drivers.linux
+          system.drivers.nvidia
+          system.theming.blockgame
+          system.theming.stylix
           virt.qemu
         ])
       ];
