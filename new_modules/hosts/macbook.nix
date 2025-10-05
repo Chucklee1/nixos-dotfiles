@@ -1,78 +1,5 @@
-{inputs, ...}: {
-  global.nix = [
-    ({lib, ...}: {
-      nix.settings.experimental-features = "nix-command flakes";
-      nix.gc = {
-        automatic = lib.mkDefault true;
-        options = lib.mkDefault "--delete-older-than 7d";
-      };
-      nixpkgs.config.allowUnfree = true;
-    })
-    ({
-      config,
-      user,
-      ...
-    }: {
-      home-manager.useGlobalPkgs = true;
-      home-manager.backupFileExtension = "backup";
-      home-manager.users.${user} = {
-        home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
-          username = user;
-          homeDirectory = config.users.users.${user}.home;
-        };
-        imports = config._module.args.homeMods;
-      };
-    })
-  ];
-
-  metal.nix = [
-    ({
-      lib,
-      user,
-      machine,
-      ...
-    }: {
-      # ---- boot ----
-      boot.loader = {
-        efi.canTouchEfiVariables = true;
-        grub = {
-          enable = true;
-          efiSupport = true;
-          device = "nodev";
-        };
-      };
-
-      # ---- system ----
-      system.stateVersion = "24.05";
-      networking = {
-        useDHCP = lib.mkDefault true;
-        hostName = "nixos-${machine}";
-        networkmanager.enable = true;
-      };
-      i18n.defaultLocale = "en_CA.UTF-8";
-      time.timeZone = "America/Vancouver";
-
-      # ---- user ----
-      users.users.goat = {
-        name = "goat";
-        isNormalUser = true;
-        extraGroups = [
-          "media"
-          "wheel"
-          "input"
-          "networkmanager"
-          "gamemode"
-          "libvirtd"
-        ];
-      };
-    })
-  ];
-
-  linux.nix = [inputs.home-manager.nixosModules.home-manager];
-
-  macbook.nix = [
-    inputs.home-manager.darwinModules.home-manager
+{
+  nix = [
     ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
@@ -92,12 +19,7 @@
     })
     # symlink nix & home manager apps to /Applications
     # lets spotlight or dmenu-mac finally acess nix apps
-    ({
-      lib,
-      config,
-      user,
-      ...
-    }: {
+    ({lib, config, user, ...}: {
       system.activationScripts.applications.text = lib.mkForce ''
         appDirPrev="${config.users.users.${user}.home}/Applications/Home Manager Apps"
         appDirFinal="/Applications"
