@@ -1,12 +1,12 @@
 {
   home = [
     {
-      git = {
+      programs.git = {
         enable = true;
         userEmail = "kermitthefrog@kakao.com";
         userName = "Chucklee1";
       };
-      lazygit = {
+      programs.lazygit = {
         enable = true;
         settings.notARepository = "skip";
         settings.promptToReturnFromSubprocess = false;

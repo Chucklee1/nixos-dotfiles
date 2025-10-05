@@ -12,7 +12,7 @@
       home.file.".config/rmpc".source = "${self}/assets/rmpc";
     })
     {
-      zoxide = {
+      programs.zoxide = {
         enable = true;
         options = ["--cmd cd"];
       };
