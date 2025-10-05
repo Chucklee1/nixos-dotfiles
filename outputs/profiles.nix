@@ -7,7 +7,7 @@
   # ---- system  ----
   profiles = let
     mod = extlib.loadModules "${self}/modules" {inherit inputs self;};
-    new_mod = extlib.pathsToAttrsets "${self}/new_modules";
+    new_mod = extlib.readDirRecursiveToAttrset "${self}/new_modules" {inherit inputs self;};
   in {
     desktop = {
       system = "x86_64-linux";
@@ -15,10 +15,10 @@
         global desktop linux metal
         virt.qemu drivers.nvidia
         gaming wayland additions.full
-        niri waybar
         editor.nixvim editor.emacs
         # testing new function
-        new_mod.yazi
+        new_mod.niri new_mod.waybar
+        new_mod.yazi new_mod.librewolf
       ];
       user = "goat";
     };

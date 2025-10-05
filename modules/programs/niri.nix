@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  wayland = {
+  _niri = {
     nix = [
       inputs.niri.nixosModules.niri
       ({pkgs, ...}: {
