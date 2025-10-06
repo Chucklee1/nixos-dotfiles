@@ -1,1 +1,1 @@
-{nix = [{services.syncthing.enable = true;}];}
+{home = [{services.syncthing.enable = true;}];}
