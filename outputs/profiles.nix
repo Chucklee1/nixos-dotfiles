@@ -68,7 +68,7 @@
     #   ];
     #   user = "nixos";
     # };
-    # macbook = {
+    macbook = {
       system = "aarch64-darwin";
       modules = with mod; [
         hosts.macbook
