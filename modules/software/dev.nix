@@ -1,24 +1,28 @@
-{
+{extlib, ...}: {
   nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
-        # programs
-        age
-        calc
-        curl
-        ffmpeg-full
-        gcc
-        gdb # GNU debugger
-        imagemagick
+        # haker
         just
-        lua
-        python3
+        gcc gdb
+        lua python3
         # lsps
         bash-language-server
         lua-language-server
         marksman
         nixd
-      ];
+        # info helpers
+        ripgrep fzf fd pciutils zoxide
+        # media
+        exiftool mediainfo poppler ueberzugpp
+        imagemagick ffmpeg-full
+        # file/archive management
+        ouch p7zip rclone trash-cli
+        unzip unrar zip
+        # misc
+        age calc curl
+      ] ++
+      (extlib.darwinOrLinux [] [rar]);
     })
     ({machine, pkgs, ...}:
       if machine == "umbra" then {}
@@ -40,17 +44,16 @@
           nodePackages.prettier
           shfmt
         ];
-        programs.nix-ld.enable = true;
       })
+    (extlib.darwinOrLinux {} {programs.nix-ld.enable = true;}
+    )
   ];
-  home = [
-    {
-      programs = {
-        btop.enable = true;
-        direnv.enable = true;
-        fzf.enable = true;
-        zathura.enable = true;
-      };
-    }
-  ];
+  home = [{
+    programs = {
+      btop.enable = true;
+      direnv.enable = true;
+      fzf.enable = true;
+      zathura.enable = true;
+    };
+  }];
 }

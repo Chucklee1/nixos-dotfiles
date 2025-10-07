@@ -1,21 +1,4 @@
 {
-  nix = [
-    ({pkgs, ...}: {
-      environment.systemPackages = with pkgs; [
-        # info helpers
-        ripgrep fzf fd pciutils zoxide
-        # media
-        exiftool mediainfo poppler ueberzugpp
-        # file-management
-        ouch p7zip rclone trash-cli
-        unzip unrar zip
-      ] ++
-      (if pkgs.stdenv.isDarwin
-       then []
-       else [rar]);
-    })
-  ];
-
   home = [
     ({pkgs, ...}: {
       programs.yazi = {
