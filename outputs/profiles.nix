@@ -17,7 +17,7 @@
         net.mpd net.syncthing net.tailscale
 
         programs.librewolf
-        programs.editor.emacs programs.editor.nixvim
+        programs.emacs programs.nixvim
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
 
@@ -31,9 +31,12 @@
         system.boot
         system.home system.users
         system.pkgconfig system.sys-specs
-        system.drivers.linux system.drivers.nvidia
-        system.shell.variables system.shell.zsh
-        system.theming.blockgame system.theming.stylix
+
+        drivers.linux drivers.nvidia
+
+        shell.variables shell.zsh
+
+        theming.blockgame theming.stylix
 
         virt.qemu
       ];
@@ -72,16 +75,20 @@
       system = "aarch64-darwin";
       modules = with mod; load_mods [
         hosts.macbook
-        system.home
-        system.pkgconfig
-        system.shell.variables system.shell.zsh
-        system.theming.stylix
 
         net.syncthing net.tailscale
 
         programs.librewolf
+        programs.emacs
         programs.git programs.kitty programs.yazi
-        programs.editor.emacs
+
+        software.dev software.qol
+
+        system.home system.pkgconfig
+
+        shell.variables shell.zsh
+
+        theming.stylix
       ];
       user = "goat";
     };
