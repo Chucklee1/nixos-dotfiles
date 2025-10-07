@@ -1,9 +1,12 @@
-{self, ...}: {
+{self, extlib ...}: {
   nix = [
-    ({lib, pkgs, ...}: lib.mkIf pkgs.stdenv.isLinux {
-      environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
-      programs.dconf.enable = true;
-    })
+    (extlib.darwinOrLinux
+      {}
+      ({lib, pkgs, ...}: {
+        environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
+        programs.dconf.enable = true;
+      })
+    )
   ];
 
   home = [
