@@ -10,7 +10,7 @@
         ouch p7zip rclone trash-cli
         unzip unrar zip
       ] ++
-      (if pkgs.system.isDarwin
+      (if pkgs.stdenv.isDarwin
        then []
        else [rar]);
     })
