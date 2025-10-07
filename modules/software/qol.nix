@@ -1,4 +1,4 @@
-{self, extlib ...}: {
+{self, extlib, ...}: {
   nix = [
     (extlib.darwinOrLinux
       {}
