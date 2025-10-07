@@ -3,26 +3,16 @@
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # info helpers
-        ripgrep
-        fzf
-        fd
-        pciutils
-        zoxide
+        ripgrep fzf fd pciutils zoxide
         # media
-        exiftool
-        mediainfo
-        poppler
-        ueberzugpp
+        exiftool mediainfo poppler ueberzugpp
         # file-management
-        ouch
-        p7zip
-        rclone
-        rar
-        trash-cli
-        unzip
-        unrar
-        zip
-      ];
+        ouch p7zip rclone trash-cli
+        unzip unrar zip
+      ] ++
+      (if pkgs.system.isDarwin
+       then []
+       else [rar]);
     })
   ];
 
@@ -82,130 +72,45 @@
             max_height = 1000;
           };
           plugin.append_fetchers = [
-            {
-              id = "git";
-              name = "*";
-              run = "git";
-            }
-            {
-              id = "git";
-              name = "*/";
-              run = "git";
-            }
+            {id = "git"; name = "*"; run = "git";}
+            {id = "git"; name = "*/"; run = "git";}
           ];
           plugin.append_preloaders = [
-            {
-              mime = "{audio,video,image}/*";
-              run = "mediainfo";
-            }
-            {
-              mime = "application/subrip";
-              run = "mediainfo";
-            }
+            {mime = "{audio,video,image}/*"; run = "mediainfo";}
+            {mime = "application/subrip"; run = "mediainfo";}
           ];
           plugin.append_previewers = [
-            {
-              mime = "{audio,video,image}/*";
-              run = "mediainfo";
-            }
-            {
-              mime = "application/subrip";
-              run = "mediainfo";
-            }
-            {
-              mime = "application/*zip";
-              run = "ouch";
-            }
-            {
-              mime = "application/x-tar";
-              run = "ouch";
-            }
-            {
-              mime = "application/x-bzip2";
-              run = "ouch";
-            }
-            {
-              mime = "application/x-7z-compressed";
-              run = "ouch";
-            }
-            {
-              mime = "application/x-rar";
-              run = "ouch";
-            }
-            {
-              mime = "application/vnd.rar";
-              run = "ouch";
-            }
-            {
-              mime = "application/x-xz";
-              run = "ouch";
-            }
-            {
-              mime = "application/xz";
-              run = "ouch";
-            }
-            {
-              mime = "application/x-zstd";
-              run = "ouch";
-            }
-            {
-              mime = "application/zstd";
-              run = "ouch";
-            }
-            {
-              mime = "application/java-archive";
-              run = "ouch";
-            }
+            {mime = "{audio,video,image}/*"; run = "mediainfo";}
+            {mime = "application/subrip"; run = "mediainfo";}
+            {mime = "application/*zip"; run = "ouch";}
+            {mime = "application/x-tar"; run = "ouch";}
+            {mime = "application/x-bzip2"; run = "ouch";}
+            {mime = "application/x-7z-compressed"; run = "ouch";}
+            {mime = "application/x-rar"; run = "ouch";}
+            {mime = "application/vnd.rar"; run = "ouch";}
+            {mime = "application/x-xz"; run = "ouch";}
+            {mime = "application/xz"; run = "ouch";}
+            {mime = "application/x-zstd"; run = "ouch";}
+            {mime = "application/zstd"; run = "ouch";}
+            {mime = "application/java-archive"; run = "ouch";}
           ];
         };
 
         keymap = {
           mgr.append_keymap = [
             # chmod
-            {
-              on = ["c" "m"];
-              run = "plugin chmod";
-              desc = "Chmod on selected files";
-            }
+            {on = ["c" "m"]; run = "plugin chmod";}
             # mount
-            {
-              on = ["M"];
-              run = "plugin mount";
-            }
+            {on = ["M"]; run = "plugin mount";}
             # bookmarks
-            {
-              on = ["b" "m"];
-              run = "plugin bookmarks save";
-              desc = "Save current position as a bookmark";
-            }
-            {
-              on = ["b" "j"];
-              run = "plugin bookmarks jump";
-            }
-            {
-              on = ["b" "d"];
-              run = "plugin bookmarks delete";
-            }
-            {
-              on = ["b" "D"];
-              run = "plugin bookmarks delete_all";
-            }
+            {on = ["b" "m"]; run = "plugin bookmarks save";}
+            {on = ["b" "j"]; run = "plugin bookmarks jump";}
+            {on = ["b" "d"]; run = "plugin bookmarks delete";}
+            {on = ["b" "D"]; run = "plugin bookmarks delete_all";}
             # restore
-            {
-              on = "u";
-              run = "plugin restore";
-              desc = "Restore last deleted files/folders";
-            }
-            {
-              on = ["d" "u"];
-              run = "plugin restore";
-              desc = "Restore last deleted files/folders";
-            }
-            {
-              on = ["d" "U"];
-              run = "shell --block -- clear && trash-restore --overwrite";
-              desc = "Restore deleted file (Interactive)";
-            }
+            {on = "u"; run = "plugin restore";}
+            {on = ["d" "u"]; run = "plugin restore";}
+            {on = ["d" "U"]; run = "shell --block -- clear && trash-restore --overwrite";}
           ];
         };
       };

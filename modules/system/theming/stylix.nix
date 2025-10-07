@@ -88,24 +88,30 @@
         };
       };
     })
-    ({lib, pkgs, ...}: lib.mkIf pkgs.stdenv.isLinux {
-      stylix.cursor = {
-        package = pkgs.bibata-cursors;
-        name = "Bibata-Modern-Classic";
-        size = 24;
-      };
-    })
+    (extlib.darwinOrLinux
+      {}
+      ({pkgs, ...}: {
+        stylix.cursor = {
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Classic";
+          size = 24;
+        };
+      })
+    )
   ];
 
   home = [
-    ({lib, pkgs, ...}: lib.mkIf pkgs.stdenv.isLinux {
-      stylix.iconTheme = {
-        enable = true;
-        package = pkgs.papirus-icon-theme;
-        dark = "Papirus-Dark";
-      };
-      gtk.enable = true;
-      qt.enable = true;
-    })
+    (extlib.darwinOrLinux
+      {}
+      ({pkgs, ...}: {
+        stylix.iconTheme = {
+          enable = true;
+          package = pkgs.papirus-icon-theme;
+          dark = "Papirus-Dark";
+        };
+        gtk.enable = true;
+        qt.enable = true;
+      })
+    )
   ];
 }
