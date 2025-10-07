@@ -14,7 +14,6 @@
         name = user;
         uid = 501;
         home = "/Users/${user}";
-        shell = pkgs.zsh;
         ignoreShellProgramCheck = true;
       };
     })
@@ -38,6 +37,8 @@
         done
       '';
     })
+    # need to manually include nerd-font-symbols
+    ({pkgs, ...}: {fonts.packages = [pkgs.nerd-fonts.symbols-only];})
     {
       # defaults
       system.defaults.WindowManager.StandardHideDesktopIcons = true;
@@ -66,9 +67,6 @@
         "com.apple.desktopservices".DSDontWriteUSBStores = true;
         "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
       };
-
-      # Add ability to used TouchID for sudo authentication
-      security.pam.services.sudo_local.touchIdAuth = true;
     }
     inputs.nix-homebrew.darwinModules.nix-homebrew
     ({user, ...}: {
@@ -100,16 +98,14 @@
 
         caskArgs.no_quarantine = true;
         casks = [
-          "dmenu-mac"
           "hammerspoon"
           "krita"
-          "tailscale"
           "utm"
-          "xquartz"
+          "zoom"
         ];
       };
     })
-({pkgs, ...}: {
+    ({pkgs, ...}: {
       launchd.daemons.mpd = let
         mpdcfg = pkgs.writeText "mpd.conf" ''
           music_directory         "~/media/Music"

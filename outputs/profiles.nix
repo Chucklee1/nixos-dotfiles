@@ -70,8 +70,17 @@
     # };
     macbook = {
       system = "aarch64-darwin";
-      modules = with mod; [
+      modules = with mod; load_mods [
         hosts.macbook
+        system.home
+        system.pkgconfig
+        system.shell.variables system.shell.zsh
+        system.theming.stylix
+
+        net.syncthing net.tailscale
+
+        programs.librewolf
+        programs.git programs.kitty programs.yazi
         programs.editor.emacs
       ];
       user = "goat";
