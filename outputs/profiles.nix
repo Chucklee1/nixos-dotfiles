@@ -78,7 +78,6 @@
 
         net.syncthing net.tailscale
 
-        programs.librewolf
         programs.emacs
         programs.git programs.kitty programs.yazi
 
