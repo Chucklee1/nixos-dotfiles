@@ -78,7 +78,7 @@
 
         net.syncthing net.tailscale
 
-        programs.emacs
+        programs.emacs programs.zen-browser
         programs.git programs.kitty programs.yazi
 
         software.dev software.qol
