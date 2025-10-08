@@ -17,7 +17,7 @@
         net.mpd net.syncthing net.tailscale
 
         programs.librewolf
-        programs.emacs programs.nixvim
+        programs.emacs
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
 
