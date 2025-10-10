@@ -40,6 +40,12 @@
         options = ["subvol=EVO/SSE" "relatime" "compress=zstd"];
       };
 
+      fileSystems."/home/goat/.local/osu" = {
+        device = "/dev/disk/by-uuid/${EVO_UUID}";
+        fsType = "btrfs";
+        options = ["subvol=EVO/osu" "relatime" "compress=zstd"];
+      };
+
       fileSystems."/srv" = {
         device = "/dev/disk/by-uuid/${EVO_UUID}";
         fsType = "btrfs";
