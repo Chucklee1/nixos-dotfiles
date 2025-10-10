@@ -1,6 +1,6 @@
 {inputs, ...}: {
   nix = [
-    ({pkgs, user, ...}: {
+    ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
 
@@ -55,7 +55,6 @@
         wvous-br-corner = 1;
       };
 
-
       system.keyboard.enableKeyMapping = true;
       system.keyboard.remapCapsLockToControl = true;
 
@@ -81,9 +80,10 @@
         enableRosetta = true;
         # Declarative tap management
         taps = {
-          "homebrew/homebrew-core"           = inputs.homebrew-core;
-          "homebrew/homebrew-cask"           = inputs.homebrew-cask;
-          "homebrew/homebrew-bundle"         = inputs.homebrew-bundle;
+          "homebrew/homebrew-core" = inputs.homebrew-core;
+          "homebrew/homebrew-cask" = inputs.homebrew-cask;
+          "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
+          "railwaycat/homebrew-emacsmacport" = inputs.homebrew-emacsmacport;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
         mutableTaps = false;
@@ -102,6 +102,8 @@
 
         caskArgs.no_quarantine = true;
         casks = [
+          "emacs-mac"
+          "ghostty"
           "hammerspoon"
           "krita"
           "utm"
@@ -147,5 +149,14 @@
         };
       };
     })
+  ];
+  home = [
+    {
+      home.file.".config/ghostty/config".text = ''
+        background-opacity = 0.8
+        background-blur = 30
+        macos-titlebar-style = "tabs"
+      '';
+    }
   ];
 }
