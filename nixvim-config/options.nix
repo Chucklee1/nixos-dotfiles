@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   # ----- OPTIONS -----
   nixpkgs.config.allowUnfree = true;
   withNodeJs = false;
@@ -58,8 +58,8 @@
   };
   clipboard = {
     providers = {
-      wl-copy.enable = true; # wayland
-      xsel.enable = true; # X11
+      wl-copy.enable = pkgs.stdenv.isLinux; # wayland
+      xsel.enable = pkgs.stdenv.isLinux;; # X11
     };
     register = "unnamedplus";
   };
@@ -105,19 +105,13 @@
     {
       desc = "2 tabspace, tabs are spaces";
       event = ["FileType"];
-      pattern = [
-        "asm"
-        "c"
-        "cpp"
-        "lua"
-        "nix"
-      ];
+      pattern = ["c" "cpp" "lua" "nix"];
       command = "setlocal tabstop=2 shiftwidth=2 softtabstop=2";
     }
     {
       desc = "set qt style sheet files to use qml highlighting";
       event = ["FileType"];
-      pattern = [ "qss" ];
+      pattern = ["qss"];
       command = "setlocal filetype=qml";
     }
   ];
@@ -139,23 +133,8 @@
 
   # ---- THEME ----
   colorschemes = {
-    nightfox = {
-      enable = true;
-      flavor = "nordfox";
-      settings.options.transparent = true;
-    };
-    catppuccin = {
-      enable = false;
-      settings = {
-        flavor = "Frappe";
-        transparent_background = true;
-        default_integrations = true;
-        integrations = {
-          noice = true;
-          lsp_trouble = true;
-          which_key = true;
-        };
-      };
-    };
+    nightfox.enable = true;
+    nightfox.flavor = "nordfox";
+    nightfox.settings.options.transparent = true;
   };
 }
