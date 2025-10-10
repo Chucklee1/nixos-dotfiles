@@ -55,6 +55,10 @@
         wvous-br-corner = 1;
       };
 
+
+      system.keyboard.enableKeyMapping = true;
+      system.keyboard.remapCapsLockToControl = true;
+
       system.defaults.finder = {
         AppleShowAllExtensions = true;
         AppleShowAllFiles = true;
