@@ -2,7 +2,7 @@
   home = [
     inputs.zen-browser.homeModules.twilight
     {
-      stylix.targets.zen-browser.profileNames = ["default"];
+      stylix.targets.zen-browser.enable = false;
       programs.zen-browser = {
         enable = true;
         policies = {
