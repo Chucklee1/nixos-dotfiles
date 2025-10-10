@@ -344,6 +344,22 @@
         "type": "github"
       }
     },
+    "homebrew-bundle": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1745335228,
+        "narHash": "sha256-TIKR2UgtyUmHLNZp255/vLs+1I10hXe+sciMEbAGFwE=",
+        "owner": "homebrew",
+        "repo": "homebrew-bundle",
+        "rev": "a3265c84b232e13048ecbf6fc18a2eedfadbeb08",
+        "type": "github"
+      },
+      "original": {
+        "owner": "homebrew",
+        "repo": "homebrew-bundle",
+        "type": "github"
+      }
+    },
     "homebrew-cask": {
       "flake": false,
       "locked": {
@@ -373,6 +389,22 @@
       "original": {
         "owner": "homebrew",
         "repo": "homebrew-core",
+        "type": "github"
+      }
+    },
+    "homebrew-emacsmacport": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1749770685,
+        "narHash": "sha256-9UPgnr+Wd2oIpxksx6EoffcfkZ0i8kJ1mYdLOESLk2U=",
+        "owner": "railwaycat",
+        "repo": "homebrew-emacsmacport",
+        "rev": "98f2c3f99c2af1f456f03bc77c16da13d2ccf62a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "railwaycat",
+        "repo": "homebrew-emacsmacport",
         "type": "github"
       }
     },
@@ -810,8 +842,10 @@
         "emacs-overlay": "emacs-overlay",
         "en_us-dictionary": "en_us-dictionary",
         "home-manager": "home-manager",
+        "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "homebrew-emacsmacport": "homebrew-emacsmacport",
         "minegrub-theme": "minegrub-theme",
         "minesddm": "minesddm",
         "niri": "niri",

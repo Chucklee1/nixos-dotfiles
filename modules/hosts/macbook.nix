@@ -73,13 +73,13 @@
       nix-homebrew = {
         inherit user; # User owning the Homebrew prefix
         enable = true;
-        autoMigrate = true;
+        # autoMigrate = true;
         enableRosetta = true;
-
         # Declarative tap management
         taps = {
-          "homebrew/homebrew-core" = inputs.homebrew-core;
-          "homebrew/homebrew-cask" = inputs.homebrew-cask;
+          "homebrew/homebrew-core"           = inputs.homebrew-core;
+          "homebrew/homebrew-cask"           = inputs.homebrew-cask;
+          "homebrew/homebrew-bundle"         = inputs.homebrew-bundle;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
         mutableTaps = false;
