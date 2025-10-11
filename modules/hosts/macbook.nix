@@ -3,7 +3,13 @@
     ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
+      nix.settings.trusted-users = ["@admin"];
+      nix.settings.builders = "ssh-ng://builder@linux-builder aarch64-linux /etc/nix/builder_ed25519 4 - - -";
 
+      nix.linux-builder.enable = true;
+      nix.linux-builder.ephemeral = true;
+      nix.linux-builder.systems = ["aarch64-linux"];
+      
       # general
       system.stateVersion = 6;
       system.primaryUser = user;
@@ -101,6 +107,7 @@
         taps = builtins.attrNames config.nix-homebrew.taps; #Align homebrew taps config with nix-homebrew
 
         caskArgs.no_quarantine = true;
+        brews = ["syncthing"];
         casks = [
           "emacs-mac"
           "ghostty"
@@ -111,6 +118,7 @@
         ];
       };
     })
+    # mpd
     ({pkgs, ...}: {
       launchd.daemons.mpd = let
         mpdcfg = pkgs.writeText "mpd.conf" ''
@@ -151,6 +159,7 @@
     })
   ];
   home = [
+    # ghostty
     {
       home.file.".config/ghostty/config".text = ''
         background-opacity = 0.8

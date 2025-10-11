@@ -76,7 +76,7 @@
       modules = with mod; load_mods [
         hosts.macbook
 
-        net.syncthing net.tailscale
+        net.tailscale
 
         programs.nixvim programs.zen-browser
         programs.git programs.kitty programs.yazi
