@@ -9,7 +9,6 @@
     then {
       cmp.enable = true;
       formatting.enable = true;
-      formatting.autoFormat = false;
       telescope.enable = true;
       telescope.nerdIconLookup = true;
     }

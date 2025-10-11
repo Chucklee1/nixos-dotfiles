@@ -59,7 +59,7 @@
   clipboard = {
     providers = {
       wl-copy.enable = pkgs.stdenv.isLinux; # wayland
-      xsel.enable = pkgs.stdenv.isLinux;; # X11
+      xsel.enable = pkgs.stdenv.isLinux; # X11
     };
     register = "unnamedplus";
   };

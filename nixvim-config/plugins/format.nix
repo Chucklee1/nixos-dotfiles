@@ -11,17 +11,13 @@ in {
       description = "enable formatting";
       default = true;
     };
-    autoFormat = mkEnableOption {
-      description = "enable automatic formatting";
-      default = false;
-    };
   };
   config = mkIf cfg.enable {
     plugins = {
       lsp-format.enable = true;
       none-ls = {
         enable = true;
-        enableLspFormat = cfg.autoFormat;
+        enableLspFormat = false;
         sources = {
           diagnostics = {
             statix = {
