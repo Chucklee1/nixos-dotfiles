@@ -49,7 +49,7 @@
     # };
     inspiron = {
       system = "x86_64-linux";
-      modules = with mod; [
+      modules = with mod; load_mods [
         hosts.inspiron
 
         net.mpd net.syncthing net.tailscale net.the-server
