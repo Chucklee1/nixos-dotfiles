@@ -23,7 +23,6 @@
 
         software.apps
         software.dev
-        software.flatpak
         software.gaming
         software.qol
         software.wayland

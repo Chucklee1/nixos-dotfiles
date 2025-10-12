@@ -3,7 +3,7 @@
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # emulation
-        cemu
+        # cemu
         joycond
         joycond-cemuhook
         ryubing
@@ -14,8 +14,8 @@
         vkbasalt
         # games
         osu-lazer-bin
-        #prismlauncher
-        openmw
+        prismlauncher
+        # openmw
       ];
       programs.gamemode = {
         enable = true;
