@@ -5,7 +5,7 @@
   nixvimModule = system: profile: {
     # profile choices: core, full
     inherit system;
-    module.imports = extlib.simpleMerge "${self}/nixvim-config";
+    module.imports = extlib.simpleMerge "${self}/modules/nixvim";
     extraSpecialArgs = {inherit inputs extlib profile;};
   };
 
