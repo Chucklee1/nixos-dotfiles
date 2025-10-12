@@ -16,19 +16,15 @@
         hosts.desktop
         net.mpd net.syncthing net.tailscale
 
-        programs.librewolf
-        programs.emacs
+        programs.librewolf programs.emacs
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
 
-        software.apps
-        software.dev
-        software.gaming
-        software.qol
+        software.apps software.dev
+        software.gaming software.qol
         software.wayland
 
-        system.boot
-        system.home system.users
+        system.boot system.home system.users
         system.pkgconfig system.sys-specs
 
         drivers.linux drivers.nvidia
@@ -51,16 +47,31 @@
     #   ];
     #   user = "goat";
     # };
-    # inspiron = {
-    #   system = "x86_64-linux";
-    #   modules = with mod; [
-    #     global inspiron linux metal
-    #     additions.full
-    #     dwm
-    #     editor.emacs
-    #   ];
-    #   user = "goat";
-    # };
+    inspiron = {
+      system = "x86_64-linux";
+      modules = with mod; [
+        hosts.inspiron
+
+        net.mpd net.syncthing net.tailscale net.the-server
+
+        programs.librewolf
+        programs.nixvim
+        programs.git programs.kitty programs.yazi
+        programs.dwm
+
+        software.apps software.dev software.qol
+
+        system.boot system.home system.users
+        system.pkgconfig system.sys-specs
+
+        drivers.linux drivers.ext4
+
+        shell.variables shell.zsh
+
+        theming.blockgame theming.stylix
+      ];
+      user = "goat";
+    };
     # umbra = {
     #   system = "x86_64-linux";
     #   modules = with mod; [
