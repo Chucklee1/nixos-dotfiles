@@ -20,7 +20,7 @@
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
 
-        software.apps software.dev
+        software.apps software.dev software.texlive
         software.gaming software.qol
         software.wayland
 
