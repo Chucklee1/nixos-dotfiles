@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: nix flake template
+# key: <flake
+# --
+{
+  description = "I am a nix flake!";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.home-manager.url = "github:nix-community/home-manager";
+
+  outputs = {self, nixpkgs, ...}@inputs: let
+  	system = $1;
+    pkgs = import nixpkgs {inherit $1;};
+  in {
+    packages.${system}.hello = pkgs.hello;
+	$2
+  };
+}
