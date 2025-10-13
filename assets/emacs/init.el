@@ -274,7 +274,21 @@
       '((output-pdf "Zathura")
         (output-dvi "xdvi")
         (output-html "xdg-open")))
-(setq TeX-engine 'luatex)
+;; Use dvisvgm for LaTeX fragment previews
+(setq org-latex-create-formula-image-program 'dvisvgm)
+
+(setq org-preview-latex-default-process 'dvisvgm)
+
+(setq org-preview-latex-process-alist
+      '((dvisvgm
+         :programs ("latex" "dvisvgm")
+         :description "Convert LaTeX fragments to SVG using dvisvgm"
+         :message "Creating SVG image from LaTeX fragment..."
+         :image-input-type "dvi"
+         :image-output-type "svg"
+         :image-size-adjust (1.7 . 1.5)
+         :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
+         :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 
 (use-package company
   :custom

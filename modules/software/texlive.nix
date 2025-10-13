@@ -5,7 +5,7 @@
         (pkgs.texlive.combine {
           inherit (pkgs.texlive)
             # core
-            scheme-small latexmk preview
+            scheme-small latex latexmk preview
             # font
             fontawesome5 fontspec unicode-math
             microtype titlesec setspace parskip
