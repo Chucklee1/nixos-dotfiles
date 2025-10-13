@@ -14,15 +14,15 @@
             # image stuff
             dvisvgm dvipng
             # math
-            amsmath amssymb mathtools
+            amsmath amsfonts mathtools
             # plotting
-            tikz pgfplots asymptote
+            pgfplots asymptote
             # graphics
-            graphicx xcolor geometry wrapfig float caption
+            graphics xcolor geometry wrapfig float caption
             # text candy
             ulem hyperref
             # lua
-            luatex lualatex luaotfload;
+            luatex luacode lualatex-math luaotfload;
 
             #(setq org-latex-compiler "lualatex")
             #(setq org-preview-latex-default-process 'dvisvgm)
