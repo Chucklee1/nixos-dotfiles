@@ -380,7 +380,7 @@
            :message "Creating SVG image from LaTeX fragment..."
            :image-input-type "dvi"
            :image-output-type "svg"
-           :image-size-adjust (1.7 . 1.5)
+           :image-size-adjust (2.5 . 2.5)
            :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
            :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 #+end_src

@@ -88,7 +88,7 @@
 
         net.tailscale
 
-        programs.nixvim programs.zen-browser
+        programs.emacs #programs.zen-browser
         programs.git programs.kitty programs.yazi
 
         software.dev software.qol
