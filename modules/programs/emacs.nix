@@ -1,15 +1,15 @@
 {inputs, self, ...}: {
   nix = [
     # overlay
-    ({machine, ...}: {
-      nixpkgs.overlays = [
-        (import self.inputs.emacs-overlay)
-        (final: prev: {
-          emacs-final = final.emacsWithPackagesFromUsePackage {
+    {nixpkgs.overlays = [(import self.inputs.emacs-overlay)];}
+    ({pkgs, machine, ...}: let 
+          emacsWithUsePackage = pkgs.emacsWithPackagesFromUsePackage {
             package =
-              if (machine != "inspiron")
-              then final.emacs-pgtk
-              else final.emacs;
+              if (machine == "inspiron")
+                then pkgs.emacs
+              else if (machine == "macbook") 
+                then pkgs.emacs-unstable
+              else pkgs.emacs-pgtk;
 
             config = "${self}/assets/emacs/init.el";
             defaultInitFile = true;
@@ -27,12 +27,10 @@
               treesit-grammars.with-all-grammars
             ];
           };
-        })
-      ];
-    })
-    ({pkgs, ...}: {
+    in {
+      environment.systemPackages = [emacsWithUsePackage];
       services.emacs.enable = true;
-      services.emacs.package = pkgs.emacs-final;
+      services.emacs.package = emacsWithUsePackage;
     })
   ];
 }

@@ -91,7 +91,7 @@
         programs.emacs #programs.zen-browser
         programs.git programs.kitty programs.yazi
 
-        software.dev software.qol
+        software.dev software.qol software.texlive
 
         system.home system.pkgconfig
 
