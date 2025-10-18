@@ -46,6 +46,12 @@
         options = ["subvol=EVO/osu" "relatime" "compress=zstd"];
       };
 
+  fileSystems."/home/goat/.local/share/PrismLauncher" = {
+    device = "/dev/disk/by-uuid/${EVO_UUID}";
+    fsType = "btrfs";
+    options = ["subvol=EVO/PrismLauncher" "relatime" "compress=zstd"];
+  };
+
       fileSystems."/srv" = {
         device = "/dev/disk/by-uuid/${EVO_UUID}";
         fsType = "btrfs";
@@ -90,6 +96,8 @@
   home = [
     ({lib, ...}: {
       programs.niri.settings = {
+        # must use {} since niri does not like "key = function -float;"
+        input.mouse = lib.mkForce {accel-speed = -0.75;};
         input.keyboard.xkb.options = lib.mkForce "ctrl:nocaps,altwin:swap_alt_win";
         outputs."DP-1".mode = {
           width = 1920;
