@@ -146,6 +146,15 @@
    "<S-right>" '(next-buffer :wk "Next buffer"))
   )
 
+(use-package emacs
+  :ghook ('after-init-hook
+          (lambda (&rest _)
+            (when-let ((messages-buffer (get-buffer "*Messages*")))
+              (with-current-buffer messages-buffer
+                (evil-normalize-keymaps))))
+          nil nil t)
+  )
+
 (use-package dirvish
   :config
   (dirvish-override-dired-mode))

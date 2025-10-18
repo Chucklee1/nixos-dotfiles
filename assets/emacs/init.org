@@ -203,6 +203,19 @@
      "<S-right>" '(next-buffer :wk "Next buffer"))
     )
 #+end_src
++ Fix general.el leader key not working instantly in messages buffer with evil mode
++ Credit to MiniApollo's github repo kickstart.emacs
+#+begin_src emacs-lisp
+  (use-package emacs
+    :ghook ('after-init-hook
+            (lambda (&rest _)
+              (when-let ((messages-buffer (get-buffer "*Messages*")))
+                (with-current-buffer messages-buffer
+                  (evil-normalize-keymaps))))
+            nil nil t)
+    )
+#+end_src
+
 ** Dirvish
 #+begin_src emacs-lisp
     (use-package dirvish
