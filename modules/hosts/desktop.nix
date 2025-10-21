@@ -46,11 +46,11 @@
         options = ["subvol=EVO/osu" "relatime" "compress=zstd"];
       };
 
-  fileSystems."/home/goat/.local/share/PrismLauncher" = {
-    device = "/dev/disk/by-uuid/${EVO_UUID}";
-    fsType = "btrfs";
-    options = ["subvol=EVO/PrismLauncher" "relatime" "compress=zstd"];
-  };
+      fileSystems."/home/goat/.local/share/PrismLauncher" = {
+        device = "/dev/disk/by-uuid/${EVO_UUID}";
+        fsType = "btrfs";
+        options = ["subvol=EVO/PrismLauncher" "relatime" "compress=zstd"];
+      };
 
       fileSystems."/srv" = {
         device = "/dev/disk/by-uuid/${EVO_UUID}";
