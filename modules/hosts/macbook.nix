@@ -107,13 +107,14 @@
         taps = builtins.attrNames config.nix-homebrew.taps; #Align homebrew taps config with nix-homebrew
 
         caskArgs.no_quarantine = true;
-        brews = ["syncthing"];
+        brews = ["lima" "syncthing"];
         casks = [
           "ghostty"
           "hammerspoon"
           "krita"
           "utm"
           "zoom"
+          "prismlauncher"
         ];
       };
     })
