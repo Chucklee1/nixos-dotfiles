@@ -3,8 +3,8 @@
     {
       programs.git = {
         enable = true;
-        userEmail = "kermitthefrog@kakao.com";
-        userName = "Chucklee1";
+        settings.user.email = "kermitthefrog@kakao.com";
+        settings.user.name = "Chucklee1";
       };
       programs.lazygit = {
         enable = true;

@@ -2,11 +2,10 @@
   home = [
     ({pkgs, ...}: {
       home.packages = with pkgs; [
-        calibre
+        # calibre
         krita
         logisim-evolution
-        musescore
-        muse-sounds-manager
+        # musescore
         picard
         qbittorrent
         tenacity

@@ -126,12 +126,11 @@
           "${mod}+Shift+C" = sh "env DISPLAY=:0 xsel -ob | wl-copy";
           "${mod}+Shift+V" = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
           # screenshot
-          "Print".action = screenshot;
-          "Alt+Print".action = screenshot-window;
+          "Print".action.screenshot = [];
+          "Alt+Print".action.screenshot-window = [];
           # quits
           "${mod}+Q".action = close-window;
-          "Ctrl+Alt+Delete".action = quit;
-          "Ctrl+Shift+Alt+Delete".action = quit {skip-confirmation = true;};
+          "${mod}+Shift+Delete".action = quit {skip-confirmation = true;};
 
           # moving
           "${mod}+Up".action = focus-window-or-workspace-up;
