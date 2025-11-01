@@ -2,9 +2,10 @@
 (defconst CONFIG_PATH (expand-file-name "~/.emacs.d/init.el"))
 (defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
 
-(let ((my/path (expand-file-name "~/.nix-profile/bin")))
-  (setenv "PATH" (concat my/path ":" (getenv "PATH")))
-  (add-to-list 'exec-path my/path))
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
 
 ;; functions ;;
 (defun my/when-!nixos (cmd)
@@ -23,7 +24,7 @@
   (scroll-bar-mode nil)       ;; Disable the scroll bar
   (tool-bar-mode nil)         ;; Disable the tool bar
   (inhibit-startup-screen t)  ;; Disable welcome screen
-  (initial-buffer-choice (lambda () (dired "~/")))
+
   (blink-cursor-mode nil)     ;; Don't blink cursor
 
   ;; selection
@@ -51,10 +52,10 @@
   (auto-save-default nil) ;; Stop creating # auto save files
 
   :hook
-  (prog-mode   . (lambda () (display-line-numbers-mode t)))
-  (text-mode   . (lambda () (display-line-numbers-mode t)))
-  (org-mode    . (lambda () (display-line-numbers-mode nil)))
-  (before-save . (lambda () (delete-trailing-whitespace)))
+  (prog-mode     . (lambda () (display-line-numbers-mode t)))
+  (text-mode     . (lambda () (display-line-numbers-mode t)))
+  (org-mode      . (lambda () (display-line-numbers-mode nil)))
+  (before-save   . (lambda () (delete-trailing-whitespace)))
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -90,13 +91,12 @@
 (use-package general
   :config
   (general-evil-setup)
-  (general-create-definer vim/leader
-    :states '(normal visual motion)
-    :keymaps 'override
-    :prefix "SPC"
-    :global-prefix "C-SPC")
 
-  (vim/leader
+  (general-define-key
+   :states '(normal visual motion)
+   :keymaps 'override
+   :prefix "SPC"
+   :global-prefix "C-SPC"
    "."   '(find-file :wk "Find file")
    "TAB" '(comment-line :wk "Comment lines")
    "RET" '(term :wk "terminal")
@@ -108,20 +108,32 @@
 			 (load-file CONFIG_PATH))
 		   :wk "Reload Emacs config"))
 
-  (vim/leader
+  (general-define-key
+   :states '(normal visual motion)
+   :keymaps 'override
+   :prefix "SPC"
+   :global-prefix "C-SPC"
    "b"   '(:ignore t :wk "Buffers")
    "b i" '(ibuffer :wk "Ibuffer")
    "b d" '(kill-current-buffer :wk "Buffer Delete")
    "b D" '(kill-buffer (current-buffer) :wk "Buffer Delete Forced")
    "b r" '(revert-buffer :wk "Reload buffer"))
 
-  (vim/leader
+  (general-define-key
+   :states '(normal visual motion)
+   :keymaps 'override
+   :prefix "SPC"
+   :global-prefix "C-SPC"
    "o"     '(:ignore t :wk "Org")
    "o a"   '(org-agenda-list :wk "Agenda")
    "o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
    "o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
 
-  (vim/leader
+  (general-define-key
+   :states '(normal visual motion)
+   :keymaps 'override
+   :prefix "SPC"
+   :global-prefix "C-SPC"
    "t" '(:ignore t :wk "Toggle")
    "t i" '(org-toggle-inline-images :wk "Org Inline Images")
    "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
@@ -160,21 +172,21 @@
   (dirvish-override-dired-mode))
 
 (use-package doom-themes
-:custom
-;; Global settings (defaults)
-(doom-themes-enable-bold t)   ; if nil, bold is universally disabled
-(doom-themes-enable-italic t) ; if nil, italics is universally disabled
-:config
-(load-theme 'doom-nord t)
+  :custom
+  ;; Global settings (defaults)
+  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  :config
+  (load-theme 'doom-nord t)
 
-;; Enable flashing mode-line on errors
-(doom-themes-visual-bell-config)
-;; Corrects (and improves) org-mode's native fontification.
-(doom-themes-org-config))
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (add-hook 'window-setup-hook (lambda ()
-		  (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
-		  (add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
+							   (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
+							   (add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
 
 (set-face-attribute 'default nil
                     :font   g/ffamily
