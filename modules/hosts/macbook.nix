@@ -89,10 +89,9 @@
           "homebrew/homebrew-core" = inputs.homebrew-core;
           "homebrew/homebrew-cask" = inputs.homebrew-cask;
           "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
-          "railwaycat/homebrew-emacsmacport" = inputs.homebrew-emacsmacport;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-        mutableTaps = false;
+        mutableTaps = true;
       };
     })
     ({config, ...}: {
@@ -109,12 +108,15 @@
         caskArgs.no_quarantine = true;
         brews = ["lima" "syncthing"];
         casks = [
+          "musicbrainz-picard"
+          "calibre"
           "ghostty"
           "hammerspoon"
           "krita"
           "utm"
           "zoom"
           "prismlauncher"
+          "blackhole-2ch"
         ];
       };
     })
