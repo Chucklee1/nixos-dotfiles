@@ -44,7 +44,22 @@
       '';
     })
     # need to manually include nerd-font-symbols
-    ({pkgs, ...}: {fonts.packages = [pkgs.nerd-fonts.symbols-only];})
+    ({lib, pkgs, ...}: {
+      fonts.packages = [pkgs.nerd-fonts.symbols-only];
+      environment.systemPackages = [pkgs.feishin pkgs.mpv];
+      system.activationScripts.applications.text = let
+        MAC_APPDIR="/Applications";
+        NIX_APPDIR="/run/current-system/Applications";
+      in lib.mkForce ''
+        printf "\e[0;33m%s\e[m\n" "setting up application symlinks..."
+        for app in ${NIX_APPDIR}/*; do
+           rm -rf "${MAC_APPDIR}/$'''{app##*/}"
+           ln -sf "$app" "${MAC_APPDIR}";
+           printf "\e[0;32m%s $app\e[m\n" "sylinked"
+        done
+        printf "\e[0;32m%s\e[m\n" "symlinking finished!"
+      '';
+    })
     {
       # defaults
       system.defaults.WindowManager.StandardHideDesktopIcons = true;
