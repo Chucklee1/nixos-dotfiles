@@ -3,12 +3,6 @@
     ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
-      nix.settings.trusted-users = ["@admin"];
-      nix.settings.builders = "ssh-ng://builder@linux-builder aarch64-linux /etc/nix/builder_ed25519 4 - - -";
-
-      nix.linux-builder.enable = true;
-      nix.linux-builder.ephemeral = true;
-      nix.linux-builder.systems = ["aarch64-linux"];
 
       # general
       system.stateVersion = 6;
@@ -23,30 +17,17 @@
         ignoreShellProgramCheck = true;
       };
     })
-    # symlink nix & home manager apps to /Applications
-    # lets spotlight or dmenu-mac finally acess nix apps
-    ({lib, config, user, ...}: {
-      system.activationScripts.applications.text = lib.mkForce ''
-        appDirPrev="${config.users.users.${user}.home}/Applications/Home Manager Apps"
-        appDirFinal="/Applications"
-        for i in "$appDirPrev"/*; do
-          [ -e "$i" ] || continue
-          dest="$appDirFinal/$(basename "$i")"
-
-          # Remove existing app or alias
-          if [ -e "$dest" ]; then
-            rm -rf "$dest"
-          fi
-
-          # Copy new app/alias
-          cp -R "$i" "$appDirFinal"/
-        done
-      '';
-    })
     # need to manually include nerd-font-symbols
     ({lib, pkgs, ...}: {
-      fonts.packages = [pkgs.nerd-fonts.symbols-only];
-      environment.systemPackages = [pkgs.feishin pkgs.mpv];
+      fonts.packages = [
+        pkgs.nerd-fonts.symbols-only
+      ];
+
+      environment.systemPackages = [
+        pkgs.feishin pkgs.mpv
+      ];
+      # symlink nix & home manager apps to /Applications
+      # lets spotlight or dmenu-mac finally acess nix apps
       system.activationScripts.applications.text = let
         MAC_APPDIR="/Applications";
         NIX_APPDIR="/run/current-system/Applications";
@@ -61,7 +42,7 @@
       '';
     })
     {
-      # defaults
+      # defaults - desktop
       system.defaults.WindowManager.StandardHideDesktopIcons = true;
       system.defaults.dock = {
         autohide = true;
@@ -76,16 +57,18 @@
         wvous-br-corner = 1;
       };
 
+      # defaults - keyboard
       system.keyboard.enableKeyMapping = true;
       system.keyboard.remapCapsLockToControl = true;
 
+      # defaults - finder
       system.defaults.finder = {
         AppleShowAllExtensions = true;
         AppleShowAllFiles = true;
         ShowPathbar = true;
       };
 
-      # misc
+      # defaults - misc
       system.defaults.CustomUserPreferences = {
         "com.apple.desktopservices".DSDontWriteNetworkStores = true;
         "com.apple.desktopservices".DSDontWriteUSBStores = true;
