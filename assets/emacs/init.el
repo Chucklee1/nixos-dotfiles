@@ -80,7 +80,7 @@
   :bind (:map evil-motion-state-map
               ("SPC" . nil)
               ("RET" . nil)
-			  ("TAB" . nil)))
+      		  ("TAB" . nil)))
 (use-package evil-collection
   :after evil
   :config
@@ -88,84 +88,74 @@
   (setq evil-collection-mode-list '(dired ibuffer magit corfu vertico consult info))
   (evil-collection-init))
 
-(use-package general
-  :config
-  (general-evil-setup)
+(add-hook 'prog-mode-hook #'hs-minor-mode)
+(add-hook 'org-mode-hook #'outline-minor-mode) ;; Org already uses outline
 
-  (general-define-key
-   :states '(normal visual motion)
-   :keymaps 'override
-   :prefix "SPC"
-   :global-prefix "C-SPC"
-   "."   '(find-file :wk "Find file")
-   "TAB" '(comment-line :wk "Comment lines")
-   "RET" '(term :wk "terminal")
-   "g"   '(magit-status :wk "Magit status")
-   "e"   '(dired-jump :wk "Dired at Current Buffer")
-   "w"   '(evil-write :wk "Write Current Buffer")
-   "Q"   '(save-buffers-kill-emacs :wk "Quit Emacs and Daemon")
-   "R"   '((lambda () (interactive)
-			 (load-file CONFIG_PATH))
-		   :wk "Reload Emacs config"))
+;; Optional: remap folding keys to Evil style in Org
+(with-eval-after-load 'evil
+  (evil-set-initial-state 'outline-mode 'normal))
 
-  (general-define-key
-   :states '(normal visual motion)
-   :keymaps 'override
-   :prefix "SPC"
-   :global-prefix "C-SPC"
-   "b"   '(:ignore t :wk "Buffers")
-   "b i" '(ibuffer :wk "Ibuffer")
-   "b d" '(kill-current-buffer :wk "Buffer Delete")
-   "b D" '(kill-buffer (current-buffer) :wk "Buffer Delete Forced")
-   "b r" '(revert-buffer :wk "Reload buffer"))
+(evil-define-key '(normal visual) evil-normal-state-map
+(kbd "H")         'previous-buffer
+(kbd "<S-left>")  'previous-buffer
+(kbd "L")         'next-buffer
+(kbd "<S-right>") 'next-buffer)
 
-  (general-define-key
-   :states '(normal visual motion)
-   :keymaps 'override
-   :prefix "SPC"
-   :global-prefix "C-SPC"
-   "o"     '(:ignore t :wk "Org")
-   "o a"   '(org-agenda-list :wk "Agenda")
-   "o t"   '(org-todo :wk "Mark as TODO/DONE/nothing")
-   "o l" '(org-latex-preview :wk "Preview LaTeX stuff"))
+(evil-define-key '(normal motion) dired-mode-map
+   (kbd "h")       'dired-up-directory
+   (kbd "<left>")  'dired-up-directory
+   (kbd "l")       'dired-find-file
+   (kbd "<right>") 'dired-find-file
+   (kbd "TAB")     'dirvish-subtree-toggle)
 
-  (general-define-key
-   :states '(normal visual motion)
-   :keymaps 'override
-   :prefix "SPC"
-   :global-prefix "C-SPC"
-   "t" '(:ignore t :wk "Toggle")
-   "t i" '(org-toggle-inline-images :wk "Org Inline Images")
-   "t n" '(display-line-numbers-mode 'toggle :wk "Buffer Numberline")
-   "t N" '(global-display-line-numbers-mode 'toggle :wk "Global Numberline")
-   "t b" '(global-tab-line-mode 'toggle :wk "Global Tabline"))
+(defvar sus-lmap (make-sparse-keymap))
+(evil-define-key '(normal visual motion) 'global
+  (kbd "SPC") sus-lmap)
 
-  (general-define-key
-   :states '(normal motion)
-   :keymaps 'dired-mode-map
-   "h" 'dired-up-directory
-   "<left>" 'dired-up-directory
-   "l" 'dired-find-file
-   "<right>" 'dired-find-file
-   "TAB" 'dirvish-subtree-toggle)
+;; keys with no subleader first
+(define-key sus-lmap (kbd ".")   'find-file)
+(define-key sus-lmap (kbd "TAB") 'comment-line)
+(define-key sus-lmap (kbd "g")   'magit-status)
+(define-key sus-lmap (kbd "e")   'dired-jump)
+(define-key sus-lmap (kbd "w")   'save-buffer)
+(define-key sus-lmap (kbd "RET")
+     		(lambda () (interactive)
+         	  (ansi-term "/run/current-system/sw/bin/zsh" "*zsh-term*")
+         	  (term-send-raw-string "exec zsh -l\n")))
+(define-key sus-lmap (kbd "R")
+      		(lambda () (interactive)
+      		  (load-file CONFIG_PATH)))
 
-  (general-define-key
-   :states '(normal Special Messages)
-   :keymaps 'override
-   "H" '(previous-buffer :wk "Previous buffer")
-   "<S-left>" '(previous-buffer :wk "Previous buffer")
-   "L" '(next-buffer :wk "Next buffer")
-   "<S-right>" '(next-buffer :wk "Next buffer"))
-  )
+(defvar sus/buffer-lmap (make-sparse-keymap))
+(define-key sus-lmap (kbd "b") sus/buffer-lmap)
+;; actual key defs
+(define-key sus/buffer-lmap (kbd "i") 'ibuffer)
+(define-key sus/buffer-lmap (kbd "d") 'kill-current-buffer)
+(define-key sus/buffer-lmap (kbd "D")
+       		(lambda () (interactive)
+       		  (kill-buffer (current-buffer))))
+(define-key sus/buffer-lmap (kbd "r") 'revert-buffer)
 
-(use-package emacs
-  :ghook ('after-init-hook
-          (lambda (&rest _)
-            (when-let ((messages-buffer (get-buffer "*Messages*")))
-              (with-current-buffer messages-buffer
-                (evil-normalize-keymaps))))
-          nil nil t)
-  )
+(defvar sus/org-lmap (make-sparse-keymap))
+(define-key sus-lmap (kbd "o") sus/org-lmap)
+;; actual key defs
+(define-key sus/org-lmap (kbd "a") 'org-agenda-list)
+(define-key sus/org-lmap (kbd "t") 'org-todo)
+(define-key sus/org-lmap (kbd "l") 'org-latex-preview)
+
+(defvar sus/toggle-lmap (make-sparse-keymap))
+(define-key sus-lmap (kbd "t") sus/toggle-lmap)
+;; actual key defs
+(define-key sus/toggle-lmap (kbd "i") 'org-toggle-inline-images)
+(define-key sus/toggle-lmap (kbd "n")
+  			(lambda () (interactive)
+  			  (display-line-numbers-mode 'toggle)))
+(define-key sus/toggle-lmap (kbd "N")
+  			(lambda () (interactive)
+  			  (global-display-line-numbers-mode 'toggle)))
+(define-key sus/toggle-lmap (kbd "b")
+  			(lambda () (interactive)
+  			  (global-tab-line-mode 'toggle)))
 
 (use-package dirvish
   :config
@@ -250,52 +240,31 @@
   :custom
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
   :hook
-  (org-mode . org-indent-mode)
-  (org-mode . (lambda () (setq
-						  ;; Edit settings
-						  org-auto-align-tags nil
-						  org-tags-column 0
-						  org-catch-invisible-edits 'show-and-error
-						  org-special-ctrl-a/e t
-						  org-insert-heading-respect-content t
-
-						  ;; Org styling, hide markup etc.
-						  org-hide-emphasis-markers t
-						  org-pretty-entities t
-						  org-agenda-tags-column 0
-						  org-ellipsis "…")
-				)))
-
-(defun config/sync-with-org ()
-  (when (string-equal (file-truename buffer-file-name)
-					  (file-truename ORGCFG_PATH))
-	(org-babel-tangle)))
-
-(add-hook 'org-mode-hook
-		  (lambda ()
-			(add-hook 'after-save-hook
-					  (lambda ()
-						(config/sync-with-org))
-					  nil t)))
+  ;; no more numberline
+  (org-mode . (lambda () (display-line-numbers-mode 0)))
+  (org-mode . (lambda ()
+				(setq
+  				 ;; Edit settings
+  				 org-catch-invisible-edits 'show-and-error
+  				 org-special-ctrl-a/e t ;; smart jump keys
+  				 org-insert-heading-respect-content t
+  				 ;; Org styling, hide markup etc.
+  				 org-hide-emphasis-markers t
+  				 org-pretty-entities t
+  				 org-ellipsis "…" ;; use ... for folded text
+  				 ))))
 
 (use-package toc-org
   :commands toc-org-enable
   :hook (org-mode . toc-org-mode))
 
-;; Minimal UI
 (use-package org-modern)
+(setq org-modern-star ["●" "○" "◆" "◇" "▶" "▷"])
 
 (global-org-modern-mode)
 (require 'org-modern-indent)
 (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
 
-(use-package auctex)
-
-(setq TeX-view-program-selection
-      '((output-pdf "Zathura")
-        (output-dvi "xdvi")
-        (output-html "xdg-open")))
-;; Use dvisvgm for LaTeX fragment previews
 (setq org-latex-create-formula-image-program 'dvisvgm)
 
 (setq org-preview-latex-default-process 'dvisvgm)
@@ -310,6 +279,25 @@
          :image-size-adjust (2.5 . 2.5)
          :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
          :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
+
+(defun config/sync-with-org ()
+  (when (string-equal (file-truename buffer-file-name)
+					  (file-truename ORGCFG_PATH))
+	(org-babel-tangle)))
+
+(add-hook 'org-mode-hook
+		  (lambda ()
+			(add-hook 'after-save-hook
+					  (lambda ()
+						(config/sync-with-org))
+					  nil t)))
+
+(use-package auctex)
+
+(setq TeX-view-program-selection
+      '((output-pdf "Zathura")
+        (output-dvi "xdvi")
+        (output-html "xdg-open")))
 
 (use-package company
   :custom

@@ -2,13 +2,13 @@
   nix = [
     # overlay
     {nixpkgs.overlays = [(import self.inputs.emacs-overlay)];}
-    ({pkgs, machine, ...}: let 
+    ({pkgs, machine, ...}: let
           emacsWithUsePackage = pkgs.emacsWithPackagesFromUsePackage {
             package =
               if (machine == "inspiron")
                 then pkgs.emacs
-              else if (machine == "macbook") 
-                then pkgs.emacs-unstable
+              else if (machine == "macbook")
+                then pkgs.emacs-macport
               else pkgs.emacs-pgtk;
 
             config = "${self}/assets/emacs/init.el";
@@ -25,6 +25,7 @@
               })
               tree-sitter
               treesit-grammars.with-all-grammars
+              eat
             ];
           };
     in {
