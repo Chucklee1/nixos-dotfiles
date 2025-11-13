@@ -1,6 +1,6 @@
 {
   nix = [
-    {
+    ({config, ...}: {
       fileSystems."/" = {
         device = "/dev/disk/by-uuid/a06136c2-90a0-445d-89ff-d93ea721f371";
         fsType = "ext4";
@@ -17,6 +17,16 @@
       boot.kernelModules = ["kvm-intel"];
       hardware.cpu.intel.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
-    }
+
+      # startx for manual dwm startup, if needed
+      services.xserver.startx.enable = config.services.xserver.enable;
+
+      # Ignore laptop lid state
+      services.logind.settings.Login = {
+        HandleLidSwitch = "ignore";
+        HandleLidSwitchDocked = "ignore";
+        HandleLidSwitchExternalPower = "ignore";
+      };
+    })
   ];
 }
