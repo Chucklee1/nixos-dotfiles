@@ -1,6 +1,6 @@
-{inputs, extlib, ...}: {
+{inputs, system, extlib, ...}: {
   nix = [
-    (extlib.darwinOrLinux
+    (extlib.darwinOrLinux system
       inputs.stylix.darwinModules.stylix
       inputs.stylix.nixosModules.stylix
     )
@@ -88,7 +88,7 @@
         };
       };
     })
-    (extlib.darwinOrLinux
+    (extlib.darwinOrLinux system
       {}
       ({pkgs, ...}: {
         stylix.cursor = {
@@ -101,7 +101,7 @@
   ];
 
   home = [
-    (extlib.darwinOrLinux
+    (extlib.darwinOrLinux system
       {}
       ({pkgs, ...}: {
         stylix.iconTheme = {

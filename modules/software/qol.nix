@@ -1,6 +1,6 @@
-{self, extlib, ...}: {
+{self, system, extlib, ...}: {
   nix = [
-    (extlib.darwinOrLinux
+    (extlib.darwinOrLinux system
       {}
       ({pkgs, ...}: {
         environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
@@ -10,7 +10,7 @@
   ];
 
   home = [
-    (extlib.darwinOrLinux
+    (extlib.darwinOrLinux system
       {}
       ({pkgs, ...}: {
         home.packages = [pkgs.rmpc];

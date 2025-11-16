@@ -1,4 +1,4 @@
-{extlib, ...}: {
+{system, extlib, ...}: {
   nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -22,7 +22,7 @@
         # misc
         age calc curl
       ] ++
-      (extlib.darwinOrLinux [] [rar]);
+      (extlib.darwinOrLinux system [] [rar]);
     })
     ({machine, pkgs, ...}:
       if machine == "umbra" then {}
@@ -45,7 +45,7 @@
           shfmt
         ];
       })
-    (extlib.darwinOrLinux {} {programs.nix-ld.enable = true;}
+    (extlib.darwinOrLinux system {} {programs.nix-ld.enable = true;}
     )
   ];
   home = [{
