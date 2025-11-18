@@ -19,10 +19,6 @@
       programs.zsh = {
         enable = true;
         syntaxHighlighting.enable = true;
-        initContent = ''
-          [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
-          source "$EAT_SHELL_INTEGRATION_DIR/zsh"
-        '';
         plugins = [
           {
             name = "zsh-vim-mode";
