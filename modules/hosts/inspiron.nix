@@ -19,7 +19,7 @@
       hardware.enableRedistributableFirmware = true;
 
       # startx for manual dwm startup, if needed
-      services.xserver.startx.enable = config.services.xserver.enable;
+      services.xserver.displayManager.startx.enable = config.services.xserver.enable;
 
       # Ignore laptop lid state
       services.logind.settings.Login = {
