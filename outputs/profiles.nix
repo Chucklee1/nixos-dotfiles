@@ -27,7 +27,7 @@
         system.boot system.home system.users
         system.pkgconfig system.sys-specs
 
-        drivers.linux drivers.nvidia
+        drivers.graphical drivers.ssh drivers.nvidia
 
         shell.variables shell.zsh
 
@@ -64,7 +64,7 @@
         system.boot system.home system.users
         system.pkgconfig system.sys-specs
 
-        drivers.linux drivers.ext4
+        drivers.graphical drivers.ssh drivers.ext4
 
         shell.variables shell.zsh
 
