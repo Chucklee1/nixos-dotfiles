@@ -6,13 +6,11 @@
 }: {
   # ---- system  ----
   profiles = let
-    extArgs = {inherit self inputs extlib;};
     mod = extlib.readDirRecursiveToAttrset "${self}/modules";
-    load_mods = mods: [(extlib.loadModulesFromAttrset mods extArgs)];
   in {
     desktop = {
       system = "x86_64-linux";
-      modules = with mod; load_mods [
+      modules = with mod; [
         hosts.desktop
         net.mpd net.syncthing net.tailscale
 
@@ -37,19 +35,34 @@
       ];
       user = "goat";
     };
-    # laptop = {
-    #   system = "x86_64-linux";
-    #   modules = with mod; [
-    #     global laptop linux metal
-    #     wayland additions.full
-    #     niri waybar
-    #     editor.emacs
-    #   ];
-    #   user = "goat";
-    # };
+    laptop = {
+      system = "x86_64-linux";
+      modules = with mod; [
+        hosts.laptop
+        net.mpd net.syncthing net.tailscale
+
+        programs.librewolf programs.emacs
+        programs.git programs.kitty programs.yazi
+        programs.niri programs.waybar
+
+        software.apps software.dev software.texlive
+        software.qol
+        software.wayland
+
+        system.boot system.home system.users
+        system.pkgconfig system.sys-specs
+
+        drivers.graphical drivers.ssh
+
+        shell.variables shell.zsh
+
+        theming.blockgame theming.stylix
+      ];
+      user = "goat";
+    };
     inspiron = {
       system = "x86_64-linux";
-      modules = with mod; load_mods [
+      modules = with mod; [
         hosts.inspiron
 
         net.mpd net.syncthing net.tailscale net.the-server
@@ -72,18 +85,20 @@
       ];
       user = "goat";
     };
-    # umbra = {
-    #   system = "x86_64-linux";
-    #   modules = with mod; [
-    #     global umbra linux
-    #     wayland
-    #     niri waybar
-    #   ];
-    #   user = "nixos";
-    # };
+    umbra = {
+      system = "x86_64-linux";
+      modules = with mod; [
+        hosts.umbra
+        system.boot system.home
+        system.pkgconfig system.sys-specs
+        drivers.ssh
+        shell.zsh programs.nixvim
+      ];
+      user = "nixos";
+    };
     macbook = {
       system = "aarch64-darwin";
-      modules = with mod; load_mods [
+      modules = with mod; [
         hosts.macbook
 
         net.tailscale
@@ -109,9 +124,14 @@
         if machine == "macbook"
         then inputs.nix-darwin.lib.darwinSystem
         else inputs.nixpkgs.lib.nixosSystem;
+      # modules
+      inj_mods = [(extlib.loadModulesFromAttrset
+        cfg.modules
+        {inherit self inputs extlib; inherit (cfg) system;}
+      )];
       mod = {
-        nix = builtins.concatLists (map (m: m.nix or []) cfg.modules);
-        home = builtins.concatLists (map (m: m.home or []) cfg.modules);
+        nix = builtins.concatLists (map (m: m.nix or []) inj_mods);
+        home = builtins.concatLists (map (m: m.home or []) inj_mods);
       };
       specialArgs = {
         inherit self inputs extlib machine;

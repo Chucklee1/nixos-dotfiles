@@ -63,10 +63,12 @@
     nixosConfigurations = sys.mkSystems sys.profiles;
     darwinConfigurations = sys.mkSystems sys.profiles;
 
-    apps.x86_64-linux.umbra = {
-      type = "app";
-      program = "${self.nixosConfigurations."umbra".config.system.build.vm}/bin/run-nixos-vm";
-    };
+    apps = extlib.allSystems (system: {
+      umbra = {
+        type = "app";
+        program = "${self.nixosConfigurations."umbra".config.system.build.vm}/bin/run-nixos-vm";
+      };
+    });
 
     packages = extlib.allSystems (system: {
       # custom installer iso
