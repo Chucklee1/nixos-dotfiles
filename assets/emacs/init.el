@@ -95,11 +95,13 @@
 (with-eval-after-load 'evil
   (evil-set-initial-state 'outline-mode 'normal))
 
-(evil-define-key '(normal visual) evil-normal-state-map
-(kbd "H")         'previous-buffer
-(kbd "<S-left>")  'previous-buffer
-(kbd "L")         'next-buffer
-(kbd "<S-right>") 'next-buffer)
+(defvar lmap-globl (make-sparse-keymap)) ;; normal + motion
+(defvar lmap-local (make-sparse-keymap)) ;; normal only
+
+(dolist (lmaps '(lmap-globl lmap-local))
+  (evil-define-key '(normal motion) evil-normal-state-map
+    (kbd "SPC") lmaps)
+  )
 
 (evil-define-key '(normal motion) dired-mode-map
    (kbd "h")       'dired-up-directory
@@ -108,52 +110,54 @@
    (kbd "<right>") 'dired-find-file
    (kbd "TAB")     'dirvish-subtree-toggle)
 
-(defvar sus-lmap (make-sparse-keymap))
-(evil-define-key '(normal visual motion) 'global
-  (kbd "SPC") sus-lmap)
+(evil-define-key '(normal visual) evil-normal-state-map
+(kbd "H")         'previous-buffer
+(kbd "<S-left>")  'previous-buffer
+(kbd "L")         'next-buffer
+(kbd "<S-right>") 'next-buffer)
 
-;; keys with no subleader first
-(define-key sus-lmap (kbd ".")   'find-file)
-(define-key sus-lmap (kbd "TAB") 'comment-line)
-(define-key sus-lmap (kbd "g")   'magit-status)
-(define-key sus-lmap (kbd "e")   'dired-jump)
-(define-key sus-lmap (kbd "w")   'save-buffer)
-(define-key sus-lmap (kbd "RET")
-     		(lambda () (interactive)
-         	  (ansi-term "/run/current-system/sw/bin/zsh" "*zsh-term*")
-         	  (term-send-raw-string "exec zsh -l\n")))
-(define-key sus-lmap (kbd "R")
-      		(lambda () (interactive)
-      		  (load-file CONFIG_PATH)))
+;; globals
+(define-key lmap-globl (kbd "TAB") 'comment-line)
+(define-key lmap-globl (kbd "w")   'save-buffer)
+(define-key lmap-globl (kbd "R")
+            (lambda () (interactive)
+              (load-file CONFIG_PATH)))
 
-(defvar sus/buffer-lmap (make-sparse-keymap))
-(define-key sus-lmap (kbd "b") sus/buffer-lmap)
+;; programs
+(define-key lmap-globl (kbd "e")   'dired-jump)
+(define-key lmap-globl (kbd "g") 'magit-status)
+
+(defvar lmap-local/buffer (make-sparse-keymap))
+(define-key lmap-local (kbd "b") lmap-local/buffer)
 ;; actual key defs
-(define-key sus/buffer-lmap (kbd "i") 'ibuffer)
-(define-key sus/buffer-lmap (kbd "d") 'kill-current-buffer)
-(define-key sus/buffer-lmap (kbd "D")
+(define-key lmap-local/buffer (kbd "i") 'ibuffer)
+(define-key lmap-local/buffer (kbd "d") 'kill-current-buffer)
+(define-key lmap-local/buffer (kbd "D")
        		(lambda () (interactive)
        		  (kill-buffer (current-buffer))))
-(define-key sus/buffer-lmap (kbd "r") 'revert-buffer)
+(define-key lmap-local/buffer (kbd "r") 'revert-buffer)
 
-(defvar sus/org-lmap (make-sparse-keymap))
-(define-key sus-lmap (kbd "o") sus/org-lmap)
+(defvar lmap-local/org (make-sparse-keymap))
+(define-key lmap-local (kbd "o") lmap-local/org)
 ;; actual key defs
-(define-key sus/org-lmap (kbd "a") 'org-agenda-list)
-(define-key sus/org-lmap (kbd "t") 'org-todo)
-(define-key sus/org-lmap (kbd "l") 'org-latex-preview)
+(define-key lmap-local/org (kbd "l") 'org-latex-preview)
+;; agenda
+(define-key lmap-local/org (kbd "a") 'org-agenda-list)
+(define-key lmap-local/org (kbd "t") 'org-todo)
+(define-key lmap-local/org (kbd "s") 'org-schedule)
+(define-key lmap-local/org (kbd "d") 'org-deadline)
 
-(defvar sus/toggle-lmap (make-sparse-keymap))
-(define-key sus-lmap (kbd "t") sus/toggle-lmap)
+(defvar lmap-local/toggle (make-sparse-keymap))
+(define-key lmap-local (kbd "t") lmap-local/toggle)
 ;; actual key defs
-(define-key sus/toggle-lmap (kbd "i") 'org-toggle-inline-images)
-(define-key sus/toggle-lmap (kbd "n")
+(define-key lmap-local/toggle (kbd "i") 'org-toggle-inline-images)
+(define-key lmap-local/toggle (kbd "n")
   			(lambda () (interactive)
   			  (display-line-numbers-mode 'toggle)))
-(define-key sus/toggle-lmap (kbd "N")
+(define-key lmap-local/toggle (kbd "N")
   			(lambda () (interactive)
   			  (global-display-line-numbers-mode 'toggle)))
-(define-key sus/toggle-lmap (kbd "b")
+(define-key lmap-local/toggle (kbd "b")
   			(lambda () (interactive)
   			  (global-tab-line-mode 'toggle)))
 

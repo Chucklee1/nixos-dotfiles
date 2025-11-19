@@ -3,6 +3,8 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 * Table of Contents :toc:
+- [[#elisp][Elisp?]]
+  - [[#dolist][Dolist]]
 - [[#early-load][Early Load]]
   - [[#global-variables][Global Variables]]
   - [[#add-directory-to-emacs-path][add directory to emacs PATH]]
@@ -35,6 +37,13 @@
   - [[#help][Help!]]
   - [[#rainbows][Rainbows!]]
   - [[#ultra-scroll][Ultra Scroll]]
+
+* Elisp?
+** Dolist
+#+begin_src emacs-lisp :tangle no
+  (dolist (item '(a b c))
+  (message "%s" item))
+#+end_src
 
 * Early Load
 ** Global Variables
@@ -150,15 +159,18 @@
     (evil-set-initial-state 'outline-mode 'normal))
 #+end_src
 ** Keybinds
-*** Global
+*** Globl/Local Leader Definitions
 #+begin_src emacs-lisp
-  (evil-define-key '(normal visual) evil-normal-state-map
-  (kbd "H")         'previous-buffer
-  (kbd "<S-left>")  'previous-buffer
-  (kbd "L")         'next-buffer
-  (kbd "<S-right>") 'next-buffer)
+  (defvar lmap-globl (make-sparse-keymap)) ;; normal + motion
+  (defvar lmap-local (make-sparse-keymap)) ;; normal only
+
+  (dolist (lmaps '(lmap-globl lmap-local))
+    (evil-define-key '(normal motion) evil-normal-state-map
+      (kbd "SPC") lmaps)
+    )
+
 #+end_src
-*** Dired
+*** Dired - No Leader
 #+begin_src emacs-lisp
   (evil-define-key '(normal motion) dired-mode-map
      (kbd "h")       'dired-up-directory
@@ -167,63 +179,69 @@
      (kbd "<right>") 'dired-find-file
      (kbd "TAB")     'dirvish-subtree-toggle)
 #+end_src
-*** Global Leadermap Group - sus
+*** Globl - No Leader
 #+begin_src emacs-lisp
-  (defvar sus-lmap (make-sparse-keymap))
-  (evil-define-key '(normal visual motion) 'global
-    (kbd "SPC") sus-lmap)
-
-  ;; keys with no subleader first
-  (define-key sus-lmap (kbd ".")   'find-file)
-  (define-key sus-lmap (kbd "TAB") 'comment-line)
-  (define-key sus-lmap (kbd "g")   'magit-status)
-  (define-key sus-lmap (kbd "e")   'dired-jump)
-  (define-key sus-lmap (kbd "w")   'save-buffer)
-  (define-key sus-lmap (kbd "RET")
-       		(lambda () (interactive)
-           	  (ansi-term "/run/current-system/sw/bin/zsh" "*zsh-term*")
-           	  (term-send-raw-string "exec zsh -l\n")))
-  (define-key sus-lmap (kbd "R")
-        		(lambda () (interactive)
-        		  (load-file CONFIG_PATH)))
+  (evil-define-key '(normal visual) evil-normal-state-map
+  (kbd "H")         'previous-buffer
+  (kbd "<S-left>")  'previous-buffer
+  (kbd "L")         'next-buffer
+  (kbd "<S-right>") 'next-buffer)
 #+end_src
-*** Submap Group - sus/buffer
+*** Globl - Leader Root
 #+begin_src emacs-lisp
-  (defvar sus/buffer-lmap (make-sparse-keymap))
-  (define-key sus-lmap (kbd "b") sus/buffer-lmap)
+  ;; globals
+  (define-key lmap-globl (kbd "TAB") 'comment-line)
+  (define-key lmap-globl (kbd "w")   'save-buffer)
+  (define-key lmap-globl (kbd "R")
+              (lambda () (interactive)
+                (load-file CONFIG_PATH)))
+
+  ;; programs
+  (define-key lmap-globl (kbd "e")   'dired-jump)
+  (define-key lmap-globl (kbd "g") 'magit-status)
+
+#+end_src
+*** local - buffer
+#+begin_src emacs-lisp
+  (defvar lmap-local/buffer (make-sparse-keymap))
+  (define-key lmap-local (kbd "b") lmap-local/buffer)
   ;; actual key defs
-  (define-key sus/buffer-lmap (kbd "i") 'ibuffer)
-  (define-key sus/buffer-lmap (kbd "d") 'kill-current-buffer)
-  (define-key sus/buffer-lmap (kbd "D")
+  (define-key lmap-local/buffer (kbd "i") 'ibuffer)
+  (define-key lmap-local/buffer (kbd "d") 'kill-current-buffer)
+  (define-key lmap-local/buffer (kbd "D")
          		(lambda () (interactive)
          		  (kill-buffer (current-buffer))))
-  (define-key sus/buffer-lmap (kbd "r") 'revert-buffer)
+  (define-key lmap-local/buffer (kbd "r") 'revert-buffer)
 #+end_src
-*** Submap Group - sus/org
+*** local - org
 #+begin_src emacs-lisp
-  (defvar sus/org-lmap (make-sparse-keymap))
-  (define-key sus-lmap (kbd "o") sus/org-lmap)
+  (defvar lmap-local/org (make-sparse-keymap))
+  (define-key lmap-local (kbd "o") lmap-local/org)
   ;; actual key defs
-  (define-key sus/org-lmap (kbd "a") 'org-agenda-list)
-  (define-key sus/org-lmap (kbd "t") 'org-todo)
-  (define-key sus/org-lmap (kbd "l") 'org-latex-preview)
+  (define-key lmap-local/org (kbd "l") 'org-latex-preview)
+  ;; agenda
+  (define-key lmap-local/org (kbd "a") 'org-agenda-list)
+  (define-key lmap-local/org (kbd "t") 'org-todo)
+  (define-key lmap-local/org (kbd "s") 'org-schedule)
+  (define-key lmap-local/org (kbd "d") 'org-deadline)
 #+end_src
-*** Submap Group - sus/toggle
+*** local - toggle
 #+begin_src emacs-lisp
-  (defvar sus/toggle-lmap (make-sparse-keymap))
-  (define-key sus-lmap (kbd "t") sus/toggle-lmap)
+  (defvar lmap-local/toggle (make-sparse-keymap))
+  (define-key lmap-local (kbd "t") lmap-local/toggle)
   ;; actual key defs
-  (define-key sus/toggle-lmap (kbd "i") 'org-toggle-inline-images)
-  (define-key sus/toggle-lmap (kbd "n")
+  (define-key lmap-local/toggle (kbd "i") 'org-toggle-inline-images)
+  (define-key lmap-local/toggle (kbd "n")
     			(lambda () (interactive)
     			  (display-line-numbers-mode 'toggle)))
-  (define-key sus/toggle-lmap (kbd "N")
+  (define-key lmap-local/toggle (kbd "N")
     			(lambda () (interactive)
     			  (global-display-line-numbers-mode 'toggle)))
-  (define-key sus/toggle-lmap (kbd "b")
+  (define-key lmap-local/toggle (kbd "b")
     			(lambda () (interactive)
     			  (global-tab-line-mode 'toggle)))
 #+end_src
+
 ** Dirvish
 #+begin_src emacs-lisp
   (use-package dirvish
