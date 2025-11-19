@@ -2,11 +2,6 @@
 (defconst CONFIG_PATH (expand-file-name "~/.emacs.d/init.el"))
 (defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
 
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
-
 ;; functions ;;
 (defun my/when-!nixos (cmd)
   (when (not (string-match-p "NixOS"
@@ -240,6 +235,13 @@
 (use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 
+(use-package auctex)
+
+(setq TeX-view-program-selection
+      '((output-pdf "Zathura")
+        (output-dvi "xdvi")
+        (output-html "xdg-open")))
+
 (use-package org
   :custom
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
@@ -295,13 +297,6 @@
 					  (lambda ()
 						(config/sync-with-org))
 					  nil t)))
-
-(use-package auctex)
-
-(setq TeX-view-program-selection
-      '((output-pdf "Zathura")
-        (output-dvi "xdvi")
-        (output-html "xdg-open")))
 
 (use-package company
   :custom
@@ -381,6 +376,11 @@
 
 (use-package rainbow-mode)
 (setq rainbow-x-colors nil)
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
 
 (when (eq system-type 'darwin)
   (use-package ultra-scroll
