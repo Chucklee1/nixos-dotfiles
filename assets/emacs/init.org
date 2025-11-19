@@ -3,11 +3,11 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 * Table of Contents :toc:
-- [[#elisp][Elisp?]]
-  - [[#dolist][Dolist]]
-- [[#early-load][Early Load]]
-  - [[#global-variables][Global Variables]]
+- [[#elisp-in-a-nutshell][Elisp in A Nutshell]]
+  - [[#data-typesstructures][Data types/structures]]
+  - [[#conditionals][Conditionals]]
 - [[#base-settings][Base Settings]]
+  - [[#global-variables][Global Variables]]
   - [[#custom-stuff][Custom Stuff]]
   - [[#emacs][Emacs]]
   - [[#evil-mode][Evil Mode]]
@@ -43,35 +43,43 @@
   - [[#exec-path-from-shell][Exec Path from Shell]]
   - [[#ultra-scroll][Ultra Scroll]]
 
-* Elisp?
-** Dolist
+* Elisp in A Nutshell
+** Data types/structures
 #+begin_src emacs-lisp :tangle no
-  (dolist (item '(a b c))
-  (message "%s" item))
+  (dolist
+  	(item '(a b c))
+    (message "%s" item)
+  )
+#+end_src
+** Conditionals
+#+begin_src emacs-lisp :tangle no
+  ;; when
+  (when condition do-stuff-part)
+
+  ;; if/else
+  (if condition then-part else-part)
 #+end_src
 
-* Early Load
+
+* Base Settings
 ** Global Variables
 #+begin_src emacs-lisp
   (setq use-package-always-ensure t)
   (defconst CONFIG_PATH (expand-file-name "~/.emacs.d/init.el"))
   (defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
 #+end_src
-
-* Base Settings
 ** Custom Stuff
 #+begin_src emacs-lisp
-    ;; functions ;;
-    (defun my/when-!nixos (cmd)
-      (when (not (string-match-p "NixOS"
-  							   (shell-command-to-string "cat /etc/os-release")))
-  	  cmd))
-      ;; variables ;;
-    (defvar g/fheight (if (eq system-type 'darwin) 150 130))
-    (defvar g/ffamily "JetBrainsMono Nerd Font Propo")
-    (defvar g/opacity (if (eq system-type 'darwin) 40 90))
+  ;; functions ;;
+  (defun my/when-!nixos (cmd)
+    (when (not (string-match-p "NixOS"
+  						   (shell-command-to-string "cat /etc/os-release")))
+    cmd))
+  ;; variables ;;
+  (defvar g/fheight (if (eq system-type 'darwin) 150 130))
+  (defvar g/ffamily "JetBrainsMono Nerd Font Propo")
+  (defvar g/opacity (if (eq system-type 'darwin) 40 90))
 #+end_src
-
 ** Emacs
 #+begin_src emacs-lisp
   (use-package emacs
@@ -91,7 +99,6 @@
     ;; behavior
     (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
     (tab-width 4)
-
 
     (global-auto-revert-mode t) ;; Automatically reload file and show changes if the file has changed
 
@@ -232,7 +239,7 @@
     			(lambda () (interactive)
     			  (display-line-numbers-mode 'toggle)))
   (define-key lmap-local/toggle (kbd "N")
-    			(lambda () (interactive)
+    		    (lambda () (interactive)
     			  (global-display-line-numbers-mode 'toggle)))
   (define-key lmap-local/toggle (kbd "b")
     			(lambda () (interactive)
@@ -362,7 +369,7 @@
     (org-mode . (lambda () (display-line-numbers-mode 0)))
     (org-mode . (lambda ()
   				(setq
-    				 ;; Edit settings
+  				 ;; Edit settings
     				 org-catch-invisible-edits 'show-and-error
     				 org-special-ctrl-a/e t ;; smart jump keys
     				 org-insert-heading-respect-content t
@@ -370,13 +377,15 @@
     				 org-hide-emphasis-markers t
     				 org-pretty-entities t
     				 org-ellipsis "…" ;; use ... for folded text
-    				 ))))
+    				 ))
+  			)
+    )
 #+end_src
 ** Org TOC
 #+begin_src emacs-lisp
-    (use-package toc-org
-      :commands toc-org-enable
-      :hook (org-mode . toc-org-mode))
+  (use-package toc-org
+    :commands toc-org-enable
+    :hook (org-mode . toc-org-mode))
 #+end_src
 ** Org Modern
 #+begin_src emacs-lisp
@@ -470,7 +479,6 @@
     :hook
     ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
 #+end_src
-
 ** Yasnippet
 #+begin_src emacs-lisp
   (use-package yasnippet
