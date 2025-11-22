@@ -32,7 +32,6 @@
 
   (global-auto-revert-mode t) ;; Automatically reload file and show changes if the file has changed
 
-  (dired-kill-when-opening-new-dired-buffer t) ;; Dired don't create new buffer
   (recentf-mode t) ;; Enable recent file mode
 
   ;; scrolling
@@ -46,9 +45,6 @@
   (auto-save-default nil) ;; Stop creating # auto save files
 
   :hook
-  (prog-mode     . (lambda () (display-line-numbers-mode t)))
-  (text-mode     . (lambda () (display-line-numbers-mode t)))
-  (org-mode      . (lambda () (display-line-numbers-mode nil)))
   (before-save   . (lambda () (delete-trailing-whitespace)))
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
@@ -94,13 +90,6 @@
   (evil-define-key '(normal motion) 'evil-normal-state-map
     (kbd "SPC") lmap-globl)
 
-(evil-define-key '(normal motion) dired-mode-map
-   (kbd "h")       'dired-up-directory
-   (kbd "<left>")  'dired-up-directory
-   (kbd "l")       'dired-find-file
-   (kbd "<right>") 'dired-find-file
-   (kbd "TAB")     'dirvish-subtree-toggle)
-
 (evil-define-key '(normal visual) 'evil-normal-state-map
 (kbd "H")         'previous-buffer
 (kbd "<S-left>")  'previous-buffer
@@ -115,7 +104,7 @@
               (load-file CONFIG_PATH)))
 
 ;; programs
-(define-key lmap-globl (kbd "e")   'dired-jump)
+(define-key lmap-globl (kbd "e") 'dired-jump)
 (define-key lmap-globl (kbd "g") 'magit-status)
 
 (defvar lmap-globl/buffer (make-sparse-keymap))
@@ -130,8 +119,9 @@
 
 (defvar lmap-globl/org (make-sparse-keymap))
 (define-key lmap-globl (kbd "o") lmap-globl/org)
-;; actual key defs
+;; toggles
 (define-key lmap-globl/org (kbd "l") 'org-latex-preview)
+(define-key lmap-globl/org (kbd "i") 'org-toggle-inline-images)
 ;; agenda
 (define-key lmap-globl/org (kbd "a") 'org-agenda-list)
 (define-key lmap-globl/org (kbd "t") 'org-todo)
@@ -141,7 +131,6 @@
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (define-key lmap-globl (kbd "t") lmap-globl/toggle)
 ;; actual key defs
-(define-key lmap-globl/toggle (kbd "i") 'org-toggle-inline-images)
 (define-key lmap-globl/toggle (kbd "n")
   			(lambda () (interactive)
   			  (display-line-numbers-mode 'toggle)))
@@ -152,23 +141,15 @@
   			(lambda () (interactive)
   			  (global-tab-line-mode 'toggle)))
 
-(use-package dirvish
-    :init (dirvish-override-dired-mode)
-    :config
-     (setq
-    dired-omit-files "^\\.$\\|^\\.\\.$"
-    dired-omit-mode t)
-(setq dirvish-attributes
-      (append
-       ;; The order of these attributes is insignificant, they are always
-       ;; displayed in the same position.
-       '(vc-state subtree-state nerd-icons collapse)
-       ;; Other attributes are displayed in the order they appear in this list.
-       '(git-msg file-modes file-time file-size)))
-    (setq delete-by-moving-to-trash t)
-    :hook
-    (dirvish-save   . (lambda () (dired-omit-mode)))
-  	)
+(use-package dired
+  :ensure nil ;; builtin
+  :custom
+  ((dired-listing-switches "-al --group-directories-first"))
+  :config
+  (setq
+   delete-by-moving-to-trash t
+   dired-kill-when-opening-new-dired-buffer t ;; Dired don't create new buffer
+   ))
 
 (use-package doom-themes
   :custom
@@ -196,8 +177,8 @@
 (use-package nerd-icons
   :if (display-graphic-p))
 
-;; (use-package nerd-icons-dired
-  ;; :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
+(use-package nerd-icons-dired
+  :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
 
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
@@ -257,8 +238,6 @@
   :custom
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
   :hook
-  ;; no more numberline
-  (org-mode . (lambda () (display-line-numbers-mode 0)))
   (org-mode . (lambda ()
 				(setq
 				 ;; Edit settings
@@ -269,9 +248,7 @@
   				 org-hide-emphasis-markers t
   				 org-pretty-entities t
   				 org-ellipsis "…" ;; use ... for folded text
-  				 ))
-			)
-  )
+  				 ))))
 
 (use-package toc-org
   :commands toc-org-enable
