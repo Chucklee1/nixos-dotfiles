@@ -185,7 +185,7 @@
 
   ;; programs
   (define-key lmap-globl (kbd "e") 'dired-jump)
-  (define-key lmap-globl (kbd "g") 'magit-status)
+  (define-key lmap-globl (kbd "G") 'magit-status)
 
 #+end_src
 *** globl - buffer

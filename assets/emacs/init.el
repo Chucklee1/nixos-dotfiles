@@ -105,7 +105,7 @@
 
 ;; programs
 (define-key lmap-globl (kbd "e") 'dired-jump)
-(define-key lmap-globl (kbd "g") 'magit-status)
+(define-key lmap-globl (kbd "G") 'magit-status)
 
 (defvar lmap-globl/buffer (make-sparse-keymap))
 (define-key lmap-globl (kbd "b") lmap-globl/buffer)
