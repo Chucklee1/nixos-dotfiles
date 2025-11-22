@@ -7,7 +7,7 @@
   (when (not (string-match-p "NixOS"
 						   (shell-command-to-string "cat /etc/os-release")))
   cmd))
-  ;; variables ;;
+;; variables ;;
 (defvar g/fheight (if (eq system-type 'darwin) 150 130))
 (defvar g/ffamily "JetBrainsMono Nerd Font Propo")
 (defvar g/opacity (if (eq system-type 'darwin) 40 90))
@@ -29,7 +29,6 @@
   ;; behavior
   (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
   (tab-width 4)
-
 
   (global-auto-revert-mode t) ;; Automatically reload file and show changes if the file has changed
 
@@ -91,12 +90,9 @@
   (evil-set-initial-state 'outline-mode 'normal))
 
 (defvar lmap-globl (make-sparse-keymap)) ;; normal + motion
-(defvar lmap-local (make-sparse-keymap)) ;; normal only
 
-(dolist (lmaps '(lmap-globl lmap-local))
-  (evil-define-key '(normal motion) evil-normal-state-map
-    (kbd "SPC") lmaps)
-  )
+  (evil-define-key '(normal motion) 'evil-normal-state-map
+    (kbd "SPC") lmap-globl)
 
 (evil-define-key '(normal motion) dired-mode-map
    (kbd "h")       'dired-up-directory
@@ -105,7 +101,7 @@
    (kbd "<right>") 'dired-find-file
    (kbd "TAB")     'dirvish-subtree-toggle)
 
-(evil-define-key '(normal visual) evil-normal-state-map
+(evil-define-key '(normal visual) 'evil-normal-state-map
 (kbd "H")         'previous-buffer
 (kbd "<S-left>")  'previous-buffer
 (kbd "L")         'next-buffer
@@ -122,37 +118,37 @@
 (define-key lmap-globl (kbd "e")   'dired-jump)
 (define-key lmap-globl (kbd "g") 'magit-status)
 
-(defvar lmap-local/buffer (make-sparse-keymap))
-(define-key lmap-local (kbd "b") lmap-local/buffer)
+(defvar lmap-globl/buffer (make-sparse-keymap))
+(define-key lmap-globl (kbd "b") lmap-globl/buffer)
 ;; actual key defs
-(define-key lmap-local/buffer (kbd "i") 'ibuffer)
-(define-key lmap-local/buffer (kbd "d") 'kill-current-buffer)
-(define-key lmap-local/buffer (kbd "D")
+(define-key lmap-globl/buffer (kbd "i") 'ibuffer)
+(define-key lmap-globl/buffer (kbd "d") 'kill-current-buffer)
+(define-key lmap-globl/buffer (kbd "D")
        		(lambda () (interactive)
        		  (kill-buffer (current-buffer))))
-(define-key lmap-local/buffer (kbd "r") 'revert-buffer)
+(define-key lmap-globl/buffer (kbd "r") 'revert-buffer)
 
-(defvar lmap-local/org (make-sparse-keymap))
-(define-key lmap-local (kbd "o") lmap-local/org)
+(defvar lmap-globl/org (make-sparse-keymap))
+(define-key lmap-globl (kbd "o") lmap-globl/org)
 ;; actual key defs
-(define-key lmap-local/org (kbd "l") 'org-latex-preview)
+(define-key lmap-globl/org (kbd "l") 'org-latex-preview)
 ;; agenda
-(define-key lmap-local/org (kbd "a") 'org-agenda-list)
-(define-key lmap-local/org (kbd "t") 'org-todo)
-(define-key lmap-local/org (kbd "s") 'org-schedule)
-(define-key lmap-local/org (kbd "d") 'org-deadline)
+(define-key lmap-globl/org (kbd "a") 'org-agenda-list)
+(define-key lmap-globl/org (kbd "t") 'org-todo)
+(define-key lmap-globl/org (kbd "s") 'org-schedule)
+(define-key lmap-globl/org (kbd "d") 'org-deadline)
 
-(defvar lmap-local/toggle (make-sparse-keymap))
-(define-key lmap-local (kbd "t") lmap-local/toggle)
+(defvar lmap-globl/toggle (make-sparse-keymap))
+(define-key lmap-globl (kbd "t") lmap-globl/toggle)
 ;; actual key defs
-(define-key lmap-local/toggle (kbd "i") 'org-toggle-inline-images)
-(define-key lmap-local/toggle (kbd "n")
+(define-key lmap-globl/toggle (kbd "i") 'org-toggle-inline-images)
+(define-key lmap-globl/toggle (kbd "n")
   			(lambda () (interactive)
   			  (display-line-numbers-mode 'toggle)))
-(define-key lmap-local/toggle (kbd "N")
-  			(lambda () (interactive)
+(define-key lmap-globl/toggle (kbd "N")
+  		    (lambda () (interactive)
   			  (global-display-line-numbers-mode 'toggle)))
-(define-key lmap-local/toggle (kbd "b")
+(define-key lmap-globl/toggle (kbd "b")
   			(lambda () (interactive)
   			  (global-tab-line-mode 'toggle)))
 
@@ -251,7 +247,7 @@
   (org-mode . (lambda () (display-line-numbers-mode 0)))
   (org-mode . (lambda ()
 				(setq
-  				 ;; Edit settings
+				 ;; Edit settings
   				 org-catch-invisible-edits 'show-and-error
   				 org-special-ctrl-a/e t ;; smart jump keys
   				 org-insert-heading-respect-content t
@@ -259,7 +255,9 @@
   				 org-hide-emphasis-markers t
   				 org-pretty-entities t
   				 org-ellipsis "…" ;; use ... for folded text
-  				 ))))
+  				 ))
+			)
+  )
 
 (use-package toc-org
   :commands toc-org-enable
