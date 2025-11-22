@@ -153,8 +153,22 @@
   			  (global-tab-line-mode 'toggle)))
 
 (use-package dirvish
-  :config
-  (dirvish-override-dired-mode))
+    :init (dirvish-override-dired-mode)
+    :config
+     (setq
+    dired-omit-files "^\\.$\\|^\\.\\.$"
+    dired-omit-mode t)
+(setq dirvish-attributes
+      (append
+       ;; The order of these attributes is insignificant, they are always
+       ;; displayed in the same position.
+       '(vc-state subtree-state nerd-icons collapse)
+       ;; Other attributes are displayed in the order they appear in this list.
+       '(git-msg file-modes file-time file-size)))
+    (setq delete-by-moving-to-trash t)
+    :hook
+    (dirvish-save   . (lambda () (dired-omit-mode)))
+  	)
 
 (use-package doom-themes
   :custom
@@ -182,8 +196,8 @@
 (use-package nerd-icons
   :if (display-graphic-p))
 
-(use-package nerd-icons-dired
-  :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
+;; (use-package nerd-icons-dired
+  ;; :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
 
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))

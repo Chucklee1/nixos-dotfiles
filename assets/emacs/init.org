@@ -244,8 +244,22 @@
 ** Dirvish
 #+begin_src emacs-lisp
   (use-package dirvish
+    :init (dirvish-override-dired-mode)
     :config
-    (dirvish-override-dired-mode))
+     (setq
+    dired-omit-files "^\\.$\\|^\\.\\.$"
+    dired-omit-mode t)
+(setq dirvish-attributes
+      (append
+       ;; The order of these attributes is insignificant, they are always
+       ;; displayed in the same position.
+       '(vc-state subtree-state nerd-icons collapse)
+       ;; Other attributes are displayed in the order they appear in this list.
+       '(git-msg file-modes file-time file-size)))
+    (setq delete-by-moving-to-trash t)
+    :hook
+    (dirvish-save   . (lambda () (dired-omit-mode)))
+  	)
 #+end_src
 
 *  Appearance
@@ -283,8 +297,8 @@
   (use-package nerd-icons
     :if (display-graphic-p))
 
-  (use-package nerd-icons-dired
-    :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
+  ;; (use-package nerd-icons-dired
+    ;; :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
 
   (use-package nerd-icons-ibuffer
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
