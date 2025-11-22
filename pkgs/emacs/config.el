@@ -87,8 +87,22 @@
 
 (defvar lmap-globl (make-sparse-keymap)) ;; normal + motion
 
-  (evil-define-key '(normal motion) 'evil-normal-state-map
-    (kbd "SPC") lmap-globl)
+(evil-define-key '(normal motion) 'evil-normal-state-map
+  (kbd "SPC") lmap-globl)
+
+(defun dired/subtree-open ()
+  "open subdir view"
+  (interactive)
+  (let ((inhibit-read-only t)) ;; tmp toggle to write-mode
+	(forward-line 1)
+	(make-indirect-buffer
+	 (current-buffer)
+     (dired-insert-subdir (dired-get-filename 'verbatim t)))
+	))
+
+(with-eval-after-load 'dired
+  (evil-define-key '(normal motion) dired-mode-map
+    (kbd "TAB") #'dired/subtree-open))
 
 (evil-define-key '(normal visual) 'evil-normal-state-map
 (kbd "H")         'previous-buffer
@@ -145,11 +159,15 @@
   :ensure nil ;; builtin
   :custom
   ((dired-listing-switches "-al --group-directories-first"))
+  ;; eza -al --icons=auto --group-directories-first
+
   :config
   (setq
    delete-by-moving-to-trash t
    dired-kill-when-opening-new-dired-buffer t ;; Dired don't create new buffer
    ))
+
+(use-package dired-subtree)
 
 (use-package doom-themes
   :custom

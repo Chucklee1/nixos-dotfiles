@@ -1,11 +1,12 @@
 #+title: emacs config
 #+Author: Chucklee1
-#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+#+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
 * Table of Contents :toc:
 - [[#elisp-in-a-nutshell][Elisp in A Nutshell]]
   - [[#data-typesstructures][Data types/structures]]
   - [[#conditionals][Conditionals]]
+- [[#nix-overlay][Nix Overlay]]
 - [[#base-settings][Base Settings]]
   - [[#global-variables][Global Variables]]
   - [[#custom-stuff][Custom Stuff]]
@@ -58,6 +59,31 @@
 
   ;; if/else
   (if condition then-part else-part)
+#+end_src
+
+* Nix Overlay
+#+begin_src nix :tangle ./default.nix
+  final: prev: with final; {
+    emacs = emacsWithPackagesFromUsePackage {
+      package = emacs;
+      config = ./init.el;
+      defaultInitFile = false;
+      # make sure to include `(setq use-package-always-ensure t)` in config
+      alwaysEnsure = true;
+      # alwaysTangle = true;
+
+      extraEmacsPackages = ep: with ep; [
+        (trivialBuild {
+          pname = "org-modern-indent";
+          version = "main";
+          src = inputs.org-modern-indent;
+        })
+        tree-sitter
+        treesit-grammars.with-all-grammars
+        eat
+      ];
+    };
+  }
 #+end_src
 
 
@@ -163,8 +189,22 @@
 #+begin_src emacs-lisp
   (defvar lmap-globl (make-sparse-keymap)) ;; normal + motion
 
-    (evil-define-key '(normal motion) 'evil-normal-state-map
-      (kbd "SPC") lmap-globl)
+  (evil-define-key '(normal motion) 'evil-normal-state-map
+    (kbd "SPC") lmap-globl)
+
+  (defun dired/subtree-open ()
+    "open subdir view"
+    (interactive)
+    (let ((inhibit-read-only t)) ;; tmp toggle to write-mode
+  	(forward-line 1)
+  	(make-indirect-buffer
+  	 (current-buffer)
+       (dired-insert-subdir (dired-get-filename 'verbatim t)))
+  	))
+
+  (with-eval-after-load 'dired
+    (evil-define-key '(normal motion) dired-mode-map
+      (kbd "TAB") #'dired/subtree-open))
 #+end_src
 *** Globl - No Leader
 #+begin_src emacs-lisp
@@ -234,12 +274,19 @@
     :ensure nil ;; builtin
     :custom
     ((dired-listing-switches "-al --group-directories-first"))
+    ;; eza -al --icons=auto --group-directories-first
+
     :config
     (setq
      delete-by-moving-to-trash t
      dired-kill-when-opening-new-dired-buffer t ;; Dired don't create new buffer
      ))
 	#+end_src
+*** Dired Hacks
+#+begin_src emacs-lisp
+(use-package dired-subtree)
+#+end_src
+
 
 *  Appearance
 ** Theme
