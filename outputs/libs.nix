@@ -1,5 +1,5 @@
-{inputs, self, ...}:
-with inputs.nixpkgs.lib; rec {
+{self, ...}:
+with self.inputs.nixpkgs.lib; rec {
   readDirRecursive = dir:
     concatMapAttrs (file:
       flip getAttr {
@@ -104,7 +104,7 @@ with inputs.nixpkgs.lib; rec {
 
   allSystemsWithPkgs = f:
     allSystems (system: let
-      pkgs = import inputs.nixpkgs {inherit system;};
+      pkgs = import self.inputs.nixpkgs {inherit system;};
     in
       f pkgs);
 }

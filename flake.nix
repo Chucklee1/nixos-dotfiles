@@ -50,7 +50,7 @@
 
   outputs = {self, ...} @ inputs: let
     # ---- additionals ----
-    extlib = import ./outputs/libs.nix {inherit inputs self;};
+    extlib = import ./outputs/libs.nix {inherit self;};
     devShells = extlib.allSystemsWithPkgs (pkgs: import ./outputs/devshells.nix {inherit inputs pkgs;});
     nixvim = import ./pkgs/nixvim {inherit self;};
     sys = import ./outputs/profiles.nix {inherit inputs self extlib;};
@@ -74,16 +74,8 @@
       nixvim = nixvim.package {inherit system;};
     });
     overlays = {
-<<<<<<< Updated upstream
-      default = self: prev: {
-      nixvim.core = nvlib.mkModule self.system "core";
-      nixvim.full = nvlib.mkModule self.system "full";
-=======
       emacs = import ./pkgs/emacs;
       nixvim = nixvim.overlay;
->>>>>>> Stashed changes
-    };
-      emacs = import ./pkgs/emacs;
     };
   };
 }
