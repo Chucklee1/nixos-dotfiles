@@ -78,9 +78,12 @@
         full = nvlib.mkModule system "full";
       };
     });
-    overlays.default = self: prev: {
+    overlays = {
+      default = self: prev: {
       nixvim.core = nvlib.mkModule self.system "core";
       nixvim.full = nvlib.mkModule self.system "full";
+    };
+      emacs = import ./pkgs/emacs;
     };
   };
 }
