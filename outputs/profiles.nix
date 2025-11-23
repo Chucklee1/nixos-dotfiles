@@ -1,9 +1,4 @@
-{
-  self,
-  inputs,
-  extlib,
-  ...
-}: {
+{self, inputs, extlib, ...}: {
   # ---- system  ----
   profiles = let
     mod = extlib.readDirRecursiveToAttrset "${self}/modules";
@@ -104,7 +99,7 @@
 
         net.tailscale
 
-        programs.emacs #programs.zen-browser
+        programs.emacs
         programs.git programs.kitty programs.yazi
 
         software.dev software.qol software.texlive
@@ -145,11 +140,11 @@
         inherit specialArgs;
         modules =
           builtins.concatLists
-          [
-            mod.nix
-            [{_module.args.homeMods = mod.home;}]
-            [{home-manager.extraSpecialArgs = specialArgs;}]
-          ];
+            [
+              mod.nix
+              [{_module.args.homeMods = mod.home;}]
+              [{home-manager.extraSpecialArgs = specialArgs;}]
+            ];
       })
-    cfgs;
+      cfgs;
 }
