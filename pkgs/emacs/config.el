@@ -85,24 +85,9 @@
 (with-eval-after-load 'evil
   (evil-set-initial-state 'outline-mode 'normal))
 
-(defvar lmap-globl (make-sparse-keymap)) ;; normal + motion
-
+(defvar lmap-globl (make-sparse-keymap))
 (evil-define-key '(normal motion) 'evil-normal-state-map
   (kbd "SPC") lmap-globl)
-
-(defun dired/subtree-open ()
-  "open subdir view"
-  (interactive)
-  (let ((inhibit-read-only t)) ;; tmp toggle to write-mode
-	(forward-line 1)
-	(make-indirect-buffer
-	 (current-buffer)
-     (dired-insert-subdir (dired-get-filename 'verbatim t)))
-	))
-
-(with-eval-after-load 'dired
-  (evil-define-key '(normal motion) dired-mode-map
-    (kbd "TAB") #'dired/subtree-open))
 
 (evil-define-key '(normal visual) 'evil-normal-state-map
 (kbd "H")         'previous-buffer
@@ -133,14 +118,23 @@
 
 (defvar lmap-globl/org (make-sparse-keymap))
 (define-key lmap-globl (kbd "o") lmap-globl/org)
-;; toggles
-(define-key lmap-globl/org (kbd "l") 'org-latex-preview)
+;; general
 (define-key lmap-globl/org (kbd "i") 'org-toggle-inline-images)
-;; agenda
-(define-key lmap-globl/org (kbd "a") 'org-agenda-list)
 (define-key lmap-globl/org (kbd "t") 'org-todo)
 (define-key lmap-globl/org (kbd "s") 'org-schedule)
 (define-key lmap-globl/org (kbd "d") 'org-deadline)
+;; agenda
+(defvar lmap-globl/org/agenda (make-sparse-keymap))
+(define-key lmap-globl/org (kbd "a") lmap-globl/org/agenda)
+(define-key lmap-globl/org/agenda (kbd "a") 'org-agenda-list)
+;; babel
+(defvar lmap-globl/org/babel (make-sparse-keymap))
+(define-key lmap-globl/org (kbd "b") lmap-globl/org/babel)
+(define-key lmap-globl/org/babel (kbd "t") 'org-babel-tangle)
+;; LaTeX
+(defvar lmap-globl/org/latex (make-sparse-keymap))
+(define-key lmap-globl/org (kbd "l") lmap-globl/org/latex)
+(define-key lmap-globl/org (kbd "p") 'org-latex-preview)
 
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (define-key lmap-globl (kbd "t") lmap-globl/toggle)
@@ -158,16 +152,31 @@
 (use-package dired
   :ensure nil ;; builtin
   :custom
-  ((dired-listing-switches "-al --group-directories-first"))
-  ;; eza -al --icons=auto --group-directories-first
-
+  (dired-omit-files "^\\..*$") ;; hide . & .. folders
   :config
   (setq
+   dired-listing-switches "-lAh --group-directories-first"
    delete-by-moving-to-trash t
-   dired-kill-when-opening-new-dired-buffer t ;; Dired don't create new buffer
-   ))
+   ;; Dired don't create new buffer
+   dired-kill-when-opening-new-dired-buffer t))
 
-(use-package dired-subtree)
+(use-package dired-subtree
+  :after dired
+  :custom
+  (dired-subtree-use-backgrounds nil)
+  :bind
+  ( :map dired-mode-map
+    ("TAB" . dired-subtree-toggle)
+    ("<tab>" . dired-subtree-toggle))
+  :config
+  ;; Fix "no icons in subtree" issue.
+  (defadvice dired-subtree-toggle
+      (after add-icons activate) (revert-buffer)))
+
+(use-package dired-collapse
+  :hook (dired-mode . global-dired-collapse-mode))
+
+(use-package diredfl :hook ((dired-mode . diredfl-mode)))
 
 (use-package doom-themes
   :custom
