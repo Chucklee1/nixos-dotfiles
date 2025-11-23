@@ -388,8 +388,9 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package rainbow-mode)
-(setq rainbow-x-colors nil)
+(use-package rainbow-mode
+  :config (setq rainbow-x-colors nil)
+  :hook (prog-mode . rainbow-mode))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))

@@ -585,8 +585,9 @@
 #+end_src
 *** Rainbow Mode
 #+begin_src emacs-lisp
-  (use-package rainbow-mode)
-  (setq rainbow-x-colors nil)
+  (use-package rainbow-mode
+    :config (setq rainbow-x-colors nil)
+    :hook (prog-mode . rainbow-mode))
 #+end_src
 
 * Darwin fixes
