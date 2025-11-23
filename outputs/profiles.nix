@@ -23,7 +23,7 @@
 
         drivers.graphical drivers.ssh drivers.nvidia
 
-        shell.variables shell.zsh
+        shell.variables shell.zsh shell.nushell
 
         theming.blockgame theming.stylix
 
