@@ -7,6 +7,7 @@
   (when (not (string-match-p "NixOS"
 						   (shell-command-to-string "cat /etc/os-release")))
   cmd))
+
 ;; variables ;;
 (defvar g/fheight (if (eq system-type 'darwin) 150 130))
 (defvar g/ffamily "JetBrainsMono Nerd Font Propo")
@@ -247,12 +248,14 @@
 
 (use-package haskell-mode :mode "\\.hs\\'")
 (use-package kdl-mode :mode "\\.kdl\\'")
-(use-package kotlin-mode :mode "\\.kt\\'")
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
 (use-package nix-mode :mode "\\.nix\\'")
 (use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
+;; heavier niche modes - will not connect to eglot
+;; (if (executable-find "nu") (use-package nushell-mode))
+(if (executable-find "kotlin") (use-package kotlin-mode))
 
 (use-package auctex)
 
