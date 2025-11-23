@@ -63,10 +63,12 @@
 
 * Nix Overlay
 #+begin_src nix :tangle ./default.nix
-  final: prev: with final; {
-    emacs = emacsWithPackagesFromUsePackage {
-      package = emacs;
-      config = ./init.el;
+  final: prev:
+  # function from emacs-overlay, make sure to import the overlay
+  builtins.mapAttrs (_: package:
+    prev.emacsWithPackagesFromUsePackage {
+      inherit package;
+      config = ./config.el;
       defaultInitFile = false;
       # make sure to include `(setq use-package-always-ensure t)` in config
       alwaysEnsure = true;
@@ -82,8 +84,12 @@
         treesit-grammars.with-all-grammars
         eat
       ];
-    };
-  }
+    })
+    {
+      emacs = prev.emacs;
+      emacs-macport = prev.emacs-macport;
+      emacs-pgtk = prev.emacs-pgtk;
+    }
 #+end_src
 
 
