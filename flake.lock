@@ -819,22 +819,6 @@
         "type": "github"
       }
     },
-    "org-modern-indent": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1744503427,
-        "narHash": "sha256-st3338Jk9kZ5BLEPRJZhjqdncMpLoWNwp60ZwKEObyU=",
-        "owner": "jdtsmith",
-        "repo": "org-modern-indent",
-        "rev": "9973bd3b91e4733a3edd1fca232208c837c05473",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jdtsmith",
-        "repo": "org-modern-indent",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -855,7 +839,6 @@
         "nixpkgs-stable": "nixpkgs-stable_3",
         "nixvim": "nixvim",
         "nur": "nur",
-        "org-modern-indent": "org-modern-indent",
         "stylix": "stylix",
         "zen-browser": "zen-browser"
       }

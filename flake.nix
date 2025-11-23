@@ -40,8 +40,6 @@
 
   # ---- emacs ----
   inputs.emacs-overlay.url = "github:nix-community/emacs-overlay";
-  inputs.org-modern-indent.url = "github:jdtsmith/org-modern-indent";
-  inputs.org-modern-indent.flake = false;
 
   # ---- programs ----
   inputs.dwm.url = "github:Chucklee1/dwm";
