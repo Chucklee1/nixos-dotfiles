@@ -23,5 +23,18 @@
         options = ["--cmd cd"];
       };
     }
+    {
+      programs.eza = {
+        enable = true;
+        enableZshIntegration = true;
+        enableNushellIntegration = true;
+      };
+    }
+    {
+      programs.nix-your-shell = {
+        enable = true;
+        nix-output-monitor.enable = true;
+      };
+    }
   ];
 }
