@@ -274,10 +274,7 @@
 
 (use-package org-modern)
 (setq org-modern-star ["●" "○" "◆" "◇" "▶" "▷"])
-
 (global-org-modern-mode)
-(require 'org-modern-indent)
-(add-hook 'org-mode-hook #'org-modern-indent-mode 90)
 
 (setq org-latex-create-formula-image-program 'dvisvgm)
 

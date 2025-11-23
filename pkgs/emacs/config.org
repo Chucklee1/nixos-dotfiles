@@ -74,15 +74,9 @@
       alwaysEnsure = true;
       # alwaysTangle = true;
 
-      extraEmacsPackages = ep: with ep; [
-        (trivialBuild {
-          pname = "org-modern-indent";
-          version = "main";
-          src = inputs.org-modern-indent;
-        })
-        tree-sitter
-        treesit-grammars.with-all-grammars
-        eat
+      extraEmacsPackages = epkgs: [
+        epkgs.tree-sitter
+        epkgs.treesit-grammars.with-all-grammars
       ];
     })
     {
@@ -430,10 +424,7 @@
 #+begin_src emacs-lisp
   (use-package org-modern)
   (setq org-modern-star ["●" "○" "◆" "◇" "▶" "▷"])
-
   (global-org-modern-mode)
-  (require 'org-modern-indent)
-  (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
 #+end_src
 ** Org LaTeX Fragment Previews
 + Use dvisvgm for LaTeX fragment previews
