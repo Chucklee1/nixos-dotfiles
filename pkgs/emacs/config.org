@@ -231,19 +231,11 @@
     (evil-set-initial-state 'outline-mode 'normal))
 #+end_src
 ** Keybinds
-*** Globl/Local Leader Definitions
+*** Globl Leader Definition
 #+begin_src emacs-lisp
   (defvar lmap-globl (make-sparse-keymap))
   (evil-define-key '(normal motion) 'evil-normal-state-map
     (kbd "SPC") lmap-globl)
-#+end_src
-*** Globl - No Leader
-#+begin_src emacs-lisp
-  (evil-define-key '(normal visual) 'evil-normal-state-map
-  (kbd "H")         'previous-buffer
-  (kbd "<S-left>")  'previous-buffer
-  (kbd "L")         'next-buffer
-  (kbd "<S-right>") 'next-buffer)
 #+end_src
 *** Globl - Leader Root
 #+begin_src emacs-lisp
@@ -256,11 +248,12 @@
   		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 #+end_src
 *** globl - buffer
-+ Keybinds
 #+begin_src emacs-lisp
   (defvar lmap-globl/buffer (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/buffer "b"
-  			'(("i" . ibuffer)
+  			'(("n" . next-buffer)
+  			  ("p" . previous-buffer)
+  			  ("i" . ibuffer)
   			  ("r" . revert-buffer)
   			  ("d" . helper/buffer/kill)
   			  ("D" . helper/buffer/force-kill)))
@@ -288,13 +281,13 @@
 #+begin_src emacs-lisp
   (defvar lmap-globl/org (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/org "o"
-  			'(("i" . org-toggle-inline-images)
-  			  ("t" . org-todo)
-  			  ("s" . org-schedule)
-  			  ("d" . org-deadline)
+  			'(("a" . org-agenda-list)
   			  ("t" . org-babel-tangle)
   			  ("l" . org-latex-preview)
-  			  ("a" . org-agenda-list)))
+  			  ("i" . org-toggle-inline-images)
+  			  ("t" . org-todo)
+  			  ("s" . org-schedule)
+  			  ("d" . org-deadline)))
 		  #+end_src
 *** globl - toggle
 #+begin_src emacs-lisp
