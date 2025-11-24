@@ -151,13 +151,13 @@
 
 (defvar lmap-globl/org (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/org "o"
-			'(("i" . 'org-toggle-inline-images)
-			  ("t" . 'org-todo)
-			  ("s" . 'org-schedule)
-			  ("d" . 'org-deadline)
-			  ("t" . 'org-babel-tangle)
-			  ("p" . 'org-latex-preview)
-			  ("a" . 'org-agenda-list)))
+			'(("i" . org-toggle-inline-images)
+			  ("t" . org-todo)
+			  ("s" . org-schedule)
+			  ("d" . org-deadline)
+			  ("t" . org-babel-tangle)
+			  (";" . org-latex-preview)
+			  ("a" . org-agenda-list)))
 
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/toggle "t"
