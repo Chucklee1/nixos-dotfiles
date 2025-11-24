@@ -10,6 +10,7 @@
 - [[#base-settings][Base Settings]]
   - [[#global-variables][Global Variables]]
   - [[#custom-stuff][Custom Stuff]]
+  - [[#helper-funcitons][Helper Funcitons]]
   - [[#emacs][Emacs]]
   - [[#evil-mode][Evil Mode]]
   - [[#keybinds][Keybinds]]
@@ -120,6 +121,43 @@
   (defvar g/ffamily "JetBrainsMono Nerd Font Propo")
   (defvar g/opacity (if (eq system-type 'darwin) 40 90))
 #+end_src
+** Helper Funcitons
+#+begin_src emacs-lisp
+  ;; keybinds ;;
+  (defun helper/mkkeygroup (leader group-name group-key keypairs)
+    "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
+    (interactive)
+    (define-key leader (kbd group-key) group-name)
+    (dolist (pair keypairs)
+      ;; pair format => ("key" . cmd)
+      (define-key group-name (kbd (car pair)) (cdr pair))))
+
+  ;; buffers ;;
+  (defun helper/buffer/kill () (interactive)
+         (let ((buf (current-buffer)))
+           (kill-current-buffer)))
+
+  (defun helper/buffer/force-kill () (interactive)
+         (let ((buf (current-buffer)))
+           (kill-buffer buf)))
+
+  ;; windows ;;
+  (defun helper/window/close () (interactive)
+    	   (let ((win (get-buffer-window (current-buffer))))
+      	 (when (and win (window-live-p win) (not (one-window-p win)))
+             (delete-window win))))
+
+  (defun helper/window/force-close () (interactive)
+    	   (let ((win (get-buffer-window (current-buffer))))
+    		 (when (window-live-p win)
+    		   (if (one-window-p) (delete-frame)
+    			 (delete-window win)))))
+
+  (defun helper/open-split-term () (interactive)
+         (let ((new-win (split-window-below)))
+           (select-window new-win)
+           (ansi-term (getenv "SHELL"))))
+#+end_src
 ** Emacs
 #+begin_src emacs-lisp
   (use-package emacs
@@ -199,43 +237,6 @@
     (evil-set-initial-state 'outline-mode 'normal))
 #+end_src
 ** Keybinds
-*** Helper Function
-#+begin_src emacs-lisp
-  ;; keybinds ;;
-  (defun mkkeygroup (leader group-name group-key keypairs)
-    "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
-    (interactive)
-    (define-key leader (kbd group-key) group-name)
-    (dolist (pair keypairs)
-      ;; pair format => ("key" . cmd)
-      (define-key group-name (kbd (car pair)) (cdr pair))))
-
-  ;; buffers ;;
-  (defun buffer/kill () (interactive)
-         (let ((buf (current-buffer)))
-           (kill-current-buffer)))
-
-  (defun buffer/force-kill () (interactive)
-         (let ((buf (current-buffer)))
-           (kill-buffer buf)))
-
-  ;; windows ;;
-  (defun window/close () (interactive)
-    	   (let ((win (get-buffer-window (current-buffer))))
-      	 (when (and win (window-live-p win) (not (one-window-p win)))
-             (delete-window win))))
-
-  (defun window/force-close () (interactive)
-    	   (let ((win (get-buffer-window (current-buffer))))
-    		 (when (window-live-p win)
-    		   (if (one-window-p) (delete-frame)
-    			 (delete-window win)))))
-
-  (defun open-split-term () (interactive)
-         (let ((new-win (split-window-below)))
-           (select-window new-win)
-           (ansi-term (getenv "SHELL"))))
-#+end_src
 *** Globl/Local Leader Definitions
 #+begin_src emacs-lisp
   (defvar lmap-globl (make-sparse-keymap))
@@ -254,6 +255,7 @@
 #+begin_src emacs-lisp
   (dolist (pair
   		 '(("TAB" . comment-line)
+  		   ("RET" . helper/open-split-term)
   		   ("w"   . save-buffer)
   		   ("R"   . (lambda () (interactive) (load-file CONFIG_PATH)))
   		   ("e"   . dired-jump)
@@ -268,15 +270,15 @@
   (mkkeygroup lmap-globl lmap-globl/buffer "b"
   			'(("i" . ibuffer)
   			  ("r" . revert-buffer)
-  			  ("d" . buffer/kill)
-  			  ("D" . buffer/force-kill)))
+  			  ("d" . helper/buffer/kill)
+  			  ("D" . helper/buffer/force-kill)))
 #+end_src
 *** Globl - window
 #+begin_src emacs-lisp
   (defvar lmap-globl/window (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/window "w"
-  			'(("c" . window/close)
-  			  ("C" . window/force-close)))
+  			'(("c" . helper/window/close)
+  			  ("C" . helper/window/force-close)))
 #+end_src
 *** globl - org
 #+begin_src emacs-lisp

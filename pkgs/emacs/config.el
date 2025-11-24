@@ -2,16 +2,45 @@
 (defconst CONFIG_PATH (expand-file-name "~/.emacs.d/init.el"))
 (defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
 
-;; functions ;;
-(defun my/when-!nixos (cmd)
-  (when (not (string-match-p "NixOS"
-						   (shell-command-to-string "cat /etc/os-release")))
-  cmd))
-
 ;; variables ;;
 (defvar g/fheight (if (eq system-type 'darwin) 150 130))
 (defvar g/ffamily "JetBrainsMono Nerd Font Propo")
 (defvar g/opacity (if (eq system-type 'darwin) 40 90))
+
+;; keybinds ;;
+(defun helper/mkkeygroup (leader group-name group-key keypairs)
+  "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
+  (interactive)
+  (define-key leader (kbd group-key) group-name)
+  (dolist (pair keypairs)
+    ;; pair format => ("key" . cmd)
+    (define-key group-name (kbd (car pair)) (cdr pair))))
+
+;; buffers ;;
+(defun helper/buffer/kill () (interactive)
+       (let ((buf (current-buffer)))
+         (kill-current-buffer)))
+
+(defun helper/buffer/force-kill () (interactive)
+       (let ((buf (current-buffer)))
+         (kill-buffer buf)))
+
+;; windows ;;
+(defun helper/window/close () (interactive)
+  	   (let ((win (get-buffer-window (current-buffer))))
+    	 (when (and win (window-live-p win) (not (one-window-p win)))
+           (delete-window win))))
+
+(defun helper/window/force-close () (interactive)
+  	   (let ((win (get-buffer-window (current-buffer))))
+  		 (when (window-live-p win)
+  		   (if (one-window-p) (delete-frame)
+  			 (delete-window win)))))
+
+(defun helper/open-split-term () (interactive)
+       (let ((new-win (split-window-below)))
+         (select-window new-win)
+         (ansi-term (getenv "SHELL"))))
 
 (use-package emacs
   :custom
@@ -86,71 +115,32 @@
 (with-eval-after-load 'evil
   (evil-set-initial-state 'outline-mode 'normal))
 
-;; keybinds ;;
-(defun mkkeygroup (leader group-name group-key keypairs)
-  "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
-  (interactive)
-  (define-key leader (kbd group-key) group-name)
-  (dolist (pair keypairs)
-    ;; pair format => ("key" . cmd)
-    (define-key group-name (kbd (car pair)) (cdr pair))))
-
-;; buffers ;;
-(defun buffer/kill () (interactive)
-       (let ((buf (current-buffer)))
-         (kill-current-buffer)))
-
-(defun buffer/force-kill () (interactive)
-       (let ((buf (current-buffer)))
-         (kill-buffer buf)))
-
-;; windows ;;
-(defun window/close () (interactive)
-  	   (let ((win (get-buffer-window (current-buffer))))
-    	 (when (and win (window-live-p win) (not (one-window-p win)))
-           (delete-window win))))
-
-(defun window/force-close () (interactive)
-  	   (let ((win (get-buffer-window (current-buffer))))
-  		 (when (window-live-p win)
-  		   (if (one-window-p) (delete-frame)
-  			 (delete-window win)))))
-
-(defun open-split-term () (interactive)
-       (let ((new-win (split-window-below)))
-         (select-window new-win)
-         (ansi-term (getenv "SHELL"))))
-
 (defvar lmap-globl (make-sparse-keymap))
 (evil-define-key '(normal motion) 'evil-normal-state-map
   (kbd "SPC") lmap-globl)
 
-(evil-define-key '(normal visual) 'evil-normal-state-map
-(kbd "H")         'previous-buffer
-(kbd "<S-left>")  'previous-buffer
-(kbd "L")         'next-buffer
-(kbd "<S-right>") 'next-buffer)
-
 (dolist (pair
 		 '(("TAB" . comment-line)
+		   ("RET" . helper/open-split-term)
 		   ("w"   . save-buffer)
 		   ("R"   . (lambda () (interactive) (load-file CONFIG_PATH)))
 		   ("e"   . dired-jump)
 		   ("G"   . magit-status)
-		   ("RET" . open-split-term)))
 		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 
 (defvar lmap-globl/buffer (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/buffer "b"
-			'(("i" . ibuffer)
+			'(("n" . next-buffer)
+			  ("p" . previous-buffer)
+			  ("i" . ibuffer)
 			  ("r" . revert-buffer)
-			  ("d" . buffer/kill)
-			  ("D" . buffer/force-kill)))
+			  ("d" . helper/buffer/kill)
+			  ("D" . helper/buffer/force-kill)))
 
 (defvar lmap-globl/window (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/window "w"
-			'(("c" . window/close)
-			  ("C" . window/force-close)))
+			'(("c" . helper/window/close)
+			  ("C" . helper/window/force-close)))
 
 (defvar lmap-globl/org (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/org "o"
