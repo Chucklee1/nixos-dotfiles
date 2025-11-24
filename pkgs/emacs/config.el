@@ -160,9 +160,11 @@
 
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/toggle "t"
-			'(("b" . (lambda () (interactive) (global-tab-line-mode 'toggle)))
-			  ("n" . (lambda () (interactive) (display-line-numbers-mode 'toggle)))
-			  ("N" . (lambda () (interactive) (global-display-line-numbers-mode 'toggle)))))
+            '(("b" . global-tab-line-mode)
+              ("n" . display-line-numbers-mode)
+              ("N" . global-display-line-numbers-mode)
+              ("w" . visual-wrap-prefix-mode)
+              ("W" . global-visual-wrap-prefix-mode)))
 
 (use-package dired
   :ensure nil ;; builtin
