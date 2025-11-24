@@ -300,6 +300,12 @@
 		;; use ... for folded text
 		org-ellipsis "…"))
 
+(set-face-attribute 'org-document-title nil :height 1.8 :weight 'bold)
+(set-face-attribute 'org-document-info nil :height 1.4 :weight 'bold)
+(set-face-attribute 'org-level-1 nil :height 1.4 :weight 'bold)
+(set-face-attribute 'org-level-2 nil :height 1.2 :weight 'bold)
+(set-face-attribute 'org-level-3 nil :height 1.1 :weight 'bold)
+
 (use-package toc-org
   :commands toc-org-enable
   :hook (org-mode . toc-org-mode))

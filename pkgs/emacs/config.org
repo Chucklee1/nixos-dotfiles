@@ -466,7 +466,19 @@
   		org-pretty-entities t
   		;; use ... for folded text
   		org-ellipsis "…"))
-		  #+end_src
+		#+end_src
++ Facename cheatsheet:
+    - org-level-n, /where n is the header level/
+    - org-document-{title, info, info-keyword}
+    - org-{tag,todo, done, special-keyword, warning, date}
++ Here are some sensible size changes for org-headers and the tile+info parts
+#+begin_src emacs-lisp
+  (set-face-attribute 'org-document-title nil :height 1.8 :weight 'bold)
+  (set-face-attribute 'org-document-info nil :height 1.4 :weight 'bold)
+  (set-face-attribute 'org-level-1 nil :height 1.4 :weight 'bold)
+  (set-face-attribute 'org-level-2 nil :height 1.2 :weight 'bold)
+  (set-face-attribute 'org-level-3 nil :height 1.1 :weight 'bold)
+#+end_src
 ** Org TOC
 #+begin_src emacs-lisp
   (use-package toc-org
