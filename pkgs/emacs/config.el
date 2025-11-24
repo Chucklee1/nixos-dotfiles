@@ -7,7 +7,7 @@
 (defvar g/opacity       (if (eq system-type 'darwin) 40 90))
 
 ;; keybinds ;;
-(defun helper/mkkeygroup (leader group-name group-key keypairs)
+(defun mkkeygroup (leader group-name group-key keypairs)
   "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
   (interactive)
   (define-key leader (kbd group-key) group-name)
@@ -57,6 +57,7 @@
 
   ;; behavior
   (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
+  (indent-tabs-mode nil) ;; use spaces instead of tabs
   (tab-width 4)
 
   (global-auto-revert-mode t) ;; Automatically reload file and show changes if the file has changed
@@ -74,7 +75,7 @@
   (auto-save-default nil) ;; Stop creating # auto save files
 
   :hook
-  (before-save   . (lambda () (delete-trailing-whitespace)))
+  (before-save   . delete-trailing-whitespace)
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -82,7 +83,7 @@
   :bind (
 		 ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
 		 ;; Zooming In/Out
-		 ("C-+" . text-scale-increase)
+		 ("C-=" . text-scale-increase)
 		 ("C--" . text-scale-decrease)
 		 ("<C-wheel-up>" . text-scale-increase)
 		 ("<C-wheel-down>" . text-scale-decrease)))
