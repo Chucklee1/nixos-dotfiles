@@ -125,7 +125,6 @@
 		   ("w"   . save-buffer)
 		   ("R"   . (lambda () (interactive) (load-file CONFIG_PATH)))
 		   ("e"   . dired-jump)
-		   ("G"   . magit-status)
 		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 
 (defvar lmap-globl/buffer (make-sparse-keymap))
@@ -142,6 +141,12 @@
 			'(("c" . helper/window/close)
 			  ("C" . helper/window/force-close)))
 
+(defvar lmap-globl/git (make-sparse-keymap))
+(mkkeygroup lmap-globl lmap-globl/git "g"
+			'(("g" . magit-status)
+			  ("l" . magit-log-current)
+			  ("P" . magit-pull)
+			  ("p" . magit-push)))
 (defvar lmap-globl/org (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/org "o"
 			'(("i" . org-toggle-inline-images)

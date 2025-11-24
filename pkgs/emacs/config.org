@@ -176,6 +176,7 @@
 
     ;; behavior
     (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
+    (indent-tabs-mode nil) ;; use spaces instead of tabs
     (tab-width 4)
 
     (global-auto-revert-mode t) ;; Automatically reload file and show changes if the file has changed
@@ -279,6 +280,18 @@
   (mkkeygroup lmap-globl lmap-globl/window "w"
   			'(("c" . helper/window/close)
   			  ("C" . helper/window/force-close)))
+#+end_src
+*** globl - git
++ For magit-status, I would use spc+gs,
+  but I am more used to neovim's lazygit setup, where I used spc+gg
++ Maybe I will change it later
+#+begin_src emacs-lisp
+  (defvar lmap-globl/git (make-sparse-keymap))
+  (mkkeygroup lmap-globl lmap-globl/git "g"
+  			'(("g" . magit-status)
+  			  ("l" . magit-log-current)
+  			  ("P" . magit-pull)
+  			  ("p" . magit-push)))
 #+end_src
 *** globl - org
 #+begin_src emacs-lisp
