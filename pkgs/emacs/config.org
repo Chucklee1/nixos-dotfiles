@@ -215,7 +215,7 @@
     :bind (:map evil-motion-state-map
                 ("SPC" . nil)
                 ("RET" . nil)
-                  ("TAB" . nil)))
+                ("TAB" . nil)))
   (use-package evil-collection
     :after evil
     :config

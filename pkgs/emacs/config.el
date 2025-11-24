@@ -26,15 +26,15 @@
 
 ;; windows ;;
 (defun helper/window/close () (interactive)
-  	   (let ((win (get-buffer-window (current-buffer))))
-    	 (when (and win (window-live-p win) (not (one-window-p win)))
+         (let ((win (get-buffer-window (current-buffer))))
+         (when (and win (window-live-p win) (not (one-window-p win)))
            (delete-window win))))
 
 (defun helper/window/force-close () (interactive)
-  	   (let ((win (get-buffer-window (current-buffer))))
-  		 (when (window-live-p win)
-  		   (if (one-window-p) (delete-frame)
-  			 (delete-window win)))))
+         (let ((win (get-buffer-window (current-buffer))))
+           (when (window-live-p win)
+             (if (one-window-p) (delete-frame)
+               (delete-window win)))))
 
 (defun helper/open-split-term () (interactive)
        (let ((new-win (split-window-below)))
@@ -81,12 +81,12 @@
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
   :bind (
-		 ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
-		 ;; Zooming In/Out
-		 ("C-=" . text-scale-increase)
-		 ("C--" . text-scale-decrease)
-		 ("<C-wheel-up>" . text-scale-increase)
-		 ("<C-wheel-down>" . text-scale-decrease)))
+         ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
+         ;; Zooming In/Out
+         ("C-=" . text-scale-increase)
+         ("C--" . text-scale-decrease)
+         ("<C-wheel-up>" . text-scale-increase)
+         ("<C-wheel-down>" . text-scale-decrease)))
 
 (use-package evil
   :init
@@ -100,7 +100,7 @@
   :bind (:map evil-motion-state-map
               ("SPC" . nil)
               ("RET" . nil)
-      		  ("TAB" . nil)))
+              ("TAB" . nil)))
 (use-package evil-collection
   :after evil
   :config
@@ -120,43 +120,43 @@
   (kbd "SPC") lmap-globl)
 
 (dolist (pair
-		 '(("TAB" . comment-line)
-		   ("RET" . helper/open-split-term)
-		   ("w"   . save-buffer)
-		   ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
-		   ("e"   . dired-jump)))
-		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
+         '(("TAB" . comment-line)
+           ("RET" . helper/open-split-term)
+           ("w"   . save-buffer)
+           ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
+           ("e"   . dired-jump)))
+         (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 
 (defvar lmap-globl/buffer (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/buffer "b"
-			'(("n" . next-buffer)
-			  ("p" . previous-buffer)
-			  ("i" . ibuffer)
-			  ("r" . revert-buffer)
-			  ("d" . helper/buffer/kill)
-			  ("D" . helper/buffer/force-kill)))
+            '(("n" . next-buffer)
+              ("p" . previous-buffer)
+              ("i" . ibuffer)
+              ("r" . revert-buffer)
+              ("d" . helper/buffer/kill)
+              ("D" . helper/buffer/force-kill)))
 
 (defvar lmap-globl/window (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/window "w"
-			'(("c" . helper/window/close)
-			  ("C" . helper/window/force-close)))
+            '(("c" . helper/window/close)
+              ("C" . helper/window/force-close)))
 
 (defvar lmap-globl/git (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/git "g"
-			'(("g" . magit-status)
-			  ("l" . magit-log-current)
-			  ("P" . magit-pull)
-			  ("p" . magit-push)))
+            '(("g" . magit-status)
+              ("l" . magit-log-current)
+              ("P" . magit-pull)
+              ("p" . magit-push)))
 
 (defvar lmap-globl/org (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/org "o"
-			'(("a" . org-agenda-list)
-			  ("t" . org-babel-tangle)
-			  ("l" . org-latex-preview)
-			  ("i" . org-toggle-inline-images)
-			  ("t" . org-todo)
-			  ("s" . org-schedule)
-			  ("d" . org-deadline)))
+            '(("a" . org-agenda-list)
+              ("t" . org-babel-tangle)
+              ("l" . org-latex-preview)
+              ("i" . org-toggle-inline-images)
+              ("t" . org-todo)
+              ("s" . org-schedule)
+              ("d" . org-deadline)))
 
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/toggle "t"
@@ -177,10 +177,10 @@
    ;; Dired don't create new buffer
    dired-kill-when-opening-new-dired-buffer t)
   (when (string= system-type "darwin") ;; macos ls is poop, we need better ls
-	(let ((gls (executable-find "gls")))
-	  (when gls
-		(setq dired-use-ls-dired t
-			  insert-directory-program gls)))))
+    (let ((gls (executable-find "gls")))
+      (when gls
+        (setq dired-use-ls-dired t
+              insert-directory-program gls)))))
 
 (use-package dired-subtree
   :after dired
@@ -213,9 +213,10 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(add-hook 'window-setup-hook (lambda ()
-							   (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
-							   (add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
+(add-hook 'window-setup-hook
+          (lambda ()
+            (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
+            (add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
 
 (set-face-attribute 'default nil
                     :font   g/ffamily
@@ -251,14 +252,14 @@
 (use-package eglot
   :ensure nil ;; Don't install eglot because it's now built-in
   :hook ((c-mode
-		  c++-mode
-		  haskell-mode
-		  kdl-mode
-		  lua-mode
-		  markdown-mode
-		  nix-mode
-		  qml-mode
-		  web-mode)
+          c++-mode
+          haskell-mode
+          kdl-mode
+          lua-mode
+          markdown-mode
+          nix-mode
+          qml-mode
+          web-mode)
          . eglot-ensure)
   :custom
   ;; Good default
@@ -290,13 +291,13 @@
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
   :config
   (setq org-catch-invisible-edits 'show-and-error
-		org-special-ctrl-a/e t ;; smart jump keys
-		org-insert-heading-respect-content t
-		;; Org styling, hide markup etc.
-		org-hide-emphasis-markers t
-		org-pretty-entities t
-		;; use ... for folded text
-		org-ellipsis "…"))
+        org-special-ctrl-a/e t ;; smart jump keys
+        org-insert-heading-respect-content t
+        ;; Org styling, hide markup etc.
+        org-hide-emphasis-markers t
+        org-pretty-entities t
+        ;; use ... for folded text
+        org-ellipsis "…"))
 
 (set-face-attribute 'org-document-title nil :height 1.8 :weight 'bold)
 (set-face-attribute 'org-document-info nil :height 1.4 :weight 'bold)
@@ -329,15 +330,15 @@
 
 (defun config/sync-with-org ()
   (when (string-equal (file-truename buffer-file-name)
-					  (file-truename g/path/orgcfg))
-	(org-babel-tangle)))
+                      (file-truename g/path/orgcfg))
+    (org-babel-tangle)))
 
 (add-hook 'org-mode-hook
-		  (lambda ()
-			(add-hook 'after-save-hook
-					  (lambda ()
-						(config/sync-with-org))
-					  nil t)))
+          (lambda ()
+            (add-hook 'after-save-hook
+                      (lambda ()
+                        (config/sync-with-org))
+                      nil t)))
 
 (use-package company
   :custom
@@ -426,7 +427,7 @@
 
 (when (eq system-type 'darwin)
   (use-package ultra-scroll
-	:init
-	(setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
-	:config
-	(ultra-scroll-mode 1)))
+    :init
+    (setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
+    :config
+    (ultra-scroll-mode 1)))
