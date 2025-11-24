@@ -254,7 +254,7 @@
 (use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 ;; heavier niche modes - will not connect to eglot
-;; (if (executable-find "nu") (use-package nushell-mode))
+(if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
 
 (use-package auctex)

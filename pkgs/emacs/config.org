@@ -14,7 +14,7 @@
   - [[#evil-mode][Evil Mode]]
   - [[#keybinds][Keybinds]]
   - [[#dired][Dired]]
--  [[#appearance][Appearance]]
+- [[#appearance][Appearance]]
   - [[#theme][Theme]]
   - [[#transparent-background][Transparent Background]]
   - [[#font][Font]]
@@ -302,7 +302,7 @@
   (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 #+end_src
 
-*  Appearance
+* Appearance
 ** Theme
 #+begin_src emacs-lisp
   (use-package doom-themes
@@ -397,7 +397,7 @@
       (use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
       (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
       ;; heavier niche modes - will not connect to eglot
-      ;; (if (executable-find "nu") (use-package nushell-mode))
+      (if (executable-find "nu") (use-package nushell-mode))
       (if (executable-find "kotlin") (use-package kotlin-mode))
 #+end_src
 ** Auctex
