@@ -50,7 +50,7 @@
 + Dolist
 #+begin_src emacs-lisp :tangle no
   (dolist
-  	(item '(a b c))
+      (item '(a b c))
     (message "%s" item)
   )
 #+end_src
@@ -136,15 +136,15 @@
 
   ;; windows ;;
   (defun helper/window/close () (interactive)
-    	   (let ((win (get-buffer-window (current-buffer))))
-      	 (when (and win (window-live-p win) (not (one-window-p win)))
+           (let ((win (get-buffer-window (current-buffer))))
+           (when (and win (window-live-p win) (not (one-window-p win)))
              (delete-window win))))
 
   (defun helper/window/force-close () (interactive)
-    	   (let ((win (get-buffer-window (current-buffer))))
-    		 (when (window-live-p win)
-    		   (if (one-window-p) (delete-frame)
-    			 (delete-window win)))))
+           (let ((win (get-buffer-window (current-buffer))))
+             (when (window-live-p win)
+               (if (one-window-p) (delete-frame)
+                 (delete-window win)))))
 
   (defun helper/open-split-term () (interactive)
          (let ((new-win (split-window-below)))
@@ -193,12 +193,12 @@
     (setq custom-file (locate-user-emacs-file "custom-vars.el"))
     (load custom-file 'noerror 'nomessage)
     :bind (
-  		 ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
-  		 ;; Zooming In/Out
-  		 ("C-=" . text-scale-increase)
-  		 ("C--" . text-scale-decrease)
-  		 ("<C-wheel-up>" . text-scale-increase)
-  		 ("<C-wheel-down>" . text-scale-decrease)))
+           ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
+           ;; Zooming In/Out
+           ("C-=" . text-scale-increase)
+           ("C--" . text-scale-decrease)
+           ("<C-wheel-up>" . text-scale-increase)
+           ("<C-wheel-down>" . text-scale-decrease)))
 #+end_src
 ** Evil Mode
 + Vim Clone
@@ -215,7 +215,7 @@
     :bind (:map evil-motion-state-map
                 ("SPC" . nil)
                 ("RET" . nil)
-        		  ("TAB" . nil)))
+                  ("TAB" . nil)))
   (use-package evil-collection
     :after evil
     :config
@@ -240,30 +240,30 @@
 *** Globl - Leader Root
 #+begin_src emacs-lisp
   (dolist (pair
-  		 '(("TAB" . comment-line)
-  		   ("RET" . helper/open-split-term)
-  		   ("w"   . save-buffer)
-  		   ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
-  		   ("e"   . dired-jump)))
-  		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
+           '(("TAB" . comment-line)
+             ("RET" . helper/open-split-term)
+             ("w"   . save-buffer)
+             ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
+             ("e"   . dired-jump)))
+           (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 #+end_src
 *** globl - buffer
 #+begin_src emacs-lisp
   (defvar lmap-globl/buffer (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/buffer "b"
-  			'(("n" . next-buffer)
-  			  ("p" . previous-buffer)
-  			  ("i" . ibuffer)
-  			  ("r" . revert-buffer)
-  			  ("d" . helper/buffer/kill)
-  			  ("D" . helper/buffer/force-kill)))
+              '(("n" . next-buffer)
+                ("p" . previous-buffer)
+                ("i" . ibuffer)
+                ("r" . revert-buffer)
+                ("d" . helper/buffer/kill)
+                ("D" . helper/buffer/force-kill)))
 #+end_src
 *** Globl - window
 #+begin_src emacs-lisp
   (defvar lmap-globl/window (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/window "w"
-  			'(("c" . helper/window/close)
-  			  ("C" . helper/window/force-close)))
+              '(("c" . helper/window/close)
+                ("C" . helper/window/force-close)))
 #+end_src
 *** globl - git
 + For magit-status, I would use spc+gs,
@@ -272,23 +272,23 @@
 #+begin_src emacs-lisp
   (defvar lmap-globl/git (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/git "g"
-  			'(("g" . magit-status)
-  			  ("l" . magit-log-current)
-  			  ("P" . magit-pull)
-  			  ("p" . magit-push)))
+              '(("g" . magit-status)
+                ("l" . magit-log-current)
+                ("P" . magit-pull)
+                ("p" . magit-push)))
 #+end_src
 *** globl - org
 #+begin_src emacs-lisp
   (defvar lmap-globl/org (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/org "o"
-  			'(("a" . org-agenda-list)
-  			  ("t" . org-babel-tangle)
-  			  ("l" . org-latex-preview)
-  			  ("i" . org-toggle-inline-images)
-  			  ("t" . org-todo)
-  			  ("s" . org-schedule)
-  			  ("d" . org-deadline)))
-		  #+end_src
+              '(("a" . org-agenda-list)
+                ("t" . org-babel-tangle)
+                ("l" . org-latex-preview)
+                ("i" . org-toggle-inline-images)
+                ("t" . org-todo)
+                ("s" . org-schedule)
+                ("d" . org-deadline)))
+          #+end_src
 *** globl - toggle
 #+begin_src emacs-lisp
   (defvar lmap-globl/toggle (make-sparse-keymap))
@@ -312,11 +312,11 @@
      ;; Dired don't create new buffer
      dired-kill-when-opening-new-dired-buffer t)
     (when (string= system-type "darwin") ;; macos ls is poop, we need better ls
-  	(let ((gls (executable-find "gls")))
-  	  (when gls
-  		(setq dired-use-ls-dired t
-  			  insert-directory-program gls)))))
-	    #+end_src
+      (let ((gls (executable-find "gls")))
+        (when gls
+          (setq dired-use-ls-dired t
+                insert-directory-program gls)))))
+        #+end_src
 *** Dired Hacks - Subtree
 #+begin_src emacs-lisp
     (use-package dired-subtree
@@ -363,8 +363,8 @@
 #+begin_src emacs-lisp
   (add-hook 'window-setup-hook
             (lambda ()
-  			(set-frame-parameter (selected-frame) 'alpha-background g/opacity)
-  			(add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
+              (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
+              (add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
 #+end_src
 ** Font
 #+begin_src emacs-lisp
@@ -413,14 +413,14 @@
   (use-package eglot
     :ensure nil ;; Don't install eglot because it's now built-in
     :hook ((c-mode
-  		  c++-mode
-  		  haskell-mode
-  		  kdl-mode
-  		  lua-mode
-  		  markdown-mode
-  		  nix-mode
-  		  qml-mode
-  		  web-mode)
+            c++-mode
+            haskell-mode
+            kdl-mode
+            lua-mode
+            markdown-mode
+            nix-mode
+            qml-mode
+            web-mode)
            . eglot-ensure)
     :custom
     ;; Good default
@@ -461,14 +461,14 @@
     (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
     :config
     (setq org-catch-invisible-edits 'show-and-error
-  		org-special-ctrl-a/e t ;; smart jump keys
-  		org-insert-heading-respect-content t
-  		;; Org styling, hide markup etc.
-  		org-hide-emphasis-markers t
-  		org-pretty-entities t
-  		;; use ... for folded text
-  		org-ellipsis "…"))
-		#+end_src
+          org-special-ctrl-a/e t ;; smart jump keys
+          org-insert-heading-respect-content t
+          ;; Org styling, hide markup etc.
+          org-hide-emphasis-markers t
+          org-pretty-entities t
+          ;; use ... for folded text
+          org-ellipsis "…"))
+        #+end_src
 + Facename cheatsheet:
     - org-level-n, /where n is the header level/
     - org-document-{title, info, info-keyword}
@@ -517,15 +517,15 @@
 #+begin_src emacs-lisp
   (defun config/sync-with-org ()
     (when (string-equal (file-truename buffer-file-name)
-  					  (file-truename g/path/orgcfg))
-  	(org-babel-tangle)))
+                        (file-truename g/path/orgcfg))
+      (org-babel-tangle)))
 
   (add-hook 'org-mode-hook
-  		  (lambda ()
-  			(add-hook 'after-save-hook
-  					  (lambda ()
-  						(config/sync-with-org))
-  					  nil t)))
+            (lambda ()
+              (add-hook 'after-save-hook
+                        (lambda ()
+                          (config/sync-with-org))
+                        nil t)))
 #+end_src
 
 * Completion
@@ -658,8 +658,8 @@
 #+BEGIN_SRC emacs-lisp
   (when (eq system-type 'darwin)
     (use-package ultra-scroll
-  	:init
-  	(setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
-  	:config
-  	(ultra-scroll-mode 1)))
+      :init
+      (setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
+      :config
+      (ultra-scroll-mode 1)))
 #+END_SRC
