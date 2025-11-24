@@ -8,8 +8,8 @@
   - [[#conditionals][Conditionals]]
 - [[#nix-overlay][Nix Overlay]]
 - [[#base-settings][Base Settings]]
-  - [[#global-variables][Global Variables]]
-  - [[#custom-stuff][Custom Stuff]]
+  - [[#pkg-config][Pkg Config]]
+  - [[#variables][Variables]]
   - [[#helper-funcitons][Helper Funcitons]]
   - [[#emacs][Emacs]]
   - [[#evil-mode][Evil Mode]]
@@ -102,24 +102,17 @@
 #+end_src
 
 * Base Settings
-** Global Variables
+** Pkg Config
 #+begin_src emacs-lisp
   (setq use-package-always-ensure t)
-  (defconst CONFIG_PATH (expand-file-name "~/.emacs.d/init.el"))
-  (defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
 #+end_src
-** Custom Stuff
+** Variables
 #+begin_src emacs-lisp
-  ;; functions ;;
-  (defun my/when-!nixos (cmd)
-    (when (not (string-match-p "NixOS"
-  						   (shell-command-to-string "cat /etc/os-release")))
-    cmd))
-
-  ;; variables ;;
-  (defvar g/fheight (if (eq system-type 'darwin) 150 130))
-  (defvar g/ffamily "JetBrainsMono Nerd Font Propo")
-  (defvar g/opacity (if (eq system-type 'darwin) 40 90))
+  (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
+  (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
+  (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
+  (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
+  (defvar g/opacity       (if (eq system-type 'darwin) 40 90))
 #+end_src
 ** Helper Funcitons
 #+begin_src emacs-lisp
@@ -258,8 +251,8 @@
   		 '(("TAB" . comment-line)
   		   ("RET" . helper/open-split-term)
   		   ("w"   . save-buffer)
-  		   ("R"   . (lambda () (interactive) (load-file CONFIG_PATH)))
-  		   ("e"   . dired-jump)
+  		   ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
+  		   ("e"   . dired-jump)))
   		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 #+end_src
 *** globl - buffer
@@ -528,7 +521,7 @@
 #+begin_src emacs-lisp
   (defun config/sync-with-org ()
     (when (string-equal (file-truename buffer-file-name)
-  					  (file-truename ORGCFG_PATH))
+  					  (file-truename g/path/orgcfg))
   	(org-babel-tangle)))
 
   (add-hook 'org-mode-hook

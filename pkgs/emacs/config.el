@@ -1,11 +1,10 @@
 (setq use-package-always-ensure t)
-(defconst CONFIG_PATH (expand-file-name "~/.emacs.d/init.el"))
-(defconst ORGCFG_PATH (expand-file-name "~/.emacs.d/init.org"))
 
-;; variables ;;
-(defvar g/fheight (if (eq system-type 'darwin) 150 130))
-(defvar g/ffamily "JetBrainsMono Nerd Font Propo")
-(defvar g/opacity (if (eq system-type 'darwin) 40 90))
+(defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
+(defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
+(defvar g/fheight       (if (eq system-type 'darwin) 150 130))
+(defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
+(defvar g/opacity       (if (eq system-type 'darwin) 40 90))
 
 ;; keybinds ;;
 (defun helper/mkkeygroup (leader group-name group-key keypairs)
@@ -123,8 +122,8 @@
 		 '(("TAB" . comment-line)
 		   ("RET" . helper/open-split-term)
 		   ("w"   . save-buffer)
-		   ("R"   . (lambda () (interactive) (load-file CONFIG_PATH)))
-		   ("e"   . dired-jump)
+		   ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
+		   ("e"   . dired-jump)))
 		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 
 (defvar lmap-globl/buffer (make-sparse-keymap))
@@ -147,6 +146,7 @@
 			  ("l" . magit-log-current)
 			  ("P" . magit-pull)
 			  ("p" . magit-push)))
+
 (defvar lmap-globl/org (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/org "o"
 			'(("i" . org-toggle-inline-images)
@@ -326,7 +326,7 @@
 
 (defun config/sync-with-org ()
   (when (string-equal (file-truename buffer-file-name)
-					  (file-truename ORGCFG_PATH))
+					  (file-truename g/path/orgcfg))
 	(org-babel-tangle)))
 
 (add-hook 'org-mode-hook
