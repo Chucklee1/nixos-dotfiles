@@ -45,8 +45,6 @@
   inputs.dwm.url = "github:Chucklee1/dwm";
   inputs.dwm.flake = false;
   inputs.niri.url = "github:sodiboo/niri-flake";
-  inputs.zen-browser.url = "github:0xc000022070/zen-browser-flake";
-  inputs.zen-browser.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = {self, ...} @ inputs: let
     # ---- additionals ----
