@@ -260,7 +260,6 @@
   		   ("w"   . save-buffer)
   		   ("R"   . (lambda () (interactive) (load-file CONFIG_PATH)))
   		   ("e"   . dired-jump)
-  		   ("G"   . magit-status)
   		   ("RET" . open-split-term)))
   		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 #+end_src
