@@ -86,6 +86,7 @@
 (with-eval-after-load 'evil
   (evil-set-initial-state 'outline-mode 'normal))
 
+;; keybinds ;;
 (defun mkkeygroup (leader group-name group-key keypairs)
   "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
   (interactive)
@@ -94,27 +95,29 @@
     ;; pair format => ("key" . cmd)
     (define-key group-name (kbd (car pair)) (cdr pair))))
 
+;; buffers ;;
 (defun buffer/kill () (interactive)
-  	   (let ((buf (current-buffer)))
+       (let ((buf (current-buffer)))
          (kill-current-buffer)))
 
 (defun buffer/force-kill () (interactive)
-  	   (let ((buf (current-buffer)))
+       (let ((buf (current-buffer)))
          (kill-buffer buf)))
 
+;; windows ;;
 (defun window/close () (interactive)
-	   (let (win (get-buffer-window (current-buffer)))
-  		 (when (and win (window-live-p win) (not (one-window-p win)))
+  	   (let ((win (get-buffer-window (current-buffer))))
+    	 (when (and win (window-live-p win) (not (one-window-p win)))
            (delete-window win))))
 
 (defun window/force-close () (interactive)
-	   (let (win (get-buffer-window (current-buffer)))
-		 (when (window-live-p win)
-		   (if (one-window-p) (delete-frame)
-			 (delete-window win)))))
+  	   (let ((win (get-buffer-window (current-buffer))))
+  		 (when (window-live-p win)
+  		   (if (one-window-p) (delete-frame)
+  			 (delete-window win)))))
 
 (defun open-split-term () (interactive)
-  	   (let ((new-win (split-window-below)))
+       (let ((new-win (split-window-below)))
          (select-window new-win)
          (ansi-term (getenv "SHELL"))))
 
@@ -202,8 +205,8 @@
 (use-package doom-themes
   :custom
   ;; Global settings (defaults)
-  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
-  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (doom-themes-enable-bold t)   ;; if nil, bold is universally disabled
+  (doom-themes-enable-italic t) ;; if nil, italics is universally disabled
   :config
   (load-theme 'doom-nord t)
 
@@ -226,7 +229,7 @@
   :if (display-graphic-p))
 
 (use-package nerd-icons-dired
-  :hook (dired-mode . (lambda () (nerd-icons-dired-mode t))))
+  :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
@@ -287,18 +290,15 @@
 (use-package org
   :custom
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
-  :hook
-  (org-mode . (lambda ()
-				(setq
-				 ;; Edit settings
-  				 org-catch-invisible-edits 'show-and-error
-  				 org-special-ctrl-a/e t ;; smart jump keys
-  				 org-insert-heading-respect-content t
-  				 ;; Org styling, hide markup etc.
-  				 org-hide-emphasis-markers t
-  				 org-pretty-entities t
-  				 org-ellipsis "…" ;; use ... for folded text
-  				 ))))
+  :config
+  (setq org-catch-invisible-edits 'show-and-error
+		org-special-ctrl-a/e t ;; smart jump keys
+		org-insert-heading-respect-content t
+		;; Org styling, hide markup etc.
+		org-hide-emphasis-markers t
+		org-pretty-entities t
+		;; use ... for folded text
+		org-ellipsis "…"))
 
 (use-package toc-org
   :commands toc-org-enable
