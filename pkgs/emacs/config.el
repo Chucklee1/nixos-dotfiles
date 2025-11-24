@@ -156,7 +156,7 @@
 			  ("s" . org-schedule)
 			  ("d" . org-deadline)
 			  ("t" . org-babel-tangle)
-			  (";" . org-latex-preview)
+			  ("l" . org-latex-preview)
 			  ("a" . org-agenda-list)))
 
 (defvar lmap-globl/toggle (make-sparse-keymap))
