@@ -211,22 +211,26 @@
       (define-key group-name (kbd (car pair)) (cdr pair))))
 
   (defun buffer/kill () (interactive)
-  	   (let ((buf (current-buffer))
-         		 (win (get-buffer-window (current-buffer))))
-           (kill-current-buffer)
-           (when (and win (window-live-p win) (not (one-window-p win)))
-             (delete-window win))))
+    	   (let ((buf (current-buffer)))
+           (kill-current-buffer)))
 
   (defun buffer/force-kill () (interactive)
-  	   (let ((buf (current-buffer))
-         		 (win (get-buffer-window (current-buffer))))
-           (kill-buffer buf)
-           (when (window-live-p win)
-             (if (one-window-p) (delete-frame)
-               (delete-window win)))))
+    	   (let ((buf (current-buffer)))
+           (kill-buffer buf)))
+
+  (defun window/close () (interactive)
+  	   (let (win (get-buffer-window (current-buffer)))
+    		 (when (and win (window-live-p win) (not (one-window-p win)))
+             (delete-window win))))
+
+  (defun window/force-close () (interactive)
+  	   (let (win (get-buffer-window (current-buffer)))
+  		 (when (window-live-p win)
+  		   (if (one-window-p) (delete-frame)
+  			 (delete-window win)))))
 
   (defun open-split-term () (interactive)
-  	   (let ((new-win (split-window-below)))
+    	   (let ((new-win (split-window-below)))
            (select-window new-win)
            (ansi-term (getenv "SHELL"))))
 #+end_src
@@ -259,12 +263,18 @@
 + Keybinds
 #+begin_src emacs-lisp
   (defvar lmap-globl/buffer (make-sparse-keymap))
-  (define-key lmap-globl (kbd "b") lmap-globl/buffer)
-  ;; actual key defs
-  (define-key lmap-globl/buffer (kbd "i") 'ibuffer)
-  (define-key lmap-globl/buffer (kbd "r") 'revert-buffer)
-  (define-key lmap-globl/buffer (kbd "d") 'buffer/kill)
-  (define-key lmap-globl/buffer (kbd "D") 'buffer/force-kill)
+  (mkkeygroup lmap-globl lmap-globl/buffer "b"
+  			'(("i" . ibuffer)
+  			  ("r" . revert-buffer)
+  			  ("d" . buffer/kill)
+  			  ("D" . buffer/force-kill)))
+#+end_src
+*** Globl - window
+#+begin_src emacs-lisp
+  (defvar lmap-globl/window (make-sparse-keymap))
+  (mkkeygroup lmap-globl lmap-globl/window "w"
+  			'(("c" . window/close)
+  			  ("C" . window/force-close)))
 #+end_src
 *** globl - org
 #+begin_src emacs-lisp
