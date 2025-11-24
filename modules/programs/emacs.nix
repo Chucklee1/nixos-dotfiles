@@ -12,7 +12,10 @@
         self.overlays.emacs
       ];
       # got to restate for mac to actually install emacs...
-      environment.systemPackages = [emacs-pkg];
+      environment.systemPackages =
+        [emacs-pkg] ++
+        (if pkgs.stdenv.isDarwin then pkgs.coreutils-prefixed else []);
+
       services.emacs.enable = true;
       services.emacs.package = emacs-pkg;
     })

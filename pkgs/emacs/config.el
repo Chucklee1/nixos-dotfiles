@@ -171,10 +171,15 @@
   (dired-omit-files "^\\..*$") ;; hide . & .. folders
   :config
   (setq
-   dired-listing-switches "-lAh --group-directories-first"
+   dired-listing-switches "-Ahl --group-directories-first"
    delete-by-moving-to-trash t
    ;; Dired don't create new buffer
-   dired-kill-when-opening-new-dired-buffer t))
+   dired-kill-when-opening-new-dired-buffer t)
+  (when (string= system-type "darwin") ;; macos ls is poop, we need better ls
+	(let ((gls (executable-find "gls")))
+	  (when gls
+		(setq dired-use-ls-dired t
+			  insert-directory-program gls)))))
 
 (use-package dired-subtree
   :after dired
