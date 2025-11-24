@@ -86,6 +86,34 @@
 (with-eval-after-load 'evil
   (evil-set-initial-state 'outline-mode 'normal))
 
+(defun mkkeygroup (leader group-name group-key keypairs)
+  "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
+  (interactive)
+  (define-key leader (kbd group-key) group-name)
+  (dolist (pair keypairs)
+    ;; pair format => ("key" . cmd)
+    (define-key group-name (kbd (car pair)) (cdr pair))))
+
+(defun buffer/kill () (interactive)
+	   (let ((buf (current-buffer))
+       		 (win (get-buffer-window (current-buffer))))
+         (kill-current-buffer)
+         (when (and win (window-live-p win) (not (one-window-p win)))
+           (delete-window win))))
+
+(defun buffer/force-kill () (interactive)
+	   (let ((buf (current-buffer))
+       		 (win (get-buffer-window (current-buffer))))
+         (kill-buffer buf)
+         (when (window-live-p win)
+           (if (one-window-p) (delete-frame)
+             (delete-window win)))))
+
+(defun open-split-term () (interactive)
+	   (let ((new-win (split-window-below)))
+         (select-window new-win)
+         (ansi-term (getenv "SHELL"))))
+
 (defvar lmap-globl (make-sparse-keymap))
 (evil-define-key '(normal motion) 'evil-normal-state-map
   (kbd "SPC") lmap-globl)
@@ -96,59 +124,38 @@
 (kbd "L")         'next-buffer
 (kbd "<S-right>") 'next-buffer)
 
-;; globals
-(define-key lmap-globl (kbd "TAB") 'comment-line)
-(define-key lmap-globl (kbd "w")   'save-buffer)
-(define-key lmap-globl (kbd "R")
-            (lambda () (interactive)
-              (load-file CONFIG_PATH)))
-
-;; programs
-(define-key lmap-globl (kbd "e") 'dired-jump)
-(define-key lmap-globl (kbd "G") 'magit-status)
+(dolist (pair
+		 '(("TAB" . comment-line)
+		   ("w"   . save-buffer)
+		   ("R"   . (lambda () (interactive) (load-file CONFIG_PATH)))
+		   ("e"   . dired-jump)
+		   ("G"   . magit-status)
+		   ("RET" . open-split-term)))
+		 (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 
 (defvar lmap-globl/buffer (make-sparse-keymap))
 (define-key lmap-globl (kbd "b") lmap-globl/buffer)
 ;; actual key defs
 (define-key lmap-globl/buffer (kbd "i") 'ibuffer)
-(define-key lmap-globl/buffer (kbd "d") 'kill-current-buffer)
-(define-key lmap-globl/buffer (kbd "D")
-       		(lambda () (interactive)
-       		  (kill-buffer (current-buffer))))
 (define-key lmap-globl/buffer (kbd "r") 'revert-buffer)
+(define-key lmap-globl/buffer (kbd "d") 'buffer/kill)
+(define-key lmap-globl/buffer (kbd "D") 'buffer/force-kill)
 
 (defvar lmap-globl/org (make-sparse-keymap))
-(define-key lmap-globl (kbd "o") lmap-globl/org)
-;; general
-(define-key lmap-globl/org (kbd "i") 'org-toggle-inline-images)
-(define-key lmap-globl/org (kbd "t") 'org-todo)
-(define-key lmap-globl/org (kbd "s") 'org-schedule)
-(define-key lmap-globl/org (kbd "d") 'org-deadline)
-;; agenda
-(defvar lmap-globl/org/agenda (make-sparse-keymap))
-(define-key lmap-globl/org (kbd "a") lmap-globl/org/agenda)
-(define-key lmap-globl/org/agenda (kbd "a") 'org-agenda-list)
-;; babel
-(defvar lmap-globl/org/babel (make-sparse-keymap))
-(define-key lmap-globl/org (kbd "b") lmap-globl/org/babel)
-(define-key lmap-globl/org/babel (kbd "t") 'org-babel-tangle)
-;; LaTeX
-(defvar lmap-globl/org/latex (make-sparse-keymap))
-(define-key lmap-globl/org (kbd "l") lmap-globl/org/latex)
-(define-key lmap-globl/org (kbd "p") 'org-latex-preview)
+(mkkeygroup lmap-globl lmap-globl/org "o"
+			'(("i" . 'org-toggle-inline-images)
+			  ("t" . 'org-todo)
+			  ("s" . 'org-schedule)
+			  ("d" . 'org-deadline)
+			  ("t" . 'org-babel-tangle)
+			  ("p" . 'org-latex-preview)
+			  ("a" . 'org-agenda-list)))
 
 (defvar lmap-globl/toggle (make-sparse-keymap))
-(define-key lmap-globl (kbd "t") lmap-globl/toggle)
-;; actual key defs
-(define-key lmap-globl/toggle (kbd "n")
-  			(lambda () (interactive)
-  			  (display-line-numbers-mode 'toggle)))
-(define-key lmap-globl/toggle (kbd "N")
-  		    (lambda () (interactive)
-  			  (global-display-line-numbers-mode 'toggle)))
-(define-key lmap-globl/toggle (kbd "b")
-  			(lambda () (interactive)
-  			  (global-tab-line-mode 'toggle)))
+(mkkeygroup lmap-globl lmap-globl/toggle "t"
+			'(("b" . (lambda () (interactive) (global-tab-line-mode 'toggle)))
+			  ("n" . (lambda () (interactive) (display-line-numbers-mode 'toggle)))
+			  ("N" . (lambda () (interactive) (global-display-line-numbers-mode 'toggle)))))
 
 (use-package dired
   :ensure nil ;; builtin
