@@ -13,6 +13,8 @@
         nixd
         # info helpers
         ripgrep fzf fd pciutils zoxide
+        # shells
+        bash nushell
         # media
         exiftool mediainfo poppler ueberzugpp
         imagemagick ffmpeg-full

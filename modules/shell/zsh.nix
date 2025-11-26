@@ -2,7 +2,6 @@
   nix = [
     ({pkgs, user, ...}: {
       users.users.${user}.shell = pkgs.zsh;
-      environment.shells = with pkgs; [bash zsh];
 
       programs.zsh = {
         enable = true;
