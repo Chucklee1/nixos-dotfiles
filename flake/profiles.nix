@@ -1,4 +1,6 @@
-{self, inputs, extlib, ...}: {
+{self, extlib, ...}: let
+  inherit (self) inputs;
+in {
   # ---- system  ----
   profiles = let
     mod = extlib.readDirRecursiveToAttrset "${self}/modules";
