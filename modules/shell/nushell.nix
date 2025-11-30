@@ -10,10 +10,10 @@
           show_banner = false; # remove startup msg prompt
           edit_mode = "vi";
         };
-        plugins = with pkgs; [
-          nu_plugin_highlight
-          nu_plugin_formats
-          nu_plugin_gstat
+        plugins = with pkgs.nushellPlugins; [
+          highlight
+          formats
+          gstat
         ];
       };
       # once I figure out nushell coding I will make my own prompt...

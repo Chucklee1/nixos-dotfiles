@@ -18,6 +18,7 @@
 
       services.emacs.enable = true;
       services.emacs.package = emacs-pkg;
+      environment.sessionVariables.editor = "emacs -nw";
     })
   ];
 }
