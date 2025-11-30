@@ -4,7 +4,7 @@
 (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
 (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
 (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
-(defvar g/opacity       (if (eq system-type 'darwin) 40 90))
+(defvar g/opacity       (if (eq system-type 'darwin) 40 80))
 
 ;; keybinds ;;
 (defun mkkeygroup (leader group-name group-key keypairs)
@@ -214,9 +214,22 @@
   (doom-themes-org-config))
 
 (add-hook 'window-setup-hook
-          (lambda ()
-            (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
-            (add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
+                  (lambda ()
+                    (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
+                    (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))))
+
+(with-eval-after-load 'corfu
+  (setq corfu-prefer-childframe t)
+  (setq corfu-childframe-frame-parameters
+        '((alpha-background . ,80) ;; use your g/opacity here if needed
+          (internal-border-width . 1)
+          (left-fringe . 5)
+          (right-fringe . 5))))
+
+
+      ;; ;; unset bg when in terminal/tty
+      (when (not (display-graphic-p))
+        (set-face-background 'default "unspecified-bg"))
 
 (set-face-attribute 'default nil
                     :font   g/ffamily
@@ -240,6 +253,11 @@
   (doom-modeline-spc-face-overrides nil)
   (doom-modeline-buffer-encoding nil)
   :hook (after-init . doom-modeline-mode))
+
+(use-package evil-terminal-cursor-changer)
+(unless (display-graphic-p)
+  (require 'evil-terminal-cursor-changer)
+  (evil-terminal-cursor-changer-activate))
 
 (use-package projectile
   :config
@@ -340,25 +358,43 @@
                         (config/sync-with-org))
                       nil t)))
 
-(use-package company
+(use-package corfu
   :custom
-  (company-idle-delay (lambda () (if (company-in-string-or-comment) nil 0.5)))
-  :hook
-  (after-init . global-company-mode))
+  (corfu-auto nil) ;; no auto-popups
+  (corfu-cycle t)  ;; Enable cycling for `corfu-next/previous'
+  (text-mode-ispell-word-completion nil)
+  :init
+  (global-corfu-mode)
+  :bind
+  (:map corfu-map
+        ("<tab>" . corfu-next)
+        ("tab" . corfu-next)
+        ("<backtab>" . corfu-previous)
+        ("RET" . corfu-insert)
+        ("<escape>" . corfu-quit)))
+
+;; setup for rebinding completion to control+tab instead of tab
+(defun force/corfu-complete ()
+  "Force manual trigger for corfu completion at point"
+  (interactive)
+  (let ((completion-at-point-functions completion-at-point-functions))
+    (completion-at-point)))
+(global-set-key (kbd "C-<tab>") #'force/corfu-complete)
+
+;; nerd icon support
+(use-package nerd-icons-corfu
+  :after corfu
+  :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package cape
+  :after corfu
   :init
   (add-hook 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
-  (add-hook 'completion-at-point-functions #'cape-dict) ;; Dictionary completion
   (add-hook 'completion-at-point-functions #'cape-file) ;; Path completion
   (add-hook 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
   (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
+  (add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
   )
-
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package vertico
   :init
@@ -369,12 +405,20 @@
   :init
   (marginalia-mode))
 
+;; more nerd icon support
 (use-package nerd-icons-completion
   :after marginalia
   :config
   (nerd-icons-completion-mode)
   :hook
   ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil) ;; Disable defaults, use our settings
+  (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
 
 (use-package yasnippet
   :config

@@ -21,6 +21,7 @@
   - [[#font][Font]]
   - [[#nerd-font][Nerd Font]]
   - [[#doom-modeline][Doom-modeline]]
+  - [[#evil-terminal-cursor-change][evil-terminal-cursor-change]]
 - [[#nerd][Nerd]]
   - [[#projectile][Projectile]]
   - [[#eglot][Eglot]]
@@ -32,10 +33,10 @@
   - [[#org-latex-fragment-previews][Org LaTeX Fragment Previews]]
   - [[#org-babel-hook][Org-Babel Hook]]
 - [[#completion][Completion]]
-  - [[#company][Company]]
+  - [[#corfu][Corfu]]
   - [[#cape][Cape]]
-  - [[#oderless][Oderless]]
-  - [[#vertico--marginalia][Vertico & Marginalia]]
+  - [[#vertico-and-marginalia][Vertico and Marginalia]]
+  - [[#orderless][Orderless]]
   - [[#yasnippet][Yasnippet]]
 - [[#late-load][Late Load]]
   - [[#git][Git]]
@@ -112,7 +113,7 @@
   (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
   (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
   (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
-  (defvar g/opacity       (if (eq system-type 'darwin) 40 90))
+  (defvar g/opacity       (if (eq system-type 'darwin) 40 80))
 #+end_src
 ** Helper Funcitons
 #+begin_src emacs-lisp
@@ -361,10 +362,23 @@
 #+end_src
 ** Transparent Background
 #+begin_src emacs-lisp
-  (add-hook 'window-setup-hook
-            (lambda ()
-              (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
-              (add-to-list 'default-frame-alist '(alpha-background . g/opacity))))
+          (add-hook 'window-setup-hook
+                    (lambda ()
+                      (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
+                      (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))))
+
+  (with-eval-after-load 'corfu
+    (setq corfu-prefer-childframe t)
+    (setq corfu-childframe-frame-parameters
+          '((alpha-background . ,80) ;; use your g/opacity here if needed
+            (internal-border-width . 1)
+            (left-fringe . 5)
+            (right-fringe . 5))))
+
+
+        ;; ;; unset bg when in terminal/tty
+        (when (not (display-graphic-p))
+          (set-face-background 'default "unspecified-bg"))
 #+end_src
 ** Font
 #+begin_src emacs-lisp
@@ -394,6 +408,15 @@
     (doom-modeline-spc-face-overrides nil)
     (doom-modeline-buffer-encoding nil)
     :hook (after-init . doom-modeline-mode))
+#+end_src
+** evil-terminal-cursor-change
++ Change cursor depending on mode in the terminal/tty
+#+begin_src emacs-lisp
+  (use-package evil-terminal-cursor-changer)
+  (unless (display-graphic-p)
+    (require 'evil-terminal-cursor-changer)
+    (evil-terminal-cursor-changer-activate))
+
 #+end_src
 
 * Nerd
@@ -529,36 +552,55 @@
 #+end_src
 
 * Completion
-** Company
-+ Provides a mini-buffer for completion
-+ Would of used corfu but I couldn't get it
-  to work with evil-mode
+** Corfu
++ "COmpletion in Region FUnction"
 #+begin_src emacs-lisp
-  (use-package company
+  (use-package corfu
     :custom
-    (company-idle-delay (lambda () (if (company-in-string-or-comment) nil 0.5)))
-    :hook
-    (after-init . global-company-mode))
+    (corfu-auto nil) ;; no auto-popups
+    (corfu-cycle t)  ;; Enable cycling for `corfu-next/previous'
+    (text-mode-ispell-word-completion nil)
+    :init
+    (global-corfu-mode)
+    :bind
+    (:map corfu-map
+          ("<tab>" . corfu-next)
+          ("tab" . corfu-next)
+          ("<backtab>" . corfu-previous)
+          ("RET" . corfu-insert)
+          ("<escape>" . corfu-quit)))
+
+  ;; setup for rebinding completion to control+tab instead of tab
+  (defun force/corfu-complete ()
+    "Force manual trigger for corfu completion at point"
+    (interactive)
+    (let ((completion-at-point-functions completion-at-point-functions))
+      (completion-at-point)))
+  (global-set-key (kbd "C-<tab>") #'force/corfu-complete)
+
+  ;; nerd icon support
+  (use-package nerd-icons-corfu
+    :after corfu
+    :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 #+end_src
 ** Cape
++ Completion extensions
 #+begin_src emacs-lisp
-  (use-package cape
-    :init
-    (add-hook 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
-    (add-hook 'completion-at-point-functions #'cape-dict) ;; Dictionary completion
-    (add-hook 'completion-at-point-functions #'cape-file) ;; Path completion
-    (add-hook 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
-    (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
-    )
+(use-package cape
+  :after corfu
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
+  (add-hook 'completion-at-point-functions #'cape-file) ;; Path completion
+  (add-hook 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
+  (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
+  (add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
+  )
 #+end_src
-** Oderless
-#+begin_src emacs-lisp
-    (use-package orderless
-      :custom
-      (completion-styles '(orderless basic))
-      (completion-category-overrides '((file (styles basic partial-completion)))))
-#+end_src
-** Vertico & Marginalia
+
+** Vertico and Marginalia
++ "VERTical Interactive COmpletion"
++ "Marginalia in the minibuffer"
++ AKA Completion in minibuffer
 #+begin_src emacs-lisp
   (use-package vertico
     :init
@@ -569,12 +611,22 @@
     :init
     (marginalia-mode))
 
+  ;; more nerd icon support
   (use-package nerd-icons-completion
     :after marginalia
     :config
     (nerd-icons-completion-mode)
     :hook
     ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
+#+end_src
+** Orderless
+#+begin_src emacs-lisp
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil) ;; Disable defaults, use our settings
+  (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
 #+end_src
 ** Yasnippet
 #+begin_src emacs-lisp
