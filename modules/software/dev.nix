@@ -23,6 +23,8 @@
         unzip unrar zip
         # misc
         age calc curl
+        # nix helpers
+        nurl
       ] ++
       (extlib.darwinOrLinux system [] [rar]);
     })

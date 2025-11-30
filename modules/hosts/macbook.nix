@@ -104,7 +104,10 @@
         taps = builtins.attrNames config.nix-homebrew.taps; #Align homebrew taps config with nix-homebrew
 
         caskArgs.no_quarantine = true;
-        brews = ["lima" "syncthing"];
+        brews = [
+          "lima"
+          "syncthing"
+        ];
         casks = [
           "musicbrainz-picard"
           "calibre"
