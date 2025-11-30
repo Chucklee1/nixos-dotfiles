@@ -104,7 +104,7 @@ in {
         programs.emacs
         programs.git programs.kitty programs.yazi
 
-        software.dev software.qol software.texlive
+        software.dev software.qol software.java software.texlive
 
         system.home system.pkgconfig
 
