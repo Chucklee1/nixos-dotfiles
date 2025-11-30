@@ -10,13 +10,6 @@
   ];
 
   home = [
-    (extlib.darwinOrLinux system
-      {}
-      ({pkgs, ...}: {
-        home.packages = [pkgs.rmpc];
-        home.file.".config/rmpc".source = "${self}/assets/rmpc";
-      })
-    )
     {
       programs.zoxide = {
         enable = true;

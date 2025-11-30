@@ -9,7 +9,7 @@ in {
       system = "x86_64-linux";
       modules = with mod; [
         hosts.desktop
-        net.mpd net.syncthing net.tailscale
+        net.syncthing net.tailscale
 
         programs.librewolf programs.emacs
         programs.git programs.kitty programs.yazi
@@ -37,7 +37,7 @@ in {
       system = "x86_64-linux";
       modules = with mod; [
         hosts.laptop
-        net.mpd net.syncthing net.tailscale
+        net.syncthing net.tailscale
 
         programs.librewolf programs.emacs
         programs.git programs.kitty programs.yazi
@@ -63,7 +63,7 @@ in {
       modules = with mod; [
         hosts.inspiron
 
-        net.mpd net.syncthing net.tailscale net.the-server
+        net.syncthing net.tailscale net.the-server
 
         programs.librewolf
         programs.nixvim
