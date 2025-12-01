@@ -99,7 +99,7 @@
         # must use {} since niri does not like "key = function -float;"
         input.mouse = lib.mkForce {accel-speed = -0.75;};
         input.keyboard.xkb.options = lib.mkForce "ctrl:nocaps,altwin:swap_alt_win";
-        outputs."DP-1".mode = {
+          outputs."HKC OVERSEAS LIMITED 24E4 0000000000001".mode = {
           width = 1920;
           height = 1080;
           refresh = 165.001;
