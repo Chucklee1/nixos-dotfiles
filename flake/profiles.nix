@@ -25,7 +25,7 @@ in {
 
         drivers.graphical drivers.ssh drivers.nvidia
 
-        shell.variables shell.nushell shell.zsh
+        shell.variables shell.zsh
 
         theming.blockgame theming.stylix
 

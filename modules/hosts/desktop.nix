@@ -91,6 +91,28 @@
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
     }
+    ({config, ...}: {
+      nixpkgs.config.nvidia.acceptLicense = true;
+      services.xserver.videoDrivers = ["amdgpu" "nvidia"];
+      hardware.nvidia = {
+        package = config.boot.kernelPackages.nvidiaPackages.beta;
+        modesetting.enable = true;
+        powerManagement.enable = false;
+        powerManagement.finegrained = false;
+        videoAcceleration = true;
+        open = false;
+      };
+      #   environment.variables = {
+      #     LIBVA_DRIVER_NAME = "nvidia";
+      #     NVD_BACKEND = "direct";
+      #     GBM_BACKEND = "nvidia-drm";
+      #     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      #   };
+      environment.variables = {
+        RADV_PERFTEST = "aco";
+        MESA_LOADER_DRIVER_OVERRIDE = "amdgpu";
+      };
+    })
   ];
 
   home = [
@@ -103,6 +125,7 @@
           width = 1920;
           height = 1080;
           refresh = 165.001;
+          variable-refresh-rate = true;
         };
       };
     })
