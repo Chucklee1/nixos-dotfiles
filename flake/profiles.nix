@@ -23,7 +23,7 @@ in {
         system.boot system.home system.users
         system.pkgconfig system.sys-specs
 
-        drivers.graphical drivers.ssh drivers.nvidia
+        drivers.graphical drivers.ssh
 
         shell.variables shell.zsh
 
@@ -104,7 +104,7 @@ in {
         programs.emacs
         programs.git programs.kitty programs.yazi
 
-        software.dev software.qol software.texlive
+        software.dev software.qol software.texlive software.java
 
         system.home system.pkgconfig
 
