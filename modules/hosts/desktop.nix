@@ -108,10 +108,6 @@
       #     GBM_BACKEND = "nvidia-drm";
       #     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       #   };
-      environment.variables = {
-        RADV_PERFTEST = "aco";
-        MESA_LOADER_DRIVER_OVERRIDE = "amdgpu";
-      };
     })
   ];
 
@@ -121,11 +117,13 @@
         # must use {} since niri does not like "key = function -float;"
         input.mouse = lib.mkForce {accel-speed = -0.75;};
         input.keyboard.xkb.options = lib.mkForce "ctrl:nocaps,altwin:swap_alt_win";
-          outputs."HKC OVERSEAS LIMITED 24E4 0000000000001".mode = {
-          width = 1920;
-          height = 1080;
-          refresh = 165.001;
+        outputs."HKC OVERSEAS LIMITED 24E4 0000000000001" = {
           variable-refresh-rate = true;
+          mode = {
+            width = 1920;
+            height = 1080;
+            refresh = 165.001;
+          };
         };
       };
     })
