@@ -13,9 +13,9 @@ let
   };
 
   mkfs = {
-    btrfs = path: device: options: mkfs' "btrfs";
-    ext4 = path: device: options: mkfs' "ext4";
-    vfat = path: device: options: mkfs' "vfat";
+    btrfs = path: device: options: mkfs'  "btrfs" path device options;
+    ext4 =  path: device: options: mkfs'  "ext4"  path device options;
+    vfat =  path: device: options: mkfs'  "vfat"  path device options;
   };
 in {
   nix = [
