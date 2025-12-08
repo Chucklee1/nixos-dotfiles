@@ -454,6 +454,7 @@
     :hook ((c-mode
             c++-mode
             haskell-mode
+            java-mode
             kdl-mode
             lua-mode
             markdown-mode
