@@ -76,6 +76,7 @@
 
   :hook
   (before-save   . delete-trailing-whitespace)
+  (prog-mode     . (lambda () (display-line-numbers-mode 1)))
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -122,8 +123,8 @@
 (dolist (pair
          '(("TAB" . comment-line)
            ("RET" . helper/open-split-term)
-           ("w"   . save-buffer)
            ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
+           ("i"   . imenu)
            ("e"   . dired-jump)))
          (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 
@@ -221,14 +222,14 @@
                     (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
                     (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))))
 
+;; must manually set corfu frame-opacity
 (with-eval-after-load 'corfu
   (setq corfu-prefer-childframe t)
   (setq corfu-childframe-frame-parameters
-        '((alpha-background . ,80) ;; use your g/opacity here if needed
+        '((alpha-background . ,(+ g/opacity 10))
           (internal-border-width . 1)
           (left-fringe . 5)
           (right-fringe . 5))))
-
 
       ;; ;; unset bg when in terminal/tty
       (when (not (display-graphic-p))

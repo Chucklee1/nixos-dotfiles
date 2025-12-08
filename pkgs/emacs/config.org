@@ -13,7 +13,13 @@
   - [[#helper-funcitons][Helper Funcitons]]
   - [[#emacs][Emacs]]
   - [[#evil-mode][Evil Mode]]
-  - [[#keybinds][Keybinds]]
+- [[#keybinds][Keybinds]]
+  - [[#globl-leader-definition][Globl Leader Definition]]
+  - [[#globl---window][Globl - window]]
+  - [[#globl---git][globl - git]]
+  - [[#globl---org][globl - org]]
+  - [[#globl---toggle][globl - toggle]]
+- [[#programs][Programs]]
   - [[#dired][Dired]]
   - [[#vterm][Vterm]]
 - [[#appearance][Appearance]]
@@ -190,6 +196,7 @@
 
     :hook
     (before-save   . delete-trailing-whitespace)
+    (prog-mode     . (lambda () (display-line-numbers-mode 1)))
     :config
     ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
     (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -244,8 +251,8 @@
   (dolist (pair
            '(("TAB" . comment-line)
              ("RET" . helper/open-split-term)
-             ("w"   . save-buffer)
              ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
+             ("i"   . imenu)
              ("e"   . dired-jump)))
            (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 #+end_src
@@ -260,14 +267,14 @@
                 ("d" . helper/buffer/kill)
                 ("D" . helper/buffer/force-kill)))
 #+end_src
-*** Globl - window
+** Globl - window
 #+begin_src emacs-lisp
   (defvar lmap-globl/window (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/window "w"
               '(("c" . helper/window/close)
                 ("C" . helper/window/force-close)))
 #+end_src
-*** globl - git
+** globl - git
 + For magit-status, I would use spc+gs,
   but I am more used to neovim's lazygit setup, where I used spc+gg
 + Maybe I will change it later
@@ -279,7 +286,7 @@
                 ("P" . magit-pull)
                 ("p" . magit-push)))
 #+end_src
-*** globl - org
+** globl - org
 #+begin_src emacs-lisp
   (defvar lmap-globl/org (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/org "o"
@@ -291,7 +298,7 @@
                 ("s" . org-schedule)
                 ("d" . org-deadline)))
           #+end_src
-*** globl - toggle
+** globl - toggle
 #+begin_src emacs-lisp
   (defvar lmap-globl/toggle (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/toggle "t"
@@ -301,6 +308,8 @@
                 ("w" . visual-wrap-prefix-mode)
                 ("W" . global-visual-wrap-prefix-mode)))
 #+end_src
+
+* Programs
 ** Dired
 #+begin_src emacs-lisp
   (use-package dired
@@ -373,14 +382,14 @@
                       (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
                       (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))))
 
+  ;; must manually set corfu frame-opacity
   (with-eval-after-load 'corfu
     (setq corfu-prefer-childframe t)
     (setq corfu-childframe-frame-parameters
-          '((alpha-background . ,80) ;; use your g/opacity here if needed
+          '((alpha-background . ,(+ g/opacity 10))
             (internal-border-width . 1)
             (left-fringe . 5)
             (right-fringe . 5))))
-
 
         ;; ;; unset bg when in terminal/tty
         (when (not (display-graphic-p))
@@ -437,6 +446,7 @@
     (projectile-switch-project-action #'projectile-dired)
     (projectile-project-search-path '("~/Documents/" "~/Repos/")))
 #+end_src
+
 ** Eglot
 #+begin_src emacs-lisp
   (use-package eglot
