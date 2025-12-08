@@ -48,30 +48,53 @@ in {
       '';
     }
     {
+      # kernel
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm" "kvm_amd"];
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
+    }
+    {
+      # cpu
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
     }
-    ({config, ...}: {
-      nixpkgs.config.nvidia.acceptLicense = true;
-      services.xserver.videoDrivers = ["amdgpu" "nvidia"];
-      hardware.nvidia = {
-        package = config.boot.kernelPackages.nvidiaPackages.beta;
-        modesetting.enable = true;
-        powerManagement.enable = false;
-        powerManagement.finegrained = false;
-        videoAcceleration = true;
-        open = false;
-      };
-      #   environment.variables = {
-      #     LIBVA_DRIVER_NAME = "nvidia";
-      #     NVD_BACKEND = "direct";
-      #     GBM_BACKEND = "nvidia-drm";
-      #     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      #   };
-    })
+    # gpu
+    ({lib, config, ...}: with lib;
+      /**** global nvidia toggle switch ****/
+      let enableNvidiaCard = false; in
+      /**** nvidia + radeon ****/
+      (if enableNvidiaCard then {
+        services.xserver.videoDrivers = ["nvidia" "amdgpu"];
+        nixpkgs.config.nvidia.acceptLicense = true;
+        hardware.nvidia = {
+          package = config.boot.kernelPackages.nvidiaPackages.beta;
+          modesetting.enable = true;
+          powerManagement.enable = false;
+          powerManagement.finegrained = false;
+          videoAcceleration = true;
+          open = false;
+        };
+        environment.variables = {
+          LIBVA_DRIVER_NAME = "nvidia";
+          NVD_BACKEND = "direct";
+          GBM_BACKEND = "nvidia-drm";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        };
+      }
+        /**** blacklist nvidia for vm usage ****/
+       else {
+         services.xserver.videoDrivers = ["amdgpu"];
+         boot.kernelModules = mkAfter ["vfio" "vfio_pci"];
+         boot.blacklistedKernelModules = ["nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" "nouveau"];
+         boot.kernelParams = [
+           "modprobe.blacklist=nouveau"
+           "vfio-pci.ids=10de:2503,10de:228e"
+         ];
+       #   boot.extraModprobeConfig = ''
+       #     softdep nvidia pre: vfio-pci
+       #     softdep nouveau pre: vfio-pci
+       #   '';
+       }))
   ];
 
   home = [
