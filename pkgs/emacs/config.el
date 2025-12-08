@@ -328,7 +328,6 @@
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
 (use-package nix-mode :mode "\\.nix\\'")
-(use-package eglot-java :mode "\\.java\\'")
 (use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
 (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 ;; heavier niche modes - will not connect to eglot
@@ -395,6 +394,8 @@
                       (lambda ()
                         (config/sync-with-org))
                       nil t)))
+
+(use-package direnv)
 
 (use-package corfu
   :custom

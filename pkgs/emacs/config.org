@@ -41,6 +41,7 @@
   - [[#org-modern][Org Modern]]
   - [[#org-latex-fragment-previews][Org LaTeX Fragment Previews]]
   - [[#org-babel-hook][Org-Babel Hook]]
+  - [[#direnv][Direnv]]
 - [[#completion][Completion]]
   - [[#corfu][Corfu]]
   - [[#cape][Cape]]
@@ -489,7 +490,6 @@
     (projectile-switch-project-action #'projectile-dired)
     (projectile-project-search-path '("~/Documents/" "~/Repos/")))
 #+end_src
-
 ** Eglot
 #+begin_src emacs-lisp
   (use-package eglot
@@ -519,7 +519,6 @@
       (use-package lua-mode :mode "\\.lua\\'")
       (use-package markdown-mode :mode "\\.md\\'")
       (use-package nix-mode :mode "\\.nix\\'")
-      (use-package eglot-java :mode "\\.java\\'")
       (use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
       (use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
       ;; heavier niche modes - will not connect to eglot
@@ -610,6 +609,10 @@
                         (lambda ()
                           (config/sync-with-org))
                         nil t)))
+#+end_src
+** Direnv
+#+begin_src emacs-lisp
+  (use-package direnv)
 #+end_src
 
 * Completion
