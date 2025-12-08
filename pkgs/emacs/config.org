@@ -13,14 +13,14 @@
   - [[#helper-funcitons][Helper Funcitons]]
   - [[#emacs][Emacs]]
   - [[#evil-mode][Evil Mode]]
-- [[#keybinds][Keybinds]]
-  - [[#globl-leader-definition][Globl Leader Definition]]
+  - [[#keybinds][Keybinds]]
   - [[#globl---window][Globl - window]]
   - [[#globl---git][globl - git]]
   - [[#globl---org][globl - org]]
   - [[#globl---toggle][globl - toggle]]
 - [[#programs][Programs]]
   - [[#dired][Dired]]
+  - [[#treemacs][Treemacs]]
   - [[#vterm][Vterm]]
 - [[#appearance][Appearance]]
   - [[#theme][Theme]]
@@ -28,6 +28,7 @@
   - [[#font][Font]]
   - [[#nerd-font][Nerd Font]]
   - [[#doom-modeline][Doom-modeline]]
+  - [[#highlight-indent-guides][highlight indent guides]]
   - [[#evil-terminal-cursor-change][evil-terminal-cursor-change]]
 - [[#nerd][Nerd]]
   - [[#projectile][Projectile]]
@@ -305,6 +306,7 @@
               '(("b" . global-tab-line-mode)
                 ("n" . display-line-numbers-mode)
                 ("N" . global-display-line-numbers-mode)
+                ("t" . treemacs)
                 ("w" . visual-wrap-prefix-mode)
                 ("W" . global-visual-wrap-prefix-mode)))
 #+end_src
@@ -353,6 +355,26 @@
 #+begin_src emacs-lisp
   (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 #+end_src
+** Treemacs
++ For the horridly nested java projects
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :commands (treemacs))
+
+  (use-package treemacs-evil
+    :after (treemacs evil))
+
+  (use-package treemacs-magit
+    :after (treemacs magit))
+
+  (use-package treemacs-nerd-icons
+  :after treemacs
+  :config
+  (treemacs-nerd-icons-config))
+
+  (use-package treemacs-projectile
+    :after (treemacs projectile))
+#+end_src
 ** Vterm
 #+begin_src emacs-lisp
   (use-package vterm)
@@ -372,6 +394,7 @@
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
+    (doom-themes-treemacs-config)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
@@ -424,6 +447,15 @@
     (doom-modeline-buffer-encoding nil)
     :hook (after-init . doom-modeline-mode))
 #+end_src
+** highlight indent guides
+#+begin_src emacs-lisp
+(use-package highlight-indent-guides
+  :hook ((prog-mode . highlight-indent-guides-mode)) ; enable in programming modes
+  :custom
+  (highlight-indent-guides-method 'character) ; or 'column
+  (highlight-indent-guides-auto-enabled t))
+#+end_src
+
 ** evil-terminal-cursor-change
 + Change cursor depending on mode in the terminal/tty
 #+begin_src emacs-lisp

@@ -164,6 +164,7 @@
             '(("b" . global-tab-line-mode)
               ("n" . display-line-numbers-mode)
               ("N" . global-display-line-numbers-mode)
+              ("t" . treemacs)
               ("w" . visual-wrap-prefix-mode)
               ("W" . global-visual-wrap-prefix-mode)))
 
@@ -201,6 +202,22 @@
 
 (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 
+(use-package treemacs
+  :commands (treemacs))
+
+(use-package treemacs-evil
+  :after (treemacs evil))
+
+(use-package treemacs-magit
+  :after (treemacs magit))
+
+(use-package treemacs-nerd-icons
+:after treemacs
+:config
+(treemacs-nerd-icons-config))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile))
 
 (use-package vterm)
 
@@ -214,6 +231,7 @@
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
+  (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -257,6 +275,12 @@
   (doom-modeline-spc-face-overrides nil)
   (doom-modeline-buffer-encoding nil)
   :hook (after-init . doom-modeline-mode))
+
+(use-package highlight-indent-guides
+  :hook ((prog-mode . highlight-indent-guides-mode)) ; enable in programming modes
+  :custom
+  (highlight-indent-guides-method 'character) ; or 'column
+  (highlight-indent-guides-auto-enabled t))
 
 (use-package evil-terminal-cursor-changer)
 (unless (display-graphic-p)
