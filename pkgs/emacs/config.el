@@ -159,6 +159,10 @@
               ("s" . org-schedule)
               ("d" . org-deadline)))
 
+(defvar lmap-globl/projectile (make-sparse-keymap))
+(mkkeygroup lmap-globl lmap-globl/projectile "p"
+            '(("s" . projectile-switch-project)))
+
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/toggle "t"
             '(("b" . global-tab-line-mode)
@@ -203,7 +207,11 @@
 (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 
 (use-package treemacs
-  :commands (treemacs))
+  :commands (treemacs)
+  :config
+  (treemacs-indent-guide-mode t)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
 
 (use-package treemacs-evil
   :after (treemacs evil))
@@ -212,9 +220,9 @@
   :after (treemacs magit))
 
 (use-package treemacs-nerd-icons
-:after treemacs
-:config
-(treemacs-nerd-icons-config))
+  :after treemacs
+  :config
+  (treemacs-nerd-icons-config))
 
 (use-package treemacs-projectile
   :after (treemacs projectile))
