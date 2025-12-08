@@ -39,7 +39,7 @@
 (defun helper/open-split-term () (interactive)
        (let ((new-win (split-window-below)))
          (select-window new-win)
-         (ansi-term (getenv "SHELL"))))
+         (vterm (getenv "SHELL"))))
 
 (use-package emacs
   :custom
@@ -199,6 +199,9 @@
   :hook (dired-mode . global-dired-collapse-mode))
 
 (use-package diredfl :hook ((dired-mode . diredfl-mode)))
+
+
+(use-package vterm)
 
 (use-package doom-themes
   :custom

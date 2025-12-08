@@ -15,6 +15,7 @@
   - [[#evil-mode][Evil Mode]]
   - [[#keybinds][Keybinds]]
   - [[#dired][Dired]]
+  - [[#vterm][Vterm]]
 - [[#appearance][Appearance]]
   - [[#theme][Theme]]
   - [[#transparent-background][Transparent Background]]
@@ -150,7 +151,7 @@
   (defun helper/open-split-term () (interactive)
          (let ((new-win (split-window-below)))
            (select-window new-win)
-           (ansi-term (getenv "SHELL"))))
+           (vterm (getenv "SHELL"))))
 #+end_src
 ** Emacs
 #+begin_src emacs-lisp
@@ -343,6 +344,11 @@
 #+begin_src emacs-lisp
   (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 #+end_src
+** Vterm
+#+begin_src emacs-lisp
+  (use-package vterm)
+#+end_src
+
 
 * Appearance
 ** Theme
