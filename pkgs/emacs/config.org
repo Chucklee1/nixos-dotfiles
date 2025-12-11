@@ -46,6 +46,7 @@
 - [[#completion][Completion]]
   - [[#corfu][Corfu]]
   - [[#cape][Cape]]
+  - [[#flycheck][Flycheck]]
   - [[#vertico-and-marginalia][Vertico and Marginalia]]
   - [[#orderless][Orderless]]
   - [[#yasnippet][Yasnippet]]
@@ -339,21 +340,6 @@
           (setq dired-use-ls-dired t
                 insert-directory-program gls)))))
         #+end_src
-*** Dired Hacks - Subtree
-#+begin_src emacs-lisp
-    (use-package dired-subtree
-      :after dired
-      :custom
-      (dired-subtree-use-backgrounds nil)
-      :bind
-      ( :map dired-mode-map
-        ("TAB" . dired-subtree-toggle)
-        ("<tab>" . dired-subtree-toggle))
-      :config
-      ;; Fix "no icons in subtree" issue.
-      (defadvice dired-subtree-toggle
-          (after add-icons activate) (revert-buffer)))
-#+end_src
 *** Dired Hacks - Collapse
 #+begin_src emacs-lisp
   (use-package dired-collapse
@@ -367,37 +353,37 @@
 ** Treemacs
 + For the horridly nested java projects
 #+begin_src emacs-lisp
-  (use-package treemacs
-    :commands (treemacs)
-    :config
-    (treemacs-indent-guide-mode t)
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t))
+    (use-package treemacs
+      :commands (treemacs)
+      :config
+      (treemacs-indent-guide-mode t)
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t))
 
-  (use-package treemacs-evil
-    :after (treemacs evil))
+    (use-package treemacs-evil
+      :after (treemacs evil))
 
-  (use-package treemacs-magit
-    :after (treemacs magit))
+    (use-package treemacs-magit
+      :after (treemacs magit))
+
+    (use-package lsp-treemacs
+      :after (treemacs))
 
   (use-package treemacs-nerd-icons
-    :after treemacs
-    :config
-    (treemacs-nerd-icons-config))
-
-  (use-package treemacs-projectile
-    :after (treemacs projectile))
+    :after (treemacs lsp-treemacs)
+    :hook
+    (treemacs-mode . (lambda () (treemacs-load-theme "nerd-icons"))))
 #+end_src
 ** Vterm
 #+begin_src emacs-lisp
   (use-package vterm)
 #+end_src
 
-
 * Appearance
 ** Theme
 #+begin_src emacs-lisp
   (use-package doom-themes
+    :after (treemacs org)
     :custom
     ;; Global settings (defaults)
     (doom-themes-enable-bold t)   ;; if nil, bold is universally disabled
@@ -468,7 +454,6 @@
   (highlight-indent-guides-method 'character) ; or 'column
   (highlight-indent-guides-auto-enabled t))
 #+end_src
-
 ** evil-terminal-cursor-change
 + Change cursor depending on mode in the terminal/tty
 #+begin_src emacs-lisp
@@ -673,7 +658,12 @@
   (add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
   )
 #+end_src
-
+** Flycheck
++ Checks your fly...
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :hook after-init global-flycheck-mode)
+#+end_src
 ** Vertico and Marginalia
 + "VERTical Interactive COmpletion"
 + "Marginalia in the minibuffer"

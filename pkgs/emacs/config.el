@@ -188,48 +188,36 @@
         (setq dired-use-ls-dired t
               insert-directory-program gls)))))
 
-(use-package dired-subtree
-  :after dired
-  :custom
-  (dired-subtree-use-backgrounds nil)
-  :bind
-  ( :map dired-mode-map
-    ("TAB" . dired-subtree-toggle)
-    ("<tab>" . dired-subtree-toggle))
-  :config
-  ;; Fix "no icons in subtree" issue.
-  (defadvice dired-subtree-toggle
-      (after add-icons activate) (revert-buffer)))
-
 (use-package dired-collapse
   :hook (dired-mode . global-dired-collapse-mode))
 
 (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 
 (use-package treemacs
-  :commands (treemacs)
-  :config
-  (treemacs-indent-guide-mode t)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t))
+    :commands (treemacs)
+    :config
+    (treemacs-indent-guide-mode t)
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t))
 
-(use-package treemacs-evil
-  :after (treemacs evil))
+  (use-package treemacs-evil
+    :after (treemacs evil))
 
-(use-package treemacs-magit
-  :after (treemacs magit))
+  (use-package treemacs-magit
+    :after (treemacs magit))
+
+  (use-package lsp-treemacs
+    :after (treemacs))
 
 (use-package treemacs-nerd-icons
-  :after treemacs
-  :config
-  (treemacs-nerd-icons-config))
-
-(use-package treemacs-projectile
-  :after (treemacs projectile))
+  :after (treemacs lsp-treemacs)
+  :hook
+  (treemacs-mode . (lambda () (treemacs-load-theme "nerd-icons"))))
 
 (use-package vterm)
 
 (use-package doom-themes
+  :after (treemacs org)
   :custom
   ;; Global settings (defaults)
   (doom-themes-enable-bold t)   ;; if nil, bold is universally disabled
@@ -440,6 +428,9 @@
   (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
   (add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
   )
+
+(use-package flycheck
+  :hook after-init global-flycheck-mode)
 
 (use-package vertico
   :init
