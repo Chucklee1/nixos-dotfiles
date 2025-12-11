@@ -227,7 +227,9 @@
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
+  ;; treemacs integration
   (doom-themes-treemacs-config)
+  (setq doom-themes-treemacs-enable-variable-pitch nil)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
