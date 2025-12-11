@@ -29,6 +29,9 @@
 ## TODO:
 - [x] Continue to be as indecisive as possible
 - [ ] Find replacement for horrid recursiveMerge in libs.nix
+- [ ] Make neovim not look like poop
+- [ ] Nix Flake Parts?
+### Lower Priority:
   - Probably will need to write a custom c function :(
 - [ ] Figure out how to write c functions for nix
 - Umbra features:
