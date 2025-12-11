@@ -35,6 +35,7 @@
   - [[#projectile][Projectile]]
   - [[#eglot][Eglot]]
   - [[#misc-language-specific-modes][Misc Language-Specific Modes]]
+  - [[#java][Java]]
   - [[#auctex][Auctex]]
 - [[#org-mode][Org Mode]]
   - [[#org-toc][Org TOC]]
@@ -497,7 +498,6 @@
     :hook ((c-mode
             c++-mode
             haskell-mode
-            java-mode
             kdl-mode
             lua-mode
             markdown-mode
@@ -525,6 +525,19 @@
       (if (executable-find "nu") (use-package nushell-mode))
       (if (executable-find "kotlin") (use-package kotlin-mode))
 #+end_src
+** Java
++ I use java-lsp since it has more out-of-the-box features
++ TLDR, make sure eglot does not touch java, and have lsp-mode
+  manage java
+#+begin_src emacs-lisp
+  (use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration)))
+  (use-package lsp-ui)
+  (use-package lsp-java)
+
+  ;; hook java to lsp-mode
+  (add-hook 'java-mode-hook #'lsp)
+#+end_src
+
 ** Auctex
 + LaTeX tool for emacs, like vimtex
 + Requires distribution of texlive

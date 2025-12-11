@@ -308,7 +308,6 @@
   :hook ((c-mode
           c++-mode
           haskell-mode
-          java-mode
           kdl-mode
           lua-mode
           markdown-mode
@@ -333,6 +332,13 @@
 ;; heavier niche modes - will not connect to eglot
 (if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
+
+(use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration)))
+(use-package lsp-ui)
+(use-package lsp-java)
+
+;; hook java to lsp-mode
+(add-hook 'java-mode-hook #'lsp)
 
 (use-package auctex)
 
