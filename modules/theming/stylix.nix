@@ -1,4 +1,4 @@
-{inputs, system, extlib, ...}: {
+{self, inputs, system, extlib, ...}: {
   nix = [
     (extlib.darwinOrLinux system
       inputs.stylix.darwinModules.stylix
@@ -10,20 +10,12 @@
         url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
         hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
       };
-      pastel-waves = pkgs.fetchurl {
-        url = "https://w.wallhaven.cc/full/r2/wallhaven-r2e391.png";
-        hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      };
-      azure-ridge = pkgs.fetchurl {
-        url = "https://w.wallhaven.cc/full/lm/wallhaven-lm7edq.png";
-        hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      };
     in {
       stylix = {
         enable = true;
         autoEnable = true;
         homeManagerIntegration.autoImport = true;
-        image = painted-lake;
+        image = "${self}/assets/wallpaper/nordest.png";
         base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
         polarity = "dark";
         opacity.desktop = 0.8;
