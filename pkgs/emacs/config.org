@@ -17,7 +17,6 @@
   - [[#globl---window][Globl - window]]
   - [[#globl---git][globl - git]]
   - [[#globl---org][globl - org]]
-  - [[#globl---projectile][globl - projectile]]
   - [[#globl---toggle][globl - toggle]]
 - [[#programs][Programs]]
   - [[#dired][Dired]]
@@ -303,12 +302,6 @@
                 ("s" . org-schedule)
                 ("d" . org-deadline)))
           #+end_src
-** globl - projectile
-#+begin_src emacs-lisp
-  (defvar lmap-globl/projectile (make-sparse-keymap))
-  (mkkeygroup lmap-globl lmap-globl/projectile "p"
-              '(("s" . projectile-switch-project)))
-#+end_src
 ** globl - toggle
 #+begin_src emacs-lisp
   (defvar lmap-globl/toggle (make-sparse-keymap))
@@ -388,6 +381,7 @@
     ;; Global settings (defaults)
     (doom-themes-enable-bold t)   ;; if nil, bold is universally disabled
     (doom-themes-enable-italic t) ;; if nil, italics is universally disabled
+    (doom-themes-treemacs-enable-variable-pitch nil)
     :config
     (load-theme 'doom-nord t)
 
@@ -395,7 +389,6 @@
     (doom-themes-visual-bell-config)
     ;; treemacs integration
     (doom-themes-treemacs-config)
-    (setq doom-themes-treemacs-enable-variable-pitch nil)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src

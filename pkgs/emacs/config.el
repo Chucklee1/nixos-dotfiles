@@ -159,10 +159,6 @@
               ("s" . org-schedule)
               ("d" . org-deadline)))
 
-(defvar lmap-globl/projectile (make-sparse-keymap))
-(mkkeygroup lmap-globl lmap-globl/projectile "p"
-            '(("s" . projectile-switch-project)))
-
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/toggle "t"
             '(("b" . global-tab-line-mode)
@@ -222,6 +218,7 @@
   ;; Global settings (defaults)
   (doom-themes-enable-bold t)   ;; if nil, bold is universally disabled
   (doom-themes-enable-italic t) ;; if nil, italics is universally disabled
+  (doom-themes-treemacs-enable-variable-pitch nil)
   :config
   (load-theme 'doom-nord t)
 
@@ -229,7 +226,6 @@
   (doom-themes-visual-bell-config)
   ;; treemacs integration
   (doom-themes-treemacs-config)
-  (setq doom-themes-treemacs-enable-variable-pitch nil)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
