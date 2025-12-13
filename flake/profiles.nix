@@ -11,7 +11,7 @@ in {
         hosts.desktop
         net.syncthing net.tailscale
 
-        programs.librewolf programs.emacs
+        programs.librewolf programs.emacs programs.nixvim
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
 
