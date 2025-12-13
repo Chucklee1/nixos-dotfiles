@@ -5,9 +5,11 @@
      local key = vim.keymap.set
 
      -- General
-     key("n", "<leader>e",  ":Yazi<CR>",        {desc = "Open fil editor"})
-     key("n", "<leader>gg", ":LazyGit<CR>",     {desc = "Open LazyGit"})
-     key("n", "<leader>gc", ":CopilotChat<CR>", {desc = "Open CopilotChat"})
+     key("n", "<leader>gg", ":LazyGit<CR>",             {desc = "Open LazyGit"})
+
+     -- Explorer
+     key("n", "<leader>e",  ":Oil<CR>",                 {desc = "Open fil editor"})
+     key("n", "<leader>tt", ":Neotree<CR>",             {desc = "Open fil editor"})
 
      -- Telescope binding
     key("n", "<leader>fb", ":Telescope buffers<CR>",    {desc = "Telescope buffer search"})

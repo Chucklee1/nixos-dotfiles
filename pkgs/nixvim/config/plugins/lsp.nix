@@ -33,6 +33,9 @@
       enable = true;
       settings.user_default_options.names = false;
     };
+    
+    # inline code 
+    otter.enable = true;
 
     # document tools
     render-markdown.enable = true;
