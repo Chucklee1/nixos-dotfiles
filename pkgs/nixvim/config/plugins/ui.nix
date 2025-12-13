@@ -1,6 +1,5 @@
 {
   plugins = {
-    aerial.enable = true;
     kitty-navigator.enable = true;
     presence.enable = true;
     scrollview.enable = true;
@@ -23,16 +22,6 @@
         quickfile.enabled = true;
         scroll.enabled = true;
         words.enabled = true;
-      };
-    };
-    # file explorer meets text editor
-    yazi.enable = true;
-    noice = {
-      enable = true; # fancy cmd window
-      settings.presets = {
-        bottom_search = true; # use a classic bottom cmdline for search
-        command_palette = true; # position the cmdline and popupmenu together
-        long_message_to_split = true; # - long messages will be sent to a split
       };
     };
     # startup menu
