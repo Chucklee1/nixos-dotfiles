@@ -27,10 +27,6 @@ in {
         };
       };
 
-      # ai
-      copilot-lua.enable = true;
-      copilot-chat.enable = true;
-
       # completion
       cmp.enable = true;
       cmp.autoEnableSources = true;
