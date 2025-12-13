@@ -6,6 +6,9 @@
     trouble.enable = true;
     web-devicons.enable = true;
     which-key.enable = true;
+    # file managers
+    neo-tree.enable = true;
+    oil.enable = true;
     # git
     gitsigns.enable = true;
     lazygit.enable = true;
