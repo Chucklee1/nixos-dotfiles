@@ -19,6 +19,7 @@
       asm_lsp.enable = full; # GAS/GO assembly
       clangd.enable = full;
       html.enable = full;
+      java.enable = full; # java
       jdtls.enable = full; # java
       lemminx.enable = full; # xml
       qmlls.enable = full;
