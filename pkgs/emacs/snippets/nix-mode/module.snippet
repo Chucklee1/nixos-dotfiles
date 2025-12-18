@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: nix module template
+# key: <mod
+# --
+({lib, config, ...}: let
+  cfg = config.$1;
+in {
+  options = {
+    $1.enable = lib.mkEnableOption $2;
+  };
+
+  config = lib.mkIf cfg.enable {
+    $3
+  };
+})
