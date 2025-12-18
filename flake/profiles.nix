@@ -7,6 +7,7 @@ in {
   in {
     desktop = {
       system = "x86_64-linux";
+      builder = inputs.nixpkgs.lib.nixosSystem;
       modules = with mod; [
         hosts.desktop
         net.syncthing net.tailscale
@@ -96,6 +97,7 @@ in {
     };
     macbook = {
       system = "aarch64-darwin";
+      builder = inputs.nix-darwin.lib.darwinSystem;
       modules = with mod; [
         hosts.macbook
 
@@ -118,10 +120,6 @@ in {
 
   mkSystems = cfgs:
     inputs.nixpkgs.lib.mapAttrs (machine: cfg: let
-      builder =
-        if machine == "macbook"
-        then inputs.nix-darwin.lib.darwinSystem
-        else inputs.nixpkgs.lib.nixosSystem;
       # modules
       inj_mods = [(extlib.loadModulesFromAttrset
         cfg.modules
@@ -137,7 +135,7 @@ in {
         inherit (cfg) system user;
       };
     in
-      builder {
+      cfg.builder {
         inherit (cfg) system;
         inherit specialArgs;
         modules =
