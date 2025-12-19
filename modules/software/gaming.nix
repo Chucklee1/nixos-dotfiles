@@ -14,7 +14,6 @@
         vkbasalt
         # games
         osu-lazer-bin
-        prismlauncher
         # openmw
       ];
       programs.gamemode = {

@@ -402,6 +402,22 @@
         "type": "github"
       }
     },
+    "libnbtplusplus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1744811532,
+        "narHash": "sha256-qhmjaRkt+O7A+gu6HjUkl7QzOEb4r8y8vWZMG2R/C6o=",
+        "owner": "PrismLauncher",
+        "repo": "libnbtplusplus",
+        "rev": "531449ba1c930c98e0bcf5d332b237a8566f9d78",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PrismLauncher",
+        "repo": "libnbtplusplus",
+        "type": "github"
+      }
+    },
     "minegrub-theme": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -785,6 +801,27 @@
         "type": "github"
       }
     },
+    "prismlauncher": {
+      "inputs": {
+        "libnbtplusplus": "libnbtplusplus",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766168811,
+        "narHash": "sha256-AQl3BEO1Ug7If58DkKz9f34HeDSi/de7HGyltmm3YC8=",
+        "owner": "PrismLauncher",
+        "repo": "PrismLauncher",
+        "rev": "877b824c3b830f914db885cfc80f0be259570e0d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PrismLauncher",
+        "repo": "PrismLauncher",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -804,6 +841,7 @@
         "nixpkgs-stable": "nixpkgs-stable_3",
         "nixvim": "nixvim",
         "nur": "nur",
+        "prismlauncher": "prismlauncher",
         "stylix": "stylix"
       }
     },

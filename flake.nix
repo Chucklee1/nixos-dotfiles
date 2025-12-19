@@ -31,18 +31,20 @@
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
     minesddm.url = "github:Davi-S/sddm-theme-minesddm/development";
 
-    # ---- nixvim ----
+    # ---- editors ----
     nixvim.url = "github:nix-community/nixvim";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
     en_us-dictionary.url = "github:dwyl/english-words";
     en_us-dictionary.flake = false;
-
-    # ---- emacs ----
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
 
     # ---- window managers ----
     dwm.url = "github:Chucklee1/dwm";
     dwm.flake = false;
     niri.url = "github:sodiboo/niri-flake";
+
+    # ---- Minecraft ----
+   prismlauncher.url = "github:PrismLauncher/PrismLauncher";
+   prismlauncher.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {self, ...} @ inputs: let

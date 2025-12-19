@@ -16,6 +16,7 @@ in {
         programs.librewolf programs.emacs programs.nixvim
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
+        programs.prismLauncher
 
         software.apps software.dev
         software.texlive software.java
