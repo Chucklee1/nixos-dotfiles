@@ -1,14 +1,4 @@
-{self, system, extlib, ...}: {
-  nix = [
-    (extlib.darwinOrLinux system
-      {}
-      ({pkgs, ...}: {
-        environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
-        programs.dconf.enable = true;
-      })
-    )
-  ];
-
+{
   home = [
     {
       programs.zoxide = {

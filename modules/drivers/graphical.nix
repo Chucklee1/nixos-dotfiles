@@ -24,6 +24,8 @@
       services.blueman.enable = true;
 
       # misc
+      environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
+      programs.dconf.enable = true;
       services = {
         printing.enable = true;
         gvfs.enable = true;
