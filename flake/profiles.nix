@@ -8,6 +8,7 @@ in {
     desktop = {
       system = "x86_64-linux";
       builder = inputs.nixpkgs.lib.nixosSystem;
+      user = "goat";
       modules = with mod; [
         hosts.desktop
         net.syncthing net.tailscale
@@ -32,10 +33,10 @@ in {
 
         virt.qemu
       ];
-      user = "goat";
     };
     laptop = {
       system = "x86_64-linux";
+      user = "goat";
       modules = with mod; [
         hosts.laptop
         net.syncthing net.tailscale
@@ -57,10 +58,10 @@ in {
 
         theming.blockgame theming.stylix
       ];
-      user = "goat";
     };
     inspiron = {
       system = "x86_64-linux";
+      user = "goat";
       modules = with mod; [
         hosts.inspiron
 
@@ -82,10 +83,10 @@ in {
 
         theming.blockgame theming.stylix
       ];
-      user = "goat";
     };
     umbra = {
       system = "x86_64-linux";
+      user = "nixos";
       modules = with mod; [
         hosts.umbra
         system.boot system.home
@@ -93,10 +94,10 @@ in {
         drivers.ssh
         shell.zsh programs.nixvim
       ];
-      user = "nixos";
     };
     macbook = {
       system = "aarch64-darwin";
+      user = "goat";
       builder = inputs.nix-darwin.lib.darwinSystem;
       modules = with mod; [
         hosts.macbook
@@ -114,20 +115,19 @@ in {
 
         theming.stylix
       ];
-      user = "goat";
     };
   };
 
   mkSystems = cfgs:
     inputs.nixpkgs.lib.mapAttrs (machine: cfg: let
       # modules
-      inj_mods = [(extlib.loadModulesFromAttrset
+      loadedMods = [(extlib.loadModulesFromAttrset
         cfg.modules
         {inherit self inputs extlib; inherit (cfg) system;}
       )];
       mod = {
-        nix = builtins.concatLists (map (m: m.nix or []) inj_mods);
-        home = builtins.concatLists (map (m: m.home or []) inj_mods);
+        nix = builtins.concatLists (map (m: m.nix or []) loadedMods);
+        home = builtins.concatLists (map (m: m.home or []) loadedMods);
       };
       specialArgs = {
         inherit self inputs extlib machine;
