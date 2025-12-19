@@ -1,9 +1,8 @@
-{self, inputs, system, extlib, ...}: {
+{self, inputs, extlib, ...}: {
   nix = [
-    (extlib.darwinOrLinux system
-      inputs.stylix.darwinModules.stylix
-      inputs.stylix.nixosModules.stylix
-    )
+    (extlib.darwinOrLinux
+    inputs.stylix.darwinModules.stylix
+    inputs.stylix.nixosModules.stylix)
     ({pkgs, ...}: let
       # helpers
       painted-lake = pkgs.fetchurl {
@@ -38,7 +37,7 @@
         };
       };
     })
-    (extlib.darwinOrLinux system
+    (extlib.darwinOrLinux
       {}
       ({pkgs, ...}: {
         stylix.cursor = {
@@ -51,7 +50,7 @@
   ];
 
   home = [
-    (extlib.darwinOrLinux system
+    (extlib.darwinOrLinux
       {}
       ({pkgs, ...}: {
         stylix.iconTheme = {

@@ -1,9 +1,7 @@
-{system, extlib, inputs, ...}: {
+{inputs, ...}: {
   nix = [
-    (extlib.darwinOrLinux system
-      inputs.home-manager.darwinModules.home-manager
-      inputs.home-manager.nixosModules.home-manager
-    )
+    inputs.home-manager.darwinModules.home-manager
+    inputs.home-manager.nixosModules.home-manager
     ({config, user, ...}: {
       home-manager.useGlobalPkgs = true;
       home-manager.backupFileExtension = "backup";

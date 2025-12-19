@@ -123,7 +123,7 @@ in {
       # modules
       loadedMods = [(extlib.loadModulesFromAttrset
         cfg.modules
-        {inherit self inputs extlib; inherit (cfg) system;}
+        {inherit self inputs extlib;}
       )];
       mod = {
         nix = builtins.concatLists (map (m: m.nix or []) loadedMods);

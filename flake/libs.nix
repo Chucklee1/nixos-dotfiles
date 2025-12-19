@@ -89,8 +89,8 @@ with self.inputs.nixpkgs.lib; rec {
   ]);
 
   # system helpers
-  darwinOrLinux = system: A: B:
-    if (builtins.match ".*-darwin" system != null)
+  darwinOrLinux = A: B:
+    if (builtins.match ".*-darwin" builtins.currentSystem != null)
     then A
     else B;
 
