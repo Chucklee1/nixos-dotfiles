@@ -11,7 +11,7 @@ builtins.mapAttrs (_: package:
 
     extraEmacsPackages = epkgs: [
       epkgs.tree-sitter
-      epkgs.treesit-grammars.with-all-grammars
+      epkgs.treesit-auto
     ];
   })
   {
