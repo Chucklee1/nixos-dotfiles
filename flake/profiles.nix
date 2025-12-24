@@ -37,6 +37,7 @@ in {
     };
     laptop = {
       system = "x86_64-linux";
+      builder = inputs.nixpkgs.lib.nixosSystem;
       user = "goat";
       modules = with mod; [
         hosts.laptop
@@ -62,6 +63,7 @@ in {
     };
     inspiron = {
       system = "x86_64-linux";
+      builder = inputs.nixpkgs.lib.nixosSystem;
       user = "goat";
       modules = with mod; [
         hosts.inspiron
@@ -87,6 +89,7 @@ in {
     };
     umbra = {
       system = "x86_64-linux";
+      builder = inputs.nixpkgs.lib.nixosSystem;
       user = "nixos";
       modules = with mod; [
         hosts.umbra
@@ -98,8 +101,8 @@ in {
     };
     macbook = {
       system = "aarch64-darwin";
-      user = "goat";
       builder = inputs.nix-darwin.lib.darwinSystem;
+      user = "goat";
       modules = with mod; [
         hosts.macbook
 
