@@ -28,9 +28,9 @@ in {
 
         drivers.graphical drivers.ssh
 
-        shell.variables shell.zsh
+        shell.variables shell.zsh shell.nushell
 
-        theming.blockgame theming.stylix theming.theme.nord
+        theming.blockgame theming.stylix theming.themes.nord
 
         virt.qemu
       ];
@@ -58,7 +58,7 @@ in {
 
         shell.variables shell.zsh
 
-        theming.blockgame theming.stylix theming.theme.nord
+        theming.blockgame theming.stylix theming.themes.nord
       ];
     };
     inspiron = {
@@ -84,7 +84,7 @@ in {
 
         shell.variables shell.zsh
 
-        theming.blockgame theming.stylix theming.theme.nord
+        theming.blockgame theming.stylix theming.themes.nord
       ];
     };
     umbra = {
@@ -117,7 +117,7 @@ in {
 
         shell.variables shell.zsh
 
-        theming.stylix theming.theme.nord
+        theming.stylix theming.themes.nord
       ];
     };
   };

@@ -1,7 +1,4 @@
 {
-  nix = [
-    ({lib, pkgs, user, ...}: {users.users.${user}.shell = lib.mkForce pkgs.nushell;})
-  ];
   home = [
     ({config, pkgs, machine, ...}: {
       programs.nushell = {
