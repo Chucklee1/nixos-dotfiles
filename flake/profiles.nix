@@ -30,7 +30,7 @@ in {
 
         shell.variables shell.zsh
 
-        theming.blockgame theming.stylix
+        theming.blockgame theming.stylix theming.theme.nord
 
         virt.qemu
       ];
@@ -58,7 +58,7 @@ in {
 
         shell.variables shell.zsh
 
-        theming.blockgame theming.stylix
+        theming.blockgame theming.stylix theming.theme.nord
       ];
     };
     inspiron = {
@@ -84,7 +84,7 @@ in {
 
         shell.variables shell.zsh
 
-        theming.blockgame theming.stylix
+        theming.blockgame theming.stylix theming.theme.nord
       ];
     };
     umbra = {
@@ -117,7 +117,7 @@ in {
 
         shell.variables shell.zsh
 
-        theming.stylix
+        theming.stylix theming.theme.nord
       ];
     };
   };
