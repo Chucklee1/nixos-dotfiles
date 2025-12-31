@@ -25,10 +25,12 @@ in {
     (mkfs.btrfs "/nix"               DEV.WD  ["subvol=WD/nix" "noatime"  "compress=zstd"])
 
     (mkfs.btrfs "/opt"               DEV.EVO ["subvol=EVO/opt" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/opt/SSE"           DEV.EVO ["subvol=EVO/SSE" "relatime" "compress=zstd"])
     (mkfs.btrfs "/opt/osu"           DEV.EVO ["subvol=EVO/osu" "relatime" "compress=zstd"])
     (mkfs.btrfs "/opt/PrismLauncher" DEV.EVO ["subvol=EVO/PrismLauncher" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/srv"               DEV.EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/opt/SSE"           DEV.EVO ["subvol=EVO/SSE" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/opt/Steam"           DEV.EVO ["subvol=EVO/Steam" "relatime" "compress=zstd"])
+
+      (mkfs.btrfs "/srv"               DEV.EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
 
     (mkfs.btrfs "/.snapshots/WD"     DEV.WD  ["subvol=WD/.snapshots" "relatime" "compress=zstd"])
     (mkfs.btrfs "/.snapshots/EVO"    DEV.EVO ["subvol=EVO/.snapshots" "relatime" "compress=zstd"])
