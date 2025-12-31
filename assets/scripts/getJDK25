@@ -1,0 +1,11 @@
+#!/usr/bin/env nu
+
+let exclude = '\.drv$' 
+let bin = 'temurin-bin-25'
+
+ls /nix/store 
+| where name !~ $exclude 
+| where name =~ $bin
+| get name 
+| first 1 
+| path join 'bin/java'
