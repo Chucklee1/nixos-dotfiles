@@ -101,7 +101,7 @@
           cleanup = "zap";
         };
 
-        taps = builtins.attrNames config.nix-homebrew.taps; #Align homebrew taps config with nix-homebrew
+        taps = builtins.attrNames config.nix-homebrew.taps; # Align homebrew taps config with nix-homebrew
 
         caskArgs.no_quarantine = true;
         brews = [
@@ -109,6 +109,7 @@
           "syncthing"
         ];
         casks = [
+          "ungoogled-chromium"
           "musicbrainz-picard"
           "calibre"
           "ghostty"
