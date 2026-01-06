@@ -13,10 +13,10 @@ in {
         hosts.desktop
         net.syncthing net.tailscale
 
-        programs.librewolf programs.emacs programs.nixvim
+        programs.librewolf programs.zen-browser programs.emacs programs.nixvim
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
-        programs.prismLauncher programs.discord
+        programs.prismLauncher
 
         software.apps software.dev
         software.texlive software.java
