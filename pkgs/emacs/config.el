@@ -77,6 +77,7 @@
   :hook
   (before-save   . delete-trailing-whitespace)
   (prog-mode     . (lambda () (display-line-numbers-mode 1)))
+  (window-setup  . toggle-frame-maximized)
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
