@@ -41,6 +41,13 @@
          (select-window new-win)
          (vterm (getenv "SHELL"))))
 
+;; org ;;
+(defun helper/org/set-margins ()
+  (let ((margin 2))
+    (setq-local left-margin-width margin
+                right-margin-width margin)
+    (set-window-buffer nil (current-buffer))))
+
 (use-package emacs
   :custom
   ;; ui
@@ -352,13 +359,10 @@
 (set-face-attribute 'org-level-2 nil :height 1.2 :weight 'bold)
 (set-face-attribute 'org-level-3 nil :height 1.1 :weight 'bold)
 
-(use-package toc-org
-  :commands toc-org-enable
-  :hook (org-mode . toc-org-mode))
-
-(use-package org-modern)
-(setq org-modern-star ["●" "○" "◆" "◇" "▶" "▷"])
-(global-org-modern-mode)
+(use-package org-modern
+  :init (global-org-modern-mode)
+  :config
+  (setq org-modern-star ["●" "○" "◆" "◇" "▶" "▷"]))
 
 (setq org-latex-create-formula-image-program 'dvisvgm)
 
@@ -375,13 +379,7 @@
          :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
          :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 
-(defun set/org-margins ()
-  (let ((margin 2))
-    (setq-local left-margin-width margin
-                right-margin-width margin)
-    (set-window-buffer nil (current-buffer))))
-
-(add-hook 'org-mode-hook #'set/org-margins)
+(add-hook 'org-mode-hook #'helper/org/set-margins)
 
 ;; have horizontal rule ignore magrins
 (with-eval-after-load 'org-modern

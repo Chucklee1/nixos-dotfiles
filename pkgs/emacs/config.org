@@ -2,62 +2,6 @@
 #+Author: Chucklee1
 #+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
-* Table of Contents :toc:
-- [[#elisp-in-a-nutshell][Elisp in A Nutshell]]
-  - [[#lists][Lists]]
-  - [[#conditionals][Conditionals]]
-- [[#nix-overlay][Nix Overlay]]
-- [[#base-settings][Base Settings]]
-  - [[#pkg-config][Pkg Config]]
-  - [[#variables][Variables]]
-  - [[#helper-funcitons][Helper Funcitons]]
-  - [[#emacs][Emacs]]
-  - [[#evil-mode][Evil Mode]]
-  - [[#keybinds][Keybinds]]
-  - [[#globl---window][Globl - window]]
-  - [[#globl---git][globl - git]]
-  - [[#globl---org][globl - org]]
-  - [[#globl---toggle][globl - toggle]]
-- [[#programs][Programs]]
-  - [[#dired][Dired]]
-  - [[#treemacs][Treemacs]]
-  - [[#vterm][Vterm]]
-- [[#appearance][Appearance]]
-  - [[#theme][Theme]]
-  - [[#transparent-background][Transparent Background]]
-  - [[#font][Font]]
-  - [[#nerd-font][Nerd Font]]
-  - [[#doom-modeline][Doom-modeline]]
-  - [[#highlight-indent-guides][highlight indent guides]]
-  - [[#evil-terminal-cursor-change][evil-terminal-cursor-change]]
-- [[#nerd][Nerd]]
-  - [[#projectile][Projectile]]
-  - [[#eglot][Eglot]]
-  - [[#misc-language-specific-modes][Misc Language-Specific Modes]]
-  - [[#java][Java]]
-  - [[#auctex][Auctex]]
-- [[#org-mode][Org Mode]]
-  - [[#org-toc][Org TOC]]
-  - [[#org-modern][Org Modern]]
-  - [[#org-latex-fragment-previews][Org LaTeX Fragment Previews]]
-  - [[#subtle-margins][Subtle Margins]]
-  - [[#org-babel-hook][Org-Babel Hook]]
-  - [[#direnv][Direnv]]
-- [[#completion][Completion]]
-  - [[#corfu][Corfu]]
-  - [[#cape][Cape]]
-  - [[#flycheck][Flycheck]]
-  - [[#vertico-and-marginalia][Vertico and Marginalia]]
-  - [[#orderless][Orderless]]
-  - [[#yasnippet][Yasnippet]]
-- [[#late-load][Late Load]]
-  - [[#git][Git]]
-  - [[#help][Help!]]
-  - [[#rainbows][Rainbows!]]
-- [[#darwin-fixes][Darwin fixes]]
-  - [[#exec-path-from-shell][Exec Path from Shell]]
-  - [[#ultra-scroll][Ultra Scroll]]
-
 * Elisp in A Nutshell
 ** Lists
 + Dolist
@@ -163,6 +107,14 @@
          (let ((new-win (split-window-below)))
            (select-window new-win)
            (vterm (getenv "SHELL"))))
+
+  ;; org ;;
+  (defun helper/org/set-margins ()
+    (let ((margin 2))
+      (setq-local left-margin-width margin
+                  right-margin-width margin)
+      (set-window-buffer nil (current-buffer))))
+
 #+end_src
 ** Emacs
 #+begin_src emacs-lisp
@@ -558,17 +510,12 @@
   (set-face-attribute 'org-level-2 nil :height 1.2 :weight 'bold)
   (set-face-attribute 'org-level-3 nil :height 1.1 :weight 'bold)
 #+end_src
-** Org TOC
-#+begin_src emacs-lisp
-  (use-package toc-org
-    :commands toc-org-enable
-    :hook (org-mode . toc-org-mode))
-#+end_src
 ** Org Modern
 #+begin_src emacs-lisp
-  (use-package org-modern)
-  (setq org-modern-star ["●" "○" "◆" "◇" "▶" "▷"])
-  (global-org-modern-mode)
+  (use-package org-modern
+    :init (global-org-modern-mode)
+    :config
+    (setq org-modern-star ["●" "○" "◆" "◇" "▶" "▷"]))
 #+end_src
 ** Org LaTeX Fragment Previews
 + Use dvisvgm for LaTeX fragment previews
@@ -590,13 +537,7 @@
 #+end_src
 ** Subtle Margins
 #+begin_src emacs-lisp
-  (defun set/org-margins ()
-    (let ((margin 2))
-      (setq-local left-margin-width margin
-                  right-margin-width margin)
-      (set-window-buffer nil (current-buffer))))
-
-  (add-hook 'org-mode-hook #'set/org-margins)
+  (add-hook 'org-mode-hook #'helper/org/set-margins)
 
   ;; have horizontal rule ignore magrins
   (with-eval-after-load 'org-modern
