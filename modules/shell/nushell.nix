@@ -17,7 +17,6 @@
           edit_mode = "vi";
         };
         plugins = with pkgs.nushellPlugins; [
-          highlight
           formats
           gstat
         ];
