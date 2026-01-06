@@ -339,7 +339,6 @@
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
   :config
   (setq org-catch-invisible-edits 'show-and-error
-        org-special-ctrl-a/e t ;; smart jump keys
         org-insert-heading-respect-content t
         ;; Org styling, hide markup etc.
         org-hide-emphasis-markers t
@@ -347,9 +346,9 @@
         ;; use ... for folded text
         org-ellipsis "…"))
 
-(set-face-attribute 'org-document-title nil :height 1.8 :weight 'bold)
+(set-face-attribute 'org-document-title nil :height 1.5 :weight 'bold)
 (set-face-attribute 'org-document-info nil :height 1.4 :weight 'bold)
-(set-face-attribute 'org-level-1 nil :height 1.4 :weight 'bold)
+(set-face-attribute 'org-level-1 nil :height 1.3 :weight 'bold)
 (set-face-attribute 'org-level-2 nil :height 1.2 :weight 'bold)
 (set-face-attribute 'org-level-3 nil :height 1.1 :weight 'bold)
 
@@ -375,6 +374,18 @@
          :image-size-adjust (2.5 . 2.5)
          :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
          :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
+
+(defun set/org-margins ()
+  (let ((margin 2))
+    (setq-local left-margin-width margin
+                right-margin-width margin)
+    (set-window-buffer nil (current-buffer))))
+
+(add-hook 'org-mode-hook #'set/org-margins)
+
+;; have horizontal rule ignore magrins
+(with-eval-after-load 'org-modern
+  (set-face-attribute 'org-modern-horizontal-rule nil :extend t))
 
 (defun config/sync-with-org ()
   (when (string-equal (file-truename buffer-file-name)
