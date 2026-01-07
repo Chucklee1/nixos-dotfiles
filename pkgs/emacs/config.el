@@ -299,9 +299,7 @@
 
 (use-package eglot
   :ensure nil ;; Don't install eglot because it's now built-in
-  :hook ((c-mode
-          c++-mode
-          haskell-mode
+  :hook ((haskell-mode
           kdl-mode
           lua-mode
           markdown-mode
@@ -315,6 +313,17 @@
   (eglot-autoshutdown t);; Shutdown unused servers.
   (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
   )
+(with-eval-after-load 'eglot
+  ;; shut up clangd
+  (add-to-list 'eglot-server-programs
+               '((c-mode c++-mode)
+                 . ("clangd"
+                    "-j=3"
+                    "--background-index"
+                    "--clang-tidy"
+                    "--completion-style=detailed"
+                    "--header-insertion=never"
+                    "--header-insertion-decorators=0"))))
 
 (use-package haskell-mode :mode "\\.hs\\'")
 (use-package kdl-mode :mode "\\.kdl\\'")
