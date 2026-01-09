@@ -89,7 +89,7 @@
           "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-        mutableTaps = true;
+        mutableTaps = false;
       };
     })
     ({config, ...}: {
