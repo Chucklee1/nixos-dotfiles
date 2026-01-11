@@ -329,12 +329,8 @@
 ** Nov
 - Epub reader
 #+begin_src emacs-lisp
-  (use-package nov
-    :mode ("\\.epub\\'" . nov-mode)
-    :config (setq nov-text-width 80)
-    :hook
-    (nov-mode . visual-line-mode)
-    (nov-mode . visual-fill-column-mode))
+    (use-package nov
+        :mode ("\\.epub\\'" . nov-mode))
 #+end_src
 
 * Appearance
