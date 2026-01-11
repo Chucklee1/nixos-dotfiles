@@ -220,8 +220,9 @@
 
 (use-package vterm)
 
+(when (eq system-type 'gnu/linux)
 (use-package nov
-    :mode ("\\.epub\\'" . nov-mode))
+    :mode ("\\.epub\\'" . nov-mode)))
 
 (use-package doom-themes
   :after (treemacs org)
