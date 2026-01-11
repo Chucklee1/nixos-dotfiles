@@ -108,8 +108,8 @@ in {
 
         net.tailscale
 
-        programs.emacs
-        programs.git programs.kitty programs.yazi
+        programs.emacs programs.nixvim
+        programs.git programs.yazi
 
         software.dev software.qol software.texlive software.java
 
