@@ -12,6 +12,7 @@ builtins.mapAttrs (_: package:
     extraEmacsPackages = epkgs: [
       epkgs.tree-sitter
       epkgs.treesit-auto
+      epkgs.nov
     ];
   })
   {

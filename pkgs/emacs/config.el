@@ -220,6 +220,13 @@
 
 (use-package vterm)
 
+(use-package nov
+  :mode ("\\.epub\\'" . nov-mode)
+  :config (setq nov-text-width 80)
+  :hook
+  (nov-mode . visual-line-mode)
+  (nov-mode . visual-fill-column-mode))
+
 (use-package doom-themes
   :after (treemacs org)
   :custom

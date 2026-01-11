@@ -49,6 +49,7 @@
       extraEmacsPackages = epkgs: [
         epkgs.tree-sitter
         epkgs.treesit-auto
+        epkgs.nov
       ];
     })
     {
@@ -324,6 +325,16 @@
 ** Vterm
 #+begin_src emacs-lisp
   (use-package vterm)
+#+end_src
+** Nov
+- Epub reader
+#+begin_src emacs-lisp
+  (use-package nov
+    :mode ("\\.epub\\'" . nov-mode)
+    :config (setq nov-text-width 80)
+    :hook
+    (nov-mode . visual-line-mode)
+    (nov-mode . visual-fill-column-mode))
 #+end_src
 
 * Appearance
