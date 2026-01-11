@@ -25,6 +25,8 @@
     homebrew-cask.flake = false;
     homebrew-bundle.url = "github:homebrew/homebrew-bundle";
     homebrew-bundle.flake = false;
+    OmniWM.url = "github:BarutSRB/OmniWM";
+    OmniWM.flake = false;
 
     # ---- theming ----
     stylix.url = "github:danth/stylix";

@@ -80,16 +80,17 @@
       nix-homebrew = {
         inherit user; # User owning the Homebrew prefix
         enable = true;
-        # autoMigrate = true;
+        autoMigrate = true;
         enableRosetta = true;
         # Declarative tap management
         taps = {
           "homebrew/homebrew-core" = inputs.homebrew-core;
           "homebrew/homebrew-cask" = inputs.homebrew-cask;
           "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
+          "BarutSRB/tap" = inputs.OmniWM;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-        mutableTaps = false;
+        mutableTaps = true;
       };
     })
     ({config, ...}: {
@@ -109,16 +110,17 @@
           "syncthing"
         ];
         casks = [
-          "ungoogled-chromium"
-          "musicbrainz-picard"
+          "blackhole-2ch"
           "calibre"
           "ghostty"
           "hammerspoon"
           "krita"
+          "musicbrainz-picard"
+          "omniwm"
           "utm"
-          "zoom"
           "prismlauncher"
-          "blackhole-2ch"
+          "zen"
+          "zoom"
         ];
       };
     })

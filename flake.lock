@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "OmniWM": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768105075,
+        "narHash": "sha256-0lcUyZ3NhHVJm9EYF9fnAYD+MWKx4mPM9dSFlham9po=",
+        "owner": "BarutSRB",
+        "repo": "OmniWM",
+        "rev": "0ae4dbd391b7eb0a3ec88b51ac45fbaf5d1b8442",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BarutSRB",
+        "repo": "OmniWM",
+        "type": "github"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -754,6 +770,7 @@
     },
     "root": {
       "inputs": {
+        "OmniWM": "OmniWM",
         "disko": "disko",
         "dwm": "dwm",
         "emacs-overlay": "emacs-overlay",
