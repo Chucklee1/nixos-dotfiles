@@ -105,7 +105,7 @@
           # programs
           "${mod}+Return" = sh "kitty";
           "${mod}+E" = sh "emacs";
-          "${mod}+Shift+B" = sh "librewolf";
+          "${mod}+Shift+B" = sh "zen";
           "${mod}+Space" = sh wmenu;
           "${mod}+Shift+L" = sh "swaylock";
           "${mod}+W" = sh ''systemctl --user restart waybar.service'';
