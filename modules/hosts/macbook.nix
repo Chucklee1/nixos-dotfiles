@@ -87,7 +87,6 @@
           "homebrew/homebrew-core" = inputs.homebrew-core;
           "homebrew/homebrew-cask" = inputs.homebrew-cask;
           "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
-          "BarutSRB/tap" = inputs.OmniWM;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
         mutableTaps = true;
@@ -108,6 +107,7 @@
         brews = [
           "lima"
           "syncthing"
+          "llvm"
         ];
         casks = [
           "blackhole-2ch"
@@ -116,7 +116,6 @@
           "hammerspoon"
           "krita"
           "musicbrainz-picard"
-          "omniwm"
           "utm"
           "prismlauncher"
           "zen"
