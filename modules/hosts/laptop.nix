@@ -1,4 +1,4 @@
-{self, inputs}: {
+{self, inputs, ...}: {
   nix = [
     inputs.disko.nixosModules.default
     (import "${self}/assets/disko/ext4.nix" {device = "/dev/nvme0n1";})
