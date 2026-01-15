@@ -46,7 +46,7 @@ in {
         programs.zen-browser programs.emacs
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
-        programs.xserver programs.bspwm
+        programs.xserver programs.dwm
 
         software.apps software.dev software.texlive
         software.qol
