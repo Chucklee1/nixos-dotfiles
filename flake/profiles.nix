@@ -16,7 +16,7 @@ in {
         programs.zen-browser programs.emacs programs.nixvim
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
-        programs.prismLauncher
+        programs.prismLauncher programs.flatpak
 
         software.apps software.dev
         software.texlive software.java
