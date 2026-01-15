@@ -1,10 +1,10 @@
 {self, ...}: {
   nix = [
     # overlay
-    ({pkgs, machine, ...}: let
+    ({config, pkgs, ...}: let
       emacs-pkg =
         if pkgs.stdenv.isDarwin then pkgs.emacs-macport
-        else if machine == "umbra" then pkgs.emacs
+        else if (config.services.xserver.enable) then pkgs.emacs
         else pkgs.emacs-pgtk;
     in {
       nixpkgs.overlays = [
