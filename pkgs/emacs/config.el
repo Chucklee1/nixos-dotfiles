@@ -303,7 +303,9 @@
 
 (use-package eglot
   :ensure nil ;; Don't install eglot because it's now built-in
-  :hook ((haskell-mode
+  :hook ((c-mode
+          c++-mode
+          haskell-mode
           kdl-mode
           lua-mode
           markdown-mode
@@ -317,17 +319,6 @@
   (eglot-autoshutdown t);; Shutdown unused servers.
   (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
   )
-(with-eval-after-load 'eglot
-  ;; shut up clangd
-  (add-to-list 'eglot-server-programs
-               '((c-mode c++-mode)
-                 . ("clangd"
-                    "-j=3"
-                    "--background-index"
-                    "--clang-tidy"
-                    "--completion-style=detailed"
-                    "--header-insertion=never"
-                    "--header-insertion-decorators=0"))))
 
 (use-package haskell-mode :mode "\\.hs\\'")
 (use-package kdl-mode :mode "\\.kdl\\'")
@@ -339,6 +330,15 @@
 ;; heavier niche modes - will not connect to eglot
 (if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
+
+;; Source - https://stackoverflow.com/a
+;; Posted by Alex B, modified by community. See post 'Timeline' for change history
+;; Retrieved 2026-01-14, License - CC BY-SA 4.0
+
+(defun my-c++-mode-hook ()
+  (setq c-basic-offset 4)
+  (c-set-offset 'substatement-open 0))
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
 
 (use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration)))
 (use-package lsp-ui)

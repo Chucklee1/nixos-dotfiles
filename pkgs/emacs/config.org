@@ -438,7 +438,9 @@
 #+begin_src emacs-lisp
   (use-package eglot
     :ensure nil ;; Don't install eglot because it's now built-in
-    :hook ((haskell-mode
+    :hook ((c-mode
+            c++-mode
+            haskell-mode
             kdl-mode
             lua-mode
             markdown-mode
@@ -452,17 +454,6 @@
     (eglot-autoshutdown t);; Shutdown unused servers.
     (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
     )
-  (with-eval-after-load 'eglot
-    ;; shut up clangd
-    (add-to-list 'eglot-server-programs
-                 '((c-mode c++-mode)
-                   . ("clangd"
-                      "-j=3"
-                      "--background-index"
-                      "--clang-tidy"
-                      "--completion-style=detailed"
-                      "--header-insertion=never"
-                      "--header-insertion-decorators=0"))))
 
 #+end_src
 ** Misc Language-Specific Modes
@@ -478,6 +469,19 @@
       (if (executable-find "nu") (use-package nushell-mode))
       (if (executable-find "kotlin") (use-package kotlin-mode))
 #+end_src
+** C/C++
+#+begin_src emacs-lisp
+  ;; Source - https://stackoverflow.com/a
+  ;; Posted by Alex B, modified by community. See post 'Timeline' for change history
+  ;; Retrieved 2026-01-14, License - CC BY-SA 4.0
+
+  (defun my-c++-mode-hook ()
+    (setq c-basic-offset 4)
+    (c-set-offset 'substatement-open 0))
+  (add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
+#+end_src
+
 ** Java
 + I use java-lsp since it has more out-of-the-box features
 + TLDR, make sure eglot does not touch java, and have lsp-mode
