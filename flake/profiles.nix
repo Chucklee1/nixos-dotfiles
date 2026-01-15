@@ -43,7 +43,7 @@ in {
         hosts.laptop
         net.syncthing net.tailscale
 
-        programs.librewolf programs.emacs
+        programs.zen-browser programs.emacs
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
 
