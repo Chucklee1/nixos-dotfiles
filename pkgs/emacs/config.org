@@ -59,6 +59,8 @@
     }
 #+end_src
 
+-----
+
 * Base Settings
 ** Pkg Config
 #+begin_src emacs-lisp
@@ -269,6 +271,8 @@
                 ("W" . global-visual-wrap-prefix-mode)))
 #+end_src
 
+-----
+
 * Programs
 ** Dired
 #+begin_src emacs-lisp
@@ -334,6 +338,8 @@
   (use-package nov
       :mode ("\\.epub\\'" . nov-mode)))
 #+end_src
+
+-----
 
 * Appearance
 ** Theme
@@ -422,6 +428,8 @@
 
 #+end_src
 
+-----
+
 * Nerd
 ** Projectile
 + Hmmm, project-ile, maybe has to do with projects?
@@ -507,6 +515,8 @@
           (output-html "xdg-open")))
 #+end_src
 
+-----
+
 * Org Mode
 #+begin_src emacs-lisp
   (use-package org
@@ -586,6 +596,8 @@
 #+begin_src emacs-lisp
   (use-package direnv)
 #+end_src
+
+-----
 
 * Completion
 ** Corfu
@@ -680,6 +692,8 @@
   (use-package yasnippet-snippets)
 #+end_src
 
+-----
+
 * Late Load
 ** Git
 *** Magit
@@ -736,6 +750,8 @@
     :config (setq rainbow-x-colors nil)
     :hook (prog-mode . rainbow-mode))
 #+end_src
+
+-----
 
 * Darwin fixes
 ** Exec Path from Shell
