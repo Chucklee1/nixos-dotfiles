@@ -46,6 +46,7 @@ in {
         programs.zen-browser programs.emacs
         programs.git programs.kitty programs.yazi
         programs.niri programs.waybar
+        programs.xserver programs.bspwm
 
         software.apps software.dev software.texlive
         software.qol
@@ -73,7 +74,7 @@ in {
         programs.librewolf
         programs.nixvim
         programs.git programs.kitty programs.yazi
-        programs.dwm
+        programs.xserver programs.dwm
 
         software.apps software.dev software.qol
 
