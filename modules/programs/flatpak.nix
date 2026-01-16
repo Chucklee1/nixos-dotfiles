@@ -14,8 +14,28 @@
              }}";
            }
          ];
+        overrides = {
+        global = {
+          # Force Wayland by default
+          Context.sockets = ["wayland" "!x11" "!fallback-x11"];
 
+          Environment = {
+            # Fix un-themed cursor in some Wayland apps
+            XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+
+            # Force correct theme for some GTK apps
+            GTK_THEME = "Adwaita:dark";
+          };
+        };
+
+        "com.hypixel.HytaleLauncher".Context.sockets = ["x11"]; # No Wayland support
+        };
        };
+
+       # bin scripts for dmemu/wmenu to access
+       environment.systemPackages = [
+         (pkgs.writeShellScriptBin "hytale" "flatpak run com.hypixel.HytaleLauncher")
+       ];
      })
   ];
 }
