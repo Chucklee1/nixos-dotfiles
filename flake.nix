@@ -31,6 +31,11 @@
     stylix.url = "github:danth/stylix";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
     minesddm.url = "github:Davi-S/sddm-theme-minesddm/development";
+    quickshell.url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+    quickshell.inputs.nixpkgs.follows = "nixpkgs";
+    qml-niri.url = "github:imiric/qml-niri/main";
+    qml-niri.inputs.nixpkgs.follows = "nixpkgs";
+    qml-niri.inputs.quickshell.follows = "quickshell";
 
     # ---- editors ----
     nixvim.url = "github:nix-community/nixvim";

@@ -309,9 +309,7 @@
           kdl-mode
           lua-mode
           markdown-mode
-          nix-mode
-          qml-mode
-          web-mode)
+          nix-mode)
          . eglot-ensure)
   :custom
   ;; Good default
@@ -325,8 +323,6 @@
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
 (use-package nix-mode :mode "\\.nix\\'")
-(use-package qml-mode :mode ("\\.qml\\'" "\\.qss\\'"))
-(use-package web-mode :mode ("\\.html?\\'" "\\.css\\'"  "\\.js\\'" "\\.json\\'"))
 ;; heavier niche modes - will not connect to eglot
 (if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
@@ -346,6 +342,15 @@
 
 ;; hook java to lsp-mode
 (add-hook 'java-mode-hook #'lsp)
+
+;; provided by nix
+(require 'qml-ts-mode)
+  ;; taken from quickshell docs
+  (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
+                    :activation-fn (lsp-activate-on "qml-ts")
+                    :server-id 'qmlls))
 
 (use-package auctex)
 
