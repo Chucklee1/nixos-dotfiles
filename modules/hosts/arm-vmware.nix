@@ -18,12 +18,18 @@
     }
   ];
 
-  home = [{
+  home = [({config, ...}: {
     programs.niri.settings = {
       outputs."Virtual-1" = {
         variable-refresh-rate = true;
         scale = 1.8;
       };
+      binds = {
+        "F10".action =
+          config.lib.niri.actions.spawn
+            "sh" "-c" "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        "Ctrl+P".action.screenshot = [];
+      };
     };
-  }];
+  })];
 }
