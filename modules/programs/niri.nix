@@ -99,9 +99,13 @@
               -S "${base0D}" \
               -s "${base00}"
             '';
+
           # mod def
-          mod = if (machine == "umbra" || machine == "arm-vmware") then "Alt"
-                else "Mod";
+          mod =
+            if (machine == "umbra" || machine == "arm-vmware")
+            then "Alt"
+            else "Mod";
+
         in {
           # programs
           "${mod}+Return" = sh "kitty";
@@ -123,9 +127,6 @@
           "XF86AudioPlay" = sh "rmpc togglepause";
           "XF86AudioNext" = sh "rmpc next";
           "XF86AudioPrev" = sh "rmpc prev";
-          # clipboard
-          "${mod}+Shift+C" = sh "env DISPLAY=:0 xsel -ob | wl-copy";
-          "${mod}+Shift+V" = sh "wl-paste -n | env DISPLAY=:0 xsel -ib";
           # screenshot
           "Print".action.screenshot = [];
           "Alt+Print".action.screenshot-window = [];
