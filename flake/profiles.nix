@@ -135,7 +135,7 @@ in {
 
         net.tailscale
 
-        programs.emacs programs.nixvim
+        programs.emacs programs.prismLauncher
         programs.git programs.yazi
 
         software.dev software.qol software.texlive software.java

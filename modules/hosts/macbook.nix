@@ -105,19 +105,13 @@
 
         caskArgs.no_quarantine = true;
         brews = [
-          "lima"
           "syncthing"
-          "llvm"
         ];
         casks = [
           "blackhole-2ch"
-          "calibre"
           "ghostty"
-          "hammerspoon"
           "krita"
           "musicbrainz-picard"
-          "utm"
-          "prismlauncher"
           "zen"
           "zoom"
         ];
