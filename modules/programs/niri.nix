@@ -21,7 +21,7 @@
           DISPLAY = ":0";
           _JAVA_AWT_WM_NONREPARENTING = "1";
           SDL_VIDEODRIVER = "x11";
-          GDK_BACKEND = "wayland,x11";
+          # GDK_BACKEND = "wayland,x11";
           QT_QPA_PLATFORM = "wayland;xcb";
           QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
           QT_AUTO_SCREEN_SCALE_FACTOR = "1";
@@ -86,7 +86,7 @@
       };
     })
     # keybinds
-    ({config, ...}:
+    ({config, machine, ...}:
       with config.lib.niri.actions;
       with config.lib.stylix.colors.withHashtag; {
         programs.niri.settings.binds = let
@@ -100,7 +100,8 @@
               -s "${base00}"
             '';
           # mod def
-          mod = "Mod";
+          mod = if (machine == "umbra" || machine == "arm-vmware") then "Alt"
+                else "Mod";
         in {
           # programs
           "${mod}+Return" = sh "kitty";
@@ -130,8 +131,8 @@
           "Alt+Print".action.screenshot-window = [];
           # quits
           "${mod}+Q".action = close-window;
-          "Ctrl+Alt+Delete".action = quit;
-          "Ctrl+Shift+Alt+Delete".action = quit {skip-confirmation = true;};
+          "Ctrl+${mod}+Delete".action = quit;
+          "Ctrl+Shift+${mod}+Delete".action = quit {skip-confirmation = true;};
 
           # moving
           "${mod}+Up".action = focus-window-or-workspace-up;
@@ -142,10 +143,6 @@
           "${mod}+Right".action = focus-column-right;
           "${mod}+Shift+Left".action = move-column-left;
           "${mod}+Shift+Right".action = move-column-right;
-          "${mod}+Alt+left".action = focus-monitor-next;
-          "${mod}+Alt+right".action = focus-monitor-previous;
-          "${mod}+Shift+Alt+left".action = move-window-to-monitor-next;
-          "${mod}+Shift+Alt+right".action = move-window-to-monitor-previous;
 
           # column width - using = since + needs shift
           "${mod}+Minus".action = set-column-width "-10%";

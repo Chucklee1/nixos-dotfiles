@@ -26,7 +26,7 @@
         # nix helpers
         nurl
       ] ++
-      (extlib.darwinOrLinux [] [rar]);
+      (extlib.armOrNot [rar] []);
     })
     ({machine, pkgs, ...}:
       if machine == "umbra" then {}
