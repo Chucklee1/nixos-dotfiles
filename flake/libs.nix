@@ -94,6 +94,11 @@ with self.inputs.nixpkgs.lib; rec {
     then A
     else B;
 
+  armOrNot = A: B:
+    if (builtins.match "aarch64-*" builtins.currentSystem != null)
+    then A
+    else B;
+
   # idea from github:Misterio77/nix-starter-configs
   allSystems = genAttrs [
     "x86_64-linux"
