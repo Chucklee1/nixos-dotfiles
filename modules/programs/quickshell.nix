@@ -1,11 +1,14 @@
 {inputs, ...}: {
+  nix = [{nixpkgs.overlays = [inputs.quickshell.overlays.default];}];
   home = [
-    ({pkgs, ...}: {
-      home.packages = [
-        (inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default.withModules [
+    ({config, pkgs, ...}: {
+      programs.quickshell = {
+        enable = true;
+        package = (pkgs.quickshell.withModules [
           inputs.qml-niri.packages.${pkgs.stdenv.hostPlatform.system}.default
-        ])
-      ];
+        ]);
+        activeConfig = "${config.home.homeDirectory}/Repos/nixos-dotfiles/assets/quickshell";
+      };
     })
   ];
 }
