@@ -28,8 +28,6 @@
     ({pkgs, ...}: {
       programs.swaylock.enable = true;
       programs.swaylock.package = pkgs.swaylock-effects;
-      programs.waybar.enable = true;
-      programs.waybar.systemd.enable = true;
     })
   ];
 }

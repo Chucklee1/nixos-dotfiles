@@ -8,6 +8,8 @@
         span = color: str: ''<span color="${color}" >${str}</span>'';
         wms = ["niri" "hyprland"];
       in {
+        enable = true;
+        systemd.enable = true;
         settings = merged [
           # general
           {
