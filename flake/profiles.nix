@@ -54,6 +54,7 @@ in {
 
         system.boot system.home system.users
         system.pkgconfig system.sys-specs
+        disko.disko disko.ext4
 
         drivers.graphical drivers.ssh
 
@@ -118,6 +119,7 @@ in {
 
         system.boot system.home system.users
         system.pkgconfig system.sys-specs
+        disko.disko disko.ext4
 
         drivers.graphical drivers.ssh drivers.ext4
 

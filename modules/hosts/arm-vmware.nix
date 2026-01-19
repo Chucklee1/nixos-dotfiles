@@ -1,8 +1,6 @@
 
-{self, inputs, ...}: {
+{
   nix = [
-    inputs.disko.nixosModules.default
-    (import "${self}/assets/disko/ext4.nix" {device = "/dev/nvme0n1";})
     {
       boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "nvme" "usbhid" "sr_mod" ];
       # boot.initrd.kernelModules = [ ];
@@ -15,6 +13,9 @@
       services.udev.enable = true;
       # no proper displayManager, so I use startx
       services.xserver.displayManager.startx.enable = true;
+
+      # disko config option
+      opts.disko.device = "/dev/nvme0n1";
     }
   ];
 
