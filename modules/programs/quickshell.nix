@@ -4,6 +4,7 @@
     ({config, pkgs, ...}: {
       programs.quickshell = {
         enable = true;
+        systemd.enable = true;
         package = (pkgs.quickshell.withModules [
           inputs.qml-niri.packages.${pkgs.stdenv.hostPlatform.system}.default
         ]);
