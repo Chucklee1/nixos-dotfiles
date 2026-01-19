@@ -15,13 +15,12 @@ in {
 
         programs.zen-browser programs.emacs programs.nixvim
         programs.git programs.kitty programs.yazi
-        programs.niri programs.quickshell
+        software.wayland programs.niri programs.quickshell
         programs.prismLauncher programs.flatpak
 
         software.apps software.dev
         software.texlive software.java
         software.gaming software.qol
-        software.wayland
 
         system.boot system.home system.users
         system.pkgconfig system.sys-specs
@@ -45,12 +44,10 @@ in {
 
         programs.zen-browser programs.emacs
         programs.git programs.kitty programs.yazi
-        programs.niri programs.waybar
-        programs.xserver programs.dwm
+	      software.wayland programs.niri programs.quickshell
 
         software.apps software.dev software.texlive
         software.qol
-        software.wayland
 
         system.boot system.home system.users
         system.pkgconfig system.sys-specs
@@ -112,7 +109,7 @@ in {
 
         programs.zen-browser  programs.emacs
         programs.git programs.kitty programs.yazi
-	      software.wayland programs.waybar programs.niri
+	      software.wayland programs.niri programs.quickshell
 
         software.dev software.qol
         software.texlive software.java
