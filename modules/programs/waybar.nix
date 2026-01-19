@@ -49,9 +49,8 @@
             modules-right = ["keyboard-state" "pulseaudio" "network" "backlight" "battery" "tray"];
             keyboard-state = {
               numlock = true;
-              capslock = true;
+              capslock = false;
               format.numlock = "N {icon}";
-              format.capslock = "C {icon}";
               format-icons.locked = span base08 " ";
               format-icons.unlocked = span base07 " ";
             };
