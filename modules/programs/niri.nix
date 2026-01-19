@@ -21,21 +21,21 @@
           DISPLAY = ":0";
           _JAVA_AWT_WM_NONREPARENTING = "1";
           SDL_VIDEODRIVER = "x11";
-          # GDK_BACKEND = "wayland,x11";
           QT_QPA_PLATFORM = "wayland;xcb";
           QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
           QT_AUTO_SCREEN_SCALE_FACTOR = "1";
         };
         spawn-at-startup = let
           get = pkg: lib.getExe pkgs.${pkg};
-        in [
-          {command = ["${get "xwayland-satellite"}"];}
-          {command = ["${get "wlsunset"}" "-T" "5200"];}
-          {command = ["${get "swaybg"}" "-m" "fill" "-i" "${config.stylix.image}"];}
-          {command = ["brightnessctl" "s" "50%"];}
-          {command = ["systemctl" "--user" "reset-failed" "waybar.service"];}
-          {command = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "1"];}
-        ];
+        in
+          map (cmd: {
+            command = ["sh" "-c" cmd];
+          })
+          [
+            "${get "xwayland-satellite"}"
+            "${get "wlsunset"} -T 5200"
+            "${get "swaybg"} -m fill -i ${config.stylix.image}"
+          ];
         # input
         input = {
           keyboard = {
@@ -93,19 +93,18 @@
           # helpers
           sh = x: {action = spawn "sh" "-c" x;};
           wmenu = ''
-              wmenu-run -N \
-              "${base00}" \
-              -n "${base07}" \
-              -S "${base0D}" \
-              -s "${base00}"
-            '';
+            wmenu-run -N \
+            "${base00}" \
+            -n "${base07}" \
+            -S "${base0D}" \
+            -s "${base00}"
+          '';
 
           # mod def
           mod =
             if (machine == "umbra" || machine == "arm-vmware")
             then "Alt"
             else "Mod";
-
         in {
           # programs
           "${mod}+Return" = sh "kitty";
