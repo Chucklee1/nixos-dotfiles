@@ -52,7 +52,7 @@
     dwm.flake = false;
     niri.url = "github:sodiboo/niri-flake";
 
-    # ---- Misc ----
+    # ---- Apps ----
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";
     prismlauncher.inputs.nixpkgs.follows = "nixpkgs";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
