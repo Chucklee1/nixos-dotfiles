@@ -39,7 +39,10 @@
   # function from emacs-overlay, make sure to import the overlay
   builtins.mapAttrs (_: package:
     prev.emacsWithPackagesFromUsePackage {
-      inherit package;
+      package = package.overrideAttrs (old: {
+        passthru = old.passthru // { treeSitter = true; };
+      });
+
       config = ./config.el;
       defaultInitFile = false;
       # make sure to include `(setq use-package-always-ensure t)` in config
@@ -47,9 +50,8 @@
       # alwaysTangle = true;
 
       extraEmacsPackages = epkgs: [
-        epkgs.tree-sitter
-        epkgs.treesit-auto
-        epkgs.nov
+        epkgs.treesit-grammars.with-all-grammars
+
         (epkgs.trivialBuild {
           pname = "qml-ts-mode";
           version = "master";
@@ -472,6 +474,20 @@
     )
 
 #+end_src
+** Tree Sitter
+Tree, sitting...
+#+begin_src emacs-lisp
+  (use-package tree-sitter)
+
+  (use-package treesit-auto
+    :after (tree-sitter)
+    :custom
+    (treesit-auto-install 't)
+    :config
+    (global-treesit-auto-mode)
+    (treesit-auto-add-to-auto-mode-alist 'all))
+
+#+end_src
 ** Misc Language-Specific Modes
 #+begin_src emacs-lisp
       (use-package haskell-mode :mode "\\.hs\\'")
@@ -518,6 +534,20 @@
                       :activation-fn (lsp-activate-on "qml-ts")
                       :server-id 'qmlls))
  #+end_src
+** Rust
+#+begin_src emacs-lisp
+    (use-package rust-mode
+      :init
+      (setq rust-mode-treesitter-derive t))
+
+    (use-package rustic
+      :after (rust-mode)
+      :config
+      (setq rustic-format-on-save nil)
+      (setq rustic-lsp-client 'eglot)
+      :custom
+      (rustic-cargo-use-last-stored-arguments t))
+#+end_src
 ** Auctex
 + LaTeX tool for emacs, like vimtex
 + Requires distribution of texlive

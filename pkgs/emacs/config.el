@@ -318,6 +318,16 @@
   (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
   )
 
+(use-package tree-sitter)
+
+(use-package treesit-auto
+  :after (tree-sitter)
+  :custom
+  (treesit-auto-install 't)
+  :config
+  (global-treesit-auto-mode)
+  (treesit-auto-add-to-auto-mode-alist 'all))
+
 (use-package haskell-mode :mode "\\.hs\\'")
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package lua-mode :mode "\\.lua\\'")
@@ -351,6 +361,18 @@
    (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
                     :activation-fn (lsp-activate-on "qml-ts")
                     :server-id 'qmlls))
+
+(use-package rust-mode
+  :init
+  (setq rust-mode-treesitter-derive t))
+
+(use-package rustic
+  :after (rust-mode)
+  :config
+  (setq rustic-format-on-save nil)
+  (setq rustic-lsp-client 'eglot)
+  :custom
+  (rustic-cargo-use-last-stored-arguments t))
 
 (use-package auctex)
 

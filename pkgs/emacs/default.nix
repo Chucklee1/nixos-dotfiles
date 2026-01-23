@@ -2,7 +2,10 @@ final: prev:
 # function from emacs-overlay, make sure to import the overlay
 builtins.mapAttrs (_: package:
   prev.emacsWithPackagesFromUsePackage {
-    inherit package;
+    package = package.overrideAttrs (old: {
+      passthru = old.passthru // { treeSitter = true; };
+    });
+
     config = ./config.el;
     defaultInitFile = false;
     # make sure to include `(setq use-package-always-ensure t)` in config
@@ -10,9 +13,8 @@ builtins.mapAttrs (_: package:
     # alwaysTangle = true;
 
     extraEmacsPackages = epkgs: [
-      epkgs.tree-sitter
-      epkgs.treesit-auto
-      epkgs.nov
+      epkgs.treesit-grammars.with-all-grammars
+
       (epkgs.trivialBuild {
         pname = "qml-ts-mode";
         version = "master";
