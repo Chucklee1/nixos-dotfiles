@@ -19,7 +19,7 @@ in {
         programs.prismLauncher programs.flatpak
 
         software.apps software.dev
-        software.texlive software.java
+        software.texlive software.java software.rust
         software.gaming software.qol
 
         system.boot system.home system.users
