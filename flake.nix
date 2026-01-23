@@ -37,6 +37,10 @@
     qml-niri.inputs.nixpkgs.follows = "nixpkgs";
     qml-niri.inputs.quickshell.follows = "quickshell";
 
+    # ---- lang support ----
+    fenix.url = "github:nix-community/fenix";
+    fenix.inputs.nixpkgs.follows = "nixpkgs";
+
     # ---- editors ----
     nixvim.url = "github:nix-community/nixvim";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
