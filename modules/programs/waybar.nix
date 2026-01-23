@@ -54,15 +54,6 @@
               format-icons.locked = span base08 " ";
               format-icons.unlocked = span base07 " ";
             };
-            mpd = {
-              format = "{stateIcon}";
-              format-disconnected = "󰝛";
-              format-stopped = span base08 "";
-              interval = 10;
-              states-icons.paused = "";
-              states-icons.playing = "";
-              tooltip = false;
-            };
             pulseaudio = {
               format = "{volume}% {icon}";
               format-bluetooth = "{volume}% {icon}";
