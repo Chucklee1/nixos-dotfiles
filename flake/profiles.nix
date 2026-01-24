@@ -112,7 +112,7 @@ in {
 	      software.wayland programs.niri programs.quickshell
 
         software.dev software.qol
-        software.texlive software.java
+        software.texlive software.java software.rust
 
         system.boot system.home system.users
         system.pkgconfig system.sys-specs
@@ -137,7 +137,7 @@ in {
         programs.emacs programs.prismLauncher
         programs.git programs.yazi
 
-        software.dev software.qol software.texlive software.java
+        software.dev software.qol software.texlive software.java software.rust
 
         system.home system.pkgconfig
 
