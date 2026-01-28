@@ -342,8 +342,7 @@
 ;; Retrieved 2026-01-14, License - CC BY-SA 4.0
 
 (defun my-c++-mode-hook ()
-  (setq c-basic-offset 4)
-  (c-set-offset 'substatement-open 0))
+  (setq c-basic-offset 4))
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 
 (use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration)))
