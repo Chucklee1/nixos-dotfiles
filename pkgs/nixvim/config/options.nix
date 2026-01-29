@@ -135,6 +135,14 @@
   colorschemes = {
     nightfox.enable = true;
     nightfox.flavor = "nordfox";
-    nightfox.settings.options.transparent = true;
+    nightfox.settings = {
+      options.transparent = true;
+      specs.nordfox = {
+        syntax = {
+          builtin0    = "blue.base"; # Builtin variable
+          builtin1    = "cyan.base"; # Builtin type
+        };
+      };
+    };
   };
 }
