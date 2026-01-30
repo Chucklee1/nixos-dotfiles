@@ -302,8 +302,8 @@
 
 (use-package lsp-mode
   :commands lsp lsp-deferred
-  :hook ((c-mode
-          c++-mode
+  :hook ((c-ts-mode
+          c++-ts-mode
           haskell-mode
           kdl-mode
           lua-mode
