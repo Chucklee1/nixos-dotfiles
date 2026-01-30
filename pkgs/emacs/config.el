@@ -84,7 +84,7 @@
   :hook
   (before-save   . delete-trailing-whitespace)
   (prog-mode     . (lambda () (display-line-numbers-mode 1)))
-  (window-setup  . toggle-frame-maximized)
+  ;; (window-setup  . toggle-frame-maximized)
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -225,7 +225,6 @@
     :mode ("\\.epub\\'" . nov-mode)))
 
 (use-package doom-themes
-  :after (treemacs org)
   :custom
   ;; Global settings (defaults)
   (doom-themes-enable-bold t)   ;; if nil, bold is universally disabled
@@ -301,8 +300,8 @@
   (projectile-switch-project-action #'projectile-dired)
   (projectile-project-search-path '("~/Documents/" "~/Repos/")))
 
-(use-package eglot
-  :ensure nil ;; Don't install eglot because it's now built-in
+(use-package lsp-mode
+  :commands lsp lsp-deferred
   :hook ((c-mode
           c++-mode
           haskell-mode
@@ -310,13 +309,28 @@
           lua-mode
           markdown-mode
           nix-mode)
-         . eglot-ensure)
+         . lsp-deferred)
+
   :custom
-  ;; Good default
-  (eglot-events-buffer-size 0) ;; No event buffers (LSP server logs)
-  (eglot-autoshutdown t);; Shutdown unused servers.
-  (eglot-report-progress nil) ;; Disable LSP server logs (Don't show lsp messages at the bottom, java)
-  )
+  ;; performance tweaks
+  (read-process-output-max (* 1024 1024)) ; let LSP read more data
+  (gc-cons-threshold 100000000)
+
+  ;; Enable semantic tokens support
+  (lsp-semantic-tokens-enable t)
+  (lsp-semantic-tokens-allow-ranged-requests t)
+  (lsp-semantic-tokens-allow-delta-requests t)
+
+  ;; no breadcrumbs
+  (lsp-headerline-breadcrumb-enable nil)
+
+  ;; Integrations
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable nil))
 
 (use-package tree-sitter)
 
@@ -333,25 +347,11 @@
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
 (use-package nix-mode :mode "\\.nix\\'")
+(use-package lsp-java)
 (use-package just-mode)
 ;; heavier niche modes - will not connect to eglot
 (if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
-
-;; Source - https://stackoverflow.com/a
-;; Posted by Alex B, modified by community. See post 'Timeline' for change history
-;; Retrieved 2026-01-14, License - CC BY-SA 4.0
-
-(defun my-c++-mode-hook ()
-  (setq c-basic-offset 4))
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
-
-(use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration)))
-(use-package lsp-ui)
-(use-package lsp-java)
-
-;; hook java to lsp-mode
-(add-hook 'java-mode-hook #'lsp)
 
 ;; provided by nix
 (require 'qml-ts-mode)
@@ -370,7 +370,7 @@
   :after (rust-mode)
   :config
   (setq rustic-format-on-save nil)
-  (setq rustic-lsp-client 'eglot)
+  (setq rustic-lsp-client 'lsp-mode)
   :custom
   (rustic-cargo-use-last-stored-arguments t))
 
