@@ -486,6 +486,7 @@
 Tree, sitting...
 #+begin_src emacs-lisp
   (use-package tree-sitter)
+  (setq treesit-font-lock-level 4)
 
   (use-package treesit-auto
     :after (tree-sitter)
@@ -494,6 +495,7 @@ Tree, sitting...
     :config
     (global-treesit-auto-mode)
     (treesit-auto-add-to-auto-mode-alist 'all))
+
 
 #+end_src
 ** Misc Language-Specific Modes
@@ -508,6 +510,9 @@ Tree, sitting...
   ;; heavier niche modes - will not connect to eglot
   (if (executable-find "nu") (use-package nushell-mode))
   (if (executable-find "kotlin") (use-package kotlin-mode))
+  ;; ts modes
+  (use-package nix-ts-mode
+    :mode "\\.nix\\'")
 #+end_src
 ** qml
 #+begin_src emacs-lisp

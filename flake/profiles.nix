@@ -109,7 +109,7 @@ in {
 
         programs.zen-browser  programs.emacs
         programs.git programs.kitty programs.yazi
-	      software.wayland programs.niri programs.quickshell
+	    software.wayland programs.niri programs.quickshell
 
         software.dev software.qol
         software.texlive software.java software.rust

@@ -357,6 +357,7 @@
   (setq lsp-ui-doc-enable nil))
 
 (use-package tree-sitter)
+(setq treesit-font-lock-level 4)
 
 (use-package treesit-auto
   :after (tree-sitter)
@@ -376,6 +377,9 @@
 ;; heavier niche modes - will not connect to eglot
 (if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
+;; ts modes
+(use-package nix-ts-mode
+  :mode "\\.nix\\'")
 
 ;; provided by nix
 (require 'qml-ts-mode)
