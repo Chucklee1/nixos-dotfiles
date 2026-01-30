@@ -16,30 +16,47 @@
     (define-key group-name (kbd (car pair)) (cdr pair))))
 
 ;; buffers ;;
-(defun helper/buffer/kill () (interactive)
-       (let ((buf (current-buffer)))
-         (kill-current-buffer)))
+(defun helper/buffer/kill ()
+  (interactive)
+  (let ((buf (current-buffer)))
+    (kill-current-buffer)))
 
-(defun helper/buffer/force-kill () (interactive)
-       (let ((buf (current-buffer)))
-         (kill-buffer buf)))
+(defun helper/buffer/force-kill ()
+  (interactive)
+  (let ((buf (current-buffer)))
+    (kill-buffer buf)))
+
+(defun helper/buffer/toggle (cmd)
+  (interactive)
+  (let* ((buf-name (concat "*" cmd "*"))
+         (buf      (get-buffer buf-name)))
+    (if buf
+        (progn
+          (when-let ((win (get-buffer-window buf)))
+            (delete-window win))
+          (kill-buffer buf))
+      (call-interactively (intern cmd)))))
 
 ;; windows ;;
-(defun helper/window/close () (interactive)
-         (let ((win (get-buffer-window (current-buffer))))
-         (when (and win (window-live-p win) (not (one-window-p win)))
-           (delete-window win))))
+(defun helper/window/close ()
+  (interactive)
+  (let ((win (get-buffer-window (current-buffer))))
+    (when (and win (window-live-p win) (not (one-window-p win)))
+      (delete-window win))))
 
-(defun helper/window/force-close () (interactive)
-         (let ((win (get-buffer-window (current-buffer))))
-           (when (window-live-p win)
-             (if (one-window-p) (delete-frame)
-               (delete-window win)))))
+(defun helper/window/force-close ()
+  (interactive)
+  (let ((win (get-buffer-window (current-buffer))))
+    (when (window-live-p win)
+      (if (one-window-p) (delete-frame)
+        (delete-window win)))))
 
-(defun helper/open-split-term () (interactive)
-       (let ((new-win (split-window-below)))
-         (select-window new-win)
-         (vterm (getenv "SHELL"))))
+(defun helper/open-split-term ()
+  (interactive)
+  (let* ((set-width (/ (frame-width) 4))
+         (new-win (split-window-below set-width)))
+    (select-window new-win)
+    (vterm (getenv "SHELL"))))
 
 ;; org ;;
 (defun helper/org/set-margins ()
@@ -150,6 +167,12 @@
             '(("c" . helper/window/close)
               ("C" . helper/window/force-close)))
 
+(defvar lmap-globl/lsp (make-sparse-keymap))
+(mkkeygroup lmap-globl lmap-globl/lsp "l"
+            '(("f" . lsp-format-buffer)
+              ("r" . lsp-rename)
+              ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
+
 (defvar lmap-globl/git (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/git "g"
             '(("g" . magit-status)
@@ -173,6 +196,7 @@
               ("n" . display-line-numbers-mode)
               ("N" . global-display-line-numbers-mode)
               ("t" . treemacs)
+              ("f" . treemacs-tag-follow-mode)
               ("w" . visual-wrap-prefix-mode)
               ("W" . global-visual-wrap-prefix-mode)))
 

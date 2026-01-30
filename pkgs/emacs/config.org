@@ -2,37 +2,6 @@
 #+Author: Chucklee1
 #+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
-* Elisp in A Nutshell
-** Lists
-+ Dolist
-#+begin_src emacs-lisp :tangle no
-  (dolist
-      (item '(a b c))
-    (message "%s" item)
-  )
-#+end_src
-+ cons
-  - list that is a pair
-  - car = first value
-  - cdr = last value
-#+begin_src emacs-lisp :tangle no
-  (cons 1 2)             ;; => (1 . 2)
-
-  (car '(1 . 2))         ;; => 1
-  (cdr '(1 . 2))         ;; => 2
-
-  (append '(1 2 3) 4) ;; => (1 2 3 4)
-  (append '(1 2 3) '(4 5)) ;; => (1 2 3 4 5)
-#+end_src
-** Conditionals
-#+begin_src emacs-lisp :tangle no
-  ;; when
-  (when condition do-stuff-part)
-
-  ;; if/else
-  (if condition then-part else-part)
-#+end_src
-
 * Nix Overlay
 #+begin_src nix :tangle ./default.nix
   final: prev:
@@ -98,30 +67,47 @@
       (define-key group-name (kbd (car pair)) (cdr pair))))
 
   ;; buffers ;;
-  (defun helper/buffer/kill () (interactive)
-         (let ((buf (current-buffer)))
-           (kill-current-buffer)))
+  (defun helper/buffer/kill ()
+    (interactive)
+    (let ((buf (current-buffer)))
+      (kill-current-buffer)))
 
-  (defun helper/buffer/force-kill () (interactive)
-         (let ((buf (current-buffer)))
-           (kill-buffer buf)))
+  (defun helper/buffer/force-kill ()
+    (interactive)
+    (let ((buf (current-buffer)))
+      (kill-buffer buf)))
+
+  (defun helper/buffer/toggle (cmd)
+    (interactive)
+    (let* ((buf-name (concat "*" cmd "*"))
+           (buf      (get-buffer buf-name)))
+      (if buf
+          (progn
+            (when-let ((win (get-buffer-window buf)))
+              (delete-window win))
+            (kill-buffer buf))
+        (call-interactively (intern cmd)))))
 
   ;; windows ;;
-  (defun helper/window/close () (interactive)
-           (let ((win (get-buffer-window (current-buffer))))
-           (when (and win (window-live-p win) (not (one-window-p win)))
-             (delete-window win))))
+  (defun helper/window/close ()
+    (interactive)
+    (let ((win (get-buffer-window (current-buffer))))
+      (when (and win (window-live-p win) (not (one-window-p win)))
+        (delete-window win))))
 
-  (defun helper/window/force-close () (interactive)
-           (let ((win (get-buffer-window (current-buffer))))
-             (when (window-live-p win)
-               (if (one-window-p) (delete-frame)
-                 (delete-window win)))))
+  (defun helper/window/force-close ()
+    (interactive)
+    (let ((win (get-buffer-window (current-buffer))))
+      (when (window-live-p win)
+        (if (one-window-p) (delete-frame)
+          (delete-window win)))))
 
-  (defun helper/open-split-term () (interactive)
-         (let ((new-win (split-window-below)))
-           (select-window new-win)
-           (vterm (getenv "SHELL"))))
+  (defun helper/open-split-term ()
+    (interactive)
+    (let* ((set-width (/ (frame-width) 4))
+           (new-win (split-window-below set-width)))
+      (select-window new-win)
+      (vterm (getenv "SHELL"))))
 
   ;; org ;;
   (defun helper/org/set-margins ()
@@ -247,6 +233,14 @@
               '(("c" . helper/window/close)
                 ("C" . helper/window/force-close)))
 #+end_src
+** globl - lsp
+#+begin_src emacs-lisp
+    (defvar lmap-globl/lsp (make-sparse-keymap))
+    (mkkeygroup lmap-globl lmap-globl/lsp "l"
+                '(("f" . lsp-format-buffer)
+                  ("r" . lsp-rename)
+                  ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
+#+end_src
 ** globl - git
 + For magit-status, I would use spc+gs,
   but I am more used to neovim's lazygit setup, where I used spc+gg
@@ -279,6 +273,7 @@
                 ("n" . display-line-numbers-mode)
                 ("N" . global-display-line-numbers-mode)
                 ("t" . treemacs)
+                ("f" . treemacs-tag-follow-mode)
                 ("w" . visual-wrap-prefix-mode)
                 ("W" . global-visual-wrap-prefix-mode)))
 #+end_src

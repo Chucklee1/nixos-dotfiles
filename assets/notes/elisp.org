@@ -1,0 +1,52 @@
+* Elisp in A Nutshell
++ cons
+  - list that is a pair
+  - car = first value
+  - cdr = last value
+#+begin_src emacs-lisp
+  (cons 1 2)             ;; => (1 . 2)
+
+  (car '(1 . 2))         ;; => 1
+  (cdr '(1 . 2))         ;; => 2
+
+  (append '(1 2 3) 4) ;; => (1 2 3 4)
+  (append '(1 2 3) '(4 5)) ;; => (1 2 3 4 5)
+#+end_src
++ Declarations
+#+begin_src emacs-lisp
+  ;; variables
+  (defvar foo "idk")
+
+  ;; functions - the descriptor is optional
+
+  (defun somthing ()
+    "I am a description!"
+    functionBody)
+
+#+end_src
++ Conditionals
+#+begin_src emacs-lisp
+  ;; when
+  (when condition do-stuff-part)
+
+  ;; if/else
+  (if condition then-part else-part)
+#+end_src
++ Bindings
+#+begin_src emacs-lisp
+  ;; let - bind variables in parallel
+  (let ((a 2)
+        (b 4))
+    (+ a b)) ;; => 6
+
+  ;; let* - binds vars sequentially
+  (let* ((a 2)
+         (b 4)
+         (c (+ a b)))
+    (/ c a)) ;; => 3
+
+  ;; dolist - if let and map had a baby
+  (dolist
+      (item '(a b c))
+    (message "%s" item))
+#+end_src
