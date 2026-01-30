@@ -53,8 +53,8 @@
 
 (defun helper/open-split-term ()
   (interactive)
-  (let* ((set-width (/ (frame-width) 4))
-         (new-win (split-window-below set-width)))
+  (let* ((height (floor (* 0.25 (window-total-height))))
+         (new-win (split-window-below (- height))))
     (select-window new-win)
     (vterm (getenv "SHELL"))))
 
