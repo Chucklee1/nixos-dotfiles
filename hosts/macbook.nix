@@ -1,5 +1,22 @@
-{inputs, ...}: {
-  nix = [
+{inputs, mod, ...}: with mod; {
+  system = "aarch64-darwin";
+  builder = inputs.nix-darwin.lib.darwinSystem;
+  user = "goat";
+  modules = [
+    net.tailscale
+
+    programs.emacs programs.prismLauncher
+    programs.git programs.yazi
+
+    software.dev software.qol software.texlive software.java software.rust
+
+    system.home system.pkgconfig
+
+    shell.variables shell.zsh
+
+    theming.stylix theming.themes.nord
+  ];
+  extraConfig = [
     ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
@@ -19,29 +36,24 @@
     })
     # need to manually include nerd-font-symbols
     ({lib, pkgs, ...}: {
-      fonts.packages = [
-        pkgs.nerd-fonts.symbols-only
-      ];
+      fonts.packages = [pkgs.nerd-fonts.symbols-only];
+      environment.systemPackages = [pkgs.feishin pkgs.mpv];
 
-      environment.systemPackages = [
-        pkgs.feishin pkgs.mpv
-      ];
       # symlink nix & home manager apps to /Applications
       # lets spotlight or dmenu-mac finally acess nix apps
       system.activationScripts.applications.text = let
-        MAC_APPDIR="/Applications";
-        NIX_APPDIR="/run/current-system/Applications";
+      MAC_APPDIR="/Applications";
+      NIX_APPDIR="/run/current-system/Applications";
       in lib.mkForce ''
         printf "\e[0;33m%s\e[m\n" "setting up application symlinks..."
         for app in ${NIX_APPDIR}/*; do
-           rm -rf "${MAC_APPDIR}/$'''{app##*/}"
-           ln -sf "$app" "${MAC_APPDIR}";
-           printf "\e[0;32m%s $app\e[m\n" "sylinked"
+          rm -rf "${MAC_APPDIR}/$'''{app##*/}"
+          ln -sf "$app" "${MAC_APPDIR}";
+          printf "\e[0;32m%s $app\e[m\n" "sylinked"
         done
         printf "\e[0;32m%s\e[m\n" "symlinking finished!"
       '';
-    })
-    {
+
       # defaults - desktop
       system.defaults.WindowManager.StandardHideDesktopIcons = true;
       system.defaults.dock = {
@@ -74,7 +86,7 @@
         "com.apple.desktopservices".DSDontWriteUSBStores = true;
         "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
       };
-    }
+    })
     inputs.nix-homebrew.darwinModules.nix-homebrew
     ({user, ...}: {
       nix-homebrew = {
@@ -117,15 +129,15 @@
         ];
       };
     })
-  ];
-  home = [
     # ghostty
-    {
-      home.file.".config/ghostty/config".text = ''
-        background-opacity = 0.8
-        background-blur = 30
-        macos-titlebar-style = "tabs"
-      '';
-    }
+    ({user, ...}: {
+      home-manager.users.${user} = {
+        home.file.".config/ghostty/config".text = ''
+          background-opacity = 0.8
+          background-blur = 30
+          macos-titlebar-style = "tabs"
+        '';
+      };
+    })
   ];
 }

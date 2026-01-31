@@ -70,11 +70,11 @@ with self.inputs.nixpkgs.lib; rec {
        as mod would allow for accessing `file.nix` as
        `mod.subfolder.file`
   */
-  readDirRecursiveToAttrset = dir:
+  readDirRecToAttrset = dir:
     concatMapAttrs (file:
       flip getAttr {
         directory = {
-          "${basename file}" = (readDirRecursiveToAttrset "${dir}/${file}");
+          "${basename file}" = (readDirRecToAttrset "${dir}/${file}");
         };
         regular = {
           "${basename file}" = "${dir}/${file}";
@@ -82,11 +82,12 @@ with self.inputs.nixpkgs.lib; rec {
         symlink = {};
       }) (builtins.readDir dir);
 
-  loadModulesFromAttrset = mods: args: (pipe mods [
-    (map import)
-    (map (flip toFunction args))
-    (builtins.foldl' mergeAllRecursive {})
-  ]);
+  loadModulesFromAttrset = mods: args: (
+    pipe mods [
+      (map import)
+      (map (flip toFunction args))
+      (builtins.foldl' mergeAllRecursive {})
+    ]);
 
   # system helpers
   darwinOrLinux = A: B:
