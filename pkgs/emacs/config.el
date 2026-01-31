@@ -244,10 +244,6 @@
 
 (use-package vterm)
 
-(when (eq system-type 'gnu/linux)
-(use-package nov
-    :mode ("\\.epub\\'" . nov-mode)))
-
 (use-package doom-themes
   :custom
   ;; Global settings (defaults)
@@ -332,7 +328,7 @@
           kdl-mode
           lua-mode
           markdown-mode
-          nix-mode)
+          nix-ts-mode)
          . lsp-deferred)
 
   :custom
@@ -507,6 +503,18 @@
 
 (use-package flycheck
   :hook after-init global-flycheck-mode)
+
+;; make flycheck wavy lines not-wavy
+(with-eval-after-load 'flycheck
+  (set-face-attribute 'flycheck-error nil
+                      :inherit 'error
+                      :underline t)
+  (set-face-attribute 'flycheck-warning nil
+                      :inherit 'warning
+                      :underline t)
+  (set-face-attribute 'flycheck-info nil
+                      :inherit 'success
+                      :underline t))
 
 (use-package vertico
   :init
