@@ -58,12 +58,9 @@
     (select-window new-win)
     (vterm (getenv "SHELL"))))
 
-;; org ;;
-(defun helper/org/set-margins ()
-  (let ((margin 2))
-    (setq-local left-margin-width margin
-                right-margin-width margin)
-    (set-window-buffer nil (current-buffer))))
+;; theme ;;
+(defun doom/colors (color)
+  (cadr (assoc color doom-themes--colors)))
 
 (use-package emacs
   :custom
@@ -222,20 +219,23 @@
 (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 
 (use-package treemacs
-    :commands (treemacs)
-    :config
-    (treemacs-indent-guide-mode t)
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t))
+  :commands (treemacs)
+  :config
+  (treemacs-indent-guide-mode t)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
 
+(when (featurep 'evil)
   (use-package treemacs-evil
-    :after (treemacs evil))
+    :after (treemacs evil)))
 
-  (use-package treemacs-magit
-    :after (treemacs magit))
+(when (featurep 'magit)
+(use-package treemacs-magit
+  :after (treemacs magit)))
 
-  (use-package lsp-treemacs
-    :after (treemacs))
+(when (featurep 'lsp-mode)
+(use-package lsp-treemacs
+  :after (treemacs)))
 
 (use-package treemacs-nerd-icons
   :after (treemacs lsp-treemacs)
@@ -260,23 +260,27 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(add-hook 'window-setup-hook
-                  (lambda ()
-                    (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
-                    (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))))
+(defun transparent-window-setup ()
 
-;; must manually set corfu frame-opacity
-(with-eval-after-load 'corfu
-  (setq corfu-prefer-childframe t)
-  (setq corfu-childframe-frame-parameters
-        '((alpha-background . ,(+ g/opacity 10))
-          (internal-border-width . 1)
-          (left-fringe . 5)
-          (right-fringe . 5))))
+  (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
+  (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))
 
-      ;; ;; unset bg when in terminal/tty
-      (when (not (display-graphic-p))
-        (set-face-background 'default "unspecified-bg"))
+  ;; must manually set corfu frame-opacity
+  (when (featurep 'corfu)
+    (with-eval-after-load 'corfu
+      (setq corfu-prefer-childframe t)
+      (setq corfu-childframe-frame-parameters
+            '((alpha-background . ,(+ g/opacity 10))
+              (internal-border-width . 1)
+              (left-fringe . 5)
+              (right-fringe . 5))))))
+
+(add-hook 'window-setup-hook #'transparent-window-setup)
+
+
+;; unset bg when in terminal/tty
+(when (not (display-graphic-p))
+  (set-face-background 'default "unspecified-bg"))
 
 (set-face-attribute 'default nil
                     :font   g/ffamily
@@ -443,6 +447,11 @@
          :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
          :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 
+(defun helper/org/set-margins ()
+  (let ((margin 2))
+    (setq-local left-margin-width margin
+                right-margin-width margin)
+    (set-window-buffer nil (current-buffer))))
 (add-hook 'org-mode-hook #'helper/org/set-margins)
 
 ;; have horizontal rule ignore magrins
@@ -503,18 +512,6 @@
 
 (use-package flycheck
   :hook after-init global-flycheck-mode)
-
-;; make flycheck wavy lines not-wavy
-(with-eval-after-load 'flycheck
-  (set-face-attribute 'flycheck-error nil
-                      :inherit 'error
-                      :underline t)
-  (set-face-attribute 'flycheck-warning nil
-                      :inherit 'warning
-                      :underline t)
-  (set-face-attribute 'flycheck-info nil
-                      :inherit 'success
-                      :underline t))
 
 (use-package vertico
   :init
@@ -583,6 +580,18 @@
 (use-package rainbow-mode
   :config (setq rainbow-x-colors nil)
   :hook (prog-mode . rainbow-mode))
+
+;; make flycheck wavy lines not-wavy
+(with-eval-after-load 'flycheck
+  (set-face-attribute 'flycheck-error nil
+                      :inherit 'error
+                      :underline t)
+  (set-face-attribute 'flycheck-warning nil
+                      :inherit 'warning
+                      :underline t)
+  (set-face-attribute 'flycheck-info nil
+                      :inherit 'success
+                      :underline t))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
