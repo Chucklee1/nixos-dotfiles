@@ -6,7 +6,7 @@
     net.nfs net.syncthing net.tailscale
 
     programs.zen-browser programs.emacs programs.nixvim
-    programs.git programs.kitty programs.yazi
+    programs.git programs.kitty programs.yazi programs.rmpc
     software.wayland programs.niri programs.quickshell
     programs.prismLauncher programs.flatpak
 
@@ -64,7 +64,7 @@
     (mkfs.btrfs "/.snapshots/WD"     DEV.WD  ["subvol=WD/.snapshots" "relatime" "compress=zstd"])
     (mkfs.btrfs "/.snapshots/EVO"    DEV.EVO ["subvol=EVO/.snapshots" "relatime" "compress=zstd"])
 
-    ({lib, config, ...}: {
+    {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/EFI";
       boot.loader.grub.useOSProber = true;
@@ -88,7 +88,7 @@
         videoAcceleration = true;
         open = false;
       };
-    })
+    }
     ({lib, user, ...}: {
       home-manager.users.${user} = {
         programs.niri.settings = {
