@@ -3,7 +3,7 @@
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = [
-    net.syncthing net.tailscale
+    net.nfs net.syncthing net.tailscale
 
     programs.zen-browser programs.emacs programs.nixvim
     programs.git programs.kitty programs.yazi

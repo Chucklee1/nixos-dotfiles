@@ -3,7 +3,7 @@
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = with mod; [
-    net.syncthing net.tailscale net.the-server
+    net.nfs net.syncthing net.tailscale net.the-server
 
     programs.librewolf
     programs.nixvim
