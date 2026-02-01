@@ -1,6 +1,6 @@
 {
   home = [
-    ({pkgs, ...}: {
+    ({config, pkgs, ...}: {
       programs.yazi = {
         enable = true;
         shellWrapperName = "y";
@@ -11,12 +11,6 @@
           mount = pkgs.yaziPlugins.mount;
           ouch = pkgs.yaziPlugins.ouch;
           restore = pkgs.yaziPlugins.restore;
-          bookmarks = pkgs.fetchFromGitHub {
-            owner = "dedukun";
-            repo = "bookmarks.yazi";
-            rev = "9ef1254d8afe88aba21cd56a186f4485dd532ab8";
-            hash = "sha256-GQFBRB2aQqmmuKZ0BpcCAC4r0JFKqIANZNhUC98SlwY=";
-          };
           exifaudio = pkgs.fetchFromGitHub {
             owner = "Sonico98";
             repo = "exifaudio.yazi";
@@ -29,23 +23,6 @@
           #lua
           ''
             require("git"):setup()
-            require("bookmarks"):setup({
-              last_directory = { enable = false, persist = false, mode="dir" },
-              persist = "none",
-              desc_format = "full",
-              file_pick_mode = "hover",
-              custom_desc_input = false,
-              show_keys = false,
-              notify = {
-                enable = false,
-                timeout = 1,
-                message = {
-                  new = "New bookmark '<key>' -> '<folder>'",
-                  delete = "Deleted bookmark in '<key>'",
-                  delete_all = "Deleted all bookmarks",
-                },
-              },
-            })
           '';
 
         settings = {
@@ -95,6 +72,64 @@
             {on = ["d" "u"]; run = "plugin restore";}
             {on = ["d" "U"]; run = "shell --block -- clear && trash-restore --overwrite";}
           ];
+        };
+
+        # stolen from: kerfuzzle's fork of stylix on github
+        # file:        yazi-v26.1.22/modules/yazi/hm.nix
+        # commit:      07f41f942ae752ab3b9f9071e45d30b37e4c0785
+        theme = with config.lib.stylix.colors.withHashtag; {
+          config.stylix.
+          icon =
+            let
+              mkIcon = text: fg: { inherit text fg; };
+            in
+              {
+                dirs =
+                  let
+                    mkDirIcon =
+                      name: text: fg:
+                    ((mkIcon text fg) // { inherit name; });
+                  in
+                    [
+                      (mkDirIcon ".config" "" orange)
+                      (mkDirIcon ".git" "" cyan)
+                      (mkDirIcon ".github" "" blue)
+                      (mkDirIcon ".npm" "" blue)
+                      (mkDirIcon "Desktop" "" cyan)
+                      (mkDirIcon "Development" "" cyan)
+                      (mkDirIcon "Documents" "" cyan)
+                      (mkDirIcon "Downloads" "" cyan)
+                      (mkDirIcon "Library" "" cyan)
+                      (mkDirIcon "Movies" "" cyan)
+                      (mkDirIcon "Music" "" cyan)
+                      (mkDirIcon "Pictures" "" cyan)
+                      (mkDirIcon "Public" "" cyan)
+                      (mkDirIcon "Videos" "" cyan)
+                    ];
+
+                conds =
+                  let
+                    mkCondsIcon =
+                      cond: text: fg:
+                    ((mkIcon text fg) // { "if" = cond; });
+                  in
+                    [
+                      # Special files
+                      (mkCondsIcon "orphan" "" base05)
+                      (mkCondsIcon "link" "" base04)
+                      (mkCondsIcon "block" "" yellow)
+                      (mkCondsIcon "char" "" yellow)
+                      (mkCondsIcon "fifo" "" yellow)
+                      (mkCondsIcon "sock" "" yellow)
+                      (mkCondsIcon "sticky" "" yellow)
+                      (mkCondsIcon "dummy" "" red)
+
+                      # Fallback
+                      (mkCondsIcon "dir" "" blue)
+                      (mkCondsIcon "exec" "" green)
+                      (mkCondsIcon "!dir" "" base05)
+                    ];
+              };
         };
       };
     })
