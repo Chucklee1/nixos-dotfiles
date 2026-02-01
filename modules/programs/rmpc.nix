@@ -4,7 +4,7 @@
       dir = "/srv/media";
     in {
       enable = true;
-      musicDirectory = "${dir}/Music";
+      musicDirectory = "${dir}/shared";
       playlistDirectory = "${dir}/Music/playlist";
       network.listenAddress = "any";
       extraConfig = ''
