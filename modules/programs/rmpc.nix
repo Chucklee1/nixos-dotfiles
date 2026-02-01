@@ -1,14 +1,10 @@
 {self, ...}: {
   home = [({pkgs, ...}: {
-    services.mpd = let
-      dir = "/srv/media";
-    in {
+    services.mpd = {
       enable = true;
-      musicDirectory = "${dir}/shared";
-      playlistDirectory = "${dir}/Music/playlist";
+      musicDirectory = "/srv/shared";
       network.listenAddress = "any";
       extraConfig = ''
-        save_absolute_paths_in_playlists "yes"
           audio_output {
             type "pipewire"
             name "MPDOUT"
