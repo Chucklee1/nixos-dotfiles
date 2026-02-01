@@ -4,11 +4,10 @@
       music_dir = "/srv/media/Music";
     in
       {
-        fileSystems."/srv/shared" = {
-          device = "nixos-inspiron:${music_dir}";
-          fsType = "nfs";
-          options = [ "defaults" "auto" "_netdev" ];
-        };
+        services.nfs.server.exports = ''
+          ${music_dir} nixos-desktop(ro,fsid=0,no_subtree_check)
+          ${music_dir} goat-macbook(ro,fsid=0,no_subtree_check)
+        '';
         services.navidrome = {
           enable = true;
           settings.Address = "localhost";
