@@ -374,6 +374,7 @@
 (use-package nix-mode :mode "\\.nix\\'")
 (use-package lsp-java)
 (use-package just-mode)
+(use-package ron-mode :mode "\\.ron\\'")
 ;; heavier niche modes - will not connect to eglot
 (if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
