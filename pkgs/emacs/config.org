@@ -686,7 +686,9 @@ Tree, sitting...
 + Checks your fly...
 #+begin_src emacs-lisp
   (use-package flycheck
-    :hook after-init global-flycheck-mode)
+    :hook after-init global-flycheck-mode
+    :config
+    (setq flycheck-indication-mode nil))
 #+end_src
 ** Vertico and Marginalia
 + "VERTical Interactive COmpletion"
@@ -803,6 +805,18 @@ flycheck
     (set-face-attribute 'flycheck-info nil
                         :inherit 'success
                         :underline t))
+#+end_src
+lsp-mode
+#+begin_src emacs-lisp
+
+  (with-eval-after-load 'lsp-modeline
+    ;; icon overrides
+    (setq lsp-modeline-code-action-fallback-icon "")
+    ;; color overrides
+    (set-face-attribute 'lsp-modeline-code-actions-preferred-face nil
+                        :foreground (doom/colors 'yellow))
+    (set-face-attribute 'lsp-modeline-code-actions-face nil
+                        :foreground (doom/colors 'blue)))
 #+end_src
 
 -----

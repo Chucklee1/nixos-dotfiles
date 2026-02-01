@@ -512,7 +512,9 @@
   )
 
 (use-package flycheck
-  :hook after-init global-flycheck-mode)
+  :hook after-init global-flycheck-mode
+  :config
+  (setq flycheck-indication-mode nil))
 
 (use-package vertico
   :init
@@ -593,6 +595,15 @@
   (set-face-attribute 'flycheck-info nil
                       :inherit 'success
                       :underline t))
+
+(with-eval-after-load 'lsp-modeline
+  ;; icon overrides
+  (setq lsp-modeline-code-action-fallback-icon "")
+  ;; color overrides
+  (set-face-attribute 'lsp-modeline-code-actions-preferred-face nil
+                      :foreground (doom/colors 'yellow))
+  (set-face-attribute 'lsp-modeline-code-actions-face nil
+                      :foreground (doom/colors 'blue)))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
