@@ -61,7 +61,6 @@
   };
 
   outputs = {self, ...} @ inputs: let
-
     # ---- imports - flake ----
     extlib = import ./flake/libs.nix {inherit self;};
     sys = import ./flake/profiles.nix {inherit self extlib;};
@@ -72,11 +71,12 @@
   in {
     inherit extlib;
 
-    nixosConfigurations = sys.mkSystems sys.profiles;
-    darwinConfigurations = sys.mkSystems sys.profiles;
+    nixosConfigurations = sys.mkSystems;
+    darwinConfigurations = sys.mkSystems;
 
-    devShells = extlib.allSystemsWithPkgs (pkgs:
-      import ./flake/devshells.nix {inherit inputs pkgs;}
+    devShells = extlib.allSystemsWithPkgs (
+      pkgs:
+        import ./flake/devshells.nix {inherit inputs pkgs;}
     );
 
     apps = extlib.allSystems (system: {

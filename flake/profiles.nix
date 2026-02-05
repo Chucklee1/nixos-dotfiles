@@ -1,16 +1,19 @@
-{self, extlib, ...}: let
+{
+  self,
+  extlib,
+  ...
+}: let
   inherit (self) inputs;
-in {
-  profiles =  let
-    mod = extlib.readDirRecToAttrset "${self}/modules";
-    root = "${self}/hosts";
-  in inputs.nixpkgs.lib.concatMapAttrs (file: _: {
-    ${extlib.basename file} =
-      import "${root}/${file}" {inherit mod inputs;};
-  })
+  mod = extlib.readDirRecToAttrset "${self}/modules";
+  root = "${self}/hosts";
+  profiles =
+    inputs.nixpkgs.lib.concatMapAttrs (file: _: {
+      ${extlib.basename file} =
+        import "${root}/${file}" {inherit mod inputs;};
+    })
     (builtins.readDir root);
-
-  mkSystems = cfgs:
+in {
+  mkSystems =
     # key = machine, value = cfg
     inputs.nixpkgs.lib.mapAttrs (machine: cfg: let
       # modules
@@ -26,12 +29,12 @@ in {
         inherit specialArgs;
         modules =
           builtins.concatLists
-            [
-              mod.nix
-              [{_module.args.homeMods = mod.home;}]
-              [{home-manager.extraSpecialArgs = specialArgs;}]
-              cfg.extraConfig
-            ];
+          [
+            mod.nix
+            [{_module.args.homeMods = mod.home;}]
+            [{home-manager.extraSpecialArgs = specialArgs;}]
+            cfg.extraConfig
+          ];
       })
-      cfgs;
+    profiles;
 }

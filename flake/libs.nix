@@ -5,8 +5,8 @@ with self.inputs.nixpkgs.lib; rec {
       flip getAttr {
         directory =
           mapAttrs'
-            (subpath: nameValuePair "${file}/${subpath}")
-            (readDirRecursive "${dir}/${file}");
+          (subpath: nameValuePair "${file}/${subpath}")
+          (readDirRecursive "${dir}/${file}");
         regular = {
           ${file} = "${dir}/${file}";
         };
@@ -20,7 +20,8 @@ with self.inputs.nixpkgs.lib; rec {
       va = a.${key} or null;
       vb = b.${key} or null;
     in
-      acc // {
+      acc
+      // {
         "${key}" =
           if va == null
           then vb
@@ -34,7 +35,7 @@ with self.inputs.nixpkgs.lib; rec {
           # let last primitive-type values override previous
           else vb;
       }) {}
-      (unique (attrNames a ++ attrNames b));
+    (unique (attrNames a ++ attrNames b));
 
   # concats modules from imported files
   loadModules = dir: args: (pipe dir [
@@ -54,27 +55,28 @@ with self.inputs.nixpkgs.lib; rec {
   ]);
 
   # basename clone for nix
-  basename = file: pipe file [
-    (replaceString ".nix" "")
-    (splitString "/")
-    last
-  ];
+  basename = file:
+    pipe file [
+      (replaceString ".nix" "")
+      (splitString "/")
+      last
+    ];
 
   /*
-     - reworked readDirRecursive to return in a
-       nested attrset format
-     - i like it cause it makes it easy to import
-       files like attrsets
-     - example: for file `modules/subfolder/file.nix`
-       using `readDirRecursiveToAttrset "modules"`
-       as mod would allow for accessing `file.nix` as
-       `mod.subfolder.file`
+  - reworked readDirRecursive to return in a
+    nested attrset format
+  - i like it cause it makes it easy to import
+    files like attrsets
+  - example: for file `modules/subfolder/file.nix`
+    using `readDirRecursiveToAttrset "modules"`
+    as mod would allow for accessing `file.nix` as
+    `mod.subfolder.file`
   */
   readDirRecToAttrset = dir:
     concatMapAttrs (file:
       flip getAttr {
         directory = {
-          "${basename file}" = (readDirRecToAttrset "${dir}/${file}");
+          "${basename file}" = readDirRecToAttrset "${dir}/${file}";
         };
         regular = {
           "${basename file}" = "${dir}/${file}";
@@ -87,7 +89,8 @@ with self.inputs.nixpkgs.lib; rec {
       (map import)
       (map (flip toFunction args))
       (builtins.foldl' mergeAllRecursive {})
-    ]);
+    ]
+  );
 
   # system helpers
   darwinOrLinux = A: B:
