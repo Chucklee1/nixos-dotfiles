@@ -1,6 +1,10 @@
 {
   home = [
-    ({lib, config, ...}: {
+    ({
+      lib,
+      config,
+      ...
+    }: {
       # waybar
       stylix.targets.waybar.addCss = false;
       programs.waybar = with config.lib.stylix.colors.withHashtag; let

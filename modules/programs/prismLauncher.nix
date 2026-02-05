@@ -10,7 +10,7 @@
         ];
       };
 
-      nixpkgs.overlays = [ inputs.prismlauncher.overlays.default ];
+      nixpkgs.overlays = [inputs.prismlauncher.overlays.default];
 
       environment.systemPackages = [
         pkgs.prismlauncher

@@ -1,14 +1,20 @@
 {
   nix = [
-    ({lib, pkgs, ...}: {
+    ({
+      lib,
+      pkgs,
+      ...
+    }: {
       # gpu
-      hardware.graphics = {
-        enable = true;
-        extraPackages = with pkgs; [
-          libvdpau-va-gl
-          vulkan-tools
-        ];
-      } // (lib.mkIf pkgs.stdenv.isx86_64 {enable32Bit = true;});
+      hardware.graphics =
+        {
+          enable = true;
+          extraPackages = with pkgs; [
+            libvdpau-va-gl
+            vulkan-tools
+          ];
+        }
+        // (lib.mkIf pkgs.stdenv.isx86_64 {enable32Bit = true;});
 
       # audio
       security.rtkit.enable = true;

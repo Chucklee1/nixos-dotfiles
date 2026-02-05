@@ -2,7 +2,7 @@
   nix = [
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
-	      # java
+        # java
         jdk
         javaPackages.compiler.temurin-bin.jdk-25
         # build system that fabric uses
@@ -14,6 +14,6 @@
         jdt-language-server
         tree-sitter-grammars.tree-sitter-kotlin
       ];
-	  })
+    })
   ];
 }

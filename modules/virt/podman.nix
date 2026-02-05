@@ -1,5 +1,5 @@
 {
- nix = [
+  nix = [
     ({pkgs, ...}: {
       virtualisation.containers.enable = true;
       virtualisation = {

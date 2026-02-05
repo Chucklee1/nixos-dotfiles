@@ -18,7 +18,7 @@
         enable = true;
         vSync = true;
         backend = "glx";
-        opacityRules = [ "80:class_g = 'Emacs'" ];
+        opacityRules = ["80:class_g = 'Emacs'"];
         settings = {
           blur.method = "dual_kawase";
         };
@@ -31,8 +31,8 @@
         temperature.night = 3800;
         # Baruunbayan-Ulaan, Övörkhangai, Mongolia
         settings.manual = {
-          lat=45.221;
-          lon=101.821;
+          lat = 45.221;
+          lon = 101.821;
         };
       };
     })

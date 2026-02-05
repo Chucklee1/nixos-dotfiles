@@ -1,6 +1,11 @@
 {
   home = [
-    ({config, pkgs, machine, ...}: {
+    ({
+      config,
+      pkgs,
+      machine,
+      ...
+    }: {
       programs.nushell = {
         enable = true;
         # need to manually set shellAliases with nushell...
@@ -12,7 +17,7 @@
         in {
           rebuild-flake = "sudo ${rebuild_cmd} switch --flake ${config.home.homeDirectory}/nixos-dotfiles#${machine} --show-trace --impure";
         };
-	      settings = {
+        settings = {
           show_banner = false; # remove startup msg prompt
           edit_mode = "vi";
         };
@@ -27,7 +32,7 @@
         enableBashIntegration = false;
         enableZshIntegration = false;
         useTheme = "pure";
-	    };
+      };
     })
   ];
 }

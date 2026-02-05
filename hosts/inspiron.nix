@@ -1,27 +1,47 @@
-{inputs, mod, ...}: with mod; {
+{
+  inputs,
+  mod,
+  ...
+}:
+with mod; {
   system = "x86_64-linux";
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = with mod; [
-    net.nfs net.syncthing net.tailscale net.the-server
+    net.nfs
+    net.syncthing
+    net.tailscale
+    net.the-server
 
     programs.librewolf
     programs.nixvim
-    programs.git programs.kitty programs.yazi
-    programs.xserver programs.dwm
+    programs.git
+    programs.kitty
+    programs.yazi
+    programs.xserver
+    programs.dwm
 
-    software.apps software.dev software.qol
+    software.apps
+    software.dev
+    software.qol
 
-    system.boot system.home system.users
-    system.pkgconfig system.sys-specs
+    system.boot
+    system.home
+    system.users
+    system.pkgconfig
+    system.sys-specs
 
-    drivers.graphical drivers.ssh drivers.ext4
+    drivers.graphical
+    drivers.ssh
+    drivers.ext4
 
-    shell.variables shell.zsh
+    shell.variables
+    shell.zsh
 
-    theming.blockgame theming.stylix theming.themes.nord
+    theming.blockgame
+    theming.stylix
+    theming.themes.nord
   ];
-
 
   extraConfig = [
     ({config, ...}: {

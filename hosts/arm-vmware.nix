@@ -1,30 +1,51 @@
-{inputs, mod, ...}: with mod; {
+{
+  inputs,
+  mod,
+  ...
+}:
+with mod; {
   system = "aarch64-linux";
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = [
-    net.syncthing net.tailscale
+    net.syncthing
+    net.tailscale
 
-    programs.zen-browser  programs.emacs
-    programs.git programs.kitty programs.yazi
-    software.wayland programs.niri programs.quickshell
+    programs.zen-browser
+    programs.emacs
+    programs.git
+    programs.kitty
+    programs.yazi
+    software.wayland
+    programs.niri
+    programs.quickshell
 
-    software.dev software.qol
-    software.texlive software.rust
+    software.dev
+    software.qol
+    software.texlive
+    software.rust
 
-    system.boot system.home system.users
-    system.pkgconfig system.sys-specs
-    disko.disko disko.ext4
+    system.boot
+    system.home
+    system.users
+    system.pkgconfig
+    system.sys-specs
+    disko.disko
+    disko.ext4
 
-    drivers.graphical drivers.ssh drivers.ext4
+    drivers.graphical
+    drivers.ssh
+    drivers.ext4
 
-    shell.variables shell.zsh
+    shell.variables
+    shell.zsh
 
-    theming.stylix theming.themes.nord
+    theming.stylix
+    theming.themes.nord
   ];
   extraConfig = [
     ({user, ...}: {
-      boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "nvme" "usbhid" "sr_mod" ];
+      boot.initrd.availableKernelModules = ["ehci_pci" "ahci" "xhci_pci" "nvme" "usbhid" "sr_mod"];
       # boot.initrd.kernelModules = [ ];
       # boot.kernelModules = [ ];
       # boot.extraModulePackages = [ ];

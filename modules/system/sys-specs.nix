@@ -1,6 +1,10 @@
 {
   nix = [
-    ({lib, machine, ...}: {
+    ({
+      lib,
+      machine,
+      ...
+    }: {
       system.stateVersion = "24.05";
       networking = {
         useDHCP = lib.mkDefault true;

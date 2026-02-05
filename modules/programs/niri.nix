@@ -9,7 +9,13 @@
   ];
 
   home = [
-    ({lib, config, pkgs, machine, ...}: {
+    ({
+      lib,
+      config,
+      pkgs,
+      machine,
+      ...
+    }: {
       programs.niri.settings = {
         # general
         hotkey-overlay.skip-at-startup = machine != "umbra";
@@ -86,7 +92,11 @@
       };
     })
     # keybinds
-    ({config, machine, ...}:
+    ({
+      config,
+      machine,
+      ...
+    }:
       with config.lib.niri.actions;
       with config.lib.stylix.colors.withHashtag; {
         programs.niri.settings.binds = let

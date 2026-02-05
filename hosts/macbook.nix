@@ -1,20 +1,34 @@
-{inputs, mod, ...}: with mod; {
+{
+  inputs,
+  mod,
+  ...
+}:
+with mod; {
   system = "aarch64-darwin";
   builder = inputs.nix-darwin.lib.darwinSystem;
   user = "goat";
   modules = [
     net.tailscale
 
-    programs.emacs programs.prismLauncher
-    programs.git programs.yazi
+    programs.emacs
+    programs.prismLauncher
+    programs.git
+    programs.yazi
 
-    software.dev software.qol software.texlive software.java software.rust
+    software.dev
+    software.qol
+    software.texlive
+    software.java
+    software.rust
 
-    system.home system.pkgconfig
+    system.home
+    system.pkgconfig
 
-    shell.variables shell.zsh
+    shell.variables
+    shell.zsh
 
-    theming.stylix theming.themes.nord
+    theming.stylix
+    theming.themes.nord
   ];
   extraConfig = [
     ({user, ...}: {
@@ -35,24 +49,29 @@
       };
     })
     # need to manually include nerd-font-symbols
-    ({lib, pkgs, ...}: {
+    ({
+      lib,
+      pkgs,
+      ...
+    }: {
       fonts.packages = [pkgs.nerd-fonts.symbols-only];
       environment.systemPackages = [pkgs.feishin pkgs.mpv];
 
       # symlink nix & home manager apps to /Applications
       # lets spotlight or dmenu-mac finally acess nix apps
       system.activationScripts.applications.text = let
-      MAC_APPDIR="/Applications";
-      NIX_APPDIR="/run/current-system/Applications";
-      in lib.mkForce ''
-        printf "\e[0;33m%s\e[m\n" "setting up application symlinks..."
-        for app in ${NIX_APPDIR}/*; do
-          rm -rf "${MAC_APPDIR}/$'''{app##*/}"
-          ln -sf "$app" "${MAC_APPDIR}";
-          printf "\e[0;32m%s $app\e[m\n" "sylinked"
-        done
-        printf "\e[0;32m%s\e[m\n" "symlinking finished!"
-      '';
+        MAC_APPDIR = "/Applications";
+        NIX_APPDIR = "/run/current-system/Applications";
+      in
+        lib.mkForce ''
+          printf "\e[0;33m%s\e[m\n" "setting up application symlinks..."
+          for app in ${NIX_APPDIR}/*; do
+            rm -rf "${MAC_APPDIR}/$'''{app##*/}"
+            ln -sf "$app" "${MAC_APPDIR}";
+            printf "\e[0;32m%s $app\e[m\n" "sylinked"
+          done
+          printf "\e[0;32m%s\e[m\n" "symlinking finished!"
+        '';
 
       # defaults - desktop
       system.defaults.WindowManager.StandardHideDesktopIcons = true;

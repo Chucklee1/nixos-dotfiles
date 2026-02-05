@@ -1,12 +1,20 @@
-{inputs, mod, ...}: with mod; {
+{
+  inputs,
+  mod,
+  ...
+}:
+with mod; {
   system = "x86_64-linux";
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "nixos";
   modules = with mod; [
-    system.boot system.home
-    system.pkgconfig system.sys-specs
+    system.boot
+    system.home
+    system.pkgconfig
+    system.sys-specs
     drivers.ssh
-    shell.zsh programs.nixvim
+    shell.zsh
+    programs.nixvim
   ];
 
   extraConfig = [

@@ -6,7 +6,7 @@
   # ---- LSP ----
   plugins.lsp.enable = true;
   lsp.servers = let
-    full = (profile == "full");
+    full = profile == "full";
   in (builtins.mapAttrs (_: v:
       v // {package = null;})
     {
@@ -33,8 +33,8 @@
       enable = true;
       settings.user_default_options.names = false;
     };
-    
-    # inline code 
+
+    # inline code
     otter.enable = true;
 
     # document tools

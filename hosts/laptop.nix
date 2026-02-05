@@ -1,26 +1,47 @@
-{inputs, mod, ...}: with mod; {
+{
+  inputs,
+  mod,
+  ...
+}:
+with mod; {
   system = "x86_64-linux";
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = with mod; [
-    net.syncthing net.tailscale
+    net.syncthing
+    net.tailscale
 
-    programs.zen-browser programs.emacs
-    programs.git programs.kitty programs.yazi
-    software.wayland programs.niri programs.quickshell
+    programs.zen-browser
+    programs.emacs
+    programs.git
+    programs.kitty
+    programs.yazi
+    software.wayland
+    programs.niri
+    programs.quickshell
 
-    software.apps software.dev software.texlive
+    software.apps
+    software.dev
+    software.texlive
     software.qol
 
-    system.boot system.home system.users
-    system.pkgconfig system.sys-specs
-    disko.disko disko.ext4
+    system.boot
+    system.home
+    system.users
+    system.pkgconfig
+    system.sys-specs
+    disko.disko
+    disko.ext4
 
-    drivers.graphical drivers.ssh
+    drivers.graphical
+    drivers.ssh
 
-    shell.variables shell.zsh
+    shell.variables
+    shell.zsh
 
-    theming.blockgame theming.stylix theming.themes.nord
+    theming.blockgame
+    theming.stylix
+    theming.themes.nord
   ];
 
   extraConfig = [

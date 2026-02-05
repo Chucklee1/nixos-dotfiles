@@ -1,41 +1,41 @@
 {inputs, ...}: {
   nix = [
-     inputs.nix-flatpak.nixosModules.nix-flatpak
-     ({pkgs, ...}: {
-       services.flatpak = {
-         enable = true;
-         packages = [
-           rec {
-             appId = "com.hypixel.HytaleLauncher";
-             sha256 = "sha256-9lKXjb05cM/sOucUPbFmSLIsh8kItLl8V8Rou8ccJew=";
-             bundle = "${pkgs.fetchurl {
-               url = "https://launcher.hytale.com/builds/release/linux/amd64/hytale-launcher-latest.flatpak";
-               inherit sha256;
-             }}";
-           }
-         ];
+    inputs.nix-flatpak.nixosModules.nix-flatpak
+    ({pkgs, ...}: {
+      services.flatpak = {
+        enable = true;
+        packages = [
+          rec {
+            appId = "com.hypixel.HytaleLauncher";
+            sha256 = "sha256-9lKXjb05cM/sOucUPbFmSLIsh8kItLl8V8Rou8ccJew=";
+            bundle = "${pkgs.fetchurl {
+              url = "https://launcher.hytale.com/builds/release/linux/amd64/hytale-launcher-latest.flatpak";
+              inherit sha256;
+            }}";
+          }
+        ];
         overrides = {
-        global = {
-          # Force Wayland by default
-          Context.sockets = ["wayland" "!x11" "!fallback-x11"];
+          global = {
+            # Force Wayland by default
+            Context.sockets = ["wayland" "!x11" "!fallback-x11"];
 
-          Environment = {
-            # Fix un-themed cursor in some Wayland apps
-            XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+            Environment = {
+              # Fix un-themed cursor in some Wayland apps
+              XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
 
-            # Force correct theme for some GTK apps
-            GTK_THEME = "Adwaita:dark";
+              # Force correct theme for some GTK apps
+              GTK_THEME = "Adwaita:dark";
+            };
           };
-        };
 
-        "com.hypixel.HytaleLauncher".Context.sockets = ["x11"]; # No Wayland support
+          "com.hypixel.HytaleLauncher".Context.sockets = ["x11"]; # No Wayland support
         };
-       };
+      };
 
-       # bin scripts for dmemu/wmenu to access
-       environment.systemPackages = [
-         (pkgs.writeShellScriptBin "hytale" "flatpak run com.hypixel.HytaleLauncher")
-       ];
-     })
+      # bin scripts for dmemu/wmenu to access
+      environment.systemPackages = [
+        (pkgs.writeShellScriptBin "hytale" "flatpak run com.hypixel.HytaleLauncher")
+      ];
+    })
   ];
 }

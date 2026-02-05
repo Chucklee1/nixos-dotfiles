@@ -1,31 +1,56 @@
 {
   nix = [
-    ({pkgs, ... }: {
+    ({pkgs, ...}: {
       environment.systemPackages = [
         (pkgs.texlive.combine {
-          inherit (pkgs.texlive)
+          inherit
+            (pkgs.texlive)
             # core
-            scheme-small latex latexmk preview
+            scheme-small
+            latex
+            latexmk
+            preview
             # font
-            fontawesome5 fontspec unicode-math
-            microtype titlesec setspace parskip
+            fontawesome5
+            fontspec
+            unicode-math
+            microtype
+            titlesec
+            setspace
+            parskip
             # bibliography
-            biblatex biber csquotes
+            biblatex
+            biber
+            csquotes
             # image stuff
-            dvisvgm dvipng
+            dvisvgm
+            dvipng
             # math
-            amsmath amsfonts mathtools
+            amsmath
+            amsfonts
+            mathtools
             # plotting
-            pgfplots asymptote
+            pgfplots
+            asymptote
             # graphics
-            graphics xcolor geometry wrapfig float caption
+            graphics
+            xcolor
+            geometry
+            wrapfig
+            float
+            caption
             # text candy
-            ulem hyperref
+            ulem
+            hyperref
             # lua
-            luatex luacode lualatex-math luaotfload;
+            luatex
+            luacode
+            lualatex-math
+            luaotfload
+            ;
 
-            #(setq org-latex-compiler "lualatex")
-            #(setq org-preview-latex-default-process 'dvisvgm)
+          #(setq org-latex-compiler "lualatex")
+          #(setq org-preview-latex-default-process 'dvisvgm)
         })
       ];
     })

@@ -1,27 +1,54 @@
-{inputs, mod, ...}: with mod; {
+{
+  inputs,
+  mod,
+  ...
+}:
+with mod; {
   system = "x86_64-linux";
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = [
-    net.nfs net.syncthing net.tailscale
+    net.nfs
+    net.syncthing
+    net.tailscale
 
-    programs.zen-browser programs.emacs programs.nixvim
-    programs.git programs.kitty programs.yazi programs.rmpc
-    software.wayland programs.niri programs.quickshell
-    programs.prismLauncher programs.flatpak
+    programs.zen-browser
+    programs.emacs
+    programs.nixvim
+    programs.git
+    programs.kitty
+    programs.yazi
+    programs.rmpc
+    software.wayland
+    programs.niri
+    programs.quickshell
+    programs.prismLauncher
+    programs.flatpak
 
-    software.apps software.dev
-    software.texlive software.java software.rust
-    software.gaming software.qol
+    software.apps
+    software.dev
+    software.texlive
+    software.java
+    software.rust
+    software.gaming
+    software.qol
 
-    system.boot system.home system.users
-    system.pkgconfig system.sys-specs
+    system.boot
+    system.home
+    system.users
+    system.pkgconfig
+    system.sys-specs
 
-    drivers.graphical drivers.ssh
+    drivers.graphical
+    drivers.ssh
 
-    shell.variables shell.zsh shell.nushell
+    shell.variables
+    shell.zsh
+    shell.nushell
 
-    theming.blockgame theming.stylix theming.themes.nord
+    theming.blockgame
+    theming.stylix
+    theming.themes.nord
 
     virt.qemu
   ];
@@ -42,27 +69,26 @@
 
     mkfs = {
       btrfs = path: device: options: mkfs' "btrfs" path device options;
-      ext4  = path: device: options: mkfs' "ext4"  path device options;
-      vfat  = path: device: options: mkfs' "vfat"  path device options;
+      ext4 = path: device: options: mkfs' "ext4" path device options;
+      vfat = path: device: options: mkfs' "vfat" path device options;
     };
-
   in [
-    (mkfs.vfat  "/boot/EFI"          DEV.EFI ["fmask=0022" "dmask=0022"])
-    (mkfs.btrfs "/boot"              DEV.WD  ["subvol=WD/nixos/boot" "noatime"])
-    (mkfs.btrfs "/nix"               DEV.WD  ["subvol=WD/nix" "noatime"  "compress=zstd"])
+    (mkfs.vfat "/boot/EFI" DEV.EFI ["fmask=0022" "dmask=0022"])
+    (mkfs.btrfs "/boot" DEV.WD ["subvol=WD/nixos/boot" "noatime"])
+    (mkfs.btrfs "/nix" DEV.WD ["subvol=WD/nix" "noatime" "compress=zstd"])
 
-    (mkfs.btrfs "/"                  DEV.WD  ["subvol=WD/nixos" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/" DEV.WD ["subvol=WD/nixos" "relatime" "compress=zstd"])
 
-    (mkfs.btrfs "/opt"               DEV.EVO ["subvol=EVO/opt" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/opt/osu"           DEV.EVO ["subvol=EVO/osu" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/opt" DEV.EVO ["subvol=EVO/opt" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/opt/osu" DEV.EVO ["subvol=EVO/osu" "relatime" "compress=zstd"])
     (mkfs.btrfs "/opt/PrismLauncher" DEV.EVO ["subvol=EVO/PrismLauncher" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/opt/SSE"           DEV.EVO ["subvol=EVO/SSE" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/opt/Steam"         DEV.EVO ["subvol=EVO/Steam" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/opt/SSE" DEV.EVO ["subvol=EVO/SSE" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/opt/Steam" DEV.EVO ["subvol=EVO/Steam" "relatime" "compress=zstd"])
 
-    (mkfs.btrfs "/srv"               DEV.EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/srv" DEV.EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
 
-    (mkfs.btrfs "/.snapshots/WD"     DEV.WD  ["subvol=WD/.snapshots" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/.snapshots/EVO"    DEV.EVO ["subvol=EVO/.snapshots" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/.snapshots/WD" DEV.WD ["subvol=WD/.snapshots" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/.snapshots/EVO" DEV.EVO ["subvol=EVO/.snapshots" "relatime" "compress=zstd"])
 
     {
       swapDevices = [];
@@ -89,7 +115,11 @@
         open = false;
       };
     }
-    ({lib, user, ...}: {
+    ({
+      lib,
+      user,
+      ...
+    }: {
       home-manager.users.${user} = {
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
@@ -109,23 +139,24 @@
     })
   ];
 }
+/*
+unused but may use later section
+ # dual boot entry so I dont need a seperate bootloader for arch
+ boot.loader.grub.extraEntries = ''
+   menuentry "arch" {
+     insmod btrfs
+     search --no-floppy --fs-uuid --set=root ${DEV.WD}
+     linux /WD/arch/boot/vmlinuz-linux root=UUID=${DEV.WD} rw rootflags=subvol=WD/arch
+     initrd /WD/arch/boot/initramfs-linux.img
+   }
+ '';
 
-/* unused but may use later section
-    # dual boot entry so I dont need a seperate bootloader for arch
-    boot.loader.grub.extraEntries = ''
-      menuentry "arch" {
-        insmod btrfs
-        search --no-floppy --fs-uuid --set=root ${DEV.WD}
-        linux /WD/arch/boot/vmlinuz-linux root=UUID=${DEV.WD} rw rootflags=subvol=WD/arch
-        initrd /WD/arch/boot/initramfs-linux.img
-      }
-    '';
-
-    # only needed if nvidia is the only host card
-    environment.variables = {
-      LIBVA_DRIVER_NAME = "nvidia";
-      NVD_BACKEND = "direct";
-      GBM_BACKEND = "nvidia-drm";
-      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    };
+ # only needed if nvidia is the only host card
+ environment.variables = {
+   LIBVA_DRIVER_NAME = "nvidia";
+   NVD_BACKEND = "direct";
+   GBM_BACKEND = "nvidia-drm";
+   __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+ };
 */
+

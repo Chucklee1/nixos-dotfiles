@@ -1,6 +1,10 @@
 {
   nix = [
-    ({pkgs, user, ...}: {
+    ({
+      pkgs,
+      user,
+      ...
+    }: {
       users.groups.libvirtd.members = [user];
       users.groups.kvm.members = [user];
       programs.virt-manager.enable = true;

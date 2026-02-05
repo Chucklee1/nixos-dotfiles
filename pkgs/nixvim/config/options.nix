@@ -139,8 +139,8 @@
       options.transparent = true;
       specs.nordfox = {
         syntax = {
-          builtin0    = "blue.base"; # Builtin variable
-          builtin1    = "cyan.base"; # Builtin type
+          builtin0 = "blue.base"; # Builtin variable
+          builtin1 = "cyan.base"; # Builtin type
         };
       };
     };

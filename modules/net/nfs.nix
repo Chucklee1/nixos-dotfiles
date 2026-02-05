@@ -1,5 +1,7 @@
 {
-  nix = [{
-    services.nfs.server.enable = true;
-  }];
+  nix = [
+    {
+      services.nfs.server.enable = true;
+    }
+  ];
 }
