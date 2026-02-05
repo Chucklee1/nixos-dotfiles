@@ -89,7 +89,7 @@
     packages = extlib.allSystems (system: {
       # custom installer iso
       installer = self.nixosConfigurations."umbra".config.system.build.isoImage;
-      nixvim = nixvim.package {inherit system;};
+      nixvim = nixvim.package system;
     });
 
     overlays = {
