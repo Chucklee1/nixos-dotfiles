@@ -10,7 +10,7 @@
     software.wayland programs.niri programs.quickshell
 
     software.dev software.qol
-    software.texlive software.java software.rust
+    software.texlive software.rust
 
     system.boot system.home system.users
     system.pkgconfig system.sys-specs
@@ -18,7 +18,7 @@
 
     drivers.graphical drivers.ssh drivers.ext4
 
-    shell.variables shell.zsh shell.nushell
+    shell.variables shell.zsh
 
     theming.stylix theming.themes.nord
   ];
