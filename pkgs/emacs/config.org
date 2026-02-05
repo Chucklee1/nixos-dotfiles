@@ -500,17 +500,19 @@ Tree, sitting...
   (use-package kdl-mode :mode "\\.kdl\\'")
   (use-package lua-mode :mode "\\.lua\\'")
   (use-package markdown-mode :mode "\\.md\\'")
-  (use-package nix-mode :mode "\\.nix\\'")
   (use-package lsp-java)
-  (use-package just-mode)
-  (use-package ron-mode :mode "\\.ron\\'")
-  ;; heavier niche modes - will not connect to eglot
   (if (executable-find "nu") (use-package nushell-mode))
   (if (executable-find "kotlin") (use-package kotlin-mode))
-  ;; ts modes
+     #+end_src
+** Nix
+#+begin_src emacs-lisp
+  (use-package nix-mode :mode "\\.nix\\'")
   (use-package nix-ts-mode
     :mode "\\.nix\\'")
+
+  (setq lsp-nix-nixd-formatting-command ["alejandra"])
 #+end_src
+
 ** qml
 #+begin_src emacs-lisp
   ;; provided by nix
@@ -524,17 +526,21 @@ Tree, sitting...
  #+end_src
 ** Rust
 #+begin_src emacs-lisp
-    (use-package rust-mode
-      :init
-      (setq rust-mode-treesitter-derive t))
+  (use-package rust-mode
+    :init
+    (setq rust-mode-treesitter-derive t))
 
-    (use-package rustic
-      :after (rust-mode)
-      :config
-      (setq rustic-format-on-save nil)
-      (setq rustic-lsp-client 'lsp-mode)
-      :custom
-      (rustic-cargo-use-last-stored-arguments t))
+  (use-package rustic
+    :after (rust-mode)
+    :config
+    (setq rustic-format-on-save nil)
+    (setq rustic-lsp-client 'lsp-mode)
+    :custom
+    (rustic-cargo-use-last-stored-arguments t))
+
+  ;; other rust like things
+  (use-package just-mode)
+  (use-package ron-mode :mode "\\.ron\\'")
 #+end_src
 ** Auctex
 + LaTeX tool for emacs, like vimtex

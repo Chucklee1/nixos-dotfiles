@@ -371,16 +371,15 @@
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
-(use-package nix-mode :mode "\\.nix\\'")
 (use-package lsp-java)
-(use-package just-mode)
-(use-package ron-mode :mode "\\.ron\\'")
-;; heavier niche modes - will not connect to eglot
 (if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
-;; ts modes
+
+(use-package nix-mode :mode "\\.nix\\'")
 (use-package nix-ts-mode
   :mode "\\.nix\\'")
+
+(setq lsp-nix-nixd-formatting-command ["alejandra"])
 
 ;; provided by nix
 (require 'qml-ts-mode)
@@ -402,6 +401,10 @@
   (setq rustic-lsp-client 'lsp-mode)
   :custom
   (rustic-cargo-use-last-stored-arguments t))
+
+;; other rust like things
+(use-package just-mode)
+(use-package ron-mode :mode "\\.ron\\'")
 
 (use-package auctex)
 
