@@ -381,6 +381,19 @@
 
 (setq lsp-nix-nixd-formatting-command ["alejandra"])
 
+(defun set/clang/version ()
+  (let ((raw (shell-command-to-string "clangd --version")))
+    (when (string-match "clangd version \\([0-9.]+\\)" raw)
+      (setq lsp-clangd-version (match-string 1 raw)))))
+
+(defun set/clang/bin ()
+  (let ((clangd-bin (executable-find  "clangd")))
+    (setq lsp-clangd-binary-path clangd-bin)
+    (setq lsp-clients--clangd-default-executable clangd-bin)))
+
+(add-hook 'c++-ts-mode-hook #'set/clang/version)
+(add-hook 'c++-ts-mode-hook #'set/clang/bin)
+
 ;; provided by nix
 (require 'qml-ts-mode)
   ;; taken from quickshell docs

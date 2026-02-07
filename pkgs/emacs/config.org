@@ -512,7 +512,21 @@ Tree, sitting...
 
   (setq lsp-nix-nixd-formatting-command ["alejandra"])
 #+end_src
+** clangd
+#+begin_src emacs-lisp
+  (defun set/clang/version ()
+    (let ((raw (shell-command-to-string "clangd --version")))
+      (when (string-match "clangd version \\([0-9.]+\\)" raw)
+        (setq lsp-clangd-version (match-string 1 raw)))))
 
+  (defun set/clang/bin ()
+    (let ((clangd-bin (executable-find  "clangd")))
+      (setq lsp-clangd-binary-path clangd-bin)
+      (setq lsp-clients--clangd-default-executable clangd-bin)))
+
+  (add-hook 'c++-ts-mode-hook #'set/clang/version)
+  (add-hook 'c++-ts-mode-hook #'set/clang/bin)
+#+end_src
 ** qml
 #+begin_src emacs-lisp
   ;; provided by nix
