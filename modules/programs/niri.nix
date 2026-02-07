@@ -41,6 +41,7 @@
             "${get "xwayland-satellite"}"
             "${get "wlsunset"} -T 5200"
             "${get "swaybg"} -m fill -i ${config.stylix.image}"
+            "systemctl --user restart quickshell"
           ];
         # input
         input = {
