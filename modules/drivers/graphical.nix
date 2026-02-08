@@ -25,12 +25,36 @@
         pulse.enable = true;
       };
 
+      # polkit
+      security.polkit.enable = true;
+
+      # portals
+      xdg.portal.extraPortals = [
+        pkgs.xdg-desktop-portal-gnome
+        pkgs.xdg-desktop-portal-gtk
+      ];
+      xdg.portal.config.common.default = "gnome";
+
+      # specific apps require a gui file manager for xdg-open
+      # (cough cough steam)
+      programs.thunar.enable = true;
+      programs.thunar.plugins = [pkgs.thunar-volman];
+      xdg.mime.defaultApplications = {
+        "inode/directory" = "thunar.desktop";
+      };
+
+
       # bluetooth
       hardware.bluetooth.enable = true;
       services.blueman.enable = true;
 
       # misc
-      environment.systemPackages = with pkgs; [udisks mpv pavucontrol];
+      environment.systemPackages = with pkgs; [
+        xdg-utils
+        udisks
+        mpv
+        pavucontrol
+      ];
       programs.dconf.enable = true;
       services = {
         printing.enable = true;

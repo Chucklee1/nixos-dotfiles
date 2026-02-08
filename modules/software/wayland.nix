@@ -14,14 +14,6 @@
         wl-color-picker
         wl-clipboard
       ];
-
-      # polkit n portals
-      security.polkit.enable = true;
-      xdg.portal.extraPortals = [
-        pkgs.xdg-desktop-portal-gnome
-        pkgs.xdg-desktop-portal-gtk
-      ];
-      xdg.portal.config.common.default = "gnome";
     })
   ];
   home = [
