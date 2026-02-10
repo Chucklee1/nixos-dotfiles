@@ -6,7 +6,6 @@
           # haker
           just
           gcc
-          gdb
           lua
           python3
           # lsps
@@ -45,7 +44,11 @@
           # nix helpers
           nurl
         ]
-        ++ (extlib.armOrNot [rar] []);
+        ++ (extlib.armOrNot [
+                              rar
+                              # broken on aarch64
+                              gdb
+                            ] []);
     })
     ({
       machine,
