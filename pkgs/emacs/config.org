@@ -522,6 +522,7 @@ Tree, sitting...
   (defun set/clang/bin ()
     (let ((clangd-bin (executable-find  "clangd")))
       (setq lsp-clangd-binary-path clangd-bin)
+      (setq lsp-clients-clangd-executable clangd-bin)
       (setq lsp-clients--clangd-default-executable clangd-bin)))
 
   (add-hook 'c++-ts-mode-hook #'set/clang/version)

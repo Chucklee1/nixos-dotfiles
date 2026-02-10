@@ -394,6 +394,16 @@
 (add-hook 'c++-ts-mode-hook #'set/clang/version)
 (add-hook 'c++-ts-mode-hook #'set/clang/bin)
 
+(add-hook 'c++-ts-mode-hook
+          (lambda ()
+            ;; Keep LSP features (completion, go-to-definition)
+            (lsp)
+            ;; Disable LSP diagnostics
+            (setq-local lsp-diagnostics-provider :none)
+            ;; Force Flycheck to use gcc
+            (setq-local flycheck-checker 'c/c++-gcc)
+            (flycheck-mode 1)))
+
 ;; provided by nix
 (require 'qml-ts-mode)
   ;; taken from quickshell docs
