@@ -52,7 +52,7 @@
       environment.systemPackages = with pkgs; [
         xdg-utils
         udisks
-        mpv
+        mpv-unwrapped
         pavucontrol
       ];
       programs.dconf.enable = true;
