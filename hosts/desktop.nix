@@ -69,8 +69,9 @@ with mod; {
 
     mkfs = {
       btrfs = path: device: options: mkfs' "btrfs" path device options;
-      ext4 = path: device: options: mkfs' "ext4" path device options;
-      vfat = path: device: options: mkfs' "vfat" path device options;
+      ext4 =  path: device: options: mkfs' "ext4" path device options;
+      vfat =  path: device: options: mkfs' "vfat" path device options;
+      nfs =   path: device: mkfs' "nfs" path device [ ];
     };
   in [
     (mkfs.vfat "/boot/EFI" DEV.EFI ["fmask=0022" "dmask=0022"])
@@ -79,42 +80,46 @@ with mod; {
 
     (mkfs.btrfs "/" DEV.WD ["subvol=WD/nixos" "relatime" "compress=zstd"])
 
-    (mkfs.btrfs "/opt" DEV.EVO ["subvol=EVO/opt" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/opt/osu" DEV.EVO ["subvol=EVO/osu" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/opt/PrismLauncher" DEV.EVO ["subvol=EVO/PrismLauncher" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/opt/SSE" DEV.EVO ["subvol=EVO/SSE" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/opt/Steam" DEV.EVO ["subvol=EVO/Steam" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/opt" DEV.EVO ["subvol=EVO/opt" "noatime"])
+    (mkfs.btrfs "/opt/Games" DEV.EVO ["subvol=EVO/" "noatime"])
+    (mkfs.btrfs "/opt/Steam" DEV.EVO ["subvol=EVO/Steam" "noatime"])
 
     (mkfs.btrfs "/srv" DEV.EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
 
-    (mkfs.btrfs "/.snapshots/WD" DEV.WD ["subvol=WD/.snapshots" "relatime" "compress=zstd"])
-    (mkfs.btrfs "/.snapshots/EVO" DEV.EVO ["subvol=EVO/.snapshots" "relatime" "compress=zstd"])
-
-    {
+    (mkfs.btrfs "/.snapshots/WD" DEV.WD ["subvol=WD/.snapshots" "noatime" "compress=zstd"])
+    (mkfs.btrfs "/.snapshots/EVO" DEV.EVO ["subvol=EVO/.snapshots" "noatime" "compress=zstd"])
+    ({pkgs, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/EFI";
       boot.loader.grub.useOSProber = true;
 
       # kernel
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
-      boot.kernelModules = ["kvm" "kvm_amd"];
+      boot.kernelModules = ["kvm" "kvm_amd" "ntsync"];
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
+      
+      # cachyos kernel
+      nix.settings.substituters = [ "https://cache.garnix.io" ];
+      nix.settings.trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
+      nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
       # cpu
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
 
       # gpu
-      services.xserver.videoDrivers = ["nvidia" "amdgpu"];
-      nixpkgs.config.nvidia.acceptLicense = true;
-      hardware.nvidia = {
-        modesetting.enable = true;
-        powerManagement.enable = false;
-        powerManagement.finegrained = false;
-        videoAcceleration = true;
-        open = false;
-      };
-    }
+      services.xserver.videoDrivers = ["amdgpu"];
+      # services.xserver.videoDrivers = ["nvidia" "amdgpu"];
+      # nixpkgs.config.nvidia.acceptLicense = true;
+      #       hardware.nvidia = {
+      #         modesetting.enable = true;
+      #         powerManagement.enable = false;
+      #         powerManagement.finegrained = false;
+      #         videoAcceleration = true;
+      #         open = false;
+      #       };
+    })
     ({
       lib,
       user,
@@ -159,4 +164,3 @@ unused but may use later section
    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
  };
 */
-
