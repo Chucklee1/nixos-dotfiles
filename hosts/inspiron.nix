@@ -21,7 +21,6 @@ with mod; {
     programs.xserver
     programs.dwm
 
-    software.apps
     software.dev
     software.qol
 
