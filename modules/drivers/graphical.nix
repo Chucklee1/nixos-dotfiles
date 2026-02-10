@@ -30,10 +30,9 @@
 
       # portals
       xdg.portal.extraPortals = [
-        pkgs.xdg-desktop-portal-gnome
         pkgs.xdg-desktop-portal-gtk
       ];
-      xdg.portal.config.common.default = "gnome";
+      xdg.portal.config.common.default = "gtk";
 
       # specific apps require a gui file manager for xdg-open
       # (cough cough steam)

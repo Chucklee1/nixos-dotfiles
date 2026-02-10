@@ -81,12 +81,12 @@
             clip-to-geometry = true;
           }
           {
-            matches = [{app-id = "^org.prismlauncher.PrismLauncher$";}];
-            open-floating = false;
+            matches = [{app-id = "^org.kde.polkit-kde-authentication-agent$";}];
+            block-out-from = "screen-capture";
+            open-floating = true;
           }
           {
-            matches = [{app-id = "org.kde.polkit-kde-authentication-agent$";}];
-            block-out-from = "screen-capture";
+            matches = [{app-id = "^xdg-desktop-portal-gtk$";}];
             open-floating = true;
           }
         ];
