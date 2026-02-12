@@ -15,3 +15,4 @@ assets/emacs/tramp
 /assets/emacs/projectile-bookmarks.eld
 assets/quickshell/.qmlls.ini
 modules/.DS_Store
+/pkgs/.DS_Store
