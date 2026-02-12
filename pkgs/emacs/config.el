@@ -374,6 +374,7 @@
 (use-package lsp-java)
 (if (executable-find "nu") (use-package nushell-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
+(if (executable-find "gnuplot") (use-package gnuplot-mode))
 
 (use-package nix-mode :mode "\\.nix\\'")
 (use-package nix-ts-mode
@@ -389,20 +390,11 @@
 (defun set/clang/bin ()
   (let ((clangd-bin (executable-find  "clangd")))
     (setq lsp-clangd-binary-path clangd-bin)
+    (setq lsp-clients-clangd-executable clangd-bin)
     (setq lsp-clients--clangd-default-executable clangd-bin)))
 
 (add-hook 'c++-ts-mode-hook #'set/clang/version)
 (add-hook 'c++-ts-mode-hook #'set/clang/bin)
-
-(add-hook 'c++-ts-mode-hook
-          (lambda ()
-            ;; Keep LSP features (completion, go-to-definition)
-            (lsp)
-            ;; Disable LSP diagnostics
-            (setq-local lsp-diagnostics-provider :none)
-            ;; Force Flycheck to use gcc
-            (setq-local flycheck-checker 'c/c++-gcc)
-            (flycheck-mode 1)))
 
 ;; provided by nix
 (require 'qml-ts-mode)
@@ -428,6 +420,8 @@
 ;; other rust like things
 (use-package just-mode)
 (use-package ron-mode :mode "\\.ron\\'")
+
+
 
 (use-package auctex)
 

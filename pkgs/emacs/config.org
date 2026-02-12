@@ -503,6 +503,7 @@ Tree, sitting...
   (use-package lsp-java)
   (if (executable-find "nu") (use-package nushell-mode))
   (if (executable-find "kotlin") (use-package kotlin-mode))
+  (if (executable-find "gnuplot") (use-package gnuplot-mode))
      #+end_src
 ** Nix
 #+begin_src emacs-lisp
@@ -556,6 +557,9 @@ Tree, sitting...
   ;; other rust like things
   (use-package just-mode)
   (use-package ron-mode :mode "\\.ron\\'")
+#+end_src
+** Gnuplot
+#+begin_src emacs-lisp
 #+end_src
 ** Auctex
 + LaTeX tool for emacs, like vimtex
