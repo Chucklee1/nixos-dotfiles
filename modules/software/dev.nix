@@ -5,6 +5,8 @@
         [
           # haker
           just
+          gnumake
+          pkg-config
           gcc
           lua
           python3
