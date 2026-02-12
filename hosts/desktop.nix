@@ -82,7 +82,7 @@ with mod; {
     (mkfs.btrfs "/" DEV.WD ["subvol=WD/nixos" "relatime" "compress=zstd"])
 
     (mkfs.btrfs "/opt" DEV.EVO ["subvol=EVO/opt" "noatime"])
-    (mkfs.btrfs "/opt/Games" DEV.EVO ["subvol=EVO/" "noatime"])
+    (mkfs.btrfs "/opt/Games" DEV.EVO ["subvol=EVO/Games" "noatime"])
     (mkfs.btrfs "/opt/Steam" DEV.EVO ["subvol=EVO/Steam" "noatime"])
 
     (mkfs.btrfs "/srv" DEV.EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
