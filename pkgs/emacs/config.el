@@ -619,6 +619,8 @@
 (with-eval-after-load 'lsp-modeline
   ;; icon overrides
   (setq lsp-modeline-code-action-fallback-icon "")
+  (setq lsp-progress-prefix "")
+
   ;; color overrides
   (set-face-attribute 'lsp-modeline-code-actions-preferred-face nil
                       :foreground (doom/colors 'yellow))
