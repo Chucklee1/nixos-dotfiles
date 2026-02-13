@@ -21,7 +21,7 @@ with mod; {
     programs.rmpc
     software.wayland
     programs.niri
-    programs.quickshell
+    programs.waybar
     programs.prismLauncher
     programs.flatpak
     programs.obs
@@ -111,21 +111,22 @@ with mod; {
 
       # gpu
       services.xserver.videoDrivers = ["amdgpu"];
-      # services.xserver.videoDrivers = ["nvidia" "amdgpu"];
-      # nixpkgs.config.nvidia.acceptLicense = true;
-      #       hardware.nvidia = {
-      #         modesetting.enable = true;
-      #         powerManagement.enable = false;
-      #         powerManagement.finegrained = false;
-      #         videoAcceleration = true;
-      #         open = false;
-      #       };
     })
+    # monitor config
     ({
       lib,
       user,
       ...
     }: {
+      services.xserver.xrandrHeads = [{
+        output = "DP-5";      # change to your monitor output
+        primary = true;
+        monitorConfig = ''
+          Option "PreferredMode" "1920x1080"
+          Option "TargetRefresh" "165.001"
+        '';
+      }];
+
       home-manager.users.${user} = {
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
