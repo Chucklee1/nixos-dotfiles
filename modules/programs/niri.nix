@@ -41,7 +41,7 @@
             "${get "xwayland-satellite"}"
             "${get "wlsunset"} -T 5200"
             "${get "swaybg"} -m fill -i ${config.stylix.image}"
-            "systemctl --user restart quickshell"
+            "systemctl --user restart waybar"
           ];
         # input
         input = {
@@ -95,6 +95,7 @@
     # keybinds
     ({
       config,
+      pkgs,
       machine,
       ...
     }:
@@ -110,6 +111,13 @@
             -S "${base0D}" \
             -s "${base00}"
           '';
+          toggleWaybar = ''
+            if [ "$(systemctl is-active --user waybar)" == "active" ]; then
+                systemctl --user stop waybar
+            else
+                systemctl --user start waybar
+            fi
+          '';
 
           # mod def
           mod =
@@ -123,7 +131,7 @@
           "${mod}+Shift+B" = sh "zen";
           "${mod}+Space" = sh wmenu;
           "${mod}+Shift+L" = sh "swaylock";
-          "${mod}+W" = sh ''systemctl --user restart waybar.service'';
+          "${mod}+W" = sh toggleWaybar;
 
           # media keys
           "XF86AudioRaiseVolume" = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
@@ -139,7 +147,7 @@
           "XF86AudioPrev" = sh "rmpc prev";
           # screenshot
           "Print".action.screenshot = [];
-          "Alt+Print".action.screenshot-window = [];
+          "${mod}+Print".action.screenshot-window = [];
           # quits
           "${mod}+Q".action = close-window;
           "Ctrl+${mod}+Delete".action = quit;
