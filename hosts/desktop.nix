@@ -70,9 +70,9 @@ with mod; {
 
     mkfs = {
       btrfs = path: device: options: mkfs' "btrfs" path device options;
-      ext4 =  path: device: options: mkfs' "ext4" path device options;
-      vfat =  path: device: options: mkfs' "vfat" path device options;
-      nfs =   path: device: mkfs' "nfs" path device [ ];
+      ext4 = path: device: options: mkfs' "ext4" path device options;
+      vfat = path: device: options: mkfs' "vfat" path device options;
+      nfs = path: device: mkfs' "nfs" path device [];
     };
   in [
     (mkfs.vfat "/boot/EFI" DEV.EFI ["fmask=0022" "dmask=0022"])
@@ -100,9 +100,9 @@ with mod; {
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
 
       # cachyos kernel
-      nix.settings.substituters = [ "https://cache.garnix.io" ];
-      nix.settings.trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
-      nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+      nix.settings.substituters = ["https://cache.garnix.io"];
+      nix.settings.trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
+      nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
       boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
       # cpu
@@ -118,14 +118,16 @@ with mod; {
       user,
       ...
     }: {
-      services.xserver.xrandrHeads = [{
-        output = "DP-5";      # change to your monitor output
-        primary = true;
-        monitorConfig = ''
-          Option "PreferredMode" "1920x1080"
-          Option "TargetRefresh" "165.001"
-        '';
-      }];
+      services.xserver.xrandrHeads = [
+        {
+          output = "DP-5"; # change to your monitor output
+          primary = true;
+          monitorConfig = ''
+            Option "PreferredMode" "1920x1080"
+            Option "TargetRefresh" "165.001"
+          '';
+        }
+      ];
 
       home-manager.users.${user} = {
         programs.niri.settings = {
@@ -133,12 +135,22 @@ with mod; {
           input.mouse = lib.mkForce {accel-speed = -0.75;};
           input.keyboard.xkb.options = lib.mkForce "ctrl:nocaps,altwin:swap_alt_win";
           # no clue why my monitor has so many 0's...
-          outputs."HKC OVERSEAS LIMITED 24E4 0000000000001" = {
-            variable-refresh-rate = true;
-            mode = {
-              width = 1920;
-              height = 1080;
-              refresh = 165.001;
+          outputs = {
+            "HKC OVERSEAS LIMITED 24E4 0000000000001" = {
+              variable-refresh-rate = true;
+              mode = {
+                width = 1920;
+                height = 1080;
+                refresh = 165.001;
+              };
+            };
+            "Shenzhen KTC Technology Group H27T27 Unknown" = {
+              scale = 1.2;
+              mode = {
+                width = 2560;
+                height = 1440;
+                refresh = 99.965;
+              };
             };
           };
         };
