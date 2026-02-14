@@ -13,6 +13,7 @@
               inherit sha256;
             }}";
           }
+          "us.zoom.Zoom"
         ];
         overrides = {
           global = {
@@ -27,14 +28,16 @@
               GTK_THEME = "Adwaita:dark";
             };
           };
-
-          "com.hypixel.HytaleLauncher".Context.sockets = ["x11"]; # No Wayland support
+          # No Wayland support
+          "com.hypixel.HytaleLauncher".Context.sockets = ["x11"];
+          "us.zoom.Zoom".Context.sockets = ["x11"];
         };
       };
 
       # bin scripts for dmemu/wmenu to access
       environment.systemPackages = [
         (pkgs.writeShellScriptBin "hytale" "flatpak run com.hypixel.HytaleLauncher")
+        (pkgs.writeShellScriptBin "zoom" "flatpak run us.zoom.Zoom")
       ];
     })
   ];
