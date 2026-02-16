@@ -495,28 +495,24 @@ Tree, sitting...
     :config
     (global-treesit-auto-mode)
     (treesit-auto-add-to-auto-mode-alist 'all))
-
-
 #+end_src
 ** Misc Language-Specific Modes
 #+begin_src emacs-lisp
-  (use-package haskell-mode :mode "\\.hs\\'")
+  ;; config languages
   (use-package kdl-mode :mode "\\.kdl\\'")
-  (use-package lua-mode :mode "\\.lua\\'")
   (use-package markdown-mode :mode "\\.md\\'")
-  (use-package lsp-java)
+  (use-package ron-mode :mode "\\.ron\\'")
+  ;; binary dependant languages
+  (if (executable-find "ghc") (use-package haskell))
+  (if (executable-find "java") (use-package lsp-java))
+  (if (executable-find "lua") (use-package lua-mode))
   (if (executable-find "nu") (use-package nushell-mode))
+  (if (executable-find "nu") (use-package nushell-mode))
+  (if (executable-find "fish") (use-package fish-mode))
   (if (executable-find "kotlin") (use-package kotlin-mode))
   (if (executable-find "gnuplot") (use-package gnuplot-mode))
+  (if (executable-find "just") (use-package just-mode))
      #+end_src
-** Nix
-#+begin_src emacs-lisp
-  (use-package nix-mode :mode "\\.nix\\'")
-  (use-package nix-ts-mode
-    :mode "\\.nix\\'")
-
-  (setq lsp-nix-nixd-formatting-command ["alejandra"])
-#+end_src
 ** clangd
 #+begin_src emacs-lisp
   (defun set/clang/version ()
@@ -530,9 +526,24 @@ Tree, sitting...
       (setq lsp-clients-clangd-executable clangd-bin)
       (setq lsp-clients--clangd-default-executable clangd-bin)))
 
-  (add-hook 'c++-ts-mode-hook #'set/clang/version)
-  (add-hook 'c++-ts-mode-hook #'set/clang/bin)
+  (if (executable-find "clangd")
+      (add-hook 'c++-ts-mode-hook #'set/clang/version)
+    (add-hook 'c++-ts-mode-hook #'set/clang/bin))
 #+end_src
+** Nix
+begin nix only block
+#+begin_src emacs-lisp
+  (if (executable-find "nix")
+#+end_src
+nix modes
+#+begin_src emacs-lisp
+  (use-package nix-mode :mode "\\.nix\\'")
+    (use-package nix-ts-mode
+      :mode "\\.nix\\'")
+
+    (setq lsp-nix-nixd-formatting-command ["alejandra"])
+#+end_src
+qml-ts-mode only for systems with nixos (i am NOT having straight config this)
 ** qml
 #+begin_src emacs-lisp
   ;; provided by nix
@@ -544,9 +555,14 @@ Tree, sitting...
                       :activation-fn (lsp-activate-on "qml-ts")
                       :server-id 'qmlls))
  #+end_src
+end nix only block
+#+begin_src emacs-lisp
+)
+#+end_src
+
 ** Rust
 #+begin_src emacs-lisp
-  (use-package rust-mode
+  (if (executable-find "cargo") (use-package rust-mode
     :init
     (setq rust-mode-treesitter-derive t))
 
@@ -556,14 +572,9 @@ Tree, sitting...
     (setq rustic-format-on-save nil)
     (setq rustic-lsp-client 'lsp-mode)
     :custom
-    (rustic-cargo-use-last-stored-arguments t))
+    (rustic-cargo-use-last-stored-arguments t)))
 
   ;; other rust like things
-  (use-package just-mode)
-  (use-package ron-mode :mode "\\.ron\\'")
-#+end_src
-** Gnuplot
-#+begin_src emacs-lisp
 #+end_src
 ** Auctex
 + LaTeX tool for emacs, like vimtex
@@ -661,7 +672,7 @@ Tree, sitting...
 #+end_src
 ** Direnv
 #+begin_src emacs-lisp
-  (use-package direnv)
+  (if (executable-find "direnv") (use-package direnv))
 #+end_src
 
 -----
@@ -853,6 +864,10 @@ lsp-mode
 -----
 
 * Darwin fixes
+begin darwin only block
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+#+end_src
 ** Exec Path from Shell
 + Allows for MacOS to import PATH to shells
 #+begin_src emacs-lisp
@@ -863,11 +878,14 @@ lsp-mode
 #+end_src
 ** Ultra Scroll
 + Smooth Scrolling
-#+BEGIN_SRC emacs-lisp
-  (when (eq system-type 'darwin)
+#+BEGIN_src emacs-lisp
     (use-package ultra-scroll
       :init
       (setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
       :config
-      (ultra-scroll-mode 1)))
-#+END_SRC
+      (ultra-scroll-mode 1))
+#+END_src
+end darwin only block
+#+begin_src emacs-lisp
+  )
+#+end_src

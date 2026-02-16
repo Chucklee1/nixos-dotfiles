@@ -369,20 +369,20 @@
   (global-treesit-auto-mode)
   (treesit-auto-add-to-auto-mode-alist 'all))
 
-(use-package haskell-mode :mode "\\.hs\\'")
+;; config languages
 (use-package kdl-mode :mode "\\.kdl\\'")
-(use-package lua-mode :mode "\\.lua\\'")
 (use-package markdown-mode :mode "\\.md\\'")
-(use-package lsp-java)
+(use-package ron-mode :mode "\\.ron\\'")
+;; binary dependant languages
+(if (executable-find "ghc") (use-package haskell))
+(if (executable-find "java") (use-package lsp-java))
+(if (executable-find "lua") (use-package lua-mode))
 (if (executable-find "nu") (use-package nushell-mode))
+(if (executable-find "nu") (use-package nushell-mode))
+(if (executable-find "fish") (use-package fish-mode))
 (if (executable-find "kotlin") (use-package kotlin-mode))
 (if (executable-find "gnuplot") (use-package gnuplot-mode))
-
-(use-package nix-mode :mode "\\.nix\\'")
-(use-package nix-ts-mode
-  :mode "\\.nix\\'")
-
-(setq lsp-nix-nixd-formatting-command ["alejandra"])
+(if (executable-find "just") (use-package just-mode))
 
 (defun set/clang/version ()
   (let ((raw (shell-command-to-string "clangd --version")))
@@ -395,8 +395,17 @@
     (setq lsp-clients-clangd-executable clangd-bin)
     (setq lsp-clients--clangd-default-executable clangd-bin)))
 
-(add-hook 'c++-ts-mode-hook #'set/clang/version)
-(add-hook 'c++-ts-mode-hook #'set/clang/bin)
+(if (executable-find "clangd")
+    (add-hook 'c++-ts-mode-hook #'set/clang/version)
+  (add-hook 'c++-ts-mode-hook #'set/clang/bin))
+
+(if (executable-find "nix")
+
+(use-package nix-mode :mode "\\.nix\\'")
+  (use-package nix-ts-mode
+    :mode "\\.nix\\'")
+
+  (setq lsp-nix-nixd-formatting-command ["alejandra"])
 
 ;; provided by nix
 (require 'qml-ts-mode)
@@ -407,7 +416,9 @@
                     :activation-fn (lsp-activate-on "qml-ts")
                     :server-id 'qmlls))
 
-(use-package rust-mode
+)
+
+(if (executable-find "cargo") (use-package rust-mode
   :init
   (setq rust-mode-treesitter-derive t))
 
@@ -417,13 +428,9 @@
   (setq rustic-format-on-save nil)
   (setq rustic-lsp-client 'lsp-mode)
   :custom
-  (rustic-cargo-use-last-stored-arguments t))
+  (rustic-cargo-use-last-stored-arguments t)))
 
 ;; other rust like things
-(use-package just-mode)
-(use-package ron-mode :mode "\\.ron\\'")
-
-
 
 (use-package auctex)
 
@@ -493,7 +500,7 @@
                         (config/sync-with-org))
                       nil t)))
 
-(use-package direnv)
+(if (executable-find "direnv") (use-package direnv))
 
 (use-package corfu
   :custom
@@ -629,14 +636,17 @@
   (set-face-attribute 'lsp-modeline-code-actions-face nil
                       :foreground (doom/colors 'blue)))
 
+(when (eq system-type 'darwin)
+
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
   :config
   (exec-path-from-shell-initialize))
 
-(when (eq system-type 'darwin)
-  (use-package ultra-scroll
-    :init
-    (setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
-    :config
-    (ultra-scroll-mode 1)))
+(use-package ultra-scroll
+  :init
+  (setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
+  :config
+  (ultra-scroll-mode 1))
+
+)
