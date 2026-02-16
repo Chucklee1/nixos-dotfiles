@@ -43,6 +43,10 @@
 -----
 
 * Base Settings
+** Fancy header
+#+begin_src emacs-lisp
+;; -*- lexical-binding: t; -*-
+#+end_src
 ** Pkg Config
 #+begin_src emacs-lisp
   (setq use-package-always-ensure t)

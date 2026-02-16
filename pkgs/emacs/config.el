@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (setq use-package-always-ensure t)
 
 (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
