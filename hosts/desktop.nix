@@ -19,7 +19,6 @@ with mod; {
     programs.kitty
     programs.yazi
     programs.rmpc
-    software.wayland
     programs.niri
     programs.waybar
     programs.prismLauncher

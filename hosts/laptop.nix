@@ -16,9 +16,8 @@ with mod; {
     programs.git
     programs.kitty
     programs.yazi
-    software.wayland
     programs.niri
-    programs.quickshell
+    programs.waybar
 
     software.apps
     software.dev

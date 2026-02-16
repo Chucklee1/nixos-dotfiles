@@ -18,7 +18,6 @@ with mod; {
     programs.git
     programs.kitty
     programs.yazi
-    programs.xserver
     programs.dwm
 
     software.dev
