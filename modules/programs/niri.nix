@@ -154,10 +154,6 @@
           "XF86MonBrightnessDown" = sh "brightnessctl set 5%-";
           "XF86KbdBrightnessUp" = sh "brightnessctl --device=smc::kbd_backlight set 10%+";
           "XF86KbdBrightnessDown" = sh "brightnessctl --device=smc::kbd_backlight set 10%-";
-          # rmpc
-          "XF86AudioPlay" = sh "rmpc togglepause";
-          "XF86AudioNext" = sh "rmpc next";
-          "XF86AudioPrev" = sh "rmpc prev";
           # screenshot
           "Print".action.screenshot = [];
           "${mod}+Print".action.screenshot-window = [];
