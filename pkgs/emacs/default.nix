@@ -6,7 +6,10 @@ builtins.mapAttrs (_: package:
       passthru = old.passthru // { treeSitter = true; };
     });
 
-    config = ./config.el;
+    config = ''
+      (setq use-package-always-ensure t)
+      ,${builtins.readFile ./config.el}
+    '';
     defaultInitFile = false;
     # make sure to include `(setq use-package-always-ensure t)` in config
     alwaysEnsure = true;

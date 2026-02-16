@@ -1,7 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(setq use-package-always-ensure t)
-
 (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
 (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
 (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
@@ -400,12 +398,11 @@
   (add-hook 'c++-ts-mode-hook #'set/clang/bin))
 
 (if (executable-find "nix")
+    (progn
 
 (use-package nix-mode :mode "\\.nix\\'")
-  (use-package nix-ts-mode
-    :mode "\\.nix\\'")
-
-  (setq lsp-nix-nixd-formatting-command ["alejandra"])
+(use-package nix-ts-mode :mode "\\.nix\\'")
+(setq lsp-nix-nixd-formatting-command ["alejandra"])
 
 ;; provided by nix
 (require 'qml-ts-mode)
@@ -416,7 +413,7 @@
                     :activation-fn (lsp-activate-on "qml-ts")
                     :server-id 'qmlls))
 
-)
+))
 
 (if (executable-find "cargo") (use-package rust-mode
   :init
@@ -637,6 +634,7 @@
                       :foreground (doom/colors 'blue)))
 
 (when (eq system-type 'darwin)
+  (progn
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
@@ -649,4 +647,4 @@
   :config
   (ultra-scroll-mode 1))
 
-)
+))

@@ -2,42 +2,70 @@
 #+Author: Chucklee1
 #+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
+* note-to-self
+While I am trying to wrap things in exec-checks (probably not efficent but it works)
+to maintain a "only use it if it is there" mindset, there is still a bunch of stuff
+that I will still require regardless, this is the general list of what you /should/ have:
+    - source of power
+    - computer that can run emacs
+    - connection to the internet
+    - some way to interface with screen+keyboard
+    - c compiler (perferable libc based, musl may work, alpine...)
+    - init system (optional but helps)
+Jokes aside:
+    - git
+    - a nerd font (jetbrains mono is the default)
+    - tree-sitter
+If you want auctex to work, you will also need these:
+    - pdf viewer (default is zathura)
+    - xdvi for dvi
+    - xdg-open
+    - latex/texlive (perferably with math/svg additions)
+    - dvisvgm (required for org latex previews)
+Compilation Options (non-nixos systems):
+      - Native compilation
+      - tree-sitter support
+      - use pgtk variant if on wayland
+
 * Nix Overlay
 #+begin_src nix :tangle ./default.nix
-  final: prev:
-  # function from emacs-overlay, make sure to import the overlay
-  builtins.mapAttrs (_: package:
-    prev.emacsWithPackagesFromUsePackage {
-      package = package.overrideAttrs (old: {
-        passthru = old.passthru // { treeSitter = true; };
-      });
+    final: prev:
+    # function from emacs-overlay, make sure to import the overlay
+    builtins.mapAttrs (_: package:
+      prev.emacsWithPackagesFromUsePackage {
+        package = package.overrideAttrs (old: {
+          passthru = old.passthru // { treeSitter = true; };
+        });
 
-      config = ./config.el;
-      defaultInitFile = false;
-      # make sure to include `(setq use-package-always-ensure t)` in config
-      alwaysEnsure = true;
-      # alwaysTangle = true;
+        config = ''
+          (setq use-package-always-ensure t)
+          ,${builtins.readFile ./config.el}
+        '';
+        defaultInitFile = false;
+        # make sure to include `(setq use-package-always-ensure t)` in config
+        alwaysEnsure = true;
+        # alwaysTangle = true;
 
-      extraEmacsPackages = epkgs: [
-        epkgs.treesit-grammars.with-all-grammars
+        extraEmacsPackages = epkgs: [
+          epkgs.treesit-grammars.with-all-grammars
 
-        (epkgs.trivialBuild {
-          pname = "qml-ts-mode";
-          version = "master";
-          src = prev.fetchFromGitHub {
-            owner = "xhcoding";
-            repo = "qml-ts-mode";
-            rev = "b80c6663521b4d0083e416e6712ebc02d37b7aec";
-            sha256 = "WXK/CdFF9E2kG+uIios4HtKcEMhILS9MddJfVDeRLh0=";
-          };
-        })
-      ];
-    })
-    {
-      emacs = prev.emacs;
-      emacs-macport = prev.emacs-macport;
-      emacs-pgtk = prev.emacs-pgtk;
-    }
+          (epkgs.trivialBuild {
+            pname = "qml-ts-mode";
+            version = "master";
+            src = prev.fetchFromGitHub {
+              owner = "xhcoding";
+              repo = "qml-ts-mode";
+              rev = "b80c6663521b4d0083e416e6712ebc02d37b7aec";
+              sha256 = "WXK/CdFF9E2kG+uIios4HtKcEMhILS9MddJfVDeRLh0=";
+            };
+          })
+        ];
+      })
+      {
+        emacs = prev.emacs;
+        emacs-macport = prev.emacs-macport;
+        emacs-pgtk = prev.emacs-pgtk;
+      }
       #+end_src
 
 -----
@@ -47,9 +75,33 @@
 #+begin_src emacs-lisp
 ;; -*- lexical-binding: t; -*-
 #+end_src
-** Pkg Config
-#+begin_src emacs-lisp
-  (setq use-package-always-ensure t)
+** Straight
+symlink this file to init.el if on non-nixos distro
+#+begin_src emacs-lisp :tangle ./straight.el
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  (setq package-enable-at-startup nil)
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
+
+  ;; load rest of config
+  ;; BOTH CONFIG & STRAIGHT MUST BE IN SAME DIR
+  (load-file "./config.el")
+
 #+end_src
 ** Variables
 #+begin_src emacs-lisp
@@ -534,14 +586,13 @@ Tree, sitting...
 begin nix only block
 #+begin_src emacs-lisp
   (if (executable-find "nix")
+      (progn
 #+end_src
 nix modes
 #+begin_src emacs-lisp
   (use-package nix-mode :mode "\\.nix\\'")
-    (use-package nix-ts-mode
-      :mode "\\.nix\\'")
-
-    (setq lsp-nix-nixd-formatting-command ["alejandra"])
+  (use-package nix-ts-mode :mode "\\.nix\\'")
+  (setq lsp-nix-nixd-formatting-command ["alejandra"])
 #+end_src
 qml-ts-mode only for systems with nixos (i am NOT having straight config this)
 ** qml
@@ -557,7 +608,7 @@ qml-ts-mode only for systems with nixos (i am NOT having straight config this)
  #+end_src
 end nix only block
 #+begin_src emacs-lisp
-)
+))
 #+end_src
 
 ** Rust
@@ -867,6 +918,7 @@ lsp-mode
 begin darwin only block
 #+begin_src emacs-lisp
   (when (eq system-type 'darwin)
+    (progn
 #+end_src
 ** Exec Path from Shell
 + Allows for MacOS to import PATH to shells
@@ -887,5 +939,5 @@ begin darwin only block
 #+END_src
 end darwin only block
 #+begin_src emacs-lisp
-  )
+  ))
 #+end_src
