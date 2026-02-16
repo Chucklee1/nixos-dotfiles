@@ -16,6 +16,12 @@
         }
         // (lib.mkIf pkgs.stdenv.isx86_64 {enable32Bit = true;});
 
+      # input
+      services.libinput.enable = true;
+      services.libinput.touchpad = {
+        naturalScrolling = true;
+      };
+
       # audio
       security.rtkit.enable = true;
       services.pipewire = {
