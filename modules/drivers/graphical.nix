@@ -42,7 +42,6 @@
         "inode/directory" = "thunar.desktop";
       };
 
-
       # bluetooth
       hardware.bluetooth.enable = true;
       services.blueman.enable = true;
