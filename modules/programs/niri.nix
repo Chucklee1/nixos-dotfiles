@@ -6,9 +6,28 @@
       programs.niri.package = pkgs.niri-unstable;
       programs.niri.enable = true;
     })
+    # addition on nix-level
+    ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        egl-wayland
+        qt5.qtwayland
+        qt6.qtwayland
+        wev
+        swaynotificationcenter
+        xwayland
+        xwayland-run
+        wl-clipboard
+      ];
+    })
   ];
 
   home = [
+    # addition on home-level
+    ({pkgs, ...}: {
+      programs.swaylock.enable = true;
+      programs.swaylock.package = pkgs.swaylock-effects;
+    })
+    # niri config
     ({
       lib,
       config,
@@ -16,11 +35,16 @@
       machine,
       ...
     }: {
-      programs.niri.settings = {
+      programs.niri.settings = with config.lib.niri.actions;
+      with config.lib.stylix.colors.withHashtag; let
+        # helpers
+        get = pkg: lib.getExe pkgs.${pkg};
+        sh = x: {action = spawn "sh" "-c" x;};
+      in {
         # general
         hotkey-overlay.skip-at-startup = machine != "umbra";
         prefer-no-csd = true;
-        screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+        screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y%m%d-%H%M%S.png";
         environment = {
           NIXOS_OZONE_WL = "1";
           MOZ_ENABLE_WAYLAND = "1";
@@ -31,9 +55,7 @@
           QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
           QT_AUTO_SCREEN_SCALE_FACTOR = "1";
         };
-        spawn-at-startup = let
-          get = pkg: lib.getExe pkgs.${pkg};
-        in
+        spawn-at-startup =
           map (cmd: {
             command = ["sh" "-c" cmd];
           })
@@ -41,6 +63,7 @@
             "${get "xwayland-satellite"}"
             "${get "wlsunset"} -T 5200"
             "${get "swaybg"} -m fill -i ${config.stylix.image}"
+            # safe to use systemd since it will not crash-out if waybar isnt installed
             "systemctl --user restart waybar"
           ];
         # input
@@ -90,27 +113,23 @@
             open-floating = true;
           }
         ];
-      };
-    })
-    # keybinds
-    ({
-      config,
-      pkgs,
-      machine,
-      ...
-    }:
-      with config.lib.niri.actions;
-      with config.lib.stylix.colors.withHashtag; {
-        programs.niri.settings.binds = let
-          # helpers
-          sh = x: {action = spawn "sh" "-c" x;};
+
+        # keybinds
+        binds = let
+          # mod def
+          mod =
+            if (machine == "umbra" || machine == "arm-vmware")
+            then "Alt"
+            else "Mod";
+
           wmenu = ''
-            wmenu-run -N \
-            "${base00}" \
+            ${pkgs.wmenu}/bin/wmenu-run \
+            -N "${base00}" \
             -n "${base07}" \
             -S "${base0D}" \
             -s "${base00}"
           '';
+
           toggleWaybar = ''
             if [ "$(systemctl is-active --user waybar)" == "active" ]; then
                 systemctl --user stop waybar
@@ -118,12 +137,6 @@
                 systemctl --user start waybar
             fi
           '';
-
-          # mod def
-          mod =
-            if (machine == "umbra" || machine == "arm-vmware")
-            then "Alt"
-            else "Mod";
         in {
           # programs
           "${mod}+Return" = sh "kitty";
@@ -182,6 +195,7 @@
           "${mod}+f".action = switch-focus-between-floating-and-tiling;
           "${mod}+Shift+f".action = toggle-window-floating;
         };
-      })
+      };
+    })
   ];
 }
