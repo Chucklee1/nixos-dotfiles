@@ -25,7 +25,7 @@ with mod; {
     system.pkgconfig
 
     shell.variables
-    shell.zsh
+    shell.fish
 
     theming.stylix
     theming.themes.nord
