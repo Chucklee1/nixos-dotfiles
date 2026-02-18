@@ -43,7 +43,7 @@ with mod; {
     drivers.ssh
 
     shell.variables
-    shell.zsh
+    shell.fish
     shell.nushell
 
     theming.blockgame
