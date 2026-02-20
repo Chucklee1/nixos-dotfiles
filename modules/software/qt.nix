@@ -17,7 +17,7 @@
           qtquicktimeline
         ];
     in {
-      enviornment.systemPackages = with pkgs; [
+      environment.systemPackages = with pkgs; [
         # qt
         qtEnv
         libglvnd
