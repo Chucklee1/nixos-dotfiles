@@ -3,10 +3,6 @@
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # emulation
-        # cemu
-        joycond
-        joycond-cemuhook
-        ryubing
         # wine
         zenity
         jq
@@ -14,7 +10,6 @@
         vkbasalt
         # games
         osu-lazer-bin
-        # openmw
       ];
       programs.gamemode = {
         enable = true;
