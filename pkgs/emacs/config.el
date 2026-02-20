@@ -323,8 +323,8 @@
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package markdown-mode :mode "\\.md\\'")
 (use-package ron-mode :mode "\\.ron\\'")
-;; binary dependant languages
-(if (executable-find "ghc") (use-package haskell))
+;; there has to be a better way
+(if (executable-find "ghc") (use-package haskell-mode))
 (if (executable-find "java") (use-package lsp-java))
 (if (executable-find "lua") (use-package lua-mode))
 (if (executable-find "nu") (use-package nushell-mode))
@@ -378,8 +378,6 @@
   (setq rustic-lsp-client 'lsp-mode)
   :custom
   (rustic-cargo-use-last-stored-arguments t)))
-
-;; other rust like things
 
 (use-package auctex)
 
