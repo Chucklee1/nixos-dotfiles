@@ -3,18 +3,36 @@
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs;
         [
-          # haker
-          just
-          gnumake
-          pkg-config
+          # build essentials
           gcc
+          gnumake
+          cmake
+          ninja
+          meson
+          autoconf
+          pkg-config
+          # misc
+          just
           lua
           python3
           # lsps
+          asm-lsp # GAS/GO assembly
+          clang-tools # c/c++
+          cmake-language-server
           bash-language-server
+          lemminx # xml
           lua-language-server
           marksman
           nixd
+          typescript-language-server
+          vscode-langservers-extracted
+          # diagnostics
+          statix
+          # formatters
+          alejandra
+          html-tidy
+          nodePackages.prettier
+          shfmt
           # info helpers
           ripgrep
           fzf
@@ -36,6 +54,7 @@
           p7zip
           rclone
           trash-cli
+          libarchive
           unzip
           unrar
           zip
@@ -51,35 +70,7 @@
           gdb
         ] []);
     })
-    ({
-      machine,
-      pkgs,
-      ...
-    }:
-      if machine == "umbra"
-      then {}
-      else {
-        environment.systemPackages = with pkgs; [
-          # lsps
-          asm-lsp # GAS/GO assembly
-          clang-tools
-          jdt-language-server # java
-          lemminx # xml
-          qt6Packages.qtlanguageserver
-          typescript-language-server
-          vscode-langservers-extracted
-          # diagnostics
-          statix
-          # formatters
-          alejandra
-          html-tidy
-          nodePackages.prettier
-          shfmt
-        ];
-      })
-    (
-      extlib.darwinOrLinux {} {programs.nix-ld.enable = true;}
-    )
+    (extlib.darwinOrLinux {} {programs.nix-ld.enable = true;})
   ];
   home = [
     {
