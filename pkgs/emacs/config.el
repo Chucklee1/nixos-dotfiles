@@ -50,6 +50,7 @@
   ;; selection
   (use-short-answers t)       ;; Use y/n instead of yes/no
   (delete-selection-mode t)   ;; Select text and delete it by typing.
+  (vc-follow-symlinks nil)    ;; follow git-symlink without prompt
 
   ;; behavior
   (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
@@ -337,6 +338,8 @@
 
 ))
 
+(if (executable-find "qtpaths") (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'")))
+
 (if (executable-find "cargo") (use-package rust-mode
   :init
   (setq rust-mode-treesitter-derive t))
@@ -390,7 +393,7 @@
          :message "Creating SVG image from LaTeX fragment..."
          :image-input-type "dvi"
          :image-output-type "svg"
-         :image-size-adjust (2.5 . 2.5)
+         :image-size-adjust (1.2 . 1.2)
          :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
          :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 

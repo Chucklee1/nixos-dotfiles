@@ -160,6 +160,7 @@ symlink this file to init.el if on non-nixos distro
     ;; selection
     (use-short-answers t)       ;; Use y/n instead of yes/no
     (delete-selection-mode t)   ;; Select text and delete it by typing.
+    (vc-follow-symlinks nil)    ;; follow git-symlink without prompt
 
     ;; behavior
     (electric-indent-mode nil)  ;; Turn off the weird indenting that Emacs does by default.
@@ -507,7 +508,9 @@ nix modes
   (setq lsp-nix-nixd-formatting-command ["alejandra"])
 #+end_src
 qml-ts-mode only for systems with nixos (i am NOT having straight config this)
-** qml
+** qt
+*** qml
+TOOD: get straight version as well
 #+begin_src emacs-lisp
   ;; provided by nix
   (require 'qml-ts-mode)
@@ -521,6 +524,11 @@ qml-ts-mode only for systems with nixos (i am NOT having straight config this)
 end nix only block
 #+begin_src emacs-lisp
 ))
+#+end_src
+*** qt-pro-mode
+for qtcreator projects
+#+begin_src emacs-lisp
+  (if (executable-find "qtpaths") (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'")))
 #+end_src
 
 ** Rust
@@ -598,7 +606,7 @@ end nix only block
            :message "Creating SVG image from LaTeX fragment..."
            :image-input-type "dvi"
            :image-output-type "svg"
-           :image-size-adjust (2.5 . 2.5)
+           :image-size-adjust (1.2 . 1.2)
            :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
            :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 #+end_src
