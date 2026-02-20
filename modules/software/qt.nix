@@ -21,6 +21,7 @@
         # qt
         qtEnv
         libglvnd
+        qtcreator
         # clang works better with qt
         clang
         lldb
