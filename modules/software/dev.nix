@@ -20,13 +20,13 @@
           fzf
           fd
           pciutils
-          zoxide
           # shells
           bash
           nushell
+          powershell
           # media
-          exiftool
           mediainfo
+          ffmpegthumbnailer
           poppler
           ueberzugpp
           imagemagick
@@ -42,15 +42,14 @@
           # misc
           age
           calc
-          curl
-          # nix helpers
+          wget
           nurl
         ]
         ++ (extlib.armOrNot [
-                              rar
-                              # broken on aarch64
-                              gdb
-                            ] []);
+          rar
+          # broken on aarch64
+          gdb
+        ] []);
     })
     ({
       machine,
@@ -66,7 +65,7 @@
           clang-tools
           jdt-language-server # java
           lemminx # xml
-          kdePackages.qtdeclarative
+          qt6Packages.qtlanguageserver
           typescript-language-server
           vscode-langservers-extracted
           # diagnostics
