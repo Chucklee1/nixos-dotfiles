@@ -12,26 +12,26 @@ with mod; {
     net.syncthing
     net.tailscale
 
-    programs.zen-browser
+    programs.discord
     programs.emacs
+    programs.flatpak
     programs.git
     programs.kitty
-    programs.yazi
-    programs.rmpc
     programs.niri
-    programs.waybar
-    programs.prismLauncher
-    programs.flatpak
     programs.obs
-    programs.discord
+    programs.prismLauncher
+    programs.rmpc
+    programs.waybar
+    programs.yazi
+    programs.zen-browser
 
-    software.apps
     software.dev
-    software.texlive
-    software.java
-    software.rust
-    software.gaming
     software.qol
+    software.java
+    software.qt
+    software.rust
+    software.texlive
+    software.gaming
 
     system.boot
     system.home
@@ -42,9 +42,9 @@ with mod; {
     drivers.graphical
     drivers.ssh
 
-    shell.variables
     shell.fish
     shell.nushell
+    shell.variables
 
     theming.blockgame
     theming.stylix
