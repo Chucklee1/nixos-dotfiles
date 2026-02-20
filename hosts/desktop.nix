@@ -14,7 +14,6 @@ with mod; {
 
     programs.zen-browser
     programs.emacs
-    programs.nixvim
     programs.git
     programs.kitty
     programs.yazi
@@ -24,6 +23,7 @@ with mod; {
     programs.prismLauncher
     programs.flatpak
     programs.obs
+    programs.discord
 
     software.apps
     software.dev
