@@ -14,6 +14,7 @@
             }}";
           }
           "us.zoom.Zoom"
+          "io.qt.QtCreator"
         ];
         overrides = {
           global = {
@@ -38,6 +39,7 @@
       environment.systemPackages = [
         (pkgs.writeShellScriptBin "hytale" "flatpak run com.hypixel.HytaleLauncher")
         (pkgs.writeShellScriptBin "zoom" "flatpak run us.zoom.Zoom")
+        (pkgs.writeShellScriptBin "qtcreator" "flatpak run io.qt.qtCreator")
       ];
     })
   ];
