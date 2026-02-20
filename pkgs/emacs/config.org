@@ -119,7 +119,7 @@ symlink this file to init.el if on non-nixos distro
     (interactive)
     (define-key leader (kbd group-key) group-name)
     (dolist (pair keypairs)
-      ;; pair format => ("key" . cmd)
+      ;; pair format = ("key" . cmd)
       (define-key group-name (kbd (car pair)) (cdr pair))))
 
   (defun helper/buffer/toggle (cmd)
@@ -263,7 +263,7 @@ symlink this file to init.el if on non-nixos distro
               '(("a" . org-agenda-list)
                 ("t" . org-babel-tangle)
                 ("l" . org-latex-preview)
-                ("i" . org-toggle-inline-images))
+                ("i" . org-toggle-inline-images)))
           #+end_src
 ** globl - toggle
 #+begin_src emacs-lisp
@@ -748,12 +748,13 @@ end nix only block
 #+end_src
 ** Orderless
 #+begin_src emacs-lisp
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil) ;; Disable defaults, use our settings
-  (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
+  (use-package orderless
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles partial-completion))))
+    (completion-category-defaults nil) ;; Disable defaults, use our settings
+    (completion-pcm-leading-wildcard t) ;; Emacs 31: partial-completion behaves like substring
+    )
 #+end_src
 ** Yasnippet
 #+begin_src emacs-lisp
@@ -792,7 +793,6 @@ end nix only block
     ("C-h v" . helpful-variable)
     ("C-h k" . helpful-key)
     ("C-h x" . helpful-command))
-
 #+end_src
 *** Which-key
 #+begin_src emacs-lisp

@@ -12,7 +12,7 @@
   (interactive)
   (define-key leader (kbd group-key) group-name)
   (dolist (pair keypairs)
-    ;; pair format => ("key" . cmd)
+    ;; pair format = ("key" . cmd)
     (define-key group-name (kbd (car pair)) (cdr pair))))
 
 (defun helper/buffer/toggle (cmd)
@@ -139,7 +139,7 @@
             '(("a" . org-agenda-list)
               ("t" . org-babel-tangle)
               ("l" . org-latex-preview)
-              ("i" . org-toggle-inline-images))
+              ("i" . org-toggle-inline-images)))
 
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/toggle "t"
@@ -242,9 +242,6 @@
 
 (use-package nerd-icons
   :if (display-graphic-p))
-
-(use-package nerd-icons-dired
-  :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
@@ -514,7 +511,8 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles partial-completion))))
   (completion-category-defaults nil) ;; Disable defaults, use our settings
-  (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
+  (completion-pcm-leading-wildcard t) ;; Emacs 31: partial-completion behaves like substring
+  )
 
 (use-package yasnippet
   :config
