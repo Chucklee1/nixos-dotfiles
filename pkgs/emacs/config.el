@@ -113,20 +113,14 @@
 (with-eval-after-load 'evil
   (evil-set-initial-state 'outline-mode 'normal))
 
+(dolist (pair '(("C-r"        . (lambda () (interactive) (load-file g/path/elispcfg)))
+                ("C-<return>" . helper/open-split-term)
+                ("C-b"        . ibuffer)))
+              (define-key ctl-x-map (kbd (car pair)) (cdr pair)))
+
 (defvar lmap-globl (make-sparse-keymap))
 (evil-define-key '(normal motion) 'evil-normal-state-map
   (kbd "SPC") lmap-globl)
-
-(dolist (pair
-         '(("RET" . helper/open-split-term)
-           ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
-           ("i"   . imenu)))
-         (define-key lmap-globl (kbd (car pair)) (cdr pair)))
-
-(defvar lmap-globl/buffer (make-sparse-keymap))
-(mkkeygroup lmap-globl lmap-globl/buffer "b"
-            '(("i" . ibuffer)
-              ("r" . revert-buffer)))
 
 (defvar lmap-globl/lsp (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/lsp "l"

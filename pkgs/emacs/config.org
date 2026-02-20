@@ -227,26 +227,20 @@ symlink this file to init.el if on non-nixos distro
     (evil-set-initial-state 'outline-mode 'normal))
 #+end_src
 ** Keybinds
+*** C-x
+note C-b originally bound to buffer-list (because ibuffer is better)
+TODO: keybinds for unintuitive quick
+#+begin_src emacs-lisp
+  (dolist (pair '(("C-r"        . (lambda () (interactive) (load-file g/path/elispcfg)))
+                  ("C-<return>" . helper/open-split-term)
+                  ("C-b"        . ibuffer)))
+                (define-key ctl-x-map (kbd (car pair)) (cdr pair)))
+#+end_src
 *** Globl Leader Definition
 #+begin_src emacs-lisp
   (defvar lmap-globl (make-sparse-keymap))
   (evil-define-key '(normal motion) 'evil-normal-state-map
     (kbd "SPC") lmap-globl)
-#+end_src
-*** Globl - Leader Root
-#+begin_src emacs-lisp
-  (dolist (pair
-           '(("RET" . helper/open-split-term)
-             ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
-             ("i"   . imenu)))
-           (define-key lmap-globl (kbd (car pair)) (cdr pair)))
-#+end_src
-*** globl - buffer
-#+begin_src emacs-lisp
-  (defvar lmap-globl/buffer (make-sparse-keymap))
-  (mkkeygroup lmap-globl lmap-globl/buffer "b"
-              '(("i" . ibuffer)
-                ("r" . revert-buffer)))
 #+end_src
 ** globl - lsp
 #+begin_src emacs-lisp
