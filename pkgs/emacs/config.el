@@ -155,11 +155,12 @@
   (dired-omit-files "^\\..*$") ;; hide . & .. folders
   :config
   (setq
-   dired-listing-switches "-Ahl --group-directories-first"
+   dired-listing-switches "-Aloh --group-directories-first"
    delete-by-moving-to-trash t
    ;; Dired don't create new buffer
    dired-kill-when-opening-new-dired-buffer t)
-  (when (string= system-type "darwin") ;; macos ls is poop, we need better ls
+  ;; macos ls is poop, we need better ls
+  (when (eq system-type 'darwin)
     (let ((gls (executable-find "gls")))
       (when gls
         (setq dired-use-ls-dired t
@@ -170,30 +171,6 @@
 
 (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 
-(use-package treemacs
-  :commands (treemacs)
-  :config
-  (treemacs-indent-guide-mode t)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t))
-
-(when (featurep 'evil)
-  (use-package treemacs-evil
-    :after (treemacs evil)))
-
-(when (featurep 'magit)
-(use-package treemacs-magit
-  :after (treemacs magit)))
-
-(when (featurep 'lsp-mode)
-(use-package lsp-treemacs
-  :after (treemacs)))
-
-(use-package treemacs-nerd-icons
-  :after (treemacs lsp-treemacs)
-  :hook
-  (treemacs-mode . (lambda () (treemacs-load-theme "nerd-icons"))))
-
 (use-package vterm)
 
 (use-package doom-themes
@@ -201,7 +178,6 @@
   ;; Global settings (defaults)
   (doom-themes-enable-bold t)   ;; if nil, bold is universally disabled
   (doom-themes-enable-italic t) ;; if nil, italics is universally disabled
-  (doom-themes-treemacs-enable-variable-pitch nil)
   :config
   (load-theme 'doom-nord t)
 
@@ -242,6 +218,9 @@
 
 (use-package nerd-icons
   :if (display-graphic-p))
+
+(use-package nerd-icons-dired
+  :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
