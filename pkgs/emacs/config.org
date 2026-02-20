@@ -122,17 +122,6 @@ symlink this file to init.el if on non-nixos distro
       ;; pair format => ("key" . cmd)
       (define-key group-name (kbd (car pair)) (cdr pair))))
 
-  ;; buffers ;;
-  (defun helper/buffer/kill ()
-    (interactive)
-    (let ((buf (current-buffer)))
-      (kill-current-buffer)))
-
-  (defun helper/buffer/force-kill ()
-    (interactive)
-    (let ((buf (current-buffer)))
-      (kill-buffer buf)))
-
   (defun helper/buffer/toggle (cmd)
     (interactive)
     (let* ((buf-name (concat "*" cmd "*"))
@@ -143,20 +132,6 @@ symlink this file to init.el if on non-nixos distro
               (delete-window win))
             (kill-buffer buf))
         (call-interactively (intern cmd)))))
-
-  ;; windows ;;
-  (defun helper/window/close ()
-    (interactive)
-    (let ((win (get-buffer-window (current-buffer))))
-      (when (and win (window-live-p win) (not (one-window-p win)))
-        (delete-window win))))
-
-  (defun helper/window/force-close ()
-    (interactive)
-    (let ((win (get-buffer-window (current-buffer))))
-      (when (window-live-p win)
-        (if (one-window-p) (delete-frame)
-          (delete-window win)))))
 
   (defun helper/open-split-term ()
     (interactive)
@@ -261,30 +236,17 @@ symlink this file to init.el if on non-nixos distro
 *** Globl - Leader Root
 #+begin_src emacs-lisp
   (dolist (pair
-           '(("TAB" . comment-line)
-             ("RET" . helper/open-split-term)
+           '(("RET" . helper/open-split-term)
              ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
-             ("i"   . imenu)
-             ("e"   . dired-jump)))
+             ("i"   . imenu)))
            (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 #+end_src
 *** globl - buffer
 #+begin_src emacs-lisp
   (defvar lmap-globl/buffer (make-sparse-keymap))
   (mkkeygroup lmap-globl lmap-globl/buffer "b"
-              '(("n" . next-buffer)
-                ("p" . previous-buffer)
-                ("i" . ibuffer)
-                ("r" . revert-buffer)
-                ("d" . helper/buffer/kill)
-                ("D" . helper/buffer/force-kill)))
-#+end_src
-** Globl - window
-#+begin_src emacs-lisp
-  (defvar lmap-globl/window (make-sparse-keymap))
-  (mkkeygroup lmap-globl lmap-globl/window "w"
-              '(("c" . helper/window/close)
-                ("C" . helper/window/force-close)))
+              '(("i" . ibuffer)
+                ("r" . revert-buffer)))
 #+end_src
 ** globl - lsp
 #+begin_src emacs-lisp
@@ -294,18 +256,6 @@ symlink this file to init.el if on non-nixos distro
                   ("r" . lsp-rename)
                   ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
 #+end_src
-** globl - git
-+ For magit-status, I would use spc+gs,
-  but I am more used to neovim's lazygit setup, where I used spc+gg
-+ Maybe I will change it later
-#+begin_src emacs-lisp
-  (defvar lmap-globl/git (make-sparse-keymap))
-  (mkkeygroup lmap-globl lmap-globl/git "g"
-              '(("g" . magit-status)
-                ("l" . magit-log-current)
-                ("P" . magit-pull)
-                ("p" . magit-push)))
-#+end_src
 ** globl - org
 #+begin_src emacs-lisp
   (defvar lmap-globl/org (make-sparse-keymap))
@@ -313,10 +263,7 @@ symlink this file to init.el if on non-nixos distro
               '(("a" . org-agenda-list)
                 ("t" . org-babel-tangle)
                 ("l" . org-latex-preview)
-                ("i" . org-toggle-inline-images)
-                ("t" . org-todo)
-                ("s" . org-schedule)
-                ("d" . org-deadline)))
+                ("i" . org-toggle-inline-images))
           #+end_src
 ** globl - toggle
 #+begin_src emacs-lisp
@@ -325,8 +272,6 @@ symlink this file to init.el if on non-nixos distro
               '(("b" . global-tab-line-mode)
                 ("n" . display-line-numbers-mode)
                 ("N" . global-display-line-numbers-mode)
-                ("t" . treemacs)
-                ("f" . treemacs-tag-follow-mode)
                 ("w" . visual-wrap-prefix-mode)
                 ("W" . global-visual-wrap-prefix-mode)))
 #+end_src

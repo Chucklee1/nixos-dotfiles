@@ -15,17 +15,6 @@
     ;; pair format => ("key" . cmd)
     (define-key group-name (kbd (car pair)) (cdr pair))))
 
-;; buffers ;;
-(defun helper/buffer/kill ()
-  (interactive)
-  (let ((buf (current-buffer)))
-    (kill-current-buffer)))
-
-(defun helper/buffer/force-kill ()
-  (interactive)
-  (let ((buf (current-buffer)))
-    (kill-buffer buf)))
-
 (defun helper/buffer/toggle (cmd)
   (interactive)
   (let* ((buf-name (concat "*" cmd "*"))
@@ -36,20 +25,6 @@
             (delete-window win))
           (kill-buffer buf))
       (call-interactively (intern cmd)))))
-
-;; windows ;;
-(defun helper/window/close ()
-  (interactive)
-  (let ((win (get-buffer-window (current-buffer))))
-    (when (and win (window-live-p win) (not (one-window-p win)))
-      (delete-window win))))
-
-(defun helper/window/force-close ()
-  (interactive)
-  (let ((win (get-buffer-window (current-buffer))))
-    (when (window-live-p win)
-      (if (one-window-p) (delete-frame)
-        (delete-window win)))))
 
 (defun helper/open-split-term ()
   (interactive)
@@ -143,26 +118,15 @@
   (kbd "SPC") lmap-globl)
 
 (dolist (pair
-         '(("TAB" . comment-line)
-           ("RET" . helper/open-split-term)
+         '(("RET" . helper/open-split-term)
            ("R"   . (lambda () (interactive) (load-file g/path/elispcfg)))
-           ("i"   . imenu)
-           ("e"   . dired-jump)))
+           ("i"   . imenu)))
          (define-key lmap-globl (kbd (car pair)) (cdr pair)))
 
 (defvar lmap-globl/buffer (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/buffer "b"
-            '(("n" . next-buffer)
-              ("p" . previous-buffer)
-              ("i" . ibuffer)
-              ("r" . revert-buffer)
-              ("d" . helper/buffer/kill)
-              ("D" . helper/buffer/force-kill)))
-
-(defvar lmap-globl/window (make-sparse-keymap))
-(mkkeygroup lmap-globl lmap-globl/window "w"
-            '(("c" . helper/window/close)
-              ("C" . helper/window/force-close)))
+            '(("i" . ibuffer)
+              ("r" . revert-buffer)))
 
 (defvar lmap-globl/lsp (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/lsp "l"
@@ -170,30 +134,18 @@
               ("r" . lsp-rename)
               ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
 
-(defvar lmap-globl/git (make-sparse-keymap))
-(mkkeygroup lmap-globl lmap-globl/git "g"
-            '(("g" . magit-status)
-              ("l" . magit-log-current)
-              ("P" . magit-pull)
-              ("p" . magit-push)))
-
 (defvar lmap-globl/org (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/org "o"
             '(("a" . org-agenda-list)
               ("t" . org-babel-tangle)
               ("l" . org-latex-preview)
-              ("i" . org-toggle-inline-images)
-              ("t" . org-todo)
-              ("s" . org-schedule)
-              ("d" . org-deadline)))
+              ("i" . org-toggle-inline-images))
 
 (defvar lmap-globl/toggle (make-sparse-keymap))
 (mkkeygroup lmap-globl lmap-globl/toggle "t"
             '(("b" . global-tab-line-mode)
               ("n" . display-line-numbers-mode)
               ("N" . global-display-line-numbers-mode)
-              ("t" . treemacs)
-              ("f" . treemacs-tag-follow-mode)
               ("w" . visual-wrap-prefix-mode)
               ("W" . global-visual-wrap-prefix-mode)))
 
