@@ -80,16 +80,7 @@
         import ./flake/devshells.nix {inherit inputs pkgs;}
     );
 
-    apps = extlib.allSystems (system: {
-      umbra = {
-        type = "app";
-        program = "${self.nixosConfigurations."umbra".config.system.build.vm}/bin/run-nixos-vm";
-      };
-    });
-
     packages = extlib.allSystems (system: {
-      # custom installer iso
-      installer = self.nixosConfigurations."umbra".config.system.build.isoImage;
       nixvim = nixvim.package system;
     });
 
