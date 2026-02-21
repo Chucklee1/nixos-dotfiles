@@ -168,6 +168,9 @@
 
 (use-package vterm)
 
+(use-package pdf-tools
+  :init (pdf-loader-install))
+
 (use-package doom-themes
   :custom
   ;; Global settings (defaults)
@@ -353,11 +356,6 @@
   (rustic-cargo-use-last-stored-arguments t)))
 
 (use-package auctex)
-
-(setq TeX-view-program-selection
-      '((output-pdf "Zathura")
-        (output-dvi "xdvi")
-        (output-html "xdg-open")))
 
 (use-package org
   :custom

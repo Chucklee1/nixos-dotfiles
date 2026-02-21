@@ -307,6 +307,11 @@ TODO: keybinds for unintuitive quick
 #+begin_src emacs-lisp
   (use-package vterm)
 #+end_src
+** pdf-tools
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :init (pdf-loader-install))
+#+end_src
 
 -----
 
@@ -550,11 +555,6 @@ for qtcreator projects
 + Requires distribution of texlive
 #+begin_src emacs-lisp
   (use-package auctex)
-
-  (setq TeX-view-program-selection
-        '((output-pdf "Zathura")
-          (output-dvi "xdvi")
-          (output-html "xdg-open")))
 #+end_src
 
 -----
