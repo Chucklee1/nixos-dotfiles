@@ -8,13 +8,13 @@
         content.partitions.ESP = {
           priority = 1;
           name = "ESP";
-          end = "1G";
+          end = "512M";
           type = "EF00";
           content = {
             type = "filesystem";
             format = "vfat";
-            mountpoint = "/boot";
-            mountOptions = ["umask=0077"];
+            mountpoint = "/boot/efi";
+            mountOptions = ["fmask=0022" "dmask=0022"];
           };
         };
         content.partitions.root = {
@@ -26,6 +26,10 @@
               "/nixos/root" = {
                 mountpoint = "/";
                 mountOptions = ["compress=zstd" "relatime"];
+              };
+              "/nixos/boot" = {
+                mountpoint = "/boot";
+                mountOptions = ["noatime"];
               };
               "/nixos/nix" = {
                 mountpoint = "/nix";
