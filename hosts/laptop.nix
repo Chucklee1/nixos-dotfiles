@@ -41,17 +41,59 @@ with mod; {
 
   extraConfig = [
     inputs.disko.nixosModules.default
-    (import "${self}/assets/disk/emphereal.nix" {device = "/dev/nvme0n1";})
-    {
-      boot.loader.efi.efiSysMountPoint = "/boot/efi";
+    (import ../assets/disko/emphereal.nix {device = "/dev/nvme0n1";})
+    ({lib, user, ...}: {
+      boot.initrd = {
+        enable = true;
+        supportedFilesystems = ["nfs" "btrfs"];
+
+        postResumeCommands = lib.mkAfter ''
+          mkdir -p /mnt
+          mount -o subvol=nixos/root /dev/nvme0n1p2 /mnt
+
+          btrfs subvolume list -o /mnt/nixos/root |
+          cut -f9 -d' ' |
+          while read subvolume; do
+              echo "deleting nixos/root$subvolume subvolume..."
+              btrfs subvolume delete "/mnt/nixos/root/$subvolume"
+          done &&
+          echo "deleting nixos/root subvolume..." &&
+          btrfs subvolume delete /mnt/nixos/root
+
+          echo "restoring blank nix/root subvolume..."
+          btrfs subvolume snapshot /mnt/nixos/root_blank /mnt/nixos/root
+
+          umount /mnt
+        '';
+      };
+
       fileSystems."/persist".neededForBoot = true;
 
+      boot.loader.efi.efiSysMountPoint = "/boot/efi";
       boot.loader.grub.useOSProber = true;
+
       boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm-intel"];
-      boot.supportedFilesystems = ["ntfs" "btrfs"];
+
       hardware.cpu.intel.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
-    }
+
+      users.mutableUsers = false;
+      users.users.${user}.passwordFile = "/persist/passwords/goat";
+
+      # just to make sure
+      services.openssh = {
+        passwordAuthentication = false;
+        challengeResponseAuthentication = false;
+        extraConfig = lib.mkForce ''
+          AllowTcpForwarding yes
+          X11Forwarding no
+          AllowAgentForwarding no
+          AllowStreamLocalForwarding no
+          AuthenticationMethods publickey
+        '';
+      };
+
+    })
   ];
 }

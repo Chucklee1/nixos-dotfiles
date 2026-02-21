@@ -21,19 +21,19 @@
         type = "btrfs";
         extraArgs = ["-f"];
         subvolumes = {
-          "/nixos@root" = {
+          "nixos/root" = {
             mountpoint = "/";
-            mountOptions = ["compress=zstd" "relatime"];
+            mountOptions = ["compress=zstd" "noatime"];
           };
-          "/nixos@boot" = {
+          "nixos/boot" = {
             mountpoint = "/boot";
             mountOptions = ["noatime"];
           };
-          "/nixos@nix" = {
+          "nixos/nix" = {
             mountpoint = "/nix";
             mountOptions = ["compress=zstd" "noatime"];
           };
-          "/nixos@persist" = {
+          "nixos/persist" = {
             mountpoint = "/persist";
             mountOptions = ["compress=zstd" "noatime"];
           };
