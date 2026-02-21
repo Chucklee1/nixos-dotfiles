@@ -29,8 +29,6 @@ with mod; {
     system.users
     system.pkgconfig
     system.sys-specs
-    disko.disko
-    disko.ext4
 
     drivers.graphical
     drivers.ssh
@@ -43,6 +41,8 @@ with mod; {
     theming.themes.nord
   ];
   extraConfig = [
+    inputs.disko.nixosModules.default
+    (import "${self}/assets/disk/ext4.nix" {device = "/dev/nvme0n1";})
     ({user, ...}: {
       boot.initrd.availableKernelModules = ["ehci_pci" "ahci" "xhci_pci" "nvme" "usbhid" "sr_mod"];
       # boot.initrd.kernelModules = [ ];

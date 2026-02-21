@@ -28,8 +28,6 @@ with mod; {
     system.users
     system.pkgconfig
     system.sys-specs
-    disko.disko
-    disko.btrfs
 
     drivers.graphical
     drivers.ssh
@@ -42,15 +40,18 @@ with mod; {
   ];
 
   extraConfig = [
+    inputs.disko.nixosModules.default
+    (import "${self}/assets/disk/emphereal.nix" {device = "/dev/nvme0n1";})
     {
+      boot.loader.efi.efiSysMountPoint = "/boot/efi";
+      fileSystems."/persist".neededForBoot = true;
+
+      boot.loader.grub.useOSProber = true;
       boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm-intel"];
-      boot.supportedFilesystems = ["ntfs"];
+      boot.supportedFilesystems = ["ntfs" "btrfs"];
       hardware.cpu.intel.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
-
-      # disko config option
-      opts.disko.device = "/dev/nvme0n1";
     }
   ];
 }

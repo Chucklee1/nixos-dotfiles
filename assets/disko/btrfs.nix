@@ -1,9 +1,7 @@
-{
-  nix = [
-    ({config, ...}: {
+{device ? throw "DEV NOT FOUND (try /dev/sda format)", ...}: {
       disko.devices.disk.main = {
         type = "disk";
-        device = config.disko.device;
+        device = device;
         content.type = "gpt";
         content.partitions.ESP = {
           priority = 1;
@@ -39,6 +37,4 @@
           };
         };
       };
-    })
-  ];
-}
+    }
