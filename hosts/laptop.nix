@@ -15,14 +15,13 @@ with mod; {
     programs.emacs
     programs.git
     programs.kitty
-    programs.yazi
     programs.niri
     programs.waybar
 
-    software.apps
     software.dev
-    software.texlive
     software.qol
+    software.texlive
+    software.qt
 
     system.boot
     system.home
@@ -30,15 +29,14 @@ with mod; {
     system.pkgconfig
     system.sys-specs
     disko.disko
-    disko.ext4
+    disko.btrfs
 
     drivers.graphical
     drivers.ssh
 
     shell.variables
-    shell.zsh
+    shell.fish
 
-    theming.blockgame
     theming.stylix
     theming.themes.nord
   ];
