@@ -41,21 +41,28 @@ with mod; {
 
   extraConfig = [
     inputs.disko.nixosModules.default
+    inputs.impermanence.nixosModules.impermanence
     (import ../assets/disko/emphereal.nix {device = "/dev/nvme0n1";})
-    ({lib, user, ...}: {
+    ({
+      lib,
+      config,
+      user,
+      pkgs,
+      ...
+    }: {
       boot.initrd = {
         enable = true;
         supportedFilesystems = ["nfs" "btrfs"];
 
         postResumeCommands = lib.mkAfter ''
           mkdir -p /mnt
-          mount -o subvol=nixos/root /dev/nvme0n1p2 /mnt
+          mount -o subvolid=5 /dev/nvme0n1p2 /mnt
 
           btrfs subvolume list -o /mnt/nixos/root |
           cut -f9 -d' ' |
           while read subvolume; do
-              echo "deleting nixos/root$subvolume subvolume..."
-              btrfs subvolume delete "/mnt/nixos/root/$subvolume"
+              echo "deleting $subvolume subvolume..."
+              btrfs subvolume delete "/mnt/$subvolume"
           done &&
           echo "deleting nixos/root subvolume..." &&
           btrfs subvolume delete /mnt/nixos/root
@@ -83,8 +90,7 @@ with mod; {
 
       # just to make sure
       services.openssh = {
-        passwordAuthentication = false;
-        challengeResponseAuthentication = false;
+        settings.challengeResponseAuthentication = false;
         extraConfig = lib.mkForce ''
           AllowTcpForwarding yes
           X11Forwarding no
@@ -93,7 +99,59 @@ with mod; {
           AuthenticationMethods publickey
         '';
       };
+      environment.persistence."/persist" = {
+        hideMounts = true;
+        directories = [
+          "/var/log"
+          "/var/lib/bluetooth"
+          "/var/lib/nixos"
+          "/var/lib/systemd/coredump"
+          "/var/lib/tailscale"
+          "/etc/NetworkManager/system-connections"
+        ];
+        files = [
+          "/etc/machine-id"
+        ];
+        users.${user} = {
+          directories = [
+            "Downloads"
+            "Music"
+            "Pictures"
+            "Documents"
+            "Videos"
+            "Repos"
+            {
+              directory = ".ssh";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/keyrings";
+              mode = "0700";
+            }
+            ".local/share/direnv"
+            ".local/share/zoxide"
+            ".cache/zen"
+            ".zen"
+          ];
+        };
+      };
+      systemd.user.services.login-hook = let
+          USER_HOME = config.users.users.${user}.home;
+          loginhook = pkgs.writeShellScriptBin "login-hookd.sh" ''
+            mkdir "${USER_HOME}/.emacs.d" &&
+            ln -s ${USER_HOME}/nixos-dotfiles ${USER_HOME} &&
+            ln -s "${USER_HOME}/nixos-dotfiles/pkgs/emacs/config.el" "${USER_HOME}/.emacs.d/init.el"
+      '';
 
+      in {
+  enable = true;
+  description = "setup symlinks from persistant mounts";
+  wantedBy = [ "default.target" ];
+  serviceConfig = {
+      Type = "simple";
+      ExecStart = "${loginhook}/bin/login-hook.sh";
+  };
+};
     })
   ];
 }

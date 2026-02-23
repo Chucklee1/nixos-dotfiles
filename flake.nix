@@ -14,6 +14,7 @@
     # ---- disk formatting ----
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+    impermanence.url = "github:nix-community/impermanence";
 
     # ---- macos - base ----
     nix-darwin.url = "github:LnL7/nix-darwin/master";
