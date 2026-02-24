@@ -53,44 +53,52 @@ with mod; {
   ];
 
   extraConfig = let
-    DEV = {
-      WD = "/dev/disk/by-uuid/ff111615-41d4-4836-8adc-c9374e08bee9";
-      EFI = "/dev/disk/by-uuid/5F4E-A7BB"; # on same device as WD
-      EVO = "/dev/disk/by-uuid/5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
-    };
+    WD = "ff111615-41d4-4836-8adc-c9374e08bee9";
+    EFI = "5F4E-A7BB"; # on same device as WD
+    EVO = "5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
     # passing fsType first to allow for specifying mkfs.fsType when calling
     # if there are no options, pass an empty list
-    mkfs' = fsType: path: device: options: {
+    mkfs' = fsType: path: uuid: options: {
       fileSystems."${path}" = {
-        inherit device fsType options;
+        device = "/dev/disk/by-uuid/${uuid}";
+        inherit fsType options;
       };
     };
 
     mkfs = {
-      btrfs = path: device: options: mkfs' "btrfs" path device options;
-      ext4 = path: device: options: mkfs' "ext4" path device options;
-      vfat = path: device: options: mkfs' "vfat" path device options;
-      nfs = path: device: mkfs' "nfs" path device [];
+      btrfs = path: uuid: options: mkfs' "btrfs" path uuid options;
+      ext4 = path: uuid: options: mkfs' "ext4" path uuid options;
+      vfat = path: uuid: options: mkfs' "vfat" path uuid options;
+      nfs = path: uuid: mkfs' "nfs" path device [];
     };
   in [
-    (mkfs.vfat "/boot/EFI" DEV.EFI ["fmask=0022" "dmask=0022"])
-    (mkfs.btrfs "/boot" DEV.WD ["subvol=WD/nixos/boot" "noatime"])
-    (mkfs.btrfs "/nix" DEV.WD ["subvol=WD/nix" "noatime" "compress=zstd"])
+    (mkfs.vfat "/boot/EFI" EFI ["fmask=0022" "dmask=0022"])
+    (mkfs.btrfs "/boot" WD ["subvol=WD/nixos/boot" "noatime"])
+    (mkfs.btrfs "/nix" WD ["subvol=WD/nix" "noatime" "compress=zstd"])
 
-    (mkfs.btrfs "/" DEV.WD ["subvol=WD/nixos" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/" WD ["subvol=WD/nixos" "relatime" "compress=zstd"])
 
-    (mkfs.btrfs "/opt" DEV.EVO ["subvol=EVO/opt" "noatime"])
-    (mkfs.btrfs "/opt/Games" DEV.EVO ["subvol=EVO/Games" "noatime"])
-    (mkfs.btrfs "/opt/Steam" DEV.EVO ["subvol=EVO/Steam" "noatime"])
+    (mkfs.btrfs "/opt" EVO ["subvol=EVO/opt" "noatime"])
+    (mkfs.btrfs "/opt/Games" EVO ["subvol=EVO/Games" "noatime"])
+    (mkfs.btrfs "/opt/Steam" EVO ["subvol=EVO/Steam" "noatime"])
 
-    (mkfs.btrfs "/srv" DEV.EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/srv" EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
 
-    (mkfs.btrfs "/.snapshots/WD" DEV.WD ["subvol=WD/.snapshots" "noatime" "compress=zstd"])
-    (mkfs.btrfs "/.snapshots/EVO" DEV.EVO ["subvol=EVO/.snapshots" "noatime" "compress=zstd"])
+    (mkfs.btrfs "/.snapshots/WD" WD ["subvol=WD/.snapshots" "noatime" "compress=zstd"])
+    (mkfs.btrfs "/.snapshots/EVO" EVO ["subvol=EVO/.snapshots" "noatime" "compress=zstd"])
     ({pkgs, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/EFI";
       boot.loader.grub.useOSProber = true;
+      # dual boot entry so I dont need a seperate bootloader for arch
+      boot.loader.grub.extraEntries = ''
+        menuentry "arch" {
+          insmod btrfs
+          search --no-floppy --fs-uuid --set=root ${WD}
+          linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch
+          initrd /WD/arch/boot/initramfs-linux.img
+        }
+      '';
 
       # kernel
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
@@ -158,16 +166,6 @@ with mod; {
 }
 /*
 unused but may use later section
- # dual boot entry so I dont need a seperate bootloader for arch
- boot.loader.grub.extraEntries = ''
-   menuentry "arch" {
-     insmod btrfs
-     search --no-floppy --fs-uuid --set=root ${DEV.WD}
-     linux /WD/arch/boot/vmlinuz-linux root=UUID=${DEV.WD} rw rootflags=subvol=WD/arch
-     initrd /WD/arch/boot/initramfs-linux.img
-   }
- '';
-
  # only needed if nvidia is the only host card
  environment.variables = {
    LIBVA_DRIVER_NAME = "nvidia";
