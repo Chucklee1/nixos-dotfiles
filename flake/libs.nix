@@ -113,7 +113,11 @@ with self.inputs.nixpkgs.lib; rec {
 
   allSystemsWithPkgs = f:
     allSystems (system: let
-      pkgs = import self.inputs.nixpkgs {inherit system;};
+      # expose overlays to pkgs
+      pkgs = import self.inputs.nixpkgs {
+        inherit system;
+        overlays = builtins.attrValues self.overlays; # safe if overlays are pure
+      };
     in
       f pkgs);
 }
