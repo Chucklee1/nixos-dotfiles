@@ -396,9 +396,8 @@ TODO: keybinds for unintuitive quick
     :hook ((c-ts-mode
             c++-ts-mode
             haskell-mode
-            kdl-mode
+            java-mode
             lua-mode
-            markdown-mode
             nix-ts-mode)
            . lsp-deferred)
 
@@ -437,23 +436,32 @@ Tree, sitting...
     (global-treesit-auto-mode)
     (treesit-auto-add-to-auto-mode-alist 'all))
 #+end_src
+* Language Modes
+Some languages will be wrapped in exec-find, these
+are the languages I have installed in my nix config;
+mainly because I find they work better installed on
+my system vs using a shell.
 ** Misc Language-Specific Modes
 #+begin_src emacs-lisp
-  ;; config languages
+  ;; config/text
+  (use-package just-mode)
   (use-package kdl-mode :mode "\\.kdl\\'")
-  (use-package markdown-mode :mode "\\.md\\'")
   (use-package ron-mode :mode "\\.ron\\'")
-  ;; there has to be a better way
-  (if (executable-find "ghc") (use-package haskell-mode))
+
+  ;; scripting/shell
+  (use-package fish-mode)
+  (use-package gnuplot-mode)
+  (use-package lua-mode)
+  (use-package nushell-mode)
+
+  ;; compiled
   (if (executable-find "java") (use-package lsp-java))
-  (if (executable-find "lua") (use-package lua-mode))
-  (if (executable-find "nu") (use-package nushell-mode))
-  (if (executable-find "nu") (use-package nushell-mode))
-  (if (executable-find "fish") (use-package fish-mode))
-  (if (executable-find "kotlin") (use-package kotlin-mode))
-  (if (executable-find "gnuplot") (use-package gnuplot-mode))
-  (if (executable-find "just") (use-package just-mode))
      #+end_src
+** LaTeX
+#+begin_src emacs-lisp
+  (when (executable-find "latex")
+    (use-package auctex))
+#+end_src
 ** clangd
 #+begin_src emacs-lisp
   (defun set/clang/version ()
@@ -476,59 +484,41 @@ begin nix only block
 #+begin_src emacs-lisp
   (if (executable-find "nix")
       (progn
+        (use-package nix-mode :mode "\\.nix\\'")
+        (use-package nix-ts-mode :mode "\\.nix\\'")
+        (setq lsp-nix-nixd-formatting-command ["alejandra"])))
 #+end_src
-nix modes
+** QT
 #+begin_src emacs-lisp
-  (use-package nix-mode :mode "\\.nix\\'")
-  (use-package nix-ts-mode :mode "\\.nix\\'")
-  (setq lsp-nix-nixd-formatting-command ["alejandra"])
-#+end_src
-qml-ts-mode only for systems with nixos (i am NOT having straight config this)
-** qt
-*** qml
-TOOD: get straight version as well
-#+begin_src emacs-lisp
+  ;; for project files
+  (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'"))
+
   ;; provided by nix
   (require 'qml-ts-mode)
-    ;; taken from quickshell docs
-    (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
-    (lsp-register-client
-     (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
-                      :activation-fn (lsp-activate-on "qml-ts")
-                      :server-id 'qmlls))
- #+end_src
-end nix only block
-#+begin_src emacs-lisp
-))
-#+end_src
-*** qt-pro-mode
-for qtcreator projects
-#+begin_src emacs-lisp
-  (if (executable-find "qtpaths") (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'")))
-#+end_src
+  ;; taken from quickshell docs
+  (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
+                    :activation-fn (lsp-activate-on "qml-ts")
+                    :server-id 'qmlls))
 
+#+end_src
 ** Rust
 #+begin_src emacs-lisp
-  (if (executable-find "cargo") (use-package rust-mode
-    :init
-    (setq rust-mode-treesitter-derive t))
+  (if (executable-find "cargo")
+      (progn
+        (use-package rust-mode
+          :init
+          (setq rust-mode-treesitter-derive t))
 
-  (use-package rustic
-    :after (rust-mode)
-    :config
-    (setq rustic-format-on-save nil)
-    (setq rustic-lsp-client 'lsp-mode)
-    :custom
-    (rustic-cargo-use-last-stored-arguments t)))
+        (use-package rustic
+          :after (rust-mode)
+          :config
+          (setq rustic-format-on-save nil)
+          (setq rustic-lsp-client 'lsp-mode)
+          :custom
+          (rustic-cargo-use-last-stored-arguments t))))
 #+end_src
-** Auctex
-+ LaTeX tool for emacs, like vimtex
-+ Requires distribution of texlive
-#+begin_src emacs-lisp
-  (use-package auctex)
-#+end_src
-
------
 
 * Org Mode
 #+begin_src emacs-lisp

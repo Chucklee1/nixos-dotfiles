@@ -254,9 +254,8 @@
   :hook ((c-ts-mode
           c++-ts-mode
           haskell-mode
-          kdl-mode
+          java-mode
           lua-mode
-          markdown-mode
           nix-ts-mode)
          . lsp-deferred)
 
@@ -292,20 +291,22 @@
   (global-treesit-auto-mode)
   (treesit-auto-add-to-auto-mode-alist 'all))
 
-;; config languages
+;; config/text
+(use-package just-mode)
 (use-package kdl-mode :mode "\\.kdl\\'")
-(use-package markdown-mode :mode "\\.md\\'")
 (use-package ron-mode :mode "\\.ron\\'")
-;; there has to be a better way
-(if (executable-find "ghc") (use-package haskell-mode))
+
+;; scripting/shell
+(use-package fish-mode)
+(use-package gnuplot-mode)
+(use-package lua-mode)
+(use-package nushell-mode)
+
+;; compiled
 (if (executable-find "java") (use-package lsp-java))
-(if (executable-find "lua") (use-package lua-mode))
-(if (executable-find "nu") (use-package nushell-mode))
-(if (executable-find "nu") (use-package nushell-mode))
-(if (executable-find "fish") (use-package fish-mode))
-(if (executable-find "kotlin") (use-package kotlin-mode))
-(if (executable-find "gnuplot") (use-package gnuplot-mode))
-(if (executable-find "just") (use-package just-mode))
+
+(when (executable-find "latex")
+  (use-package auctex))
 
 (defun set/clang/version ()
   (let ((raw (shell-command-to-string "clangd --version")))
@@ -324,37 +325,35 @@
 
 (if (executable-find "nix")
     (progn
+      (use-package nix-mode :mode "\\.nix\\'")
+      (use-package nix-ts-mode :mode "\\.nix\\'")
+      (setq lsp-nix-nixd-formatting-command ["alejandra"])))
 
-(use-package nix-mode :mode "\\.nix\\'")
-(use-package nix-ts-mode :mode "\\.nix\\'")
-(setq lsp-nix-nixd-formatting-command ["alejandra"])
+;; for project files
+(use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'"))
 
 ;; provided by nix
 (require 'qml-ts-mode)
-  ;; taken from quickshell docs
-  (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
-                    :activation-fn (lsp-activate-on "qml-ts")
-                    :server-id 'qmlls))
+;; taken from quickshell docs
+(add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
+                  :activation-fn (lsp-activate-on "qml-ts")
+                  :server-id 'qmlls))
 
-))
+(if (executable-find "cargo")
+    (progn
+      (use-package rust-mode
+        :init
+        (setq rust-mode-treesitter-derive t))
 
-(if (executable-find "qtpaths") (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'")))
-
-(if (executable-find "cargo") (use-package rust-mode
-  :init
-  (setq rust-mode-treesitter-derive t))
-
-(use-package rustic
-  :after (rust-mode)
-  :config
-  (setq rustic-format-on-save nil)
-  (setq rustic-lsp-client 'lsp-mode)
-  :custom
-  (rustic-cargo-use-last-stored-arguments t)))
-
-(use-package auctex)
+      (use-package rustic
+        :after (rust-mode)
+        :config
+        (setq rustic-format-on-save nil)
+        (setq rustic-lsp-client 'lsp-mode)
+        :custom
+        (rustic-cargo-use-last-stored-arguments t))))
 
 (use-package org
   :custom
