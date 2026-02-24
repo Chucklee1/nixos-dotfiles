@@ -17,6 +17,7 @@ builtins.mapAttrs (_: package:
 
     extraEmacsPackages = epkgs: [
       epkgs.treesit-grammars.with-all-grammars
+      prev.tree-sitter-grammars.tree-sitter-kdl
 
       (epkgs.trivialBuild {
         pname = "qml-ts-mode";
