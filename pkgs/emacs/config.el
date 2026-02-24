@@ -203,7 +203,6 @@
 
 (add-hook 'window-setup-hook #'transparent-window-setup)
 
-
 ;; unset bg when in terminal/tty
 (when (not (display-graphic-p))
   (set-face-background 'default "unspecified-bg"))

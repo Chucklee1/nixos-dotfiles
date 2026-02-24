@@ -75,34 +75,6 @@ Compilation Options (non-nixos systems):
 #+begin_src emacs-lisp
 ;; -*- lexical-binding: t; -*-
 #+end_src
-** Straight
-symlink this file to init.el if on non-nixos distro
-#+begin_src emacs-lisp :tangle ./straight.el
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name
-          "straight/repos/straight.el/bootstrap.el"
-          (or (bound-and-true-p straight-base-dir)
-              user-emacs-directory)))
-        (bootstrap-version 7))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-
-  (setq package-enable-at-startup nil)
-  (straight-use-package 'use-package)
-  (setq straight-use-package-by-default t)
-
-  ;; load rest of config
-  ;; BOTH CONFIG & STRAIGHT MUST BE IN SAME DIR
-  (load-file "./config.el")
-
-#+end_src
 ** Variables
 #+begin_src emacs-lisp
   (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
@@ -351,7 +323,6 @@ TODO: keybinds for unintuitive quick
                 (right-fringe . 5))))))
 
   (add-hook 'window-setup-hook #'transparent-window-setup)
-
 
   ;; unset bg when in terminal/tty
   (when (not (display-graphic-p))
