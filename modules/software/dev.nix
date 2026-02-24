@@ -3,15 +3,8 @@
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs;
         [
-          # build essentials
+          # build stuff
           gcc
-          gnumake
-          cmake
-          ninja
-          meson
-          autoconf
-          pkg-config
-          # misc
           just
           lua
           python3
@@ -66,8 +59,6 @@
         ]
         ++ (extlib.armOrNot [
           rar
-          # broken on aarch64
-          gdb
         ] []);
     })
     (extlib.darwinOrLinux {} {programs.nix-ld.enable = true;})

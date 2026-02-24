@@ -21,7 +21,6 @@ with mod; {
     software.dev
     software.qol
     software.texlive
-    software.qt
 
     system.boot
     system.home

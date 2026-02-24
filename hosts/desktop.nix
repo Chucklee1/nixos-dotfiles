@@ -28,7 +28,6 @@ with mod; {
     software.dev
     software.qol
     software.java
-    software.qt
     software.rust
     software.texlive
     software.gaming
