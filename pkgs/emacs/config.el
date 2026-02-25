@@ -365,7 +365,7 @@
         org-hide-emphasis-markers t
         org-pretty-entities t
         ;; use ... for folded text
-        org-ellipsis "…"))
+        org-ellipsis " [...]"))
 
 (set-face-attribute 'org-document-title nil :height 1.3 :weight 'bold)
 (set-face-attribute 'org-document-info nil :height 1.2 :weight 'bold)

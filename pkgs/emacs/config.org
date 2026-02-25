@@ -533,7 +533,7 @@ begin nix only block
           org-hide-emphasis-markers t
           org-pretty-entities t
           ;; use ... for folded text
-          org-ellipsis "…"))
+          org-ellipsis " [...]"))
         #+end_src
 + Facename cheatsheet:
     - org-level-n, /where n is the header level/
