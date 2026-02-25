@@ -2,31 +2,6 @@
 #+Author: Chucklee1
 #+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
-* note-to-self
-While I am trying to wrap things in exec-checks (probably not efficent but it works)
-to maintain a "only use it if it is there" mindset, there is still a bunch of stuff
-that I will still require regardless, this is the general list of what you /should/ have:
-    - source of power
-    - computer that can run emacs
-    - connection to the internet
-    - some way to interface with screen+keyboard
-    - c compiler (perferable libc based, musl may work, alpine...)
-    - init system (optional but helps)
-Jokes aside:
-    - git
-    - a nerd font (jetbrains mono is the default)
-    - tree-sitter
-If you want auctex to work, you will also need these:
-    - pdf viewer (default is zathura)
-    - xdvi for dvi
-    - xdg-open
-    - latex/texlive (perferably with math/svg additions)
-    - dvisvgm (required for org latex previews)
-Compilation Options (non-nixos systems):
-      - Native compilation
-      - tree-sitter support
-      - use pgtk variant if on wayland
-
 * Nix Overlay
 #+begin_src nix :tangle ./default.nix
   final: prev:
@@ -87,13 +62,12 @@ Compilation Options (non-nixos systems):
 ** Helper Funcitons
 #+begin_src emacs-lisp
   ;; keybinds ;;
-  (defun mkkeygroup (leader group-name group-key keypairs)
-    "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
+  (defun helper/mapkeys (leader-map keypairs)
+    "map keybinds to a prefixed leader"
     (interactive)
-    (define-key leader (kbd group-key) group-name)
     (dolist (pair keypairs)
       ;; pair format = ("key" . cmd)
-      (define-key group-name (kbd (car pair)) (cdr pair))))
+      (define-key leader-map (kbd (car pair)) (cdr pair))))
 
   (defun helper/buffer/toggle (cmd)
     (interactive)
@@ -203,45 +177,33 @@ Compilation Options (non-nixos systems):
 ** Keybinds
 *** C-x
 note C-b originally bound to buffer-list (because ibuffer is better)
-TODO: keybinds for unintuitive quick
 #+begin_src emacs-lisp
-  (dolist (pair '(("C-r"        . (lambda () (interactive) (load-file g/path/elispcfg)))
-                  ("C-<return>" . helper/open-split-term)
-                  ("C-b"        . ibuffer)))
-                (define-key ctl-x-map (kbd (car pair)) (cdr pair)))
+  (helper/mapkeys ctl-x-map
+                  '(("C-r"        . (lambda () (interactive) (load-file g/path/elispcfg)))
+                    ("C-<return>" . helper/open-split-term)
+                    ("C-b"        . ibuffer)))
 #+end_src
-*** Globl Leader Definition
+*** lsp
 #+begin_src emacs-lisp
-  (defvar lmap-globl (make-sparse-keymap))
-  (evil-define-key '(normal motion) 'evil-normal-state-map
-    (kbd "SPC") lmap-globl)
+  (defvar emap/lsp (make-sparse-keymap))
+  (global-set-key (kbd "C-c l") emap/lsp)
+
+  (helper/mapkeys emap/lsp
+                  '(("f" . lsp-format-buffer)
+                    ("r" . lsp-rename)
+                    ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
 #+end_src
-** globl - lsp
+*** toggle
 #+begin_src emacs-lisp
-    (defvar lmap-globl/lsp (make-sparse-keymap))
-    (mkkeygroup lmap-globl lmap-globl/lsp "l"
-                '(("f" . lsp-format-buffer)
-                  ("r" . lsp-rename)
-                  ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
-#+end_src
-** globl - org
-#+begin_src emacs-lisp
-  (defvar lmap-globl/org (make-sparse-keymap))
-  (mkkeygroup lmap-globl lmap-globl/org "o"
-              '(("a" . org-agenda-list)
-                ("t" . org-babel-tangle)
-                ("l" . org-latex-preview)
-                ("i" . org-toggle-inline-images)))
-          #+end_src
-** globl - toggle
-#+begin_src emacs-lisp
-  (defvar lmap-globl/toggle (make-sparse-keymap))
-  (mkkeygroup lmap-globl lmap-globl/toggle "t"
-              '(("b" . global-tab-line-mode)
-                ("n" . display-line-numbers-mode)
-                ("N" . global-display-line-numbers-mode)
-                ("w" . visual-wrap-prefix-mode)
-                ("W" . global-visual-wrap-prefix-mode)))
+  (defvar emap/toggle (make-sparse-keymap))
+  (global-set-key (kbd "C-c t") emap/toggle)
+
+  (helper/mapkeys emap/toggle
+                  '(("b" . global-tab-line-mode)
+                    ("n" . display-line-numbers-mode)
+                    ("N" . global-display-line-numbers-mode)
+                    ("w" . visual-wrap-prefix-mode)
+                    ("W" . global-visual-wrap-prefix-mode)))
 #+end_src
 
 -----
@@ -373,7 +335,6 @@ TODO: keybinds for unintuitive quick
   (unless (display-graphic-p)
     (require 'evil-terminal-cursor-changer)
     (evil-terminal-cursor-changer-activate))
-
 #+end_src
 
 -----
@@ -437,6 +398,9 @@ Tree, sitting...
     (global-treesit-auto-mode)
     (treesit-auto-add-to-auto-mode-alist 'all))
 #+end_src
+
+-----
+
 * Language Modes
 Some languages will be wrapped in exec-find, these
 are the languages I have installed in my nix config;
@@ -520,6 +484,8 @@ begin nix only block
           :custom
           (rustic-cargo-use-last-stored-arguments t))))
 #+end_src
+
+-----
 
 * Org Mode
 #+begin_src emacs-lisp

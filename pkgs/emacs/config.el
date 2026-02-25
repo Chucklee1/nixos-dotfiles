@@ -7,13 +7,12 @@
 (defvar g/opacity       (if (eq system-type 'darwin) 40 80))
 
 ;; keybinds ;;
-(defun mkkeygroup (leader group-name group-key keypairs)
-  "Defines a set of keybinds with a root leader and a sub-leader, note the group-name requires a defined sparemap beforehand"
+(defun helper/mapkeys (leader-map keypairs)
+  "map keybinds to a prefixed leader"
   (interactive)
-  (define-key leader (kbd group-key) group-name)
   (dolist (pair keypairs)
     ;; pair format = ("key" . cmd)
-    (define-key group-name (kbd (car pair)) (cdr pair))))
+    (define-key leader-map (kbd (car pair)) (cdr pair))))
 
 (defun helper/buffer/toggle (cmd)
   (interactive)
@@ -114,35 +113,28 @@
 (with-eval-after-load 'evil
   (evil-set-initial-state 'outline-mode 'normal))
 
-(dolist (pair '(("C-r"        . (lambda () (interactive) (load-file g/path/elispcfg)))
-                ("C-<return>" . helper/open-split-term)
-                ("C-b"        . ibuffer)))
-              (define-key ctl-x-map (kbd (car pair)) (cdr pair)))
+(helper/mapkeys ctl-x-map
+                '(("C-r"        . (lambda () (interactive) (load-file g/path/elispcfg)))
+                  ("C-<return>" . helper/open-split-term)
+                  ("C-b"        . ibuffer)))
 
-(defvar lmap-globl (make-sparse-keymap))
-(evil-define-key '(normal motion) 'evil-normal-state-map
-  (kbd "SPC") lmap-globl)
+(defvar emap/lsp (make-sparse-keymap))
+(global-set-key (kbd "C-c l") emap/lsp)
 
-(defvar lmap-globl/lsp (make-sparse-keymap))
-(mkkeygroup lmap-globl lmap-globl/lsp "l"
-            '(("f" . lsp-format-buffer)
-              ("r" . lsp-rename)
-              ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
+(helper/mapkeys emap/lsp
+                '(("f" . lsp-format-buffer)
+                  ("r" . lsp-rename)
+                  ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
 
-(defvar lmap-globl/org (make-sparse-keymap))
-(mkkeygroup lmap-globl lmap-globl/org "o"
-            '(("a" . org-agenda-list)
-              ("t" . org-babel-tangle)
-              ("l" . org-latex-preview)
-              ("i" . org-toggle-inline-images)))
+(defvar emap/toggle (make-sparse-keymap))
+(global-set-key (kbd "C-c t") emap/toggle)
 
-(defvar lmap-globl/toggle (make-sparse-keymap))
-(mkkeygroup lmap-globl lmap-globl/toggle "t"
-            '(("b" . global-tab-line-mode)
-              ("n" . display-line-numbers-mode)
-              ("N" . global-display-line-numbers-mode)
-              ("w" . visual-wrap-prefix-mode)
-              ("W" . global-visual-wrap-prefix-mode)))
+(helper/mapkeys emap/toggle
+                '(("b" . global-tab-line-mode)
+                  ("n" . display-line-numbers-mode)
+                  ("N" . global-display-line-numbers-mode)
+                  ("w" . visual-wrap-prefix-mode)
+                  ("W" . global-visual-wrap-prefix-mode)))
 
 (use-package dired
   :ensure nil ;; builtin
