@@ -44,9 +44,7 @@ with mod; {
     (import ../assets/disko/emphereal.nix {device = "/dev/nvme0n1";})
     ({
       lib,
-      config,
       user,
-      pkgs,
       ...
     }: {
       boot.initrd = {
@@ -85,7 +83,7 @@ with mod; {
       hardware.enableRedistributableFirmware = true;
 
       users.mutableUsers = false;
-      users.users.${user}.passwordFile = "/persist/passwords/goat";
+      users.users.${user}.hashedPasswordFile = "/persist/passwords/goat";
 
       # just to make sure
       services.openssh = {
@@ -129,28 +127,41 @@ with mod; {
             }
             ".local/share/direnv"
             ".local/share/zoxide"
+            ".local/state/syncthing"
             ".cache/zen"
             ".zen"
           ];
         };
       };
-      systemd.user.services.login-hook = let
-          USER_HOME = config.users.users.${user}.home;
-          loginhook = pkgs.writeShellScriptBin "login-hookd.sh" ''
-            mkdir "${USER_HOME}/.emacs.d" &&
-            ln -s ${USER_HOME}/nixos-dotfiles ${USER_HOME} &&
-            ln -s "${USER_HOME}/nixos-dotfiles/pkgs/emacs/config.el" "${USER_HOME}/.emacs.d/init.el"
-      '';
+      home-manager.users.${user} = {
+        programs.fish.loginShellInit = ''
+          set -g dotfiles $HOME/Repos/nixos-dotfiles
+          set -g emacs_dir $HOME/.emacs.d
 
-      in {
-  enable = true;
-  description = "setup symlinks from persistant mounts";
-  wantedBy = [ "default.target" ];
-  serviceConfig = {
-      Type = "simple";
-      ExecStart = "${loginhook}/bin/login-hook.sh";
-  };
-};
+          # symlink dotfiles to user root
+          if not test -d $HOME/nixos-dotfiles
+              echo "symlinking $dotfiles to $HOME"
+              ln -s $dotfiles $HOME
+          else
+              echo "$HOME/nixos-dotfiles already exist"
+          end
+
+          if not test -d $emacs_dir; mkdir $emacs_dir; end
+          if test -d $emacs_dir/snippets; rm -rf $emacs_dir/snippets; end
+          ln -s $dotfiles/pkgs/emacs/snippets $emacs_dir/
+
+          # same for emacs config
+          if not test -f $emacs_dir/init.el
+              echo "symlinking $dotfiles/pkgs/emacs/config.el to $emacs_dir/init.el"
+              ln -s $dotfiles/pkgs/emacs/config.el $emacs_dir/init.el
+          else
+              echo "$emacs_dir/init.el already exist"
+          end
+
+          set -e dotrepo
+          set -e emacs_dir
+        '';
+      };
     })
   ];
 }
