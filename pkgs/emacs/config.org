@@ -1,6 +1,6 @@
 #+title: emacs config
 #+Author: Chucklee1
-#+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
+#+PROPERTY: header-args:elisp :tangle ./config.el :mkdirp yes
 
 * Nix Overlay
 #+begin_src nix :tangle ./default.nix
@@ -13,9 +13,8 @@
       });
 
       config = ''
-        (setq use-package-always-ensure t)
-        ,${builtins.readFile ./config.el}
-      '';
+          ,${builtins.readFile ./config.el}
+        '';
       defaultInitFile = false;
       # make sure to include `(setq use-package-always-ensure t)` in config
       alwaysEnsure = true;
@@ -24,7 +23,6 @@
       extraEmacsPackages = epkgs: [
         epkgs.treesit-grammars.with-all-grammars
         prev.tree-sitter-grammars.tree-sitter-kdl
-
         (epkgs.trivialBuild {
           pname = "qml-ts-mode";
           version = "master";
@@ -33,6 +31,16 @@
             repo = "qml-ts-mode";
             rev = "b80c6663521b4d0083e416e6712ebc02d37b7aec";
             sha256 = "WXK/CdFF9E2kG+uIios4HtKcEMhILS9MddJfVDeRLh0=";
+          };
+        })
+        (prev.tree-sitter.buildGrammar {
+          language = "qmljs";
+          version = "master";
+          src = prev.fetchFromGitHub {
+            owner = "yuja";
+            repo = "tree-sitter-qmljs";
+            rev = "0bec4359a7eb2f6c9220cd57372d87d236f66d59";
+            sha256 = "tV4lipey+OAQwygRFp9lQAzgCNiZzSu7p3Mr6CCBH1g=";
           };
         })
       ];
@@ -48,11 +56,15 @@
 
 * Base Settings
 ** Fancy header
-#+begin_src emacs-lisp
+#+begin_src elisp
 ;; -*- lexical-binding: t; -*-
 #+end_src
+** pkg setup
+#+begin_src elisp
+  (setq use-package-always-ensure t)
+#+end_src
 ** Variables
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
   (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
   (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
@@ -60,7 +72,7 @@
   (defvar g/opacity       (if (eq system-type 'darwin) 40 80))
 #+end_src
 ** Helper Funcitons
-#+begin_src emacs-lisp
+#+begin_src elisp
   ;; keybinds ;;
   (defun helper/mapkeys (leader-map keypairs)
     "map keybinds to a prefixed leader"
@@ -93,7 +105,7 @@
 
 #+end_src
 ** Emacs
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package emacs
     :custom
     ;; ui
@@ -146,7 +158,7 @@
 #+end_src
 ** Evil Mode
 + Vim Clone
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package evil
     :init
     (evil-mode)
@@ -177,14 +189,14 @@
 ** Keybinds
 *** C-x
 note C-b originally bound to buffer-list (because ibuffer is better)
-#+begin_src emacs-lisp
+#+begin_src elisp
   (helper/mapkeys ctl-x-map
                   '(("C-r"        . (lambda () (interactive) (load-file g/path/elispcfg)))
                     ("C-<return>" . helper/open-split-term)
                     ("C-b"        . ibuffer)))
 #+end_src
 *** lsp
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defvar emap/lsp (make-sparse-keymap))
   (global-set-key (kbd "C-c l") emap/lsp)
 
@@ -194,7 +206,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
                     ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
 #+end_src
 *** toggle
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defvar emap/toggle (make-sparse-keymap))
   (global-set-key (kbd "C-c t") emap/toggle)
 
@@ -210,7 +222,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
 
 * Programs
 ** Dired
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package dired
     :ensure nil ;; builtin
     :custom
@@ -229,21 +241,21 @@ note C-b originally bound to buffer-list (because ibuffer is better)
                 insert-directory-program gls)))))
         #+end_src
 *** Dired Hacks - Collapse
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package dired-collapse
     :hook (dired-mode . global-dired-collapse-mode))
 #+end_src
 *** Diredfl
 + Additional syntax highlighting for dired
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 #+end_src
 ** Vterm
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package vterm)
 #+end_src
 ** pdf-tools
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package pdf-tools
     :init (pdf-loader-install))
 #+end_src
@@ -252,7 +264,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
 
 * Appearance
 ** Theme
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package doom-themes
     :custom
     ;; Global settings (defaults)
@@ -269,7 +281,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
     (doom-themes-org-config))
 #+end_src
 ** Transparent Background
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun transparent-window-setup ()
 
     (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
@@ -292,7 +304,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
     (set-face-background 'default "unspecified-bg"))
 #+end_src
 ** Font
-#+begin_src emacs-lisp
+#+begin_src elisp
   (set-face-attribute 'default nil
                       :font   g/ffamily
                       :height g/fheight
@@ -300,7 +312,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
   (setq-default line-spacing 0.12)
 #+end_src
 ** Nerd Font
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package nerd-icons
     :if (display-graphic-p))
 
@@ -311,7 +323,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 #+end_src
 ** Doom-modeline
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package doom-modeline
     :custom
     (display-time-24hr-format t)
@@ -321,7 +333,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
     :hook (after-init . doom-modeline-mode))
 #+end_src
 ** highlight indent guides
-#+begin_src emacs-lisp
+#+begin_src elisp
 (use-package highlight-indent-guides
   :hook ((prog-mode . highlight-indent-guides-mode)) ; enable in programming modes
   :custom
@@ -330,7 +342,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
 #+end_src
 ** evil-terminal-cursor-change
 + Change cursor depending on mode in the terminal/tty
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package evil-terminal-cursor-changer)
   (unless (display-graphic-p)
     (require 'evil-terminal-cursor-changer)
@@ -342,7 +354,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
 * Nerd
 ** Projectile
 + Hmmm, project-ile, maybe has to do with projects?
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package projectile
     :config
     (projectile-mode)
@@ -352,7 +364,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
     (projectile-project-search-path '("~/Documents/" "~/Repos/")))
 #+end_src
 ** LSP-Mode
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package lsp-mode
     :commands lsp lsp-deferred
     :hook ((c-ts-mode
@@ -386,7 +398,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
 #+end_src
 ** Tree Sitter
 Tree, sitting...
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package tree-sitter)
   (setq treesit-font-lock-level 4)
 
@@ -407,7 +419,7 @@ are the languages I have installed in my nix config;
 mainly because I find they work better installed on
 my system vs using a shell.
 ** Misc Language-Specific Modes
-#+begin_src emacs-lisp
+#+begin_src elisp
   ;; config/text
   (use-package just-mode)
   (use-package kdl-mode :mode "\\.kdl\\'")
@@ -423,12 +435,12 @@ my system vs using a shell.
   (if (executable-find "java") (use-package lsp-java))
      #+end_src
 ** LaTeX
-#+begin_src emacs-lisp
+#+begin_src elisp
   (when (executable-find "latex")
     (use-package auctex))
 #+end_src
 ** clangd
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun set/clang/version ()
     (let ((raw (shell-command-to-string "clangd --version")))
       (when (string-match "clangd version \\([0-9.]+\\)" raw)
@@ -446,7 +458,7 @@ my system vs using a shell.
 #+end_src
 ** Nix
 begin nix only block
-#+begin_src emacs-lisp
+#+begin_src elisp
   (if (executable-find "nix")
       (progn
         (use-package nix-mode :mode "\\.nix\\'")
@@ -454,22 +466,25 @@ begin nix only block
         (setq lsp-nix-nixd-formatting-command ["alejandra"])))
 #+end_src
 ** QT
-#+begin_src emacs-lisp
+#+begin_src elisp
   ;; for project files
   (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'"))
 
   ;; provided by nix
-  (require 'qml-ts-mode)
-  ;; taken from quickshell docs
-  (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
-                    :activation-fn (lsp-activate-on "qml-ts")
-                    :server-id 'qmlls))
-
+  (use-package qml-ts-mode
+    :after lsp-mode
+    :config
+    (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
+    (lsp-register-client
+     (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
+                      :activation-fn (lsp-activate-on "qml-ts")
+                      :server-id 'qmlls))
+    (add-hook 'qml-ts-mode-hook (lambda ()
+                                  (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
+                                  (lsp-deferred))))
 #+end_src
 ** Rust
-#+begin_src emacs-lisp
+#+begin_src elisp
   (if (executable-find "cargo")
       (progn
         (use-package rust-mode
@@ -488,7 +503,7 @@ begin nix only block
 -----
 
 * Org Mode
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package org
     :custom
     (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
@@ -506,7 +521,7 @@ begin nix only block
     - org-document-{title, info, info-keyword}
     - org-{tag,todo, done, special-keyword, warning, date}
 + Here are some sensible size changes for org-headers and the tile+info parts
-#+begin_src emacs-lisp
+#+begin_src elisp
   (set-face-attribute 'org-document-title nil :height 1.3 :weight 'bold)
   (set-face-attribute 'org-document-info nil :height 1.2 :weight 'bold)
   (set-face-attribute 'org-level-1 nil :height 1.2 :weight 'bold)
@@ -514,7 +529,7 @@ begin nix only block
   (set-face-attribute 'org-level-3 nil :height 1.1 :weight 'bold)
 #+end_src
 ** Org Modern
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package org-modern
     :init (global-org-modern-mode)
     :config
@@ -522,7 +537,7 @@ begin nix only block
 #+end_src
 ** Org LaTeX Fragment Previews
 + Use dvisvgm for LaTeX fragment previews
-#+begin_src emacs-lisp
+#+begin_src elisp
   (setq org-latex-create-formula-image-program 'dvisvgm)
 
   (setq org-preview-latex-default-process 'dvisvgm)
@@ -539,7 +554,7 @@ begin nix only block
            :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 #+end_src
 ** Subtle Margins
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun helper/org/set-margins ()
     (let ((margin 2))
       (setq-local left-margin-width margin
@@ -554,7 +569,7 @@ begin nix only block
 ** Org-Babel Hook
 + General settings for org mode via hook
 + Save hook to sync init.org with init.el
-#+begin_src emacs-lisp
+#+begin_src elisp
   (defun config/sync-with-org ()
     (when (string-equal (file-truename buffer-file-name)
                         (file-truename g/path/orgcfg))
@@ -568,7 +583,7 @@ begin nix only block
                         nil t)))
 #+end_src
 ** Direnv
-#+begin_src emacs-lisp
+#+begin_src elisp
   (if (executable-find "direnv") (use-package direnv))
 #+end_src
 
@@ -577,7 +592,7 @@ begin nix only block
 * Completion
 ** Corfu
 + "COmpletion in Region FUnction"
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package corfu
     :custom
     (corfu-auto nil) ;; no auto-popups
@@ -608,7 +623,7 @@ begin nix only block
 #+end_src
 ** Cape
 + Completion extensions
-#+begin_src emacs-lisp
+#+begin_src elisp
 (use-package cape
   :after corfu
   :init
@@ -621,7 +636,7 @@ begin nix only block
 #+end_src
 ** Flycheck
 + Checks your fly...
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package flycheck
     :hook after-init global-flycheck-mode
     :config
@@ -631,7 +646,7 @@ begin nix only block
 + "VERTical Interactive COmpletion"
 + "Marginalia in the minibuffer"
 + AKA Completion in minibuffer
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package vertico
     :init
     (vertico-mode))
@@ -650,7 +665,7 @@ begin nix only block
     ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
 #+end_src
 ** Orderless
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package orderless
     :custom
     (completion-styles '(orderless basic))
@@ -660,13 +675,13 @@ begin nix only block
     )
 #+end_src
 ** Yasnippet
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package yasnippet
     :config
     (yas-global-mode 1))
 #+end_src
 + Additional pre-made snippets
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package yasnippet-snippets)
 #+end_src
 
@@ -675,13 +690,13 @@ begin nix only block
 * Late Load
 ** Git
 *** Magit
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package magit
     :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff
     :config (define-key transient-map (kbd "<escape>") 'transient-quit-one)) ;; Make escape quit magit prompts
 #+end_src
 *** Diff-hl
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package diff-hl
     :hook ((dired-mode         . diff-hl-dired-mode-unless-remote)
            (magit-post-refresh . diff-hl-magit-post-refresh))
@@ -689,7 +704,7 @@ begin nix only block
 #+end_src
 ** Help!
 *** Helpful
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package helpful
     :bind
     ("C-h f" . helpful-callable)
@@ -698,7 +713,7 @@ begin nix only block
     ("C-h x" . helpful-command))
 #+end_src
 *** Which-key
-#+begin_src emacs-lisp
+#+begin_src elisp
     (use-package which-key
       :ensure nil ;; Don't install which-key because it's now built-in
       :init
@@ -717,19 +732,19 @@ begin nix only block
 ** Rainbows!
 *** Rainbow Delimiters
 + colorful brackets
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 *** Rainbow Mode
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package rainbow-mode
     :config (setq rainbow-x-colors nil)
     :hook (prog-mode . rainbow-mode))
 #+end_src
 ** Face overrides
 flycheck
-#+begin_src emacs-lisp
+#+begin_src elisp
 
   ;; make flycheck wavy lines not-wavy
   (with-eval-after-load 'flycheck
@@ -744,7 +759,7 @@ flycheck
                         :underline t))
 #+end_src
 lsp-mode
-#+begin_src emacs-lisp
+#+begin_src elisp
 
   (with-eval-after-load 'lsp-modeline
     ;; icon overrides
@@ -762,13 +777,13 @@ lsp-mode
 
 * Darwin fixes
 begin darwin only block
-#+begin_src emacs-lisp
+#+begin_src elisp
   (when (eq system-type 'darwin)
     (progn
 #+end_src
 ** Exec Path from Shell
 + Allows for MacOS to import PATH to shells
-#+begin_src emacs-lisp
+#+begin_src elisp
   (use-package exec-path-from-shell
     :if (memq window-system '(mac ns))
     :config
@@ -776,7 +791,7 @@ begin darwin only block
 #+end_src
 ** Ultra Scroll
 + Smooth Scrolling
-#+BEGIN_src emacs-lisp
+#+BEGIN_src elisp
     (use-package ultra-scroll
       :init
       (setq scroll-margin 0) ; important: scroll-margin greater than 0 not yet supported
@@ -784,6 +799,6 @@ begin darwin only block
       (ultra-scroll-mode 1))
 #+END_src
 end darwin only block
-#+begin_src emacs-lisp
+#+begin_src elisp
   ))
 #+end_src
