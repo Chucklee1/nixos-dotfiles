@@ -40,6 +40,7 @@ with mod; {
 
     drivers.graphical
     drivers.ssh
+    drivers.fcitx
 
     shell.fish
     shell.nushell
@@ -139,11 +140,9 @@ with mod; {
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
           input.mouse = lib.mkForce {accel-speed = -0.75;};
-          input.keyboard.xkb.options = lib.mkForce "ctrl:nocaps,altwin:swap_alt_win";
           # no clue why my monitor has so many 0's...
           outputs = {
             "HKC OVERSEAS LIMITED 24E4 0000000000001" = {
-              variable-refresh-rate = true;
               mode = {
                 width = 1920;
                 height = 1080;
