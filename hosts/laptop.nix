@@ -17,6 +17,7 @@ with mod; {
     programs.kitty
     programs.niri
     programs.waybar
+    programs.yazi
 
     software.dev
     software.qol
