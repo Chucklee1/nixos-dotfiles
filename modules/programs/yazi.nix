@@ -162,7 +162,6 @@
         # file:        yazi-v26.1.22/modules/yazi/hm.nix
         # commit:      07f41f942ae752ab3b9f9071e45d30b37e4c0785
         theme = with config.lib.stylix.colors.withHashtag; {
-          config.stylix.
           icon = let
             mkIcon = text: fg: {inherit text fg;};
           in {
