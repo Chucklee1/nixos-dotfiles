@@ -472,6 +472,7 @@ begin nix only block
 
   ;; provided by nix
   (use-package qml-ts-mode
+    :ensure nil
     :after lsp-mode
     :config
     (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))

@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(setq use-package-always-ensure t)
+
 (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
 (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
 (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
@@ -326,6 +328,7 @@
 
 ;; provided by nix
 (use-package qml-ts-mode
+  :ensure nil
   :after lsp-mode
   :config
   (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))

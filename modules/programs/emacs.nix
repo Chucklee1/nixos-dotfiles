@@ -2,6 +2,7 @@
   nix = [
     # overlay
     ({
+      lib,
       config,
       pkgs,
       ...
@@ -27,6 +28,7 @@
         );
 
       services.emacs.enable = true;
+      services.emacs.defaultEditor = lib.mkForce true;
       services.emacs.package = emacs-pkg;
     })
   ];
