@@ -165,6 +165,9 @@
 (use-package pdf-tools
   :init (pdf-loader-install))
 
+(use-package elcord
+:init (elcord-mode))
+
 (use-package doom-themes
   :custom
   ;; Global settings (defaults)

@@ -259,6 +259,12 @@ note C-b originally bound to buffer-list (because ibuffer is better)
   (use-package pdf-tools
     :init (pdf-loader-install))
 #+end_src
+** Elcord
+why not
+#+begin_src elisp
+  (use-package elcord
+  :init (elcord-mode))
+#+end_src
 
 -----
 
