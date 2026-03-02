@@ -2,6 +2,11 @@
 
 (setq use-package-always-ensure t)
 
+(setq gc-cons-threshold 100000000) ;; 100 MB
+
+;; Improve performance with language servers.
+(setq read-process-output-max (* 1024 1024)) ;; 1 MB
+
 (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
 (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
 (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
@@ -44,7 +49,12 @@
   (menu-bar-mode nil)         ;; Disable the menu bar
   (scroll-bar-mode nil)       ;; Disable the scroll bar
   (tool-bar-mode nil)         ;; Disable the tool bar
-  (inhibit-startup-screen t)  ;; Disable welcome screen
+
+  ;; all the inhitibits
+  (inhibit-splash-screen t)
+  (inhibit-startup-screen t)
+  (inhibit-startup-message t)
+  (inhibit-startup-buffer-menu t)
 
   (blink-cursor-mode nil)     ;; Don't blink cursor
 
@@ -71,6 +81,8 @@
   (savehist-mode) ;; Enables save history mode
   (make-backup-files nil) ;; Stop creating ~ backup files
   (auto-save-default nil) ;; Stop creating # auto save files
+  (mode-line-format nil)
+  (backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 
   :hook
   (before-save   . delete-trailing-whitespace)
@@ -165,9 +177,6 @@
 (use-package pdf-tools
   :init (pdf-loader-install))
 
-(use-package elcord
-:init (elcord-mode))
-
 (use-package doom-themes
   :custom
   ;; Global settings (defaults)
@@ -227,12 +236,6 @@
   (doom-modeline-buffer-encoding nil)
   :hook (after-init . doom-modeline-mode))
 
-(use-package highlight-indent-guides
-  :hook ((prog-mode . highlight-indent-guides-mode)) ; enable in programming modes
-  :custom
-  (highlight-indent-guides-method 'character) ; or 'column
-  (highlight-indent-guides-auto-enabled t))
-
 (use-package evil-terminal-cursor-changer)
 (unless (display-graphic-p)
   (require 'evil-terminal-cursor-changer)
@@ -257,9 +260,6 @@
          . lsp-deferred)
 
   :custom
-  ;; performance tweaks
-  (read-process-output-max (* 1024 1024)) ; let LSP read more data
-  (gc-cons-threshold 100000000)
 
   ;; Enable semantic tokens support
   (lsp-semantic-tokens-enable t)
