@@ -53,6 +53,12 @@
       hardware.bluetooth.enable = true;
       services.blueman.enable = true;
 
+      # gnome-related
+      services.gnome = {
+        gnome-keyring.enable = true;
+        gnome-settings-daemon.enable = true;
+      };
+
       # misc
       environment.systemPackages = with pkgs; [
         xdg-utils
