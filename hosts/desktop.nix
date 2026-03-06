@@ -35,11 +35,11 @@ with mod; {
     system.boot
     system.home
     system.users
+    system.network
     system.pkgconfig
     system.sys-specs
 
     drivers.graphical
-    drivers.ssh
     drivers.fcitx
 
     shell.fish
