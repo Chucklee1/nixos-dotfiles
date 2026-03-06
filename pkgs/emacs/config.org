@@ -57,7 +57,7 @@
 * Base Settings
 ** Fancy header
 #+begin_src elisp
-;; -*- lexical-binding: t; -*-
+;;; -*- no-byte-compile: t; lexical-binding: t; -*
 #+end_src
 ** pkg setup
 #+begin_src elisp
@@ -378,9 +378,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
             lua-mode
             nix-ts-mode)
            . lsp-deferred)
-
     :custom
-
     ;; Enable semantic tokens support
     (lsp-semantic-tokens-enable t)
     (lsp-semantic-tokens-allow-ranged-requests t)
@@ -541,19 +539,9 @@ begin nix only block
 + Use dvisvgm for LaTeX fragment previews
 #+begin_src elisp
   (setq org-latex-create-formula-image-program 'dvisvgm)
-
   (setq org-preview-latex-default-process 'dvisvgm)
-
-  (setq org-preview-latex-process-alist
-        '((dvisvgm
-           :programs ("latex" "dvisvgm")
-           :description "Convert LaTeX fragments to SVG using dvisvgm"
-           :message "Creating SVG image from LaTeX fragment..."
-           :image-input-type "dvi"
-           :image-output-type "svg"
-           :image-size-adjust (1.2 . 1.2)
-           :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
-           :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
+  (setq org-format-latex-options
+      (plist-put org-format-latex-options :scale 1.5))
 #+end_src
 ** Subtle Margins
 #+begin_src elisp
