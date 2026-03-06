@@ -77,12 +77,10 @@
   (scroll-conservatively 10) ;; Smooth scrolling
   (scroll-margin 8)
 
-
+  ;; history
   (savehist-mode) ;; Enables save history mode
   (make-backup-files nil) ;; Stop creating ~ backup files
   (auto-save-default nil) ;; Stop creating # auto save files
-  (mode-line-format nil)
-  (backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 
   :hook
   (before-save   . delete-trailing-whitespace)
@@ -91,7 +89,6 @@
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
-  (load custom-file 'noerror 'nomessage)
   :bind (
          ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
          ;; Zooming In/Out
@@ -104,15 +101,17 @@
   :init
   (evil-mode)
   :custom
-  (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
-  (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
-  (evil-want-C-i-jump nil)      ;; Disables C-i jump
-  (evil-undo-system 'undo-redo) ;; C-r to redo
+  (evil-want-keybinding nil) ;; Disable evil bindings in other modes (It's not consistent and not good)
+  ;; setup vim-style keybinds I like
+  (evil-want-C-u-scroll t)
+  (evil-want-C-d-scroll t)
+  (evil-undo-system 'undo-redo)
   ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
   :bind (:map evil-motion-state-map
               ("SPC" . nil)
               ("RET" . nil)
               ("TAB" . nil)))
+
 (use-package evil-collection
   :after evil
   :config
@@ -121,7 +120,6 @@
   (evil-collection-init))
 
 (add-hook 'prog-mode-hook #'hs-minor-mode)
-(add-hook 'org-mode-hook #'outline-minor-mode) ;; Org already uses outline
 
 ;; Optional: remap folding keys to Evil style in Org
 (with-eval-after-load 'evil
@@ -187,8 +185,6 @@
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  ;; treemacs integration
-  (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -198,14 +194,13 @@
   (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))
 
   ;; must manually set corfu frame-opacity
-  (when (featurep 'corfu)
-    (with-eval-after-load 'corfu
-      (setq corfu-prefer-childframe t)
-      (setq corfu-childframe-frame-parameters
-            '((alpha-background . ,(+ g/opacity 10))
-              (internal-border-width . 1)
-              (left-fringe . 5)
-              (right-fringe . 5))))))
+  (with-eval-after-load 'corfu
+    (setq corfu-prefer-childframe t)
+    (setq corfu-childframe-frame-parameters
+          '((alpha-background . ,(+ g/opacity 10))
+            (internal-border-width . 1)
+            (left-fringe . 5)
+            (right-fringe . 5)))))
 
 (add-hook 'window-setup-hook #'transparent-window-setup)
 
@@ -245,6 +240,7 @@
   :config
   (projectile-mode)
   :custom
+  (projectile-indexing-method 'alien)
   (projectile-run-use-comint-mode t)
   (projectile-switch-project-action #'projectile-dired)
   (projectile-project-search-path '("~/Documents/" "~/Repos/")))
@@ -259,24 +255,15 @@
           nix-ts-mode)
          . lsp-deferred)
   :custom
-  ;; Enable semantic tokens support
-  (lsp-semantic-tokens-enable t)
-  (lsp-semantic-tokens-allow-ranged-requests t)
-  (lsp-semantic-tokens-allow-delta-requests t)
-
-  ;; no breadcrumbs
-  (lsp-headerline-breadcrumb-enable nil)
-
-  ;; Integrations
-  (lsp-enable-which-key-integration t))
+  (lsp-idle-delay 0.5)                   ;; performance
+  (lsp-semantic-tokens-enable t)         ;; Enable semantic tokens support
+  (lsp-headerline-breadcrumb-enable nil) ;; no breadcrumbs
+  (lsp-enable-which-key-integration t))  ;; Integrations
 
 (use-package lsp-ui
   :commands lsp-ui-mode
   :config
   (setq lsp-ui-doc-enable nil))
-
-(use-package tree-sitter)
-(setq treesit-font-lock-level 4)
 
 (use-package treesit-auto
   :after (tree-sitter)
@@ -298,10 +285,8 @@
 (use-package nushell-mode)
 
 ;; compiled
-(if (executable-find "java") (use-package lsp-java))
-
-(when (executable-find "latex")
-  (use-package auctex))
+(use-package lsp-java)
+(use-package auctex)
 
 (defun set/clang/version ()
   (let ((raw (shell-command-to-string "clangd --version")))
@@ -318,11 +303,9 @@
     (add-hook 'c++-ts-mode-hook #'set/clang/version)
   (add-hook 'c++-ts-mode-hook #'set/clang/bin))
 
-(if (executable-find "nix")
-    (progn
-      (use-package nix-mode :mode "\\.nix\\'")
-      (use-package nix-ts-mode :mode "\\.nix\\'")
-      (setq lsp-nix-nixd-formatting-command ["alejandra"])))
+(use-package nix-mode :mode "\\.nix\\'")
+(use-package nix-ts-mode :mode "\\.nix\\'")
+(setq lsp-nix-nixd-formatting-command ["alejandra"])
 
 ;; for project files
 (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'"))
@@ -341,19 +324,17 @@
                                 (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
                                 (lsp-deferred))))
 
-(if (executable-find "cargo")
-    (progn
-      (use-package rust-mode
-        :init
-        (setq rust-mode-treesitter-derive t))
+(use-package rust-mode
+  :init
+  (setq rust-mode-treesitter-derive t))
 
-      (use-package rustic
-        :after (rust-mode)
-        :config
-        (setq rustic-format-on-save nil)
-        (setq rustic-lsp-client 'lsp-mode)
-        :custom
-        (rustic-cargo-use-last-stored-arguments t))))
+(use-package rustic
+  :after (rust-mode)
+  :config
+  (setq rustic-format-on-save nil)
+  (setq rustic-lsp-client 'lsp-mode)
+  :custom
+  (rustic-cargo-use-last-stored-arguments t))
 
 (use-package org
   :custom
