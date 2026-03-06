@@ -1,6 +1,6 @@
 #+title: emacs config
 #+Author: Chucklee1
-#+PROPERTY: header-args:elisp :tangle ./config.el :mkdirp yes
+#+PROPERTY: header-args:elisp :tangle ~/Repos/nixos-dotfiles/pkgs/emacs/config.el :mkdirp yes
 
 * Nix Overlay
 #+begin_src nix :tangle ./default.nix
