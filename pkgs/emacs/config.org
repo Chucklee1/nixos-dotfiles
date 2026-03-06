@@ -282,8 +282,6 @@ note C-b originally bound to buffer-list (because ibuffer is better)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
-    ;; treemacs integration
-    (doom-themes-treemacs-config)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
@@ -357,6 +355,7 @@ note C-b originally bound to buffer-list (because ibuffer is better)
     :config
     (projectile-mode)
     :custom
+    (projectile-indexing-method 'alien)
     (projectile-run-use-comint-mode t)
     (projectile-switch-project-action #'projectile-dired)
     (projectile-project-search-path '("~/Documents/" "~/Repos/")))
@@ -373,16 +372,10 @@ note C-b originally bound to buffer-list (because ibuffer is better)
             nix-ts-mode)
            . lsp-deferred)
     :custom
-    ;; Enable semantic tokens support
-    (lsp-semantic-tokens-enable t)
-    (lsp-semantic-tokens-allow-ranged-requests t)
-    (lsp-semantic-tokens-allow-delta-requests t)
-
-    ;; no breadcrumbs
-    (lsp-headerline-breadcrumb-enable nil)
-
-    ;; Integrations
-    (lsp-enable-which-key-integration t))
+    (lsp-idle-delay 0.5)                   ;; performance
+    (lsp-semantic-tokens-enable t)         ;; Enable semantic tokens support
+    (lsp-headerline-breadcrumb-enable nil) ;; no breadcrumbs
+    (lsp-enable-which-key-integration t))  ;; Integrations
 
   (use-package lsp-ui
     :commands lsp-ui-mode
@@ -392,9 +385,6 @@ note C-b originally bound to buffer-list (because ibuffer is better)
 ** Tree Sitter
 Tree, sitting...
 #+begin_src elisp
-  (use-package tree-sitter)
-  (setq treesit-font-lock-level 4)
-
   (use-package treesit-auto
     :after (tree-sitter)
     :custom
@@ -425,13 +415,9 @@ my system vs using a shell.
   (use-package nushell-mode)
 
   ;; compiled
-  (if (executable-find "java") (use-package lsp-java))
+  (use-package lsp-java)
+  (use-package auctex)
      #+end_src
-** LaTeX
-#+begin_src elisp
-  (when (executable-find "latex")
-    (use-package auctex))
-#+end_src
 ** clangd
 #+begin_src elisp
   (defun set/clang/version ()

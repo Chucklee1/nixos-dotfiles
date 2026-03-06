@@ -182,8 +182,6 @@
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  ;; treemacs integration
-  (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -239,6 +237,7 @@
   :config
   (projectile-mode)
   :custom
+  (projectile-indexing-method 'alien)
   (projectile-run-use-comint-mode t)
   (projectile-switch-project-action #'projectile-dired)
   (projectile-project-search-path '("~/Documents/" "~/Repos/")))
@@ -253,24 +252,15 @@
           nix-ts-mode)
          . lsp-deferred)
   :custom
-  ;; Enable semantic tokens support
-  (lsp-semantic-tokens-enable t)
-  (lsp-semantic-tokens-allow-ranged-requests t)
-  (lsp-semantic-tokens-allow-delta-requests t)
-
-  ;; no breadcrumbs
-  (lsp-headerline-breadcrumb-enable nil)
-
-  ;; Integrations
-  (lsp-enable-which-key-integration t))
+  (lsp-idle-delay 0.5)                   ;; performance
+  (lsp-semantic-tokens-enable t)         ;; Enable semantic tokens support
+  (lsp-headerline-breadcrumb-enable nil) ;; no breadcrumbs
+  (lsp-enable-which-key-integration t))  ;; Integrations
 
 (use-package lsp-ui
   :commands lsp-ui-mode
   :config
   (setq lsp-ui-doc-enable nil))
-
-(use-package tree-sitter)
-(setq treesit-font-lock-level 4)
 
 (use-package treesit-auto
   :after (tree-sitter)
@@ -292,10 +282,8 @@
 (use-package nushell-mode)
 
 ;; compiled
-(if (executable-find "java") (use-package lsp-java))
-
-(when (executable-find "latex")
-  (use-package auctex))
+(use-package lsp-java)
+(use-package auctex)
 
 (defun set/clang/version ()
   (let ((raw (shell-command-to-string "clangd --version")))
