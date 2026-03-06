@@ -82,7 +82,6 @@
   (make-backup-files nil) ;; Stop creating ~ backup files
   (auto-save-default nil) ;; Stop creating # auto save files
   (mode-line-format nil)
-  (backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 
   :hook
   (before-save   . delete-trailing-whitespace)
@@ -91,7 +90,6 @@
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
-  (load custom-file 'noerror 'nomessage)
   :bind (
          ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
          ;; Zooming In/Out
@@ -105,8 +103,6 @@
   (evil-mode)
   :custom
   (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
-  (evil-want-C-u-scroll t)      ;; Set C-u to scroll up
-  (evil-want-C-i-jump nil)      ;; Disables C-i jump
   (evil-undo-system 'undo-redo) ;; C-r to redo
   ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
   :bind (:map evil-motion-state-map
@@ -121,7 +117,6 @@
   (evil-collection-init))
 
 (add-hook 'prog-mode-hook #'hs-minor-mode)
-(add-hook 'org-mode-hook #'outline-minor-mode) ;; Org already uses outline
 
 ;; Optional: remap folding keys to Evil style in Org
 (with-eval-after-load 'evil
@@ -198,14 +193,13 @@
   (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))
 
   ;; must manually set corfu frame-opacity
-  (when (featurep 'corfu)
-    (with-eval-after-load 'corfu
-      (setq corfu-prefer-childframe t)
-      (setq corfu-childframe-frame-parameters
-            '((alpha-background . ,(+ g/opacity 10))
-              (internal-border-width . 1)
-              (left-fringe . 5)
-              (right-fringe . 5))))))
+  (with-eval-after-load 'corfu
+    (setq corfu-prefer-childframe t)
+    (setq corfu-childframe-frame-parameters
+          '((alpha-background . ,(+ g/opacity 10))
+            (internal-border-width . 1)
+            (left-fringe . 5)
+            (right-fringe . 5)))))
 
 (add-hook 'window-setup-hook #'transparent-window-setup)
 
@@ -318,11 +312,9 @@
     (add-hook 'c++-ts-mode-hook #'set/clang/version)
   (add-hook 'c++-ts-mode-hook #'set/clang/bin))
 
-(if (executable-find "nix")
-    (progn
-      (use-package nix-mode :mode "\\.nix\\'")
-      (use-package nix-ts-mode :mode "\\.nix\\'")
-      (setq lsp-nix-nixd-formatting-command ["alejandra"])))
+(use-package nix-mode :mode "\\.nix\\'")
+(use-package nix-ts-mode :mode "\\.nix\\'")
+(setq lsp-nix-nixd-formatting-command ["alejandra"])
 
 ;; for project files
 (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'"))
@@ -341,19 +333,17 @@
                                 (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
                                 (lsp-deferred))))
 
-(if (executable-find "cargo")
-    (progn
-      (use-package rust-mode
-        :init
-        (setq rust-mode-treesitter-derive t))
+(use-package rust-mode
+  :init
+  (setq rust-mode-treesitter-derive t))
 
-      (use-package rustic
-        :after (rust-mode)
-        :config
-        (setq rustic-format-on-save nil)
-        (setq rustic-lsp-client 'lsp-mode)
-        :custom
-        (rustic-cargo-use-last-stored-arguments t))))
+(use-package rustic
+  :after (rust-mode)
+  :config
+  (setq rustic-format-on-save nil)
+  (setq rustic-lsp-client 'lsp-mode)
+  :custom
+  (rustic-cargo-use-last-stored-arguments t))
 
 (use-package org
   :custom
