@@ -150,6 +150,9 @@
           "XF86AudioRaiseVolume" = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
           "XF86AudioLowerVolume" = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
           "XF86AudioMute" = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          "XF86AudioPlay" = sh "${get "playerctl"} play-pause";
+          "XF86AudioPrev" = sh "${get "playerctl"} previous";
+          "XF86AudioNext" = sh "${get "playerctl"} next";
           "XF86MonBrightnessUp" = sh "brightnessctl set 5%+";
           "XF86MonBrightnessDown" = sh "brightnessctl set 5%-";
           "XF86KbdBrightnessUp" = sh "brightnessctl --device=smc::kbd_backlight set 10%+";
@@ -158,19 +161,19 @@
           "Print".action.screenshot = [];
           "${mod}+Print".action.screenshot-window = [];
           # quits
-          "${mod}+Q".action = close-window;
-          "Ctrl+${mod}+Delete".action = quit;
-          "Ctrl+Shift+${mod}+Delete".action = quit {skip-confirmation = true;};
+          "${mod}+Q".action.close-window = [];
+          "Ctrl+${mod}+Delete".action.quit = [];
+          "Ctrl+Shift+${mod}+Delete".action.quit = {skip-confirmation = true;};
 
           # moving
-          "${mod}+Up".action = focus-window-or-workspace-up;
-          "${mod}+Down".action = focus-window-or-workspace-down;
-          "${mod}+Shift+Up".action = move-window-up-or-to-workspace-up;
-          "${mod}+Shift+Down".action = move-window-down-or-to-workspace-down;
-          "${mod}+Left".action = focus-column-left;
-          "${mod}+Right".action = focus-column-right;
-          "${mod}+Shift+Left".action = move-column-left;
-          "${mod}+Shift+Right".action = move-column-right;
+          "${mod}+Up".action.focus-window-or-workspace-up = [];
+          "${mod}+Down".action.focus-window-or-workspace-down = [];
+          "${mod}+Shift+Up".action.move-window-up-or-to-workspace-up = [];
+          "${mod}+Shift+Down".action.move-window-down-or-to-workspace-down = [];
+          "${mod}+Left".action.focus-column-left = [];
+          "${mod}+Right".action.focus-column-right = [];
+          "${mod}+Shift+Left".action.move-column-left = [];
+          "${mod}+Shift+Right".action.move-column-right = [];
 
           # column width - using = since + needs shift
           "${mod}+Minus".action = set-column-width "-10%";
@@ -180,16 +183,16 @@
           "${mod}+Ctrl+Minus".action = set-window-height "-10%";
           "${mod}+Ctrl+Equal".action = set-window-height "+10%";
           # window presets
-          "${mod}+R".action = switch-preset-column-width;
-          "${mod}+M".action = expand-column-to-available-width;
-          "${mod}+Ctrl+M".action = maximize-column;
-          "${mod}+Shift+M".action = fullscreen-window;
-          "${mod}+Period".action = consume-or-expel-window-right;
-          "${mod}+Comma".action = consume-or-expel-window-left;
+          "${mod}+R".action.switch-preset-column-width = [];
+          "${mod}+M".action.expand-column-to-available-width = [];
+          "${mod}+Ctrl+M".action.maximize-column = [];
+          "${mod}+Shift+M".action.fullscreen-window = [];
+          "${mod}+Period".action.consume-or-expel-window-right = [];
+          "${mod}+Comma".action.consume-or-expel-window-left = [];
           # layouts
-          "${mod}+t".action = toggle-column-tabbed-display;
-          "${mod}+f".action = switch-focus-between-floating-and-tiling;
-          "${mod}+Shift+f".action = toggle-window-floating;
+          "${mod}+t".action.toggle-column-tabbed-display = [];
+          "${mod}+f".action.switch-focus-between-floating-and-tiling = [];
+          "${mod}+Shift+f".action.toggle-window-floating = [];
         };
       };
     })
