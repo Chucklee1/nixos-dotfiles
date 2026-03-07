@@ -1,17 +1,10 @@
 {self, ...}: {
   nix = [
     # overlay
-    ({
-      lib,
-      config,
-      pkgs,
-      ...
-    }: let
+    ({pkgs, ...}: let
       emacs-pkg =
         if pkgs.stdenv.isDarwin
         then pkgs.emacs-macport
-        else if (config.services.xserver.enable)
-        then pkgs.emacs
         else pkgs.emacs-pgtk;
     in {
       nixpkgs.overlays = [
@@ -23,13 +16,10 @@
         [emacs-pkg]
         ++ (
           if pkgs.stdenv.isDarwin
-          then [pkgs.coreutils-prefixed]
+          then [pkgs.emacs-macport pkgs.coreutils-prefixed]
           else []
         );
-
-      services.emacs.enable = true;
-      services.emacs.defaultEditor = lib.mkForce true;
-      services.emacs.package = emacs-pkg;
+      envionment.variables.EDITOR = "emacseditor";
     })
   ];
 }

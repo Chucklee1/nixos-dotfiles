@@ -1,4 +1,5 @@
 {self, ...}: {
+
   # config based off of nixpkgs commit
   # 2ddc335e6f32b875e14ad9610101325b306a0add
   nix = [
@@ -44,10 +45,9 @@
         };
       })
     ({pkgs, ...}: {
-      services.xserver.enable = true;
       services.xserver.windowManager.exwmFixed = {
         enable = true;
-        executable = pkgs.emacs;
+        package = pkgs.emacs-exwm;
         loadScript = "${builtins.readFile "${self}/pkgs/emacs/exwm.el"}";
       };
     })
