@@ -31,8 +31,8 @@ with mod; {
     system.pkgconfig
     system.sys-specs
 
-    drivers.graphical
-    drivers.ext4
+    services.graphical
+    services.ext4
 
     shell.variables
     shell.zsh
@@ -49,7 +49,7 @@ with mod; {
       # boot.kernelModules = [ ];
       # boot.extraModulePackages = [ ];
 
-      # vm guest drivers
+      # vm guest services
       virtualisation.vmware.guest.enable = true;
       services.xserver.videoDriver = "modesetting";
       services.udev.enable = true;

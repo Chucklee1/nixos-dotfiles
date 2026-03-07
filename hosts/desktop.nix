@@ -39,8 +39,8 @@ with mod; {
     system.pkgconfig
     system.sys-specs
 
-    drivers.graphical
-    drivers.fcitx
+    services.graphical
+    services.fcitx
 
     shell.fish
     shell.nushell
@@ -119,24 +119,23 @@ with mod; {
       # gpu
       services.xserver.videoDrivers = ["amdgpu"];
     })
-    # monitor config
+    # monitor configuration
     ({
       lib,
       user,
       ...
     }: {
-      services.xserver.xrandrHeads = [
-        {
-          output = "DP-5"; # change to your monitor output
-          primary = true;
-          monitorConfig = ''
-            Option "PreferredMode" "1920x1080"
-            Option "TargetRefresh" "165.001"
-          '';
-        }
-      ];
-
       home-manager.users.${user} = {
+        # for xserver stuff
+        programs.autorandr = {
+          enable = true;
+          profiles.DisplayPort-3 = {
+            enable = true;
+            primary = true;
+            mode = "1920x1080";
+            rate = "165.00";
+          };
+        };
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
           input.mouse = lib.mkForce {accel-speed = -0.75;};
