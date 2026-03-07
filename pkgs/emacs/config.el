@@ -77,11 +77,10 @@
   (scroll-conservatively 10) ;; Smooth scrolling
   (scroll-margin 8)
 
-
+  ;; history
   (savehist-mode) ;; Enables save history mode
   (make-backup-files nil) ;; Stop creating ~ backup files
   (auto-save-default nil) ;; Stop creating # auto save files
-  (mode-line-format nil)
 
   :hook
   (before-save   . delete-trailing-whitespace)
@@ -102,13 +101,17 @@
   :init
   (evil-mode)
   :custom
-  (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
-  (evil-undo-system 'undo-redo) ;; C-r to redo
+  (evil-want-keybinding nil) ;; Disable evil bindings in other modes (It's not consistent and not good)
+  ;; setup vim-style keybinds I like
+  (evil-want-C-u-scroll t)
+  (evil-want-C-d-scroll t)
+  (evil-undo-system 'undo-redo)
   ;; Unmap keys in 'evil-maps. If not done, org-return-follows-link will not work
   :bind (:map evil-motion-state-map
               ("SPC" . nil)
               ("RET" . nil)
               ("TAB" . nil)))
+
 (use-package evil-collection
   :after evil
   :config
