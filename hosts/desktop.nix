@@ -124,20 +124,15 @@ with mod; {
     # monitor configuration
     ({
       lib,
+      pkgs,
       user,
       ...
     }: {
+      services.xserver.displayManager.setupCommands = ''
+        ${pkgs.xrandr}/bin/xrandr --output DisplayPort-3 --mode 1920x1080 --rate 165.00
+      '';
+
       home-manager.users.${user} = {
-        # for xserver stuff
-        programs.autorandr = {
-          enable = true;
-          profiles.DisplayPort-3 = {
-            enable = true;
-            primary = true;
-            mode = "1920x1080";
-            rate = "165.00";
-          };
-        };
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
           input.mouse = lib.mkForce {accel-speed = -0.75;};
