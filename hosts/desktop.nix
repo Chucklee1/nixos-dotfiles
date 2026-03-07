@@ -14,6 +14,7 @@ with mod; {
 
     programs.discord
     programs.emacs
+    programs.exwm
     programs.flatpak
     programs.git
     programs.kitty
@@ -41,6 +42,7 @@ with mod; {
 
     services.graphical
     services.fcitx
+    services.xserver
 
     shell.fish
     shell.nushell

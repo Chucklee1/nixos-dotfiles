@@ -1,4 +1,4 @@
-{
+{self, ...}: {
   # config based off of nixpkgs commit
   # 2ddc335e6f32b875e14ad9610101325b306a0add
   nix = [
@@ -38,9 +38,7 @@
         config = mkIf cfg.enable {
           services.xserver.windowManager.session = singleton {
             name = "exwm";
-            start = ''
-              ${exwm-emacs}/bin/emacs -l ${loadScript}
-            '';
+            start = ''${exwm-emacs}/bin/emacs -l ${loadScript}'';
           };
           environment.systemPackages = [exwm-emacs];
         };
@@ -50,9 +48,8 @@
       services.xserver.windowManager.exwmFixed = {
         enable = true;
         executable = pkgs.emacs;
-        loadScript = "${builtins.readFile ./exwm.el}";
+        loadScript = "${builtins.readFile "${self}/pkgs/emacs/exwm.el"}";
       };
     })
   ];
 }
-# ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image} &
