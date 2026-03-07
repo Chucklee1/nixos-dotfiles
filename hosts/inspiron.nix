@@ -30,8 +30,8 @@ with mod; {
     system.pkgconfig
     system.sys-specs
 
-    drivers.graphical
-    drivers.ext4
+    services.graphical
+    services.ext4
 
     shell.variables
     shell.zsh

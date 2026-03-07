@@ -30,7 +30,7 @@ with mod; {
     system.pkgconfig
     system.sys-specs
 
-    drivers.graphical
+    services.graphical
 
     shell.variables
     shell.fish
