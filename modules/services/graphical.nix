@@ -65,6 +65,7 @@
         udisks
         mpv-unwrapped
         pavucontrol
+        playerctl
       ];
       programs.dconf.enable = true;
       services = {
