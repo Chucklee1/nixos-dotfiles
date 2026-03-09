@@ -14,6 +14,7 @@ with mod; {
 
     programs.discord
     programs.emacs
+    programs.nixvim
     programs.flatpak
     programs.git
     programs.kitty
@@ -57,20 +58,26 @@ with mod; {
     WD = "ff111615-41d4-4836-8adc-c9374e08bee9";
     EFI = "5F4E-A7BB"; # on same device as WD
     EVO = "5a5dcb04-31cb-4fae-8fbe-1e8e83a83501";
+    SEGATE = "0896390c-3618-46ea-a7cf-1f063694afb7";
     # passing fsType first to allow for specifying mkfs.fsType when calling
     # if there are no options, pass an empty list
-    mkfs' = fsType: path: uuid: options: {
-      fileSystems."${path}" = {
-        device = "/dev/disk/by-uuid/${uuid}";
-        inherit fsType options;
-      };
+    mkfs' = fsType: path: device: options: {
+      fileSystems."${path}" =
+        {
+          inherit device fsType;
+        }
+        // (
+          if (options == null)
+          then {}
+          else {inherit options;}
+        );
     };
 
     mkfs = {
-      btrfs = path: uuid: options: mkfs' "btrfs" path uuid options;
-      ext4 = path: uuid: options: mkfs' "ext4" path uuid options;
-      vfat = path: uuid: options: mkfs' "vfat" path uuid options;
-      nfs = path: uuid: mkfs' "nfs" path device [];
+      btrfs = path: uuid: options: mkfs' "btrfs" path "/dev/disk/by-uuid/${uuid}" options;
+      ext4 = path: uuid: options: mkfs' "ext4" path "/dev/disk/by-uuid/${uuid}" options;
+      vfat = path: uuid: options: mkfs' "vfat" path "/dev/disk/by-uuid/${uuid}" options;
+      nfs = path: device: options: mkfs' "nfs" path device options;
     };
   in [
     (mkfs.vfat "/boot/EFI" EFI ["fmask=0022" "dmask=0022"])
@@ -87,6 +94,8 @@ with mod; {
 
     (mkfs.btrfs "/.snapshots/WD" WD ["subvol=WD/.snapshots" "noatime" "compress=zstd"])
     (mkfs.btrfs "/.snapshots/EVO" EVO ["subvol=EVO/.snapshots" "noatime" "compress=zstd"])
+
+    (mkfs.ext4 "/srv/Pictures" SEGATE null)
     ({pkgs, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/EFI";
@@ -126,16 +135,6 @@ with mod; {
       ...
     }: {
       home-manager.users.${user} = {
-        # for xserver stuff
-        programs.autorandr = {
-          enable = true;
-          profiles.DisplayPort-3 = {
-            enable = true;
-            primary = true;
-            mode = "1920x1080";
-            rate = "165.00";
-          };
-        };
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
           input.mouse = lib.mkForce {accel-speed = -0.75;};
