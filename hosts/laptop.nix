@@ -48,6 +48,16 @@ with mod; {
       user,
       ...
     }: {
+      # dual boot entry so I dont need a seperate bootloader for arch
+      boot.loader.grub.extraEntries = ''
+        menuentry "arch" {
+          insmod btrfs
+          search --no-floppy --fs-uuid --set=root 214653ac-2b13-441b-b405-46c709061f7a
+          linux /arch/boot/vmlinuz-linux root=UUID=214653ac-2b13-441b-b405-46c709061f7a rw rootflags=subvol=/arch/root
+          initrd /arch/boot/initramfs-linux.img
+        }
+      '';
+
       boot.initrd = {
         enable = true;
         supportedFilesystems = ["nfs" "btrfs"];
