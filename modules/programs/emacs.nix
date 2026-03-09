@@ -26,10 +26,6 @@
           then [pkgs.coreutils-prefixed]
           else []
         );
-
-      services.emacs.enable = true;
-      services.emacs.defaultEditor = lib.mkForce true;
-      services.emacs.package = emacs-pkg;
     })
   ];
 }
