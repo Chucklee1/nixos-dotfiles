@@ -237,8 +237,6 @@
   (evil-terminal-cursor-changer-activate))
 
 (use-package projectile
-  :config
-  (projectile-mode)
   :custom
   (projectile-indexing-method 'alien)
   (projectile-run-use-comint-mode t)

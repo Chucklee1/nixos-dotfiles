@@ -355,8 +355,6 @@
 + Hmmm, project-ile, maybe has to do with projects?
 #+begin_src elisp
   (use-package projectile
-    :config
-    (projectile-mode)
     :custom
     (projectile-indexing-method 'alien)
     (projectile-run-use-comint-mode t)
