@@ -39,12 +39,12 @@
       with config.lib.stylix.colors.withHashtag; let
         # helpers
         get = pkg: lib.getExe pkgs.${pkg};
-        sh = x: {action = spawn "sh" "-c" x;};
+        sh = x: {action = spawn-sh x;};
       in {
         # general
         hotkey-overlay.skip-at-startup = machine != "umbra";
         prefer-no-csd = true;
-        screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y%m%d-%H%M%S.png";
+        screenshot-path = "~/Pictures/Screenshots/Screenshot-%Y%m%d-%H%M%S.png";
         environment = {
           NIXOS_OZONE_WL = "1";
           MOZ_ENABLE_WAYLAND = "1";
@@ -73,8 +73,6 @@
             numlock = true;
           };
           mouse.accel-speed = 0.0;
-          tablet.map-to-output = "eDP-1";
-          touch.map-to-output = "eDP-1";
           touchpad = {
             tap = true;
             dwt = true;
@@ -141,7 +139,7 @@
           # programs
           "${mod}+Return" = sh "kitty";
           "${mod}+E" = sh "emacs";
-          "${mod}+Shift+B" = sh "zen";
+          "${mod}+Shift+B" = sh "zen-twilight";
           "${mod}+Space" = sh wmenu;
           "${mod}+Shift+L" = sh "swaylock";
           "${mod}+W" = sh toggleWaybar;
