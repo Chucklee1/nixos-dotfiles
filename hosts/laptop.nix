@@ -36,6 +36,7 @@ with mod; {
     shell.fish
 
     theming.stylix
+    theming.blockgame
     theming.themes.nord
   ];
 

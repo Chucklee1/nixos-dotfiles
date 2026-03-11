@@ -32,6 +32,8 @@
     # ---- theming ----
     stylix.url = "github:danth/stylix";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
+    minecraft-plymouth-theme.url = "github:nikp123/minecraft-plymouth-theme";
+    minecraft-plymouth-theme.inputs.nixpkgs.follows = "nixpkgs";
     minesddm.url = "github:Davi-S/sddm-theme-minesddm/development";
     quickshell.url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
     quickshell.inputs.nixpkgs.follows = "nixpkgs";

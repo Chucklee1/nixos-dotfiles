@@ -11,6 +11,23 @@
         boot-options-count = 4;
       };
     }
+    # ---- plymouth theme ----
+    inputs.minecraft-plymouth-theme.nixosModules.default
+    {
+      stylix.targets.plymouth.enable = false;
+      boot = {
+        plymouth.enable = true;
+        plymouth.plymouth-minecraft-theme.enable = true;
+        # quiet boot
+        consoleLogLevel = 3;
+        initrd.verbose = false;
+        kernelParams = [
+          "quiet"
+          "udev.log_level=3"
+          "systemd.show_status=auto"
+        ];
+      };
+    }
     # ---- sddm theme ----
     inputs.minesddm.nixosModules.default
     ({pkgs, ...}: {
