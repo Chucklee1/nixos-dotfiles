@@ -50,8 +50,6 @@ with mod; {
     theming.blockgame
     theming.stylix
     theming.themes.nord
-
-    virt.qemu
   ];
 
   extraConfig = let
@@ -80,11 +78,13 @@ with mod; {
       nfs = path: device: options: mkfs' "nfs" path device options;
     };
   in [
-    (mkfs.vfat "/boot/EFI" EFI ["fmask=0022" "dmask=0022"])
+    inputs.impermanence.nixosModules.impermanence
+    (mkfs.vfat "/boot/efi" EFI ["fmask=0022" "dmask=0022"])
     (mkfs.btrfs "/boot" WD ["subvol=WD/nixos/boot" "noatime"])
+    (mkfs.btrfs "/persist" WD ["subvol=WD/nixos/persist" "noatime" "compress=zstd"])
     (mkfs.btrfs "/nix" WD ["subvol=WD/nix" "noatime" "compress=zstd"])
 
-    (mkfs.btrfs "/" WD ["subvol=WD/nixos" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/" WD ["subvol=WD/nixos/root" "relatime" "compress=zstd"])
 
     (mkfs.btrfs "/opt" EVO ["subvol=EVO/opt" "noatime"])
     (mkfs.btrfs "/opt/Games" EVO ["subvol=EVO/Games" "noatime"])
@@ -96,9 +96,11 @@ with mod; {
     (mkfs.btrfs "/.snapshots/EVO" EVO ["subvol=EVO/.snapshots" "noatime" "compress=zstd"])
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
-    ({pkgs, ...}: {
+
+    ({lib, pkgs, user, ...}: {
       swapDevices = [];
-      boot.loader.efi.efiSysMountPoint = "/boot/EFI";
+      fileSystems."/persist".neededForBoot = true;
+      boot.loader.efi.efiSysMountPoint = "/boot/efi";
       boot.loader.grub.useOSProber = true;
       # dual boot entry so I dont need a seperate bootloader for arch
       boot.loader.grub.extraEntries = ''
@@ -114,6 +116,24 @@ with mod; {
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm" "kvm_amd" "ntsync"];
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
+      boot.initrd.postResumeCommands = lib.mkAfter ''
+          mkdir -p /mnt
+          mount -o subvolid=5 /dev/disk/by-label/WD /mnt
+
+          btrfs subvolume list -o /mnt/WD/nixos/root |
+          cut -f9 -d' ' |
+          while read subvolume; do
+              echo "deleting $subvolume subvolume..."
+              btrfs subvolume delete "/mnt/$subvolume"
+          done &&
+          echo "deleting nixos/root subvolume..." &&
+          btrfs subvolume delete /mnt/WD/nixos/root
+
+          echo "restoring blank nix/root subvolume..."
+          btrfs subvolume snapshot /mnt/WD/nixos/root_blank /mnt/WD/nixos/root
+
+          umount /mnt
+        '';
 
       # cachyos kernel
       nix.settings.substituters = ["https://cache.garnix.io"];
@@ -127,6 +147,46 @@ with mod; {
 
       # gpu
       services.xserver.videoDrivers = ["amdgpu"];
+
+      # user persistance stuff
+      users.mutableUsers = false;
+      users.users.${user}.hashedPasswordFile = "/persist/passwords/goat";
+
+      environment.persistence."/persist" = {
+        hideMounts = true;
+        directories = [
+          "/var/log"
+          "/var/lib/bluetooth"
+          "/var/lib/nixos"
+          "/var/lib/systemd/coredump"
+          "/var/lib/tailscale"
+          "/etc/NetworkManager/system-connections"
+        ];
+        files = [
+          "/etc/machine-id"
+        ];
+        users.${user} = {
+          directories = [
+            "Downloads"
+            "Documents"
+            "Videos"
+            "Repos"
+            {
+              directory = ".ssh";
+              mode = "0700";
+            }
+            {
+              directory = ".local/share/keyrings";
+              mode = "0700";
+            }
+            ".local/share/direnv"
+            ".local/share/zoxide"
+            ".local/state/syncthing"
+            ".cache/zen"
+            ".config/zen"
+          ];
+        };
+      };
     })
     # monitor configuration
     ({
@@ -135,6 +195,40 @@ with mod; {
       ...
     }: {
       home-manager.users.${user} = {
+        programs.fish.loginShellInit = ''
+          set -g dotfiles $HOME/Repos/nixos-dotfiles
+          set -g emacs_dir $HOME/.emacs.d
+
+          # symlink dotfiles to user root
+          if not test -d $HOME/nixos-dotfiles
+              echo "symlinking $dotfiles to $HOME"
+              ln -s $dotfiles $HOME
+          else
+              echo "$HOME/nixos-dotfiles already exist"
+          end
+
+          if not test -d $emacs_dir; mkdir $emacs_dir; end
+          if test -d $emacs_dir/snippets; rm -rf $emacs_dir/snippets; end
+          ln -s $dotfiles/pkgs/emacs/snippets $emacs_dir/
+
+          # same for emacs config
+          if not test -f $emacs_dir/init.el
+              echo "symlinking $dotfiles/pkgs/emacs/config.el to $emacs_dir/init.el"
+              ln -s $dotfiles/pkgs/emacs/config.el $emacs_dir/init.el
+          else
+              echo "$emacs_dir/init.el already exist"
+          end
+
+          set -e dotrepo
+          set -e emacs_dir
+
+          # opt symlinks
+          ln -s /opt/Steam $HOME/.local/share/
+          for file in /opt/Games*; ln -s $file $HOME/.local/share/; end
+
+          # srv symlinks
+          ln -s /srv/Pictures $HOME/
+        '';
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
           input.mouse = lib.mkForce {accel-speed = -0.75;};
