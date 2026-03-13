@@ -97,7 +97,12 @@ with mod; {
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
 
-    ({lib, pkgs, user, ...}: {
+    ({
+      lib,
+      pkgs,
+      user,
+      ...
+    }: {
       swapDevices = [];
       fileSystems."/persist".neededForBoot = true;
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
@@ -117,23 +122,23 @@ with mod; {
       boot.kernelModules = ["kvm" "kvm_amd" "ntsync"];
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
       boot.initrd.postResumeCommands = lib.mkAfter ''
-          mkdir -p /mnt
-          mount -o subvolid=5 /dev/disk/by-label/WD /mnt
+        mkdir -p /mnt
+        mount -o subvolid=5 /dev/disk/by-label/WD /mnt
 
-          btrfs subvolume list -o /mnt/WD/nixos/root |
-          cut -f9 -d' ' |
-          while read subvolume; do
-              echo "deleting $subvolume subvolume..."
-              btrfs subvolume delete "/mnt/$subvolume"
-          done &&
-          echo "deleting nixos/root subvolume..." &&
-          btrfs subvolume delete /mnt/WD/nixos/root
+        btrfs subvolume list -o /mnt/WD/nixos/root |
+        cut -f9 -d' ' |
+        while read subvolume; do
+            echo "deleting $subvolume subvolume..."
+            btrfs subvolume delete "/mnt/$subvolume"
+        done &&
+        echo "deleting nixos/root subvolume..." &&
+        btrfs subvolume delete /mnt/WD/nixos/root
 
-          echo "restoring blank nix/root subvolume..."
-          btrfs subvolume snapshot /mnt/WD/nixos/root_blank /mnt/WD/nixos/root
+        echo "restoring blank nix/root subvolume..."
+        btrfs subvolume snapshot /mnt/WD/nixos/root_blank /mnt/WD/nixos/root
 
-          umount /mnt
-        '';
+        umount /mnt
+      '';
 
       # cachyos kernel
       nix.settings.substituters = ["https://cache.garnix.io"];
@@ -151,7 +156,6 @@ with mod; {
       # user persistance stuff
       users.mutableUsers = false;
       users.users.${user}.hashedPasswordFile = "/persist/passwords/goat";
-
       environment.persistence."/persist" = {
         hideMounts = true;
         directories = [
@@ -184,6 +188,8 @@ with mod; {
             ".local/state/syncthing"
             ".cache/zen"
             ".config/zen"
+            ".config/discord"
+            ".var"
           ];
         };
       };
@@ -225,6 +231,7 @@ with mod; {
           # opt symlinks
           ln -s /opt/Steam $HOME/.local/share/
           for file in /opt/Games*; ln -s $file $HOME/.local/share/; end
+          ln -s /srv/Games $HOME/
 
           # srv symlinks
           ln -s /srv/Pictures $HOME/
