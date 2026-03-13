@@ -4,6 +4,8 @@
     ({pkgs, ...}: {
       services.flatpak = {
         enable = true;
+        update.onActivation = true;
+
         packages = [
           rec {
             appId = "com.hypixel.HytaleLauncher";
@@ -13,7 +15,7 @@
               inherit sha256;
             }}";
           }
-          "us.zoom.Zoom"
+          "com.github.IsmaelMartinez.teams_for_linux"
         ];
         overrides = {
           global = {
@@ -30,14 +32,14 @@
           };
           # No Wayland support
           "com.hypixel.HytaleLauncher".Context.sockets = ["x11"];
-          "us.zoom.Zoom".Context.sockets = ["x11"];
+          "com.github.IsmaelMartinez.teams_for_linux".Context.sockets = ["x11"];
         };
       };
 
       # bin scripts for dmemu/wmenu to access
       environment.systemPackages = [
         (pkgs.writeShellScriptBin "hytale" "flatpak run com.hypixel.HytaleLauncher")
-        (pkgs.writeShellScriptBin "zoom" "flatpak run us.zoom.Zoom")
+        (pkgs.writeShellScriptBin "msteams" "flatpak com.github.IsmaelMartinez.teams_for_linux")
       ];
     })
   ];
