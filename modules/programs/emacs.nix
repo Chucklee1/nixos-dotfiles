@@ -1,12 +1,7 @@
 {self, ...}: {
   nix = [
     # overlay
-    ({
-      lib,
-      config,
-      pkgs,
-      ...
-    }: let
+    ({config, pkgs, ...}: let
       emacs-pkg =
         if pkgs.stdenv.isDarwin
         then pkgs.emacs-macport
