@@ -134,9 +134,9 @@
 (global-set-key (kbd "C-c l") emap/lsp)
 
 (helper/mapkeys emap/lsp
-                '(("f" . lsp-format-buffer)
-                  ("r" . lsp-rename)
-                  ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
+                '(("f" . eglot-format-buffer)
+                  ("r" . eglot-rename)
+                  ("i" . imenu)))
 
 (defvar emap/toggle (make-sparse-keymap))
 (global-set-key (kbd "C-c t") emap/toggle)
@@ -243,25 +243,20 @@
   (projectile-switch-project-action #'projectile-dired)
   (projectile-project-search-path '("~/Documents/" "~/Repos/")))
 
-(use-package lsp-mode
-  :commands lsp lsp-deferred
+(use-package eglot
+  :ensure nil
   :hook ((c-ts-mode
           c++-ts-mode
           haskell-mode
           java-mode
           lua-mode
           nix-ts-mode)
-         . lsp-deferred)
+         . eglot-ensure)
   :custom
-  (lsp-idle-delay 0.5)                   ;; performance
-  (lsp-semantic-tokens-enable t)         ;; Enable semantic tokens support
-  (lsp-headerline-breadcrumb-enable nil) ;; no breadcrumbs
-  (lsp-enable-which-key-integration t))  ;; Integrations
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq lsp-ui-doc-enable nil))
+  (eglot-sync-connect 0)  ;; async startup
+  (eglot-autoshutdown t) ;; kill server when last buffer closes
+  (eglot-events-buffer-size 0) ;; prevent huge debug buffers
+  )
 
 (use-package treesit-auto
   :after (tree-sitter)
@@ -311,16 +306,16 @@
 ;; provided by nix
 (use-package qml-ts-mode
   :ensure nil
-  :after lsp-mode
+  :mode "\\.qml\\'"
   :config
-  (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
-                    :activation-fn (lsp-activate-on "qml-ts")
-                    :server-id 'qmlls))
-  (add-hook 'qml-ts-mode-hook (lambda ()
-                                (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
-                                (lsp-deferred))))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(qml-ts-mode . ("qmlls"))))
+  :hook
+  ((qml-ts-mode . eglot-ensure)
+   (qml-ts-mode . (lambda ()
+                    (setq-local electric-indent-chars
+                                '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))))))
 
 (use-package rust-mode
   :init
@@ -330,7 +325,7 @@
   :after (rust-mode)
   :config
   (setq rustic-format-on-save nil)
-  (setq rustic-lsp-client 'lsp-mode)
+  (setq rustic-lsp-client 'eglot)
   :custom
   (rustic-cargo-use-last-stored-arguments t))
 

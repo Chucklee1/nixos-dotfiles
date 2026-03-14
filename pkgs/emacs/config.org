@@ -361,27 +361,24 @@
     (projectile-switch-project-action #'projectile-dired)
     (projectile-project-search-path '("~/Documents/" "~/Repos/")))
 #+end_src
-** LSP-Mode
+** Eglot
+I love lsp-mode semantic tokens but oh boy, it was
+a pain working with c++ files...
 #+begin_src elisp
-  (use-package lsp-mode
-    :commands lsp lsp-deferred
+  (use-package eglot
+    :ensure nil
     :hook ((c-ts-mode
             c++-ts-mode
             haskell-mode
             java-mode
             lua-mode
             nix-ts-mode)
-           . lsp-deferred)
+           . eglot-ensure)
     :custom
-    (lsp-idle-delay 0.5)                   ;; performance
-    (lsp-semantic-tokens-enable t)         ;; Enable semantic tokens support
-    (lsp-headerline-breadcrumb-enable nil) ;; no breadcrumbs
-    (lsp-enable-which-key-integration t))  ;; Integrations
-
-  (use-package lsp-ui
-    :commands lsp-ui-mode
-    :config
-    (setq lsp-ui-doc-enable nil))
+    (eglot-sync-connect 0)  ;; async startup
+    (eglot-autoshutdown t) ;; kill server when last buffer closes
+    (eglot-events-buffer-size 0) ;; prevent huge debug buffers
+    )
 #+end_src
 ** Tree Sitter
 Tree, sitting...
@@ -451,16 +448,16 @@ begin nix only block
   ;; provided by nix
   (use-package qml-ts-mode
     :ensure nil
-    :after lsp-mode
+    :mode "\\.qml\\'"
     :config
-    (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
-    (lsp-register-client
-     (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls"))
-                      :activation-fn (lsp-activate-on "qml-ts")
-                      :server-id 'qmlls))
-    (add-hook 'qml-ts-mode-hook (lambda ()
-                                  (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
-                                  (lsp-deferred))))
+    (with-eval-after-load 'eglot
+      (add-to-list 'eglot-server-programs
+                   '(qml-ts-mode . ("qmlls"))))
+    :hook
+    ((qml-ts-mode . eglot-ensure)
+     (qml-ts-mode . (lambda ()
+                      (setq-local electric-indent-chars
+                                  '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))))))
 #+end_src
 ** Rust
 #+begin_src elisp
@@ -472,7 +469,7 @@ begin nix only block
     :after (rust-mode)
     :config
     (setq rustic-format-on-save nil)
-    (setq rustic-lsp-client 'lsp-mode)
+    (setq rustic-lsp-client 'eglot)
     :custom
     (rustic-cargo-use-last-stored-arguments t))
 #+end_src
