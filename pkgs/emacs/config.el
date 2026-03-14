@@ -338,7 +338,7 @@
         ;; Org styling, hide markup etc.
         org-hide-emphasis-markers t
         org-pretty-entities t
-        ;; use ... for folded text
+        ;; use [...] for folded text
         org-ellipsis " [...]"))
 
 (set-face-attribute 'org-document-title nil :height 1.3 :weight 'bold)
@@ -413,11 +413,11 @@
 (use-package cape
   :after corfu
   :init
-  (add-hook 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
-  (add-hook 'completion-at-point-functions #'cape-file) ;; Path completion
-  (add-hook 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
-  (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
-  (add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
+  (add-to-list 'completion-at-point-functions #'cape-file) ;; Path completion
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
+  (add-to-list 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
+  (add-to-list 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
   )
 
 (use-package flycheck
@@ -455,6 +455,11 @@
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets)
+
+(use-package yasnippet-capf
+  :after cape
+  :config
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (use-package magit
   :custom (magit-diff-refine-hunk (quote all)) ;; Shows inline diff
@@ -505,17 +510,6 @@
   (set-face-attribute 'flycheck-info nil
                       :inherit 'success
                       :underline t))
-
-(with-eval-after-load 'lsp-modeline
-  ;; icon overrides
-  (setq lsp-modeline-code-action-fallback-icon "")
-  (setq lsp-progress-prefix "")
-
-  ;; color overrides
-  (set-face-attribute 'lsp-modeline-code-actions-preferred-face nil
-                      :foreground (doom/colors 'yellow))
-  (set-face-attribute 'lsp-modeline-code-actions-face nil
-                      :foreground (doom/colors 'blue)))
 
 (when (eq system-type 'darwin)
   (progn

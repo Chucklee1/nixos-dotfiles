@@ -211,9 +211,9 @@
   (global-set-key (kbd "C-c l") emap/lsp)
 
   (helper/mapkeys emap/lsp
-                  '(("f" . lsp-format-buffer)
-                    ("r" . lsp-rename)
-                    ("i" . (lambda () (interactive) (helper/buffer/toggle "lsp-ui-imenu")))))
+                  '(("f" . eglot-format-buffer)
+                    ("r" . eglot-rename)
+                    ("i" . imenu)))
 #+end_src
 *** toggle
 #+begin_src elisp
@@ -487,7 +487,7 @@ begin nix only block
           ;; Org styling, hide markup etc.
           org-hide-emphasis-markers t
           org-pretty-entities t
-          ;; use ... for folded text
+          ;; use [...] for folded text
           org-ellipsis " [...]"))
         #+end_src
 + Facename cheatsheet:
@@ -588,15 +588,15 @@ begin nix only block
 ** Cape
 + Completion extensions
 #+begin_src elisp
-(use-package cape
-  :after corfu
-  :init
-  (add-hook 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
-  (add-hook 'completion-at-point-functions #'cape-file) ;; Path completion
-  (add-hook 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
-  (add-hook 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
-  (add-hook 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
-  )
+  (use-package cape
+    :after corfu
+    :init
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev) ;; Complete word from current buffers
+    (add-to-list 'completion-at-point-functions #'cape-file) ;; Path completion
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block) ;; Complete elisp in Org or Markdown mode
+    (add-to-list 'completion-at-point-functions #'cape-keyword) ;; Keyword completion
+    (add-to-list 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
+    )
 #+end_src
 ** Flycheck
 + Checks your fly...
@@ -644,9 +644,16 @@ begin nix only block
     :config
     (yas-global-mode 1))
 #+end_src
-+ Additional pre-made snippets
+Additional pre-made snippets
 #+begin_src elisp
   (use-package yasnippet-snippets)
+#+end_src
+Cape integration with yansnippets
+#+begin_src elisp
+  (use-package yasnippet-capf
+    :after cape
+    :config
+    (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 #+end_src
 
 -----
@@ -722,21 +729,6 @@ flycheck
                         :inherit 'success
                         :underline t))
 #+end_src
-lsp-mode
-#+begin_src elisp
-
-  (with-eval-after-load 'lsp-modeline
-    ;; icon overrides
-    (setq lsp-modeline-code-action-fallback-icon "")
-    (setq lsp-progress-prefix "")
-
-    ;; color overrides
-    (set-face-attribute 'lsp-modeline-code-actions-preferred-face nil
-                        :foreground (doom/colors 'yellow))
-    (set-face-attribute 'lsp-modeline-code-actions-face nil
-                        :foreground (doom/colors 'blue)))
-#+end_src
-
 -----
 
 * Darwin fixes
