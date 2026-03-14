@@ -24,6 +24,7 @@ with mod; {
     programs.rmpc
     programs.waybar
     programs.yazi
+    programs.chromium
     programs.zen-browser
 
     software.dev
