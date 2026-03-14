@@ -13,7 +13,7 @@ with mod; {
     net.tailscale
     net.the-server
 
-    programs.librewolf
+    programs.qutebrowser
     programs.nixvim
     programs.git
     programs.kitty
@@ -34,9 +34,8 @@ with mod; {
     services.ext4
 
     shell.variables
-    shell.zsh
+    shell.bash
 
-    theming.blockgame
     theming.stylix
     theming.themes.nord
   ];

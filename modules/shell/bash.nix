@@ -6,7 +6,7 @@
       };
         
       # Average "simple" posix complient shell prompt
-      enviornment.variable.PS1 = "\033[31m┌─[\033[0m\033[1m\u\033[31m]\033[35m \w\n\033[31m└>\033[0m ";
+      environment.variable.PS1 = "\033[31m┌─[\033[0m\033[1m\u\033[31m]\033[35m \w\n\033[31m└>\033[0m ";
     }
   ];
 }
