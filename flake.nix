@@ -16,6 +16,10 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
 
+    # ---- secrets ----
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # ---- macos - base ----
     nix-darwin.url = "github:LnL7/nix-darwin/master";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -35,6 +39,8 @@
     minecraft-plymouth-theme.url = "github:nikp123/minecraft-plymouth-theme";
     minecraft-plymouth-theme.inputs.nixpkgs.follows = "nixpkgs";
     minesddm.url = "github:Davi-S/sddm-theme-minesddm/development";
+
+    # ---- quickshell ----
     quickshell.url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
     quickshell.inputs.nixpkgs.follows = "nixpkgs";
     qml-niri.url = "github:imiric/qml-niri/main";

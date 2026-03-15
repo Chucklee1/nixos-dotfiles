@@ -98,14 +98,8 @@ with mod; {
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
 
-    ({
-      lib,
-      pkgs,
-      user,
-      ...
-    }: {
+    ({pkgs, ...}: {
       swapDevices = [];
-      fileSystems."/persist".neededForBoot = true;
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
       boot.loader.grub.useOSProber = true;
       # dual boot entry so I dont need a seperate bootloader for arch
@@ -122,6 +116,23 @@ with mod; {
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm" "kvm_amd" "ntsync"];
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
+
+      # cachyos kernel
+      nix.settings.substituters = ["https://cache.garnix.io"];
+      nix.settings.trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
+      nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
+      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+
+      # cpu
+      hardware.cpu.amd.updateMicrocode = true;
+      hardware.enableRedistributableFirmware = true;
+
+      # gpu
+      services.xserver.videoDrivers = ["amdgpu"];
+    })
+    # impermenance setup
+    ({lib, user, ...}: {
+      fileSystems."/persist".neededForBoot = true;
       boot.initrd.postResumeCommands = lib.mkAfter ''
         mkdir -p /mnt
         mount -o subvolid=5 /dev/disk/by-label/WD /mnt
@@ -141,22 +152,8 @@ with mod; {
         umount /mnt
       '';
 
-      # cachyos kernel
-      nix.settings.substituters = ["https://cache.garnix.io"];
-      nix.settings.trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
-      nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
-      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
-
-      # cpu
-      hardware.cpu.amd.updateMicrocode = true;
-      hardware.enableRedistributableFirmware = true;
-
-      # gpu
-      services.xserver.videoDrivers = ["amdgpu"];
-
       # user persistance stuff
       users.mutableUsers = false;
-      users.users.${user}.hashedPasswordFile = "/persist/passwords/goat";
       environment.persistence."/persist" = {
         hideMounts = true;
         directories = [
@@ -196,7 +193,19 @@ with mod; {
         };
       };
     })
-    # monitor configuration
+    # sops
+    inputs.sops-nix.nixosModules.sops
+    ({config, pkgs, user, ...}: {
+      environment.systemPackages = [pkgs.sops];
+      # note: must rebuild system for secrets.yaml changes to take affect
+      sops.defaultSopsFile = ../secrets.yaml;
+      sops.defaultSopsFormat = "yaml";
+      sops.age.keyFile = "/persist/secrets/age.keys.txt";
+      sops.secrets = {
+        "gregtrain/goat".neededForUsers = true;
+      };
+      users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
+    })
     ({
       lib,
       user,
