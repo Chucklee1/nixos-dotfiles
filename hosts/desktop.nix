@@ -24,6 +24,7 @@ with mod; {
     programs.rmpc
     programs.waybar
     programs.yazi
+    programs.chromium
     programs.zen-browser
 
     software.dev
@@ -173,7 +174,6 @@ with mod; {
           directories = [
             "Downloads"
             "Documents"
-            "Videos"
             "Repos"
             {
               directory = ".ssh";
@@ -183,12 +183,14 @@ with mod; {
               directory = ".local/share/keyrings";
               mode = "0700";
             }
-            ".local/share/direnv"
-            ".local/share/zoxide"
-            ".local/state/syncthing"
             ".cache/zen"
-            ".config/zen"
             ".config/discord"
+            ".config/listenbrainz-mpd"
+            ".config/zen"
+            ".local/share/direnv"
+            ".local/share/mpd"
+            ".local/state/syncthing"
+            ".local/share/zoxide"
             ".var"
           ];
         };
@@ -230,12 +232,14 @@ with mod; {
 
           # opt symlinks
           ln -s /opt/Steam $HOME/.local/share/
-          for file in /opt/Games*; ln -s $file $HOME/.local/share/; end
-          ln -s /srv/Games $HOME/
+          for file in /opt/Games/*; ln -s $file $HOME/.local/share/; end
+          ln -s /opt/Games $HOME/
 
           # srv symlinks
           ln -s /srv/Pictures $HOME/
         '';
+
+        # monitor configuration
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
           input.mouse = lib.mkForce {accel-speed = -0.75;};
@@ -246,14 +250,6 @@ with mod; {
                 width = 1920;
                 height = 1080;
                 refresh = 165.001;
-              };
-            };
-            "Shenzhen KTC Technology Group H27T27 Unknown" = {
-              scale = 1.2;
-              mode = {
-                width = 2560;
-                height = 1440;
-                refresh = 99.965;
               };
             };
           };
