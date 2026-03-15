@@ -1,10 +1,28 @@
-{self, ...}: {
+{self, ...}: let
+  media_source = "nixos-inspiron:/srv/media/Music";
+  media_path = "/mnt/nfs";
+in {
+  nix = [
+    {
+      fileSystems.${media_path} = {
+        device = media_source;
+        fsType = "nfs";
+        options = [
+          "noatime"
+          "_netdev"
+          "x-systemd.automount"
+          "x-systemd.device-timeout=10"
+          "noauto"
+        ];
+      };
+    }
+  ];
   home = [
     ({pkgs, ...}: {
       # required mpd service
       services.mpd = {
         enable = true;
-        musicDirectory = "/srv/shared";
+        musicDirectory = media_path;
         network.listenAddress = "any";
         extraConfig = ''
           audio_output {
