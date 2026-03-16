@@ -260,6 +260,10 @@
 #+begin_src elisp
   (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 #+end_src
+** Direnv
+#+begin_src elisp
+  (if (executable-find "direnv") (use-package direnv))
+#+end_src
 ** Vterm
 #+begin_src elisp
   (use-package vterm)
@@ -545,10 +549,6 @@ begin nix only block
                         (lambda ()
                           (config/sync-with-org))
                         nil t)))
-#+end_src
-** Direnv
-#+begin_src elisp
-  (if (executable-find "direnv") (use-package direnv))
 #+end_src
 
 -----

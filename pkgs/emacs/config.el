@@ -170,6 +170,8 @@
 
 (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 
+(if (executable-find "direnv") (use-package direnv))
+
 (use-package vterm)
 
 (use-package pdf-tools
@@ -379,8 +381,6 @@
                       (lambda ()
                         (config/sync-with-org))
                       nil t)))
-
-(if (executable-find "direnv") (use-package direnv))
 
 (use-package corfu
   :custom
