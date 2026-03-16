@@ -272,6 +272,9 @@
 (use-package just-mode)
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package ron-mode :mode "\\.ron\\'")
+(use-package cmake-ts-mode
+  :ensure nil
+  :mode "\\CMakeLists.txt\\'")
 
 ;; scripting/shell
 (use-package fish-mode)

@@ -420,7 +420,15 @@ my system vs using a shell.
   (use-package lsp-java)
   (use-package auctex)
      #+end_src
-** clangd
+** C/C++
+*** cmake
+#+begin_src elisp
+  (use-package cmake-ts-mode
+    :ensure nil
+    :mode "\\CMakeLists.txt\\'")
+#+end_src
+
+*** clangd
 #+begin_src elisp
   (defun set/clang/version ()
     (let ((raw (shell-command-to-string "clangd --version")))
@@ -437,14 +445,7 @@ my system vs using a shell.
       (add-hook 'c++-ts-mode-hook #'set/clang/version)
     (add-hook 'c++-ts-mode-hook #'set/clang/bin))
 #+end_src
-** Nix
-begin nix only block
-#+begin_src elisp
-  (use-package nix-mode :mode "\\.nix\\'")
-  (use-package nix-ts-mode :mode "\\.nix\\'")
-  (setq lsp-nix-nixd-formatting-command ["alejandra"])
-#+end_src
-** QT
+*** QT
 #+begin_src elisp
   ;; for project files
   (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'"))
@@ -462,6 +463,13 @@ begin nix only block
      (qml-ts-mode . (lambda ()
                       (setq-local electric-indent-chars
                                   '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))))))
+#+end_src
+** Nix
+begin nix only block
+#+begin_src elisp
+  (use-package nix-mode :mode "\\.nix\\'")
+  (use-package nix-ts-mode :mode "\\.nix\\'")
+  (setq lsp-nix-nixd-formatting-command ["alejandra"])
 #+end_src
 ** Rust
 #+begin_src elisp
