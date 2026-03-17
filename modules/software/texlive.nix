@@ -13,6 +13,7 @@
             latexmk
             preview
             # font
+            capt-of
             fontawesome5
             fontspec
             unicode-math
@@ -20,6 +21,7 @@
             titlesec
             setspace
             parskip
+            paracol
             # bibliography
             biblatex
             biber
