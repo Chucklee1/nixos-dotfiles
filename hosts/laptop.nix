@@ -141,7 +141,7 @@ with mod; {
             ".local/share/zoxide"
             ".local/state/syncthing"
             ".cache/zen"
-            ".zen"
+            ".config/zen"
           ];
         };
       };
