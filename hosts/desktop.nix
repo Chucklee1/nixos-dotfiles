@@ -128,7 +128,18 @@ with mod; {
       hardware.enableRedistributableFirmware = true;
 
       # gpu
-      services.xserver.videoDrivers = ["amdgpu"];
+      services.xserver.videoDrivers = ["amdgpu" "nvidia"];
+      hardware.nvidia = {
+        modesetting.enable = true;
+        powerManagement.enable = false;
+        powerManagement.finegrained = false;
+        open = false;
+      };
+      environment.systemPackages = with pkgs; [
+        ollama-cuda
+        cudaPackages.cudatoolkit
+        cudaPackages.cudnn
+      ];
     })
     # impermenance setup
     ({lib, user, ...}: {
@@ -180,6 +191,7 @@ with mod; {
               directory = ".local/share/keyrings";
               mode = "0700";
             }
+            ".ollama"
             ".cache/zen"
             ".config/discord"
             ".config/listenbrainz-mpd"
@@ -211,6 +223,9 @@ with mod; {
       user,
       ...
     }: {
+      # yeah I know...
+      services.ollama.enable = true;
+
       home-manager.users.${user} = {
         programs.fish.loginShellInit = ''
           set -g dotfiles $HOME/Repos/nixos-dotfiles
