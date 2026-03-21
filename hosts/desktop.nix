@@ -215,6 +215,9 @@ with mod; {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
       sops.secrets = {
         "gregtrain/goat".neededForUsers = true;
+        "tokens/listenbrainz" = {
+          owner = user;
+        };
       };
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
     })

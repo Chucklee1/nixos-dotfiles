@@ -16,9 +16,19 @@ in {
         ];
       };
     }
+    # must be set at nix level for config to work here
+    ({config, user, ...}: {
+      # scrobbing
+      home-manager.users.${user} = {
+        services.listenbrainz-mpd = {
+          enable = true;
+          settings.submission.token_file = config.sops.secrets."tokens/listenbrainz".path;
+        };
+      };
+    })
   ];
   home = [
-    ({pkgs, ...}: {
+    ({config, pkgs, ...}: {
       # required mpd service
       services.mpd = {
         enable = true;
@@ -40,9 +50,6 @@ in {
         mpd.port = 6600;
         mpd.host = "127.0.0.1";
       };
-
-      # scrobbing
-      services.listenbrainz-mpd.enable = true;
 
       # rmpc
       home.packages = [pkgs.rmpc];
