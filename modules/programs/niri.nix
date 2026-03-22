@@ -138,7 +138,7 @@
         in {
           # programs
           "${mod}+Return" = sh "kitty";
-          "${mod}+E" = sh "emacs";
+          "${mod}+E" = sh "${get "emacs-pgtk"}"; # always use wayland native emacs
           "${mod}+Shift+B" = sh "zen-twilight";
           "${mod}+Space" = sh wmenu;
           "${mod}+Shift+L" = sh "swaylock";
