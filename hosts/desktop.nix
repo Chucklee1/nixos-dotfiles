@@ -158,6 +158,11 @@ with mod; {
         umount /mnt
       '';
 
+      # disable initial sudo lecture
+      security.sudo.extraConfig = ''
+        Defaults lecture = never
+      '';
+
       # user persistance stuff
       users.mutableUsers = false;
       environment.persistence."/persist" = {
