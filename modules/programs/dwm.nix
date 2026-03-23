@@ -19,6 +19,7 @@
       xsession.enable = true;
       xsession.initExtra = ''
         ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image} &
+        ${inputs.slstatus.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/slstatus &
       '';
 
       services.picom = {

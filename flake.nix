@@ -58,6 +58,8 @@
     en_us-dictionary.flake = false;
 
     # ---- window managers ----
+    slstatus.url = "github:Chucklee1/slstatus";
+    slstatus.inputs.nixpkgs.follows = "nixpkgs";
     dwm.url = "github:Chucklee1/dwm";
     dwm.flake = false;
     niri.url = "github:sodiboo/niri-flake";

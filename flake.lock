@@ -140,11 +140,11 @@
     "dwm": {
       "flake": false,
       "locked": {
-        "lastModified": 1770666186,
-        "narHash": "sha256-UgVfrScKWfCxiMqoGdTpuDsu20xVVzBRoqqEzF/4o84=",
+        "lastModified": 1774239805,
+        "narHash": "sha256-/RklfKHZtEEdMYeT99Ww87MhnhB2e0Xh8OXihduyJVw=",
         "owner": "Chucklee1",
         "repo": "dwm",
-        "rev": "1b42b94cf5239e04e63ecd294da766149374c3ff",
+        "rev": "be4542cc928a9a3d7dbecc6873de68ab3909c026",
         "type": "github"
       },
       "original": {
@@ -1142,6 +1142,7 @@
         "prismlauncher": "prismlauncher",
         "qml-niri": "qml-niri",
         "quickshell": "quickshell",
+        "slstatus": "slstatus",
         "sops-nix": "sops-nix",
         "stylix": "stylix",
         "zen-browser": "zen-browser"
@@ -1161,6 +1162,26 @@
         "owner": "rust-lang",
         "ref": "nightly",
         "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "slstatus": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774241971,
+        "narHash": "sha256-D8vrEjt12IUELHp5/Du2ezgy5c120l0/x1Yw9DHTM54=",
+        "owner": "Chucklee1",
+        "repo": "slstatus",
+        "rev": "3c1848461a2cc036ee25ca4721d3faa2b5753605",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Chucklee1",
+        "repo": "slstatus",
         "type": "github"
       }
     },
