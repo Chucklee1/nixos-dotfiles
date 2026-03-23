@@ -272,9 +272,6 @@
 (use-package just-mode)
 (use-package kdl-mode :mode "\\.kdl\\'")
 (use-package ron-mode :mode "\\.ron\\'")
-(use-package cmake-ts-mode
-  :ensure nil
-  :mode "\\CMakeLists.txt\\'")
 
 ;; scripting/shell
 (use-package fish-mode)
@@ -285,6 +282,10 @@
 ;; compiled
 (use-package lsp-java)
 (use-package auctex)
+
+(use-package cmake-ts-mode
+  :ensure nil
+  :mode "\\CMakeLists.txt\\'")
 
 (defun set/clang/version ()
   (let ((raw (shell-command-to-string "clangd --version")))
@@ -300,10 +301,6 @@
 (if (executable-find "clangd")
     (add-hook 'c++-ts-mode-hook #'set/clang/version)
   (add-hook 'c++-ts-mode-hook #'set/clang/bin))
-
-(use-package nix-mode :mode "\\.nix\\'")
-(use-package nix-ts-mode :mode "\\.nix\\'")
-(setq lsp-nix-nixd-formatting-command ["alejandra"])
 
 ;; for project files
 (use-package qt-pro-mode :mode ("\\.pro\\'" "\\.pri\\'"))
@@ -321,6 +318,10 @@
    (qml-ts-mode . (lambda ()
                     (setq-local electric-indent-chars
                                 '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))))))
+
+(use-package nix-mode :mode "\\.nix\\'")
+(use-package nix-ts-mode :mode "\\.nix\\'")
+(setq lsp-nix-nixd-formatting-command ["alejandra"])
 
 (use-package rust-mode
   :init
