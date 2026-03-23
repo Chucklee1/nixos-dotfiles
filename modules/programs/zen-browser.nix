@@ -7,7 +7,7 @@
     inputs.zen-browser.homeModules.twilight
     ({pkgs, ...}: {
       stylix.targets.zen-browser.profileNames = ["default"];
-      home.sessionVariables.BROWSER = "zen";
+      home.sessionVariables.BROWSER = "zen-twilight";
       programs.zen-browser = {
         enable = true;
         policies = {
@@ -75,6 +75,18 @@
             };
             extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [ublock-origin];
           };
+        };
+      };
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = let
+          browser = "zen-twilight.desktop";
+        in {
+          "text/html" = browser;
+          "x-scheme-handler/http" = browser;
+          "x-scheme-handler/https" = browser;
+          "x-scheme-handler/about" = browser;
+          "x-scheme-handler/unknown" = browser;
         };
       };
     })

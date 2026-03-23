@@ -139,7 +139,7 @@
           # programs
           "${mod}+Return" = sh "kitty";
           "${mod}+E" = sh "${get "emacs-pgtk"}"; # always use wayland native emacs
-          "${mod}+Shift+B" = sh "zen-twilight";
+          "${mod}+Shift+B" = sh "${config.home.sessionVariables.BROWSER}";
           "${mod}+Space" = sh wmenu;
           "${mod}+Shift+L" = sh "swaylock";
           "${mod}+W" = sh toggleWaybar;
