@@ -98,7 +98,7 @@ with mod; {
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
 
-    ({pkgs, user, ...}: {
+    ({pkgs, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
       boot.loader.grub.useOSProber = true;
@@ -135,10 +135,6 @@ with mod; {
         powerManagement.finegrained = false;
         open = false;
       };
-
-      services.open-webui.enable = true;
-      services.open-webui.openFirewall = true;
-
     })
     # impermenance setup
     ({lib, user, ...}: {
