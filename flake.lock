@@ -140,11 +140,11 @@
     "dwm": {
       "flake": false,
       "locked": {
-        "lastModified": 1774239805,
-        "narHash": "sha256-/RklfKHZtEEdMYeT99Ww87MhnhB2e0Xh8OXihduyJVw=",
+        "lastModified": 1774282317,
+        "narHash": "sha256-LYW1o+xqDmpO7liFawGSKB0CTq9yuY+1nM8OCIxGzfE=",
         "owner": "Chucklee1",
         "repo": "dwm",
-        "rev": "be4542cc928a9a3d7dbecc6873de68ab3909c026",
+        "rev": "3ad3b12a197f501dbf273ba31956f6dfa16ec194",
         "type": "github"
       },
       "original": {

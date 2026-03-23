@@ -1,26 +1,25 @@
 {inputs, ...}: {
   nix = [
-    ({pkgs, ...}: {
+    ({config, pkgs, ...}: {
       services.xserver.enable = true;
       services.xserver.windowManager.dwm = {
         enable = true;
         package = pkgs.dwm.overrideAttrs {src = inputs.dwm;};
       };
+
+      services.xserver.windowManager.dwm.extraSessionCommands = ''
+        ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image} &
+        ${inputs.slstatus.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/slstatus &
+      '';
     })
   ];
 
   home = [
-    ({config, pkgs, ...}: {
+    ({pkgs, ...}: {
       home.packages = with pkgs; [
         dmenu
         xev
       ];
-
-      xsession.enable = true;
-      xsession.initExtra = ''
-        ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image} &
-        ${inputs.slstatus.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/slstatus &
-      '';
 
       services.picom = {
         enable = true;
