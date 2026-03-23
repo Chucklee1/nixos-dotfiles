@@ -98,7 +98,7 @@ with mod; {
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
 
-    ({pkgs, ...}: {
+    ({pkgs, user, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
       boot.loader.grub.useOSProber = true;
@@ -135,11 +135,10 @@ with mod; {
         powerManagement.finegrained = false;
         open = false;
       };
-      environment.systemPackages = with pkgs; [
-        ollama-cuda
-        cudaPackages.cudatoolkit
-        cudaPackages.cudnn
-      ];
+
+      services.open-webui.enable = true;
+      services.open-webui.openFirewall = true;
+
     })
     # impermenance setup
     ({lib, user, ...}: {
@@ -223,11 +222,15 @@ with mod; {
     })
     ({
       lib,
+      pkgs,
       user,
       ...
     }: {
       # yeah I know...
-      services.ollama.enable = true;
+      services.ollama = {
+        enable = true;
+        package = pkgs.ollama-cuda;
+      };
 
       home-manager.users.${user} = {
         programs.fish.loginShellInit = ''
