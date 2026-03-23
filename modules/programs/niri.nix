@@ -26,6 +26,14 @@
     ({pkgs, ...}: {
       programs.swaylock.enable = true;
       programs.swaylock.package = pkgs.swaylock-effects;
+      services.wlsunset = {
+        enable = true;
+        temperature.day = 5201;
+        temperature.night = 5200;
+        # Kivalliq Region, Nunavut, Canada
+        latitude = 65.726;
+        longitude = -94.806;
+      };
     })
     # niri config
     ({
@@ -61,7 +69,6 @@
           })
           [
             "${get "xwayland-satellite"}"
-            "${get "wlsunset"} -T 5200"
             "${get "swaybg"} -m fill -i ${config.stylix.image}"
             # safe to use systemd since it will not crash-out if waybar isnt installed
             "systemctl --user restart waybar"
