@@ -10,7 +10,7 @@
 - Show system hardware config
   `sudo nixos-generate-config --no-filesystems --show-hardware-config --root /mnt`
 - install to /mnt  
-  `"sudo nixos---flake install --root /mnt --flake github:Chucklee1/nixos-dotfiles"`
+  `"sudo nixos --flake install --root /mnt --flake github:Chucklee1/nixos-dotfiles"`
 
 - prefetch hashes with nurl: `nix run github:nix-community/nurl -- <link here>`
 
