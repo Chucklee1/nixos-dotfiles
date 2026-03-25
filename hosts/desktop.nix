@@ -36,10 +36,12 @@ with mod; {
 
     system.boot
     system.home
-    system.users
+    system.impermance
     system.network
     system.pkgconfig
+    system.sops
     system.sys-specs
+    system.users
 
     services.graphical
     services.fcitx
@@ -79,7 +81,6 @@ with mod; {
       nfs = path: device: options: mkfs' "nfs" path device options;
     };
   in [
-    inputs.impermanence.nixosModules.impermanence
     (mkfs.vfat "/boot/efi" EFI ["fmask=0022" "dmask=0022"])
     (mkfs.btrfs "/boot" WD ["subvol=WD/nixos/boot" "noatime"])
     (mkfs.btrfs "/persist" WD ["subvol=WD/nixos/persist" "noatime" "compress=zstd"])
@@ -101,16 +102,6 @@ with mod; {
     ({pkgs, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
-      boot.loader.grub.useOSProber = true;
-      # dual boot entry so I dont need a seperate bootloader for arch
-      boot.loader.grub.extraEntries = ''
-        menuentry "arch" {
-          insmod btrfs
-          search --no-floppy --fs-uuid --set=root ${WD}
-          linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch
-          initrd /WD/arch/boot/initramfs-linux.img
-        }
-      '';
 
       # kernel
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
@@ -137,61 +128,17 @@ with mod; {
       };
     })
     # impermenance setup
-    ({lib, user, ...}: {
-      fileSystems."/persist".neededForBoot = true;
-      boot.initrd.postResumeCommands = lib.mkAfter ''
-        mkdir -p /mnt
-        mount -o subvolid=5 /dev/disk/by-label/WD /mnt
-
-        btrfs subvolume list -o /mnt/WD/nixos/root |
-        cut -f9 -d' ' |
-        while read subvolume; do
-            echo "deleting $subvolume subvolume..."
-            btrfs subvolume delete "/mnt/$subvolume"
-        done &&
-        echo "deleting nixos/root subvolume..." &&
-        btrfs subvolume delete /mnt/WD/nixos/root
-
-        echo "restoring blank nix/root subvolume..."
-        btrfs subvolume snapshot /mnt/WD/nixos/root_blank /mnt/WD/nixos/root
-
-        umount /mnt
-      '';
-
-      # disable initial sudo lecture
-      security.sudo.extraConfig = ''
-        Defaults lecture = never
-      '';
-
-      # user persistance stuff
-      users.mutableUsers = false;
-      environment.persistence."/persist" = {
-        hideMounts = true;
-        directories = [
-          "/var/log"
-          "/var/lib/bluetooth"
-          "/var/lib/nixos"
-          "/var/lib/systemd/coredump"
-          "/var/lib/tailscale"
-          "/etc/NetworkManager/system-connections"
-        ];
-        files = [
-          "/etc/machine-id"
-        ];
-        users.${user} = {
-          directories = [
-            "Downloads"
-            "Documents"
-            "Repos"
-            {
-              directory = ".ssh";
-              mode = "0700";
-            }
-            {
-              directory = ".local/share/keyrings";
-              mode = "0700";
-            }
-            ".ollama"
+    {
+      # persistance stuff
+      services.impermanence = {
+        device = "/dev/disk/by-label/WD";
+        root = {
+          target = "WD/nixos/root";
+          blank = "WD/nixos/root_blank";
+        };
+        persist = {
+          system.directories = ["/var/lib/tailscale"];
+          user.directories = [
             ".cache/zen"
             ".config/discord"
             ".config/listenbrainz-mpd"
@@ -204,70 +151,29 @@ with mod; {
           ];
         };
       };
-    })
+    }
     # sops
-    inputs.sops-nix.nixosModules.sops
-    ({config, pkgs, user, ...}: {
-      environment.systemPackages = [pkgs.sops];
-      # note: must rebuild system for secrets.yaml changes to take affect
-      sops.defaultSopsFile = ../secrets.yaml;
-      sops.defaultSopsFormat = "yaml";
+    ({config, user, ...}: {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
-      sops.secrets = {
-        "gregtrain/goat".neededForUsers = true;
-        "tokens/listenbrainz" = {
-          owner = user;
-        };
-      };
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
     })
     ({
       lib,
-      pkgs,
       user,
       ...
     }: {
-      # yeah I know...
-      services.ollama = {
-        enable = true;
-        package = pkgs.ollama-cuda;
-      };
-
       home-manager.users.${user} = {
         programs.fish.loginShellInit = ''
-          set -g dotfiles $HOME/Repos/nixos-dotfiles
-          set -g emacs_dir $HOME/.emacs.d
+          sln $HOME/Repos/nixos-dotfiles $HOME/
+          sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/config.el $HOME/.emacs.d/init.el
+          sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/snippets $HOME/.emacs.d/
 
-          # symlink dotfiles to user root
-          if not test -d $HOME/nixos-dotfiles
-              echo "symlinking $dotfiles to $HOME"
-              ln -s $dotfiles $HOME
-          else
-              echo "$HOME/nixos-dotfiles already exist"
+          sln /srv/Pictures $HOME/Pictures
+
+          sln /opt/Steam $HOME/.local/share/
+          for it in /opt/Games/*
+            sln $it $HOME/.local/share/
           end
-
-          if not test -d $emacs_dir; mkdir $emacs_dir; end
-          if test -d $emacs_dir/snippets; rm -rf $emacs_dir/snippets; end
-          ln -s $dotfiles/pkgs/emacs/snippets $emacs_dir/
-
-          # same for emacs config
-          if not test -f $emacs_dir/init.el
-              echo "symlinking $dotfiles/pkgs/emacs/config.el to $emacs_dir/init.el"
-              ln -s $dotfiles/pkgs/emacs/config.el $emacs_dir/init.el
-          else
-              echo "$emacs_dir/init.el already exist"
-          end
-
-          set -e dotrepo
-          set -e emacs_dir
-
-          # opt symlinks
-          ln -s /opt/Steam $HOME/.local/share/
-          for file in /opt/Games/*; ln -s $file $HOME/.local/share/; end
-          ln -s /opt/Games $HOME/
-
-          # srv symlinks
-          ln -s /srv/Pictures $HOME/
         '';
 
         # monitor configuration
@@ -290,12 +196,15 @@ with mod; {
   ];
 }
 /*
-unused but may use later section
- # only needed if nvidia is the only host card
- environment.variables = {
-   LIBVA_DRIVER_NAME = "nvidia";
-   NVD_BACKEND = "direct";
-   GBM_BACKEND = "nvidia-drm";
-   __GLX_VENDOR_LIBRARY_NAME = "nvidia";
- };
+for later if needed section
+boot.loader.grub.useOSProber = true;
+# dual boot entry so I dont need a seperate bootloader for arch
+boot.loader.grub.extraEntries = ''
+menuentry "arch" {
+    insmod btrfs
+    search --no-floppy --fs-uuid --set=root ${WD}
+    linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch
+    initrd /WD/arch/boot/initramfs-linux.img
+}
+'';
 */
