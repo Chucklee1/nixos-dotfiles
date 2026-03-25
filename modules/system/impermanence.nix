@@ -106,11 +106,11 @@
           "/var/lib/nixos"
           "/var/lib/systemd/coredump"
           "/etc/NetworkManager/system-connections"
-        ] ++ cfg.perserve.system.directories;
+        ] ++ cfg.persist.system.directories;
 
         files = [
           "/etc/machine-id"
-        ] ++ cfg.perserve.system.files;
+        ] ++ cfg.persist.system.files;
         users.${user} = {
           directories = [
             "Downloads"
@@ -124,8 +124,8 @@
               directory = ".local/share/keyrings";
               mode = "0700";
             }
-          ] ++ cfg.perserve.user.directories;
-          files = cfg.perserve.user.files;
+          ] ++ cfg.persist.user.directories;
+          files = cfg.persist.user.files;
         };
       };
     })

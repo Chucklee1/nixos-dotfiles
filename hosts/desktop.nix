@@ -36,7 +36,7 @@ with mod; {
 
     system.boot
     system.home
-    system.impermance
+    system.impermanence
     system.network
     system.pkgconfig
     system.sops
