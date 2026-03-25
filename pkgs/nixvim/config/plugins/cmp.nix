@@ -18,15 +18,6 @@ in {
       "noinsert"
     ];
     plugins = {
-      # breadcrumbs
-      lspsaga = {
-        enable = true;
-        settings.lightbulb = {
-          virtual_text = false;
-          enable = false;
-        };
-      };
-
       # completion
       cmp.enable = true;
       cmp.autoEnableSources = true;

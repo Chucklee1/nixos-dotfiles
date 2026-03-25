@@ -1,13 +1,11 @@
 {
   plugins = {
-    kitty-navigator.enable = true;
     presence.enable = true;
     scrollview.enable = true;
     trouble.enable = true;
     web-devicons.enable = true;
     which-key.enable = true;
     # file managers
-    neo-tree.enable = true;
     oil.enable = true;
     # git
     gitsigns.enable = true;
@@ -57,26 +55,13 @@
         skiplist = [
           "flake.lock"
           ".build"
+          "build"
           "result"
         ];
       };
     };
     # lualine
-    lualine = {
-      enable = true;
-      settings = {
-        options = {
-          component_separators = {
-            left = "";
-            right = "";
-          };
-          section_separators = {
-            left = "";
-            right = "";
-          };
-        };
-      };
-    };
+    lualine.enable = true;
   };
   extraConfigLuaPre = ''
     if vim.g.have_nerd_font then

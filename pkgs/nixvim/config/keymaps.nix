@@ -9,7 +9,6 @@
 
      -- Explorer
      key("n", "<leader>e",  ":Oil<CR>",                 {desc = "Open fil editor"})
-     key("n", "<leader>tt", ":Neotree<CR>",             {desc = "Open fil editor"})
 
      -- Telescope binding
     key("n", "<leader>fb", ":Telescope buffers<CR>",    {desc = "Telescope buffer search"})
@@ -18,9 +17,7 @@
     key("n", "<leader>fn", ":Telescope nerdy<CR>",      {desc = "Telescope nerd-icon search"})
 
      -- Buffer
-     key("n",  "<S-l>",      ":bn<CR>",                {desc = "Goto next buffer"})
-     key("n",  "<S-h>",      ":bp<CR>",                {desc = "Goto previous buffer"})
-     key("n",  "<leader>bd", ":bd<CR>",                {desc = "Buffer delete"})
+     key("n", "<leader>bd",  ":bd<CR>",                {desc = "Buffer delete"})
      key("n", "<leader>bD",  ":bd!<CR>",               {desc = "Force Buffer delete"})
      -- Telescope find buffer clone to match emacs ibuffer keymap
      key("n",  "<leader>bi", ":Telescope buffers<CR>", {desc = "Buffer Ibuffer"})
