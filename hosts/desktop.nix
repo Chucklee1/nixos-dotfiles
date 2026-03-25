@@ -157,6 +157,7 @@ with mod; {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
     })
+    # symlink setup on login
     ({
       lib,
       user,
