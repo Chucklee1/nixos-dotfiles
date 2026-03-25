@@ -18,12 +18,7 @@
               set host_prompt @(hostname)
             end
 
-            set shell_type ""
-            if set -q IN_NIX_SHELL
-              set shell_type "nix-shell:"
-            end
-
-            set user_prompt $shell_type$USER$host_prompt
+            set user_prompt $USER$host_prompt
 
             function new_pwd
               string replace "$HOME" "~" "$PWD"
@@ -50,15 +45,6 @@
     {
       programs.fish = {
         enable = true;
-        shellAliases = {
-          nix-shell =
-          # fish
-          ''
-            set -x IN_NIX_SHELL 1
-            set -x NIXPKGS_ALLOW_UNFREE 1
-            nix shell --impure
-          '';
-        };
         functions = {
           sln =
           # fish
