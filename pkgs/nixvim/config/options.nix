@@ -105,8 +105,14 @@
     {
       desc = "2 tabspace, tabs are spaces";
       event = ["FileType"];
-      pattern = ["c" "cpp" "lua" "nix"];
+      pattern = ["lua" "nix"];
       command = "setlocal tabstop=2 shiftwidth=2 softtabstop=2";
+    }
+    {
+      desc = "4 tabspace, tabs are spaces";
+      event = ["FileType"];
+      pattern = ["c" "cpp"];
+      command = "setlocal tabstop=4 shiftwidth=4 softtabstop=4";
     }
     {
       desc = "set qt style sheet files to use qml highlighting";
@@ -121,7 +127,6 @@
     update_in_insert = true;
     severity_sort = true;
     virtual_text.current_line = true;
-    float.border = "rounded";
     jump.severity.__raw = "vim.diagnostic.severity.WARN";
     signs.text = {
       "__rawKey__vim.diagnostic.severity.ERROR" = "";
