@@ -29,7 +29,7 @@ with mod; {
     system.network
     system.pkgconfig
     system.sys-specs
-    # system.sops
+    system.sops
     system.users
 
     services.graphical
@@ -45,7 +45,7 @@ with mod; {
   extraConfig = [
     inputs.disko.nixosModules.default
     (import ../assets/disko/emphereal.nix {device = "/dev/nvme0n1";})
-    ({user, ...}: {
+    {
       boot.initrd.supportedFilesystems = ["nfs" "btrfs"];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
       boot.loader.grub.useOSProber = true;
@@ -55,9 +55,7 @@ with mod; {
 
       hardware.cpu.intel.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
-
-      users.users.${user}.hashedPasswordFile = "/persist/passwords/goat";
-    })
+    }
     # impermenance setup
     {
       # persistance stuff
@@ -81,10 +79,10 @@ with mod; {
       };
     }
     # sops - setup when login to machine
-    # ({config, user, ...}: {
-    #   sops.age.keyFile = "/persist/secrets/age.keys.txt";
-    #   users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
-    # })
+    ({config, user, ...}: {
+      sops.age.keyFile = "/persist/secrets/age.keys.txt";
+      users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
+    })
     # symlink setup on login
     ({user, ...}: {
       home-manager.users.${user} = {
