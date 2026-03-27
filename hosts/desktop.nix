@@ -148,6 +148,7 @@ with mod; {
             ".local/state/syncthing"
             ".local/share/zoxide"
             ".var"
+            ".ollama"
           ];
         };
       };
@@ -157,12 +158,32 @@ with mod; {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
     })
-    # symlink setup on login
+    # must make custom serivce for ollama for more options
+    ({config, pkgs, user, ...}: {
+      environment.systemPackages = [pkgs.ollama-cuda];
+      systemd.user.services.ollama-cuda = let
+        USER_HOME = config.users.users.${user}.home;
+      in {
+        description = "Ollama server that uses nvidia cuda for local LLM";
+        wantedBy = [ "default.target" ];
+        after = [ "network.target" ];
+        environment = {
+          HOME = "${USER_HOME}";
+          OLLAMA_MODELS = "${USER_HOME}/.ollama/models";
+        };
+        serviceConfig = {
+          Type = "exec";
+          ExecStart = "${pkgs.ollama-cuda}/bin/ollama serve";
+          WorkingDirectory = USER_HOME;
+        };
+      };
+    })
     ({
       lib,
       user,
       ...
     }: {
+      # symlink setup on login
       home-manager.users.${user} = {
         programs.fish.loginShellInit = ''
           sln $HOME/Repos/nixos-dotfiles $HOME/
