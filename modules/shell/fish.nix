@@ -18,7 +18,13 @@
               set host_prompt @(hostname)
             end
 
-            set user_prompt $USER$host_prompt
+            # indicate when in nix dev env
+            set shell_prefix ""
+            if set -q IN_NIX_SHEll
+              set shell_prefix nix-shell:
+            end
+
+            set user_prompt $shell_prefix$USER$host_prompt
 
             function new_pwd
               string replace "$HOME" "~" "$PWD"
