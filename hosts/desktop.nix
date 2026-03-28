@@ -190,7 +190,7 @@ with mod; {
           sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/config.el $HOME/.emacs.d/init.el
           sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/snippets $HOME/.emacs.d/
 
-          sln /srv/Pictures $HOME/Pictures
+          sln /srv/Pictures $HOME/
 
           sln /opt/Steam $HOME/.local/share/
           for it in /opt/Games/*
