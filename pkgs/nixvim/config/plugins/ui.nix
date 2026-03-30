@@ -1,15 +1,12 @@
 {
   plugins = {
-    presence.enable = true;
-    scrollview.enable = true;
     trouble.enable = true;
     web-devicons.enable = true;
     which-key.enable = true;
-    # file managers
-    oil.enable = true;
+    oil.enable = true; # file managers
     # git
     gitsigns.enable = true;
-    lazygit.enable = true;
+    neogit.enable = true; # emacs-magit clone 
     # bundle
     snacks = {
       enable = true;
@@ -20,9 +17,6 @@
           enabled = true;
           top_down = false;
         };
-        quickfile.enabled = true;
-        scroll.enabled = true;
-        words.enabled = true;
       };
     };
     # startup menu
@@ -31,6 +25,8 @@
       settings = {
         # essential part of the entire config everything will break without it
         custom_header = [
+          " An idiot admires complexity, a genius admires simplicity. "
+          " - Terry A. Davis          "
           "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀"
           "⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⠿⠿⠿⠿⠿⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀"
           "⠀⠀⠀⠀⠀⠀⠀⣰⣿⠟⠁⠀⠀⣠⣴⣶⣶⣶⣶⣿⣿⣿⣆⠀⠀⠀⠀"
@@ -61,10 +57,19 @@
       };
     };
     # lualine
-    lualine.enable = true;
+    lualine = {
+      enable = true;
+      settings = {
+        options = {
+          component_separators = "";
+          section_separators = "";
+        };
+      };
+    };
   };
+  # don't setup nerd fonts if do not have and if terminal is tty
   extraConfigLuaPre = ''
-    if vim.g.have_nerd_font then
+    if vim.g.have_nerd_font and os.getenv("TERM") ~= "linux" then
       require('nvim-web-devicons').setup {}
     end
   '';
