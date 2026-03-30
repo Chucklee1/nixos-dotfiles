@@ -5,10 +5,10 @@
      local key = vim.keymap.set
 
      -- General
-     key("n", "<leader>gg", ":LazyGit<CR>",             {desc = "Open LazyGit"})
+     key("n", "<leader>g", ":Neogit<CR>",             {desc = "Open neogit"})
 
      -- Explorer
-     key("n", "<leader>e",  ":Oil<CR>",                 {desc = "Open fil editor"})
+     key("n", "<leader>e",  ":Oil<CR>",                 {desc = "Open file editor"})
 
      -- Telescope binding
     key("n", "<leader>fb", ":Telescope buffers<CR>",    {desc = "Telescope buffer search"})
