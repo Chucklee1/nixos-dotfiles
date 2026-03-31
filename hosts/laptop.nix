@@ -70,7 +70,6 @@ with mod; {
           user.directories = [
             ".local/share/zoxide"
             ".local/share/direnv"
-            ".local/share/zoxide"
             ".local/state/syncthing"
             ".cache/zen"
             ".config/zen"
