@@ -45,6 +45,7 @@ with mod; {
 
     services.graphical
     services.fcitx
+    services.uinput
 
     shell.fish
     shell.nushell
