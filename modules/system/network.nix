@@ -1,6 +1,10 @@
 {
   nix = [
-    ({lib, machine, ...}: {
+    ({
+      lib,
+      machine,
+      ...
+    }: {
       networking = {
         useDHCP = lib.mkDefault true;
         hostName = "nixos-${machine}";

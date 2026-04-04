@@ -147,7 +147,11 @@ with mod; {
       };
     }
     # sops
-    ({config, user, ...}: {
+    ({
+      config,
+      user,
+      ...
+    }: {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
     })
@@ -203,3 +207,4 @@ menuentry "arch" {
 }
 '';
 */
+

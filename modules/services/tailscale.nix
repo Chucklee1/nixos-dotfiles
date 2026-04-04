@@ -1,1 +1,1 @@
-{ nix = [{services.tailscale.enable = true;}]; }
+{nix = [{services.tailscale.enable = true;}];}

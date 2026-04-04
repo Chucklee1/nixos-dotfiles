@@ -79,7 +79,11 @@ with mod; {
       };
     }
     # sops - setup when login to machine
-    ({config, user, ...}: {
+    ({
+      config,
+      user,
+      ...
+    }: {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
     })

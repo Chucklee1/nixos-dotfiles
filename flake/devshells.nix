@@ -22,29 +22,29 @@ in {
     '';
   };
   qt = mkShell {
-      nativeBuildInputs = [
-        (qt6.env "qt6-simc-${qt6.qtbase.version}" [
-          qt6.qtbase
-          qt6.qmake
-          qt6.qt5compat
-          qt6.qttools
-          qt6.qtdeclarative
-          qt6.qtcharts
-          qt6.qtwayland
-          qt6.qtmultimedia
-          qt6.qtlanguageserver
-          qt6.qtquick3d
-          qt6.qtshadertools
-          qt6.qtquicktimeline
-        ])
-        clang
-        cmake
-        gnumake
-        gdb
-        libglvnd
-        ninja
-        pkg-config
-      ];
+    nativeBuildInputs = [
+      (qt6.env "qt6-simc-${qt6.qtbase.version}" [
+        qt6.qtbase
+        qt6.qmake
+        qt6.qt5compat
+        qt6.qttools
+        qt6.qtdeclarative
+        qt6.qtcharts
+        qt6.qtwayland
+        qt6.qtmultimedia
+        qt6.qtlanguageserver
+        qt6.qtquick3d
+        qt6.qtshadertools
+        qt6.qtquicktimeline
+      ])
+      clang
+      cmake
+      gnumake
+      gdb
+      libglvnd
+      ninja
+      pkg-config
+    ];
 
     shellHook = ''
       # tmp fix for fish, ignore for now

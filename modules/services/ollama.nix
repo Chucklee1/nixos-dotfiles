@@ -1,8 +1,14 @@
 {
   nix = [
-    ({config, pkgs, user, ...}: let
+    ({
+      config,
+      pkgs,
+      user,
+      ...
+    }: let
       ollama-pkg =
-        if (config.hardware.nvidia.enabled) then pkgs.ollama-cuda
+        if (config.hardware.nvidia.enabled)
+        then pkgs.ollama-cuda
         else pkgs.ollama-vulkan;
     in {
       environment.systemPackages = [ollama-pkg];
@@ -11,8 +17,8 @@
         USER_HOME = config.users.users.${user}.home;
       in {
         description = "locally hosted ollama server";
-        wantedBy = [ "default.target" ];
-        after = [ "network.target" ];
+        wantedBy = ["default.target"];
+        after = ["network.target"];
         environment = {
           HOME = "${USER_HOME}";
           OLLAMA_MODELS = "${USER_HOME}/.ollama/models";
@@ -25,4 +31,4 @@
       };
     })
   ];
-  }
+}

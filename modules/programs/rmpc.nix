@@ -17,11 +17,16 @@ in {
         ];
       };
     }
-    ({config, pkgs, user, ...}: {
+    ({
+      config,
+      pkgs,
+      user,
+      ...
+    }: {
       systemd.user.services.link-nfs-to-music = {
         description = "symlink local music to user Music Dir, override symlink if nfs marker is found";
-        wantedBy = [ "default.target" ];
-        after = [ "mpd.service" "remote-fs.target" ];
+        wantedBy = ["default.target"];
+        after = ["mpd.service" "remote-fs.target"];
         script = ''
           TARGET="${config.users.users.${user}.home}/Music"
           MARKER="${media_path}/marker"
@@ -41,7 +46,11 @@ in {
       };
     })
     # must be set at nix level for config to work here
-    ({config, user, ...}: {
+    ({
+      config,
+      user,
+      ...
+    }: {
       # scrobbing
       home-manager.users.${user} = {
         services.listenbrainz-mpd = {
@@ -52,7 +61,11 @@ in {
     })
   ];
   home = [
-    ({config, pkgs, ...}: {
+    ({
+      config,
+      pkgs,
+      ...
+    }: {
       # required mpd service
       services.mpd = {
         enable = true;

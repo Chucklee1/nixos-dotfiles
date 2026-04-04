@@ -1,7 +1,12 @@
 {inputs, ...}: {
   nix = [
     inputs.sops-nix.nixosModules.sops
-    ({config, pkgs, user, ...}: {
+    ({
+      config,
+      pkgs,
+      user,
+      ...
+    }: {
       environment.systemPackages = [pkgs.sops];
       environment.variables.SOPS_AGE_KEY_FILE = config.sops.age.keyFile;
       sops.age.generateKey = false;

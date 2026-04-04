@@ -68,7 +68,12 @@
         };
       };
     })
-    ({lib, config, user, ...}: let
+    ({
+      lib,
+      config,
+      user,
+      ...
+    }: let
       cfg = config.services.impermanence;
     in {
       fileSystems."/persist".neededForBoot = true;
@@ -100,31 +105,37 @@
       users.mutableUsers = false;
       environment.persistence."/persist" = {
         hideMounts = true;
-        directories = [
-          "/var/log"
-          "/var/lib/bluetooth"
-          "/var/lib/nixos"
-          "/var/lib/systemd/coredump"
-          "/etc/NetworkManager/system-connections"
-        ] ++ cfg.persist.system.directories;
+        directories =
+          [
+            "/var/log"
+            "/var/lib/bluetooth"
+            "/var/lib/nixos"
+            "/var/lib/systemd/coredump"
+            "/etc/NetworkManager/system-connections"
+          ]
+          ++ cfg.persist.system.directories;
 
-        files = [
-          "/etc/machine-id"
-        ] ++ cfg.persist.system.files;
+        files =
+          [
+            "/etc/machine-id"
+          ]
+          ++ cfg.persist.system.files;
         users.${user} = {
-          directories = [
-            "Downloads"
-            "Documents"
-            "Repos"
-            {
-              directory = ".ssh";
-              mode = "0700";
-            }
-            {
-              directory = ".local/share/keyrings";
-              mode = "0700";
-            }
-          ] ++ cfg.persist.user.directories;
+          directories =
+            [
+              "Downloads"
+              "Documents"
+              "Repos"
+              {
+                directory = ".ssh";
+                mode = "0700";
+              }
+              {
+                directory = ".local/share/keyrings";
+                mode = "0700";
+              }
+            ]
+            ++ cfg.persist.user.directories;
           files = cfg.persist.user.files;
         };
       };

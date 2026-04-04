@@ -1,6 +1,10 @@
 {inputs, ...}: {
   nix = [
-    ({config, pkgs, ...}: {
+    ({
+      config,
+      pkgs,
+      ...
+    }: {
       services.xserver.enable = true;
       services.xserver.windowManager.dwm = {
         enable = true;
@@ -47,5 +51,4 @@
       };
     })
   ];
-
 }
