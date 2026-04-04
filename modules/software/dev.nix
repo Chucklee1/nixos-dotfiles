@@ -24,7 +24,7 @@
           # formatters
           alejandra
           html-tidy
-          nodePackages.prettier
+          prettier
           shfmt
           # info helpers
           ripgrep
