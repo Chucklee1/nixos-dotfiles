@@ -17,7 +17,7 @@
       home-manager.backupFileExtension = "backup";
       home-manager.users.${user} = {
         home = {
-          stateVersion = "24.05"; # DO NOT CHANGE
+          stateVersion = "26.05";
           username = user;
           homeDirectory = config.users.users.${user}.home;
         };
