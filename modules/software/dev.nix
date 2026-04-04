@@ -22,6 +22,7 @@
           # diagnostics
           statix
           # formatters
+          jq # it counts
           alejandra
           html-tidy
           prettier
