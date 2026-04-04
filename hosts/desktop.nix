@@ -22,6 +22,9 @@ with mod; {
     programs.chromium
     programs.zen-browser
 
+    hardware.nvidia
+    hardware.uinput
+
     software.dev
     software.qol
     software.java
@@ -40,7 +43,6 @@ with mod; {
 
     services.graphical
     services.fcitx
-    services.uinput
     services.nfs
     services.syncthing
     services.tailscale
@@ -100,7 +102,7 @@ with mod; {
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
 
-    ({pkgs, ...}: {
+    ({lib, pkgs, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
@@ -120,13 +122,7 @@ with mod; {
       hardware.enableRedistributableFirmware = true;
 
       # gpu
-      services.xserver.videoDrivers = ["amdgpu" "nvidia"];
-      hardware.nvidia = {
-        modesetting.enable = true;
-        powerManagement.enable = false;
-        powerManagement.finegrained = false;
-        open = false;
-      };
+      services.xserver.videoDrivers = lib.mkForce ["amdgpu" "nvidia"];
     })
     # impermenance setup
     {
@@ -159,26 +155,6 @@ with mod; {
     ({config, user, ...}: {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
-    })
-    # must make custom serivce for ollama for more options
-    ({config, pkgs, user, ...}: {
-      environment.systemPackages = [pkgs.ollama-cuda];
-      systemd.user.services.ollama-cuda = let
-        USER_HOME = config.users.users.${user}.home;
-      in {
-        description = "Ollama server that uses nvidia cuda for local LLM";
-        wantedBy = [ "default.target" ];
-        after = [ "network.target" ];
-        environment = {
-          HOME = "${USER_HOME}";
-          OLLAMA_MODELS = "${USER_HOME}/.ollama/models";
-        };
-        serviceConfig = {
-          Type = "exec";
-          ExecStart = "${pkgs.ollama-cuda}/bin/ollama serve";
-          WorkingDirectory = USER_HOME;
-        };
-      };
     })
     ({
       lib,
