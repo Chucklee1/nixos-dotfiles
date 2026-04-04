@@ -42,13 +42,14 @@ with mod; {
     system.sys-specs
     system.users
 
-    services.graphical
     services.fcitx
+    services.flatpak
+    services.graphical
+    services.net-essentials
     services.nfs
+    services.sunshine
     services.syncthing
     services.tailscale
-    services.flatpak
-    services.net-essentials
 
     shell.fish
     shell.nushell
@@ -207,4 +208,3 @@ menuentry "arch" {
 }
 '';
 */
-
