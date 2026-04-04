@@ -321,7 +321,12 @@
 
 (use-package nix-mode :mode "\\.nix\\'")
 (use-package nix-ts-mode :mode "\\.nix\\'")
-(setq lsp-nix-nixd-formatting-command ["alejandra"])
+(with-eval-after-load 'eglot
+  (setq-default
+   eglot-workspace-configuration
+   '(:nixd
+     (:formatting
+      (:command ["alejandra"])))))
 
 (use-package rust-mode
   :init
