@@ -8,10 +8,10 @@ with mod; {
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = with mod; [
-    net.nfs
-    net.syncthing
-    net.tailscale
-    net.the-server
+    services.nfs
+    services.syncthing
+    services.tailscale
+    services.the-server
 
     programs.qutebrowser
     programs.nixvim

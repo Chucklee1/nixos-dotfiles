@@ -8,8 +8,8 @@ with mod; {
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = [
-    net.syncthing
-    net.tailscale
+    services.syncthing
+    services.tailscale
 
     programs.zen-browser
     programs.emacs

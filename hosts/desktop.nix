@@ -8,9 +8,9 @@ with mod; {
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = [
-    net.nfs
-    net.syncthing
-    net.tailscale
+    services.nfs
+    services.syncthing
+    services.tailscale
 
     programs.discord
     programs.emacs

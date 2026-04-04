@@ -8,7 +8,7 @@ with mod; {
   builder = inputs.nix-darwin.lib.darwinSystem;
   user = "goat";
   modules = [
-    net.tailscale
+    services.tailscale
 
     programs.emacs
     programs.prismLauncher
