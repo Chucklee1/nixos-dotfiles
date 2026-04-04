@@ -8,21 +8,5 @@
       };
       networking.firewall.enable = true;
     })
-    {
-      # ssh
-      services.openssh = {
-        enable = true;
-        # horrible idea but whatever
-        settings.PasswordAuthentication = true;
-      };
-      # dns resolving
-      services.avahi = {
-        enable = true;
-        nssmdns4 = true;
-        openFirewall = true;
-        publish.enable = true;
-        publish.userServices = true;
-      };
-    }
   ];
 }

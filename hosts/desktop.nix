@@ -45,6 +45,7 @@ with mod; {
     services.syncthing
     services.tailscale
     services.flatpak
+    services.net-essentials
 
     shell.fish
     shell.nushell

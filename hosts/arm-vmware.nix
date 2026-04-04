@@ -10,6 +10,7 @@ with mod; {
   modules = [
     services.syncthing
     services.tailscale
+    services.net-essentials
 
     programs.zen-browser
     programs.emacs

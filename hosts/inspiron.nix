@@ -12,6 +12,7 @@ with mod; {
     services.syncthing
     services.tailscale
     services.the-server
+    services.net-essentials
 
     programs.qutebrowser
     programs.nixvim
