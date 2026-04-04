@@ -1,5 +1,6 @@
 {self, ...}: let
-  media_source = "nixos-inspiron:/srv/media/Music";
+  media_local_path = "/srv/media/Music";
+  media_source = "nixos-inspiron:${media_local_path}";
   media_path = "/mnt/nfs";
 in {
   nix = [
@@ -16,6 +17,29 @@ in {
         ];
       };
     }
+    ({config, pkgs, user, ...}: {
+      systemd.user.services.link-nfs-to-music = {
+        description = "symlink local music to user Music Dir, override symlink if nfs marker is found";
+        wantedBy = [ "default.target" ];
+        after = [ "mpd.service" "remote-fs.target" ];
+        script = ''
+          TARGET="${config.users.users.${user}.home}/Music"
+          MARKER="${media_path}/marker"
+
+          # intially symlink local music
+          ln -sfn ${media_local_path} "$TARGET"
+
+          # override local dir is marker is found
+          if [ -e "$MARKER" ]; then
+            ln -sfn ${media_path} "$TARGET"
+          fi
+
+          # update mpd
+          ${pkgs.mpc}/bin/mpc update
+        '';
+        serviceConfig.Type = "oneshot";
+      };
+    })
     # must be set at nix level for config to work here
     ({config, user, ...}: {
       # scrobbing
@@ -32,7 +56,7 @@ in {
       # required mpd service
       services.mpd = {
         enable = true;
-        musicDirectory = media_path;
+        musicDirectory = "${config.home.homeDirectory}/Music";
         network.listenAddress = "any";
         extraConfig = ''
           audio_output {
