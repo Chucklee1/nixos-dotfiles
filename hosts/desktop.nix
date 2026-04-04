@@ -149,6 +149,7 @@ with mod; {
             ".local/share/zoxide"
             ".var"
             ".ollama"
+            ".factorio"
           ];
         };
       };
