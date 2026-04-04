@@ -22,6 +22,7 @@ with mod; {
     programs.chromium
     programs.zen-browser
 
+    hardware.cachyos-kernel
     hardware.nvidia
     hardware.uinput
 
@@ -102,7 +103,7 @@ with mod; {
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
 
-    ({lib, pkgs, ...}: {
+    ({lib, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
@@ -110,12 +111,6 @@ with mod; {
       boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm" "kvm_amd" "ntsync"];
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
-
-      # cachyos kernel
-      nix.settings.substituters = ["https://cache.garnix.io"];
-      nix.settings.trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
-      nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
-      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
       # cpu
       hardware.cpu.amd.updateMicrocode = true;
