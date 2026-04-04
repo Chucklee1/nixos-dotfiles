@@ -8,14 +8,9 @@ with mod; {
   builder = inputs.nixpkgs.lib.nixosSystem;
   user = "goat";
   modules = [
-    services.nfs
-    services.syncthing
-    services.tailscale
-
     programs.discord
     programs.emacs
     programs.nixvim
-    programs.flatpak
     programs.git
     programs.kitty
     programs.niri
@@ -46,6 +41,10 @@ with mod; {
     services.graphical
     services.fcitx
     services.uinput
+    services.nfs
+    services.syncthing
+    services.tailscale
+    services.flatpak
 
     shell.fish
     shell.nushell
