@@ -14,6 +14,7 @@ with mod; {
     programs.git
     programs.kitty
     programs.niri
+    programs.dwm
     programs.obs
     programs.prismLauncher
     programs.rmpc
@@ -47,6 +48,7 @@ with mod; {
     services.graphical
     services.net-essentials
     services.nfs
+    services.ollama
     services.sunshine
     services.syncthing
     services.tailscale
@@ -104,7 +106,7 @@ with mod; {
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
 
-    ({lib, ...}: {
+    ({lib, pkgs, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
@@ -119,6 +121,8 @@ with mod; {
 
       # gpu
       services.xserver.videoDrivers = lib.mkForce ["amdgpu" "nvidia"];
+
+      environment.systemPackages = [pkgs.eden];
     })
     # impermenance setup
     {
@@ -200,11 +204,11 @@ for later if needed section
 boot.loader.grub.useOSProber = true;
 # dual boot entry so I dont need a seperate bootloader for arch
 boot.loader.grub.extraEntries = ''
-menuentry "arch" {
-    insmod btrfs
-    search --no-floppy --fs-uuid --set=root ${WD}
-    linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch
-    initrd /WD/arch/boot/initramfs-linux.img
-}
+  menuentry "arch" {
+      insmod btrfs
+      search --no-floppy --fs-uuid --set=root ${WD}
+      linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch/root
+      initrd /WD/arch/boot/initramfs-linux.img
+  }
 '';
 */
