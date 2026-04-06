@@ -19,6 +19,7 @@ with mod; {
     programs.niri
     programs.waybar
     programs.yazi
+    programs.dwm
 
     software.dev
     software.qol
@@ -56,6 +57,14 @@ with mod; {
 
       hardware.cpu.intel.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
+      boot.loader.grub.extraEntries = ''
+        menuentry "arch" {
+            insmod btrfs
+            search --no-floppy --fs-uuid --set=root 214653ac-2b13-441b-b405-46c709061f7a
+            linux /arch/boot/vmlinuz-linux root=UUID=214653ac-2b13-441b-b405-46c709061f7a rw rootflags=subvol=arch/root
+            initrd /arch/boot/initramfs-linux.img
+        }
+      '';
     }
     # impermenance setup
     {
