@@ -3,7 +3,10 @@
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         zenity
-        osu-lazer-bin
+        # mainstream nixpkgs lags behind a bit
+        (pkgs.callPackage ../../pkgs/osu/package.nix { 
+          nativeWayland = true;
+        })
       ];
       programs.gamemode = {
         enable = true;
