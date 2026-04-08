@@ -139,6 +139,7 @@ with mod; {
             ".cache/zen"
             ".config/discord"
             ".config/listenbrainz-mpd"
+            ".config/sunshine"
             ".config/zen"
             ".local/share/direnv"
             ".local/share/mpd"
