@@ -376,7 +376,8 @@ a pain working with c++ files...
             haskell-mode
             java-mode
             lua-mode
-            nix-ts-mode)
+            nix-ts-mode
+            python-mode)
            . eglot-ensure)
     :custom
     (eglot-sync-connect 0)  ;; async startup

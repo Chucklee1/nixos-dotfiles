@@ -13,10 +13,10 @@
           clang-tools # c/c++
           cmake-language-server
           bash-language-server
-          lemminx # xml
           lua-language-server
           marksman
           nixd
+          python3Packages.python-lsp-server 
           typescript-language-server
           vscode-langservers-extracted
           # diagnostics
