@@ -140,11 +140,11 @@
     "dwm": {
       "flake": false,
       "locked": {
-        "lastModified": 1774282317,
-        "narHash": "sha256-LYW1o+xqDmpO7liFawGSKB0CTq9yuY+1nM8OCIxGzfE=",
+        "lastModified": 1775783276,
+        "narHash": "sha256-xIwHLItOMadk1WeFvf9GiFf8fHM5brq+qwJ40wFPTvU=",
         "owner": "Chucklee1",
         "repo": "dwm",
-        "rev": "3ad3b12a197f501dbf273ba31956f6dfa16ec194",
+        "rev": "55140833da649a97ff5bff1ab6178ed8451066bb",
         "type": "github"
       },
       "original": {
@@ -1172,11 +1172,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774241971,
-        "narHash": "sha256-D8vrEjt12IUELHp5/Du2ezgy5c120l0/x1Yw9DHTM54=",
+        "lastModified": 1775782973,
+        "narHash": "sha256-6F8zK5c14qhxSGejN2Bz/50q4msKU2TrHwwNXcF/quo=",
         "owner": "Chucklee1",
         "repo": "slstatus",
-        "rev": "3c1848461a2cc036ee25ca4721d3faa2b5753605",
+        "rev": "dd47a2713536a38cfec277b4a5f19782d063540a",
         "type": "github"
       },
       "original": {

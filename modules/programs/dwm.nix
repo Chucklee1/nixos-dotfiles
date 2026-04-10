@@ -9,12 +9,19 @@
       services.xserver.windowManager.dwm = {
         enable = true;
         package = pkgs.dwm.overrideAttrs {src = inputs.dwm;};
+        extraSessionCommands = ''
+          ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image} &
+          emacs --daemon &
+        '';
       };
 
-      services.xserver.windowManager.dwm.extraSessionCommands = ''
-        ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image} &
-        ${inputs.slstatus.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/slstatus &
-      '';
+
+      systemd.user.services.slstatus = {
+        description = "slstatus";
+        wantedBy = [ "graphical-session.target" ];
+        partOf = [ "graphical-session.target" ];
+        serviceConfig.ExecStart = "${inputs.slstatus.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/slstatus";
+      };
     })
   ];
 
