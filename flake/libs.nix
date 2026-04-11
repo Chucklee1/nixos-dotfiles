@@ -13,41 +13,7 @@ with self.inputs.nixpkgs.lib; rec {
         symlink = {};
       }) (builtins.readDir dir);
 
-  #absolute horrid deepMerge
-  mergeAllRecursive = a: b:
-    foldl' (acc: key: let
-      # sets all missing keys to null
-      va = a.${key} or null;
-      vb = b.${key} or null;
-    in
-      acc
-      // {
-        "${key}" =
-          if va == null
-          then vb
-          else if vb == null
-          then va
-          else if isList va && isList vb
-          then va ++ vb
-          # recurse into function if attr
-          else if isAttrs va && isAttrs vb
-          then mergeAllRecursive va vb
-          # let last primitive-type values override previous
-          else vb;
-      }) {}
-    (unique (attrNames a ++ attrNames b));
-
-  # concats modules from imported files
-  loadModules = dir: args: (pipe dir [
-    readDirRecursive
-    (filterAttrs (flip (const (hasSuffix ".nix"))))
-    (mapAttrs (const import))
-    (mapAttrs (const (flip toFunction args)))
-    attrValues
-    (builtins.foldl' mergeAllRecursive {})
-  ]);
-
-  # returns list of file paths - it's just mergeModules without wrapping
+  # returns list of file paths
   simpleMerge = dir: (pipe dir [
     readDirRecursive
     (filterAttrs (flip (const (hasSuffix ".nix"))))
@@ -62,16 +28,8 @@ with self.inputs.nixpkgs.lib; rec {
       last
     ];
 
-  /*
-  - reworked readDirRecursive to return in a
-    nested attrset format
-  - i like it cause it makes it easy to import
-    files like attrsets
-  - example: for file `modules/subfolder/file.nix`
-    using `readDirRecursiveToAttrset "modules"`
-    as mod would allow for accessing `file.nix` as
-    `mod.subfolder.file`
-  */
+  /* recursively read directory, then transform
+   * paths to nested attribute set */
   readDirRecToAttrset = dir:
     concatMapAttrs (file:
       flip getAttr {
@@ -84,13 +42,31 @@ with self.inputs.nixpkgs.lib; rec {
         symlink = {};
       }) (builtins.readDir dir);
 
-  loadModulesFromAttrset = mods: args: (
+  /* merge all inner lists of same name
+   * assume key is of type list */
+  mergeInnerList = sets: (builtins.foldl' (
+      acc: m:
+        builtins.foldl'
+        (
+          innerAcc: key:
+            innerAcc
+            // {
+              ${key} =
+                (innerAcc.${key} or [])
+                ++ (m.${key} or []);
+            }
+        )
+        acc
+        (builtins.attrNames m)
+    ) {}
+    sets);
+
+  loadModulesFromAttrset = mods: args:
     pipe mods [
       (map import)
       (map (flip toFunction args))
-      (builtins.foldl' mergeAllRecursive {})
-    ]
-  );
+      mergeInnerList
+    ];
 
   # system helpers
   darwinOrLinux = A: B:
