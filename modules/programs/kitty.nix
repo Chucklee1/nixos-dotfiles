@@ -8,8 +8,9 @@
           background_blur = 40;
           confirm_os_window_close = 0;
           tab_bar_edge = "bottom";
-          tab_bar_style = "powerline";
-          tab_powerline_style = "round";
+          tab_bar_style = "separator";
+          tab_separator = "\"\"";
+          tab_title_template = "\" {title} \"";
         };
       };
     }
