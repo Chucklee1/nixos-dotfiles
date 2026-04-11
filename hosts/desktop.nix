@@ -59,7 +59,6 @@ with mod; {
 
     theming.blockgame
     theming.stylix
-    theming.themes.nord
   ];
 
   extraConfig = let

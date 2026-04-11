@@ -1,3 +1,22 @@
+/*
+color reference
+base00 #2e3440
+base01 #3b4252
+base02 #434c5e
+base03 #4c566a
+base04 #d8dee9
+base05 #e5e9f0
+base06 #eceff4
+base07 #8fbcbb
+base08 #bf616a
+base09 #d08770
+base0A #ebcb8b
+base0B #a3be8c
+base0C #88c0d0
+base0D #81a1c1
+base0E #b48ead
+base0F #5e81ac
+*/
 {
   self,
   inputs,
@@ -8,17 +27,14 @@
     (extlib.darwinOrLinux
     inputs.stylix.darwinModules.stylix
     inputs.stylix.nixosModules.stylix)
-    ({pkgs, ...}: let
-      # helpers
-      painted-lake = pkgs.fetchurl {
-        url = "https://w.wallhaven.cc/full/5g/wallhaven-5g22q5.png";
-        hash = "sha256-snqkeQecU0opsBfIrnkl6aiV71hSCmqnZBAsibNG4w8=";
-      };
-    in {
+    ({pkgs, ...}: {
       stylix = {
         enable = true;
         autoEnable = true;
         homeManagerIntegration.autoImport = true;
+        image = "${self}/assets/wallpaper/nordest.png";
+        base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
+        polarity = "dark";
         opacity.desktop = 0.8;
         opacity.terminal = 0.8;
 

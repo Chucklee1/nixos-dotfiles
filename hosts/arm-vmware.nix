@@ -39,7 +39,6 @@ with mod; {
     shell.zsh
 
     theming.stylix
-    theming.themes.nord
   ];
   extraConfig = [
     inputs.disko.nixosModules.default

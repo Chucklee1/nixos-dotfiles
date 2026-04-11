@@ -38,7 +38,6 @@ with mod; {
     shell.bash
 
     theming.stylix
-    theming.themes.nord
   ];
 
   extraConfig = [
