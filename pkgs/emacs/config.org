@@ -74,7 +74,10 @@
   (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
   (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
   (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
-  (defvar g/opacity       (if (eq system-type 'darwin) 40 80))
+  (defvar g/opacity/alpha (if (eq system-type 'darwin) 40 80))
+  (defvar g/opacity/solid 100)
+  ;; default to no transparency
+  (defvar g/opacity/current  g/opacity/solid)
 #+end_src
 ** Helper Funcitons
 #+begin_src elisp
@@ -97,12 +100,35 @@
             (kill-buffer buf))
         (call-interactively (intern cmd)))))
 
+  ;; program(s)
   (defun helper/open-split-term ()
     (interactive)
     (let* ((height (floor (* 0.25 (window-total-height))))
            (new-win (split-window-below (- height))))
       (select-window new-win)
       (vterm (getenv "SHELL"))))
+
+  ;; opacity
+  (defun helper/opacity/set (opacity)
+    (set-frame-parameter (selected-frame) 'alpha-background opacity)
+    (add-to-list 'default-frame-alist `(alpha-background . ,opacity))
+
+    ;; must manually set corfu frame-opacity
+    (with-eval-after-load 'corfu
+      (setq corfu-prefer-childframe t)
+      (setq corfu-childframe-frame-parameters
+            '((alpha-background . ,(+ opacity 10))
+              (internal-border-width . 1)
+              (left-fringe . 5)
+              (right-fringe . 5)))))
+
+  (defun helper/opacity/toggle ()
+    (interactive)
+    (setq g/opacity/current
+          (if (= g/opacity/current g/opacity/solid)
+              g/opacity/alpha
+            g/opacity/solid))
+    (helper/opacity/set g/opacity/current))
 
   ;; theme ;;
   (defun doom/colors (color)
@@ -153,7 +179,6 @@
     :hook
     (before-save   . delete-trailing-whitespace)
     (prog-mode     . (lambda () (display-line-numbers-mode 1)))
-    ;; (window-setup  . toggle-frame-maximized)
     :config
     ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
     (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -224,6 +249,7 @@
                   '(("b" . global-tab-line-mode)
                     ("n" . display-line-numbers-mode)
                     ("N" . global-display-line-numbers-mode)
+                    ("o" . helper/opacity/toggle)
                     ("w" . visual-wrap-prefix-mode)
                     ("W" . global-visual-wrap-prefix-mode)))
 #+end_src
@@ -291,28 +317,6 @@
     (doom-themes-visual-bell-config)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
-#+end_src
-** Transparent Background
-#+begin_src elisp
-  (defun transparent-window-setup ()
-
-    (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
-    (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))
-
-    ;; must manually set corfu frame-opacity
-    (with-eval-after-load 'corfu
-      (setq corfu-prefer-childframe t)
-      (setq corfu-childframe-frame-parameters
-            '((alpha-background . ,(+ g/opacity 10))
-              (internal-border-width . 1)
-              (left-fringe . 5)
-              (right-fringe . 5)))))
-
-  (add-hook 'window-setup-hook #'transparent-window-setup)
-
-  ;; unset bg when in terminal/tty
-  (when (not (display-graphic-p))
-    (set-face-background 'default "unspecified-bg"))
 #+end_src
 ** Font
 #+begin_src elisp

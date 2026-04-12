@@ -11,7 +11,10 @@
 (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
 (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
 (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
-(defvar g/opacity       (if (eq system-type 'darwin) 40 80))
+(defvar g/opacity/alpha (if (eq system-type 'darwin) 40 80))
+(defvar g/opacity/solid 100)
+;; default to no transparency
+(defvar g/opacity/current  g/opacity/solid)
 
 ;; keybinds ;;
 (defun helper/mapkeys (leader-map keypairs)
@@ -38,6 +41,27 @@
          (new-win (split-window-below (- height))))
     (select-window new-win)
     (vterm (getenv "SHELL"))))
+
+(defun helper/opacity/set (opacity)
+  (set-frame-parameter (selected-frame) 'alpha-background opacity)
+  (add-to-list 'default-frame-alist `(alpha-background . ,opacity))
+
+  ;; must manually set corfu frame-opacity
+  (with-eval-after-load 'corfu
+    (setq corfu-prefer-childframe t)
+    (setq corfu-childframe-frame-parameters
+          '((alpha-background . ,(+ opacity 10))
+            (internal-border-width . 1)
+            (left-fringe . 5)
+            (right-fringe . 5)))))
+
+(defun helper/opacity/toggle ()
+  (interactive)
+  (setq g/opacity/current
+        (if (= g/opacity/current g/opacity/solid)
+            g/opacity/alpha
+          g/opacity/solid))
+  (helper/opacity/set g/opacity/current))
 
 ;; theme ;;
 (defun doom/colors (color)
@@ -145,6 +169,7 @@
                 '(("b" . global-tab-line-mode)
                   ("n" . display-line-numbers-mode)
                   ("N" . global-display-line-numbers-mode)
+                  ("o" . helper/opacity/toggle)
                   ("w" . visual-wrap-prefix-mode)
                   ("W" . global-visual-wrap-prefix-mode)))
 
@@ -190,25 +215,7 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(defun transparent-window-setup ()
 
-  (set-frame-parameter (selected-frame) 'alpha-background g/opacity)
-  (add-to-list 'default-frame-alist `(alpha-background . ,g/opacity))
-
-  ;; must manually set corfu frame-opacity
-  (with-eval-after-load 'corfu
-    (setq corfu-prefer-childframe t)
-    (setq corfu-childframe-frame-parameters
-          '((alpha-background . ,(+ g/opacity 10))
-            (internal-border-width . 1)
-            (left-fringe . 5)
-            (right-fringe . 5)))))
-
-(add-hook 'window-setup-hook #'transparent-window-setup)
-
-;; unset bg when in terminal/tty
-(when (not (display-graphic-p))
-  (set-face-background 'default "unspecified-bg"))
 
 (set-face-attribute 'default nil
                     :font   g/ffamily
@@ -252,7 +259,8 @@
           haskell-mode
           java-mode
           lua-mode
-          nix-ts-mode)
+          nix-ts-mode
+          python-mode)
          . eglot-ensure)
   :custom
   (eglot-sync-connect 0)  ;; async startup
