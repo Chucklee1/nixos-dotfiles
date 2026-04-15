@@ -4,6 +4,7 @@
     {
       services.openssh = {
         enable = true;
+        settings.UseDns = true;
         # horrible idea but whatever
         settings.PasswordAuthentication = true;
       };
@@ -12,10 +13,8 @@
     {
       services.avahi = {
         enable = true;
-        nssmdns4 = true;
+        nssmdns = true;
         openFirewall = true;
-        publish.enable = true;
-        publish.userServices = true;
       };
     }
   ];
