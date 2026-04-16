@@ -35,7 +35,7 @@ with mod; {
     services.ext4
 
     shell.variables
-    shell.bash
+    shell.fish
 
     theming.stylix
   ];
