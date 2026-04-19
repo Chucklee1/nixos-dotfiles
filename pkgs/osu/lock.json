@@ -1,0 +1,6 @@
+{
+  "version": "2026.418.0",
+  "aarch64-darwin": "sha256-ZsxVqVYnoEG+sjsHYcfx6M/ZKCqATuLlQW8lCWbRcuI=",
+  "x86_64-darwin": "sha256-fqCd69B5n/X+nIbkYrTmvreYWTyjNw3CZ4hzpKxcUkc=",
+  "x86_64-linux": "sha256-51zjZ7OxftIKl21d2xCjUhaQMtwyQK6vEGRPTXnqjXU="
+}

@@ -7,26 +7,26 @@
   makeWrapper,
   nativeWayland ? false,
 }:
-
 let
   pname = "osu-lazer-bin";
-  version = "2026.401.0";
+  lock = builtins.fromJSON (builtins.readFile ./lock.json);
+  version = lock.version;
 
   src =
     {
       aarch64-darwin = fetchzip {
+        hash = lock.aarch64-darwin;
         url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.app.Apple.Silicon.zip";
-        hash = "sha256-nsQdU3qrsRw94hnwJum3zdKcBJl0Z7hjtC+ZAm2LkvY=";
         stripRoot = false;
       };
       x86_64-darwin = fetchzip {
+        hash = lock.x86_64-darwin;
         url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.app.Intel.zip";
-        hash = "sha256-d6SPgVzM+be+C5kWqZdc9yT7duZPF9+UsQo8iQ57pcA=";
         stripRoot = false;
       };
       x86_64-linux = fetchurl {
-        url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-        hash = "sha256-RKKhf193BYF7dYL1x4gF2+Kl2xHuWZ/WMYBk4M/x8S0=";
+        hash = lock.x86_64-linux;
+        url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.AppImage";
       };
     }
     .${stdenvNoCC.system} or (throw "osu-lazer-bin: ${stdenvNoCC.system} is unsupported.");

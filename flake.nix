@@ -91,8 +91,10 @@
         import ./flake/devshells.nix {inherit inputs pkgs;}
     );
 
-    packages = extlib.allSystems (system: {
-      nixvim = nixvim.package system;
+    packages = extlib.allSystemsWithPkgs (
+      pkgs: {
+      nixvim = nixvim.package pkgs.stdenv.hostPlatform.system;
+      osu-lazer-bin = pkgs.callPackage ./pkgs/osu {};
     });
 
     overlays = {
