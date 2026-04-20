@@ -65,6 +65,17 @@ with mod; {
         }
       '';
     }
+    # gpu related
+    ({lib, pkgs, ...}: {
+      environment.systemPackages = [pkgs.moonlight-qt];
+      services.xserver.videoDrivers = [ "modesetting" ];
+      hardware.graphics.extraPackages = lib.mkAfter [
+        pkgs.intel-media-driver
+      ];
+      environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "iHD";
+      };
+    })
     # impermenance setup
     {
       # persistance stuff
