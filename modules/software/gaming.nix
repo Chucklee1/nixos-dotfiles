@@ -4,7 +4,7 @@
       environment.systemPackages = with pkgs; [
         zenity
         # mainstream nixpkgs lags behind a bit
-        (pkgs.callPackage ../../pkgs/osu/package.nix { 
+        (pkgs.callPackage ../../pkgs/osu {
           nativeWayland = true;
         })
       ];

@@ -94,7 +94,6 @@
     packages = extlib.allSystemsWithPkgs (
       pkgs: {
       nixvim = nixvim.package pkgs.stdenv.hostPlatform.system;
-      osu-lazer-bin = pkgs.callPackage ./pkgs/osu {};
     });
 
     overlays = {
