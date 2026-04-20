@@ -28,8 +28,8 @@
       programs.swaylock.package = pkgs.swaylock-effects;
       services.wlsunset = {
         enable = true;
-        temperature.day = 5201;
-        temperature.night = 5200;
+        temperature.day = 4201;
+        temperature.night = 4200;
         # Kivalliq Region, Nunavut, Canada
         latitude = 65.726;
         longitude = -94.806;

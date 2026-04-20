@@ -10,8 +10,8 @@
         enable = true;
         package = pkgs.dwm.overrideAttrs {src = inputs.dwm;};
         extraSessionCommands = ''
-          ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image} &
           emacs --daemon &
+          ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image}
         '';
       };
 
@@ -48,8 +48,8 @@
       services.redshift = {
         enable = true;
         provider = "manual";
-        temperature.day = 3800;
-        temperature.night = 3800;
+        temperature.day = 4800;
+        temperature.night = 4800;
         # Baruunbayan-Ulaan, Övörkhangai, Mongolia
         settings.manual = {
           lat = 45.221;
