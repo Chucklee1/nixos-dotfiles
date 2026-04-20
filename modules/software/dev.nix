@@ -8,6 +8,10 @@
           just
           lua
           python3
+          # zig
+          zig
+          zls
+          zig-zlint
           # lsps
           asm-lsp # GAS/GO assembly
           clang-tools # c/c++

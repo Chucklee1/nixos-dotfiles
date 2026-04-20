@@ -14,7 +14,7 @@
 
       config = ''
           ,${builtins.readFile ./config.el}
-        '';
+      '';
       defaultInitFile = false;
       # make sure to include `(setq use-package-always-ensure t)` in config
       alwaysEnsure = true;
@@ -381,7 +381,8 @@ a pain working with c++ files...
             java-mode
             lua-mode
             nix-ts-mode
-            python-mode)
+            python-mode
+            zig-mode)
            . eglot-ensure)
     :custom
     (eglot-sync-connect 0)  ;; async startup
@@ -424,6 +425,7 @@ my system vs using a shell.
   ;; compiled
   (use-package lsp-java)
   (use-package auctex)
+  (use-package zig-mode :mode "\\.zig\\'")
      #+end_src
 ** C/C++
 *** cmake

@@ -35,6 +35,7 @@
           (kill-buffer buf))
       (call-interactively (intern cmd)))))
 
+;; program(s)
 (defun helper/open-split-term ()
   (interactive)
   (let* ((height (floor (* 0.25 (window-total-height))))
@@ -42,6 +43,7 @@
     (select-window new-win)
     (vterm (getenv "SHELL"))))
 
+;; opacity
 (defun helper/opacity/set (opacity)
   (set-frame-parameter (selected-frame) 'alpha-background opacity)
   (add-to-list 'default-frame-alist `(alpha-background . ,opacity))
@@ -109,7 +111,6 @@
   :hook
   (before-save   . delete-trailing-whitespace)
   (prog-mode     . (lambda () (display-line-numbers-mode 1)))
-  ;; (window-setup  . toggle-frame-maximized)
   :config
   ;; Move customization variables to a separate file and load it, avoid filling up init.el with unnecessary variables
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -215,8 +216,6 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-
-
 (set-face-attribute 'default nil
                     :font   g/ffamily
                     :height g/fheight
@@ -260,7 +259,8 @@
           java-mode
           lua-mode
           nix-ts-mode
-          python-mode)
+          python-mode
+          zig-mode)
          . eglot-ensure)
   :custom
   (eglot-sync-connect 0)  ;; async startup
@@ -290,6 +290,7 @@
 ;; compiled
 (use-package lsp-java)
 (use-package auctex)
+(use-package zig-mode :mode "\\.zig\\'")
 
 (use-package cmake-ts-mode
   :ensure nil
