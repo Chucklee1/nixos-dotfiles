@@ -36,11 +36,17 @@
       security.polkit.enable = true;
 
       # portals
-      xdg.portal.extraPortals = [
-        pkgs.xdg-desktop-portal-gtk
-      ];
-      xdg.portal.config.common.default = "gtk";
-
+      xdg.portal = {
+        enable = true;
+        xdgOpenUsePortal = true;
+        extraPortals = [
+          pkgs.xdg-desktop-portal-gtk
+          pkgs.xdg-desktop-portal-gnome
+        ];
+        config = {
+          common.default = [ "gnome" ];
+        };
+      };
       # specific apps require a gui file manager for xdg-open
       # (cough cough steam)
       programs.thunar.enable = true;
