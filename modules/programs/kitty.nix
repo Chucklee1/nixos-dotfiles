@@ -14,5 +14,13 @@
         };
       };
     }
+    # qol aliases, maybe will ad more later
+    {
+      home.shellAliases = {
+        kssh = "kitten ssh";
+        kdiff = "kitten diff";
+        kedit = "kitten edit-in-kitty";
+      };
+    }
   ];
 }
