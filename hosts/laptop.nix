@@ -14,6 +14,7 @@ with mod; {
 
     programs.zen-browser
     programs.emacs
+    programs.helix
     programs.git
     programs.kitty
     programs.niri
