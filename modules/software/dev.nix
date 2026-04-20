@@ -20,13 +20,14 @@
           lua-language-server
           marksman
           nixd
-          python3Packages.python-lsp-server 
+          python3Packages.python-lsp-server
           typescript-language-server
           vscode-langservers-extracted
           # diagnostics
           statix
           # formatters
           jq # it counts
+          yq # also counts
           alejandra
           html-tidy
           prettier
