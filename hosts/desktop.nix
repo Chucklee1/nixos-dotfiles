@@ -10,7 +10,7 @@ with mod; {
   modules = [
     programs.discord
     programs.emacs
-    programs.helix
+    programs.nixvim
     programs.git
     programs.kitty
     programs.niri
