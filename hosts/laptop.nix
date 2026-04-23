@@ -21,6 +21,7 @@ with mod; {
     programs.waybar
     programs.yazi
     programs.dwm
+    programs.discord
 
     software.dev
     software.qol
@@ -36,6 +37,7 @@ with mod; {
     system.users
 
     services.graphical
+    hardware.uinput
 
     shell.variables
     shell.fish
