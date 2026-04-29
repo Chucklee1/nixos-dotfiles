@@ -478,6 +478,7 @@ a pain working with c++ files...
     :ensure nil
     :hook ((c-ts-mode
             c++-ts-mode
+            go-mode
             haskell-mode
             java-mode
             lua-mode
@@ -529,6 +530,11 @@ my system vs using a shell.
      '(:nixd
        (:formatting
         (:command ["alejandra"])))))
+#+end_src
+** Go
+#+begin_src elisp
+  (use-package go-mode :mode (("\\.go\\'" . go-mode)
+                              ("\\go.mod\\'" . go-mode)))
 #+end_src
 ** Rust
 #+begin_src elisp

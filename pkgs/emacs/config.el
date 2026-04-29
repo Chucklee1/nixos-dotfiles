@@ -321,6 +321,7 @@
   :ensure nil
   :hook ((c-ts-mode
           c++-ts-mode
+          go-mode
           haskell-mode
           java-mode
           lua-mode
@@ -359,6 +360,9 @@
    '(:nixd
      (:formatting
       (:command ["alejandra"])))))
+
+(use-package go-mode :mode (("\\.go\\'" . go-mode)
+                            ("\\go.mod\\'" . go-mode)))
 
 (use-package rust-mode
   :init
