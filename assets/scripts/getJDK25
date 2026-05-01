@@ -1,11 +1,3 @@
-#!/usr/bin/env nu
+read -r path < <(ls /nix/store | rg "temurin-bin-25" | rg -v '\.drv$' | head -n1)
 
-let exclude = '\.drv$' 
-let bin = 'temurin-bin-25'
-
-ls /nix/store 
-| where name !~ $exclude 
-| where name =~ $bin
-| get name 
-| first 1 
-| path join 'bin/java'
+echo "/nix/store/$path/bin/java"

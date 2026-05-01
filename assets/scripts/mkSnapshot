@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 if [ "$EUID" != "0" ]; then
     echo "Please run with sudo or as root"
     exit 0
