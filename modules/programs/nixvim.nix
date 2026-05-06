@@ -1,16 +1,9 @@
 {self, ...}: {
   nix = [
-    ({
-      pkgs,
-      machine,
-      ...
-    }: {
+    ({pkgs, ...}: {
       nixpkgs.overlays = [self.overlays.nixvim];
       environment.variables.EDITOR = "nvim";
-      environment.systemPackages =
-        if machine == "umbra"
-        then [pkgs.nixvim.core]
-        else [pkgs.nixvim.full];
+      environment.systemPackages = [pkgs.nixvim];
     })
   ];
 }

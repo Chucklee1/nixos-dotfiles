@@ -138,7 +138,12 @@
 
   # ---- THEME ----
   colorschemes = {
-    nightfox.enable = true;
+    nord.enable = true;
+    nord.settings = {
+      cursorline_transparent = true;
+      disable_background = true;
+    };
+    nightfox.enable = false;
     nightfox.flavor = "nordfox";
     nightfox.settings = {
       options.transparent = true;

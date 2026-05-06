@@ -6,7 +6,6 @@
     oil.enable = true; # file managers
     # git
     gitsigns.enable = true;
-    neogit.enable = true; # emacs-magit clone
     # bundle
     snacks = {
       enable = true;

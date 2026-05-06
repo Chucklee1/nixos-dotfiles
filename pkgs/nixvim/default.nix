@@ -1,21 +1,17 @@
 {self, ...}: let
   inherit (self) inputs extlib;
-  mkModule = system: profile:
+  mkModule = system:
     inputs.nixvim.legacyPackages.${system}.makeNixvimWithModule
     {
       # profile choices: core, full
       inherit system;
       module.imports = extlib.simpleMerge ./config;
-      extraSpecialArgs = {inherit inputs extlib profile;};
+      extraSpecialArgs = {inherit inputs extlib;};
     };
 in {
   overlay = final: prev: {
-    nixvim.core = mkModule final.system "core";
-    nixvim.full = mkModule final.system "full";
+    nixvim= mkModule final.system;
   };
 
-  package = system: {
-    core = mkModule system "core";
-    full = mkModule system "full";
-  };
+  package = system: mkModule system;
 }

@@ -5,9 +5,6 @@
      local key = vim.keymap.set
 
      -- General
-     key("n", "<leader>g", ":Neogit<CR>",             {desc = "Open neogit"})
-
-     -- Explorer
      key("n", "<leader>e",  ":Oil<CR>",                 {desc = "Open file editor"})
 
      -- Telescope binding

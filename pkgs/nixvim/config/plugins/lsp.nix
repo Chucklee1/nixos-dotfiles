@@ -1,27 +1,19 @@
-{
-  pkgs,
-  profile,
-  ...
-}: {
+{pkgs, ... }: { 
   # ---- LSP ----
   plugins.lsp.enable = true;
-  lsp.servers = let
-    full = profile == "full";
-  in (builtins.mapAttrs (_: v:
-      v // {package = null;})
-    {
-      # all profiles
-      bashls.enable = true;
-      lua_ls.enable = true;
-      marksman.enable = true;
-      nixd.enable = true;
-      # full profile only
-      asm_lsp.enable = full; # GAS/GO assembly
-      clangd.enable = full;
-      html.enable = full;
-      jdtls.enable = full; # java
-      qmlls.enable = full;
-    });
+  lsp.servers = {
+    # all profiles
+    bashls.enable = true;
+    lua_ls.enable = true;
+    marksman.enable = true;
+    nixd.enable = true;
+    # full profile only
+    asm_lsp.enable = true; # GAS/GO assembly
+    clangd.enable = true;
+    html.enable = true;
+    jdtls.enable = true; # java
+    qmlls.enable = true;
+  };
 
   # ---- LANG QOL ----
   plugins = {
