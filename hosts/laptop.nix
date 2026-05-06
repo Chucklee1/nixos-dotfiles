@@ -10,17 +10,19 @@ with mod; {
   modules = with mod; [
     services.syncthing
     services.tailscale
+    services.nfs
     services.net-essentials
 
     programs.zen-browser
     programs.emacs
-    programs.helix
+    programs.nixvim
     programs.git
     programs.kitty
     programs.niri
     programs.waybar
     programs.yazi
     programs.dwm
+    programs.rmpc
     programs.discord
 
     software.dev
