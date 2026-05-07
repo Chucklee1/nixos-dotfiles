@@ -87,11 +87,6 @@
     nixosConfigurations = sys.mkSystems;
     darwinConfigurations = sys.mkSystems;
 
-    devShells = extlib.allSystemsWithPkgs (
-      pkgs:
-        import ./flake/devshells.nix {inherit inputs pkgs;}
-    );
-
     packages = extlib.allSystemsWithPkgs (
       pkgs: {
       nixvim = nixvim.package pkgs.stdenv.hostPlatform.system;
