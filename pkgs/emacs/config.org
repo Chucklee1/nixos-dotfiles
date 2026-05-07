@@ -192,7 +192,7 @@
 #+end_src
 ** Evil Mode
 "My name is retep, and I am evviilll"
-#+begin_src elisp :tangle no
+#+begin_src elisp
   (use-package evil
     :init
     (evil-mode)
@@ -223,7 +223,7 @@
 #+end_src
 *** evil-terminal-cursor-change
 + Change cursor depending on mode in the terminal/tty
-#+begin_src elisp :tangle no
+#+begin_src elisp
   (use-package evil-terminal-cursor-changer)
   (unless (display-graphic-p)
     (require 'evil-terminal-cursor-changer)
@@ -231,7 +231,7 @@
 #+end_src
 ** Meow
 Note that C-c cmds will also work with space prefix
-#+begin_src elisp
+#+begin_src elisp :tangle no
     (defun meow-setup ()
       (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
       (setq meow-use-clipboard t)
