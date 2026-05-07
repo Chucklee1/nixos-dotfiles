@@ -10,7 +10,7 @@ with mod; {
   modules = [
     services.tailscale
 
-    programs.emacs
+    programs.nixvim
     programs.prismLauncher
     programs.git
     programs.yazi
