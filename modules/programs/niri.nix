@@ -24,8 +24,15 @@
   home = [
     # addition on home-level
     ({pkgs, ...}: {
-      programs.swaylock.enable = true;
-      programs.swaylock.package = pkgs.swaylock-effects;
+      programs.swaylock = {
+        enable = true;
+        package = pkgs.swaylock-effects;
+      };
+
+      services.swaync = {
+        enable = true;
+      };
+
       services.wlsunset = {
         enable = true;
         temperature.day = 4201;
@@ -33,6 +40,9 @@
         # Kivalliq Region, Nunavut, Canada
         latitude = 65.726;
         longitude = -94.806;
+      };
+
+      systemd.user.services.xwayland-satellite = {
       };
     })
     # niri config
@@ -45,8 +55,8 @@
       ...
     }: {
       home.file.".config/niri/blur.kdl".text =
-       # kdl
-      ''
+        # kdl
+        ''
           layer-rule {
           match namespace="^waybar$"
               background-effect {
@@ -60,7 +70,7 @@
               blur true
               }
           }
-      '';
+        '';
       programs.niri.settings = with config.lib.niri.actions;
       with config.lib.stylix.colors.withHashtag; let
         # helpers
@@ -71,7 +81,7 @@
           "/home/${user}/.config/niri/blur.kdl"
         ];
 
-      # general
+        # general
         hotkey-overlay.skip-at-startup = machine != "umbra";
         prefer-no-csd = true;
         screenshot-path = "~/Pictures/Screenshots/Screenshot-%Y%m%d-%H%M%S.png";
@@ -110,6 +120,7 @@
           };
         };
         cursor.hide-after-inactive-ms = 5000;
+
         # layout n theming
         layout = {
           gaps = 0;
@@ -184,10 +195,10 @@
           "XF86AudioPlay" = sh "${get "playerctl"} play-pause";
           "XF86AudioPrev" = sh "${get "playerctl"} previous";
           "XF86AudioNext" = sh "${get "playerctl"} next";
-          "XF86MonBrightnessUp" = sh "brightnessctl set 5%+";
-          "XF86MonBrightnessDown" = sh "brightnessctl set 5%-";
-          "XF86KbdBrightnessUp" = sh "brightnessctl --device=smc::kbd_backlight set 10%+";
-          "XF86KbdBrightnessDown" = sh "brightnessctl --device=smc::kbd_backlight set 10%-";
+          "XF86MonBrightnessUp" = sh "${get "brightnessctl"} set 5%+";
+          "XF86MonBrightnessDown" = sh "${get "brightnessctl"} set 5%-";
+          "XF86KbdBrightnessUp" = sh "${get "brightnessctl"} --device=smc::kbd_backlight set 10%+";
+          "XF86KbdBrightnessDown" = sh "${get "brightnessctl"} --device=smc::kbd_backlight set 10%-";
           # screenshot
           "Print".action.screenshot = [];
           "${mod}+Print".action.screenshot-window = [];
