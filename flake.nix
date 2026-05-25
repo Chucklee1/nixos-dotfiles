@@ -40,13 +40,6 @@
     minecraft-plymouth-theme.inputs.nixpkgs.follows = "nixpkgs";
     minesddm.url = "github:Davi-S/sddm-theme-minesddm/development";
 
-    # ---- quickshell ----
-    quickshell.url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
-    quickshell.inputs.nixpkgs.follows = "nixpkgs";
-    qml-niri.url = "github:imiric/qml-niri/main";
-    qml-niri.inputs.nixpkgs.follows = "nixpkgs";
-    qml-niri.inputs.quickshell.follows = "quickshell";
-
     # ---- lang support ----
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
