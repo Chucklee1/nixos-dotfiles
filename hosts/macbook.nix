@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   mod,
   ...
 }:
@@ -14,6 +15,7 @@ with mod; {
     programs.prismLauncher
     programs.git
     programs.yazi
+    programs.kitty
 
     software.dev
     software.qol
@@ -26,17 +28,25 @@ with mod; {
 
     shell.variables
     shell.fish
-
-    theming.stylix
   ];
   extraConfig = [
     ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
 
+      nixpkgs.overlays = [
+        (import self.inputs.emacs-overlay)
+        self.overlays.emacs
+      ];
+
       # general
       system.stateVersion = 6;
       system.primaryUser = user;
+
+      # shut up bash
+      environment.variables = {
+        BASH_SILENCE_DEPRECATION_WARNING = "1"; # fix for macOS
+      };
 
       # user
       users.knownUsers = [user];
@@ -47,14 +57,19 @@ with mod; {
         ignoreShellProgramCheck = true;
       };
     })
-    # need to manually include nerd-font-symbols
     ({
       lib,
       pkgs,
       ...
     }: {
+      # need to manually include nerd-font-symbols
       fonts.packages = [pkgs.nerd-fonts.symbols-only];
-      environment.systemPackages = [pkgs.feishin pkgs.mpv];
+      environment.systemPackages = with pkgs; [
+        coreutils-prefixed
+        feishin
+        mpv
+        emacs-macport
+      ];
 
       # symlink nix & home manager apps to /Applications
       # lets spotlight or dmenu-mac finally acess nix apps
@@ -119,7 +134,7 @@ with mod; {
           "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
         };
         # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-        mutableTaps = true;
+        mutableTaps = false;
       };
     })
     ({config, ...}: {
@@ -133,13 +148,12 @@ with mod; {
 
         taps = builtins.attrNames config.nix-homebrew.taps; # Align homebrew taps config with nix-homebrew
 
-        caskArgs.no_quarantine = true;
         brews = [
           "syncthing"
+          "gcc"
         ];
         casks = [
           "blackhole-2ch"
-          "ghostty"
           "krita"
           "musicbrainz-picard"
           "zen"
@@ -147,14 +161,32 @@ with mod; {
         ];
       };
     })
-    # ghostty
-    ({user, ...}: {
-      home-manager.users.${user} = {
-        home.file.".config/ghostty/config".text = ''
-          background-opacity = 0.8
-          background-blur = 30
-          macos-titlebar-style = "tabs"
-        '';
+    # not dealing with nixos/darwin stylix conflicts
+    inputs.stylix.darwinModules.stylix
+    ({pkgs, ...}: {
+      stylix = {
+        enable = true;
+        autoEnable = true;
+        homeManagerIntegration.autoImport = true;
+        image = "${self}/assets/wallpaper/nordest.png";
+        base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
+        polarity = "dark";
+
+        fonts = {
+          monospace.package = pkgs.nerd-fonts.jetbrains-mono;
+          monospace.name = "JetBrainsMono Nerd Font Mono";
+          sansSerif.package = pkgs.noto-fonts-cjk-sans;
+          sansSerif.name = "Noto Sans CJK";
+          serif.package = pkgs.noto-fonts-cjk-serif;
+          serif.name = "Noto Serif CJK";
+
+          sizes = {
+            applications = 14;
+            terminal = 14;
+            desktop = 14;
+            popups = 12;
+          };
+        };
       };
     })
   ];

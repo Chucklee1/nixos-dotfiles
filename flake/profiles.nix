@@ -9,7 +9,7 @@
   profiles =
     inputs.nixpkgs.lib.concatMapAttrs (file: _: {
       ${extlib.basename file} =
-        import "${root}/${file}" {inherit mod inputs;};
+        import "${root}/${file}" {inherit mod inputs self;};
     })
     (builtins.readDir root);
 in {

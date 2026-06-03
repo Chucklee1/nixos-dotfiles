@@ -20,13 +20,10 @@ base0F #5e81ac
 {
   self,
   inputs,
-  extlib,
   ...
 }: {
   nix = [
-    (extlib.darwinOrLinux
-    inputs.stylix.darwinModules.stylix
-    inputs.stylix.nixosModules.stylix)
+    inputs.stylix.nixosModules.stylix
     ({pkgs, ...}: {
       stylix = {
         enable = true;
@@ -53,34 +50,24 @@ base0F #5e81ac
             popups = 12;
           };
         };
-      };
-    })
-    (
-      extlib.darwinOrLinux
-      {}
-      ({pkgs, ...}: {
         stylix.cursor = {
           package = pkgs.bibata-cursors;
           name = "Bibata-Modern-Classic";
           size = 24;
         };
-      })
-    )
+      };
+    })
   ];
 
   home = [
-    (
-      extlib.darwinOrLinux
-      {}
-      ({pkgs, ...}: {
-        stylix.icons = {
-          enable = true;
-          package = pkgs.papirus-icon-theme;
-          dark = "Papirus-Dark";
-        };
-        gtk.enable = true;
-        qt.enable = true;
-      })
-    )
+    ({pkgs, ...}: {
+      stylix.icons = {
+        enable = true;
+        package = pkgs.papirus-icon-theme;
+        dark = "Papirus-Dark";
+      };
+      gtk.enable = true;
+      qt.enable = true;
+    })
   ];
 }

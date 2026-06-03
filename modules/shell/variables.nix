@@ -2,9 +2,6 @@
   nix = [
     ({machine, ...}: {
       environment = {
-        variables = {
-          BASH_SILENCE_DEPRECATION_WARNING = "1"; # fix for macOS
-        };
         shellAliases = let
           rebuild_cmd =
             if machine == "macbook"
