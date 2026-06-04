@@ -59,6 +59,8 @@ with mod; {
 
     theming.blockgame
     theming.stylix
+
+    virt.podman
   ];
 
   extraConfig = let
@@ -122,6 +124,17 @@ with mod; {
       services.xserver.videoDrivers = lib.mkForce ["amdgpu" "nvidia"];
 
       environment.systemPackages = [pkgs.eden];
+
+      boot.loader.grub.useOSProber = true;
+      # dual boot entry so I dont need a seperate bootloader for arch
+      boot.loader.grub.extraEntries = ''
+        menuentry "arch" {
+            insmod btrfs
+            search --no-floppy --fs-uuid --set=root ${WD}
+            linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch/root
+            initrd /WD/arch/boot/initramfs-linux.img
+        }
+      '';
     })
     # impermenance setup
     {
