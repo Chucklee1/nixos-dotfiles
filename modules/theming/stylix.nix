@@ -50,7 +50,7 @@ base0F #5e81ac
             popups = 12;
           };
         };
-        stylix.cursor = {
+        cursor = {
           package = pkgs.bibata-cursors;
           name = "Bibata-Modern-Classic";
           size = 24;
