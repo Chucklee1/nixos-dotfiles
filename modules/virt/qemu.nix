@@ -5,30 +5,21 @@
       user,
       ...
     }: {
-      users.groups.libvirtd.members = [user];
-      users.groups.kvm.members = [user];
+      users.users.${user} = {
+        extraGroups = ["libvirtd" "kvm"];
+      };
+
+      # networking.firewall.trustedInterfaces = [ "virbr0" ];
+      environment.systemPackages = [
+        pkgs.swtpm
+      ];
+
       programs.virt-manager.enable = true;
       virtualisation = {
+        libvirtd.enable = true;
+        libvirtd.qemu.swtpm.enable = true;
         spiceUSBRedirection.enable = true;
-        libvirtd = {
-          enable = true;
-          onBoot = "ignore";
-          qemu = {
-            package = pkgs.qemu_kvm;
-            runAsRoot = true;
-            swtpm.enable = true;
-          };
-        };
       };
     })
-  ];
-
-  home = [
-    {
-      dconf.settings."org/virt-manager/virt-manager/connections" = {
-        autoconnect = ["qemu:///system"];
-        uris = ["qemu:///system"];
-      };
-    }
   ];
 }
