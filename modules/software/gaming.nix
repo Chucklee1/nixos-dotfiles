@@ -7,6 +7,7 @@
         (pkgs.callPackage ../../pkgs/osu {
           nativeWayland = true;
         })
+        (pkgs.callPackage ../../pkgs/openmw {})
       ];
       programs.gamemode = {
         enable = true;
