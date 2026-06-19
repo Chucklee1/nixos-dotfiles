@@ -63,7 +63,6 @@
           rar
         ] []);
     })
-    (extlib.darwinOrLinux {} {programs.nix-ld.enable = true;})
   ];
   home = [
     {
