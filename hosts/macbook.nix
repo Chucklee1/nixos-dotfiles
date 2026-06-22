@@ -155,6 +155,7 @@ with mod; {
         casks = [
           "blackhole-2ch"
           "krita"
+          "musescore"
           "musicbrainz-picard"
           "zen"
           "zoom"
