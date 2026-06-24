@@ -14,12 +14,14 @@ with mod; {
     services.the-server
     services.net-essentials
 
-    programs.qutebrowser
+    programs.zen-browser
     programs.nixvim
+    programs.emacs
     programs.git
     programs.kitty
     programs.yazi
-    programs.dwm
+    programs.niri
+    programs.waybar
 
     software.dev
     software.qol
