@@ -38,7 +38,7 @@
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
     minecraft-plymouth-theme.url = "github:nikp123/minecraft-plymouth-theme";
     minecraft-plymouth-theme.inputs.nixpkgs.follows = "nixpkgs";
-    minesddm.url = "github:Davi-S/sddm-theme-minesddm/development";
+    minesddm.url = "github:Chucklee1/sddm-theme-minesddm";
 
     # ---- lang support ----
     fenix.url = "github:nix-community/fenix";
