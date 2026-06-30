@@ -24,7 +24,6 @@ with mod; {
     programs.zen-browser
 
     hardware.cachyos-kernel
-    hardware.nvidia
     hardware.uinput
 
     software.dev
@@ -43,13 +42,10 @@ with mod; {
     system.sys-specs
     system.users
 
-    services.fcitx
     services.flatpak
     services.graphical
     services.net-essentials
     services.nfs
-    services.ollama
-    services.sunshine
     services.syncthing
     services.tailscale
 
@@ -61,6 +57,7 @@ with mod; {
     theming.stylix
 
     virt.podman
+    virt.qemu
   ];
 
   extraConfig = let
@@ -107,23 +104,80 @@ with mod; {
 
     (mkfs.ext4 "/srv/Pictures" SEGATE null)
 
-    ({lib, pkgs, ...}: {
+    ({lib, config, pkgs, user, ...}: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
       # kernel
-      boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
-      boot.kernelModules = ["kvm" "kvm_amd" "ntsync"];
+      boot.initrd.availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "nvme"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
+      boot.initrd.kernelModules = [
+        "vfio_pci"
+        "vfio"
+        "vfio_iommu_type1"
+        "ntsync"
+      ];
+
       boot.supportedFilesystems = ["btrfs" "ext4" "ntfs"];
+
+      # vm stuff
+      boot.kernelModules = [
+        "kvm"
+        "kvmfr"
+        "kvm_amd"
+      ];
+      boot.kernelParams = [
+        "amd_iommu=on"
+        "iommu=pt"
+        "video=efifb:off"
+        "vfio-pci.ids=10de:2503,10de:228e"
+      ];
+      boot.blacklistedKernelModules = [
+        "nouveau"
+        "nvidia"
+        "nvidia_drm"
+        "nvidia_modeset"
+        "nvidiafb"
+      ];
+
+      boot.extraModulePackages = [config.boot.kernelPackages.kvmfr];
+      boot.extraModprobeConfig = ''
+        options kvmfr static_size_mb=32
+      '';
+
+      services.udev.extraRules = ''
+          SUBSYSTEM=="kvmfr", OWNER="${user}", GROUP="kvm", MODE="0660"
+      '';
+
+      virtualisation.libvirtd.qemu.verbatimConfig = ''
+          cgroup_device_acl = [
+              "/dev/null", "/dev/full", "/dev/zero",
+              "/dev/random", "/dev/urandom",
+              "/dev/ptmx", "/dev/kvm",
+              "/dev/kvmfr0"
+          ]
+      '';
+
+      environment.systemPackages = [pkgs.looking-glass-client];
 
       # cpu
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
 
       # gpu
-      services.xserver.videoDrivers = lib.mkForce ["amdgpu" "nvidia"];
+      services.xserver.videoDrivers = lib.mkForce ["amdgpu"];
 
-      environment.systemPackages = [pkgs.eden];
+      # monitor res on xserver
+      services.xserver.monitorSection = ''
+        Identifier "DisplayPort-0"
+        Option "PreferredMode" "1920x1080_165.00"
+      '';
 
       boot.loader.grub.useOSProber = true;
       # dual boot entry so I dont need a seperate bootloader for arch
@@ -146,15 +200,20 @@ with mod; {
           blank = "WD/nixos/root_blank";
         };
         persist = {
-          system.directories = ["/var/lib/tailscale"];
+          system.directories = [
+            "/var/lib/tailscale"
+            "/var/lib/libvirt/images"
+          ];
           user.directories = [
             ".cache/zen"
             ".config/discord"
             ".config/listenbrainz-mpd"
             ".config/sunshine"
             ".config/zen"
+            ".config/openmw"
             ".local/share/direnv"
             ".local/share/mpd"
+            ".local/share/openmw"
             ".local/state/syncthing"
             ".local/share/zoxide"
             ".var"
@@ -164,6 +223,8 @@ with mod; {
         };
       };
     }
+    # nix ld
+    {programs.nix-ld.enable = true;}
     # sops
     ({
       config,
@@ -192,7 +253,6 @@ with mod; {
             sln $it $HOME/.local/share/
           end
         '';
-
         # monitor configuration
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
@@ -212,16 +272,3 @@ with mod; {
     })
   ];
 }
-/*
-for later if needed section
-boot.loader.grub.useOSProber = true;
-# dual boot entry so I dont need a seperate bootloader for arch
-boot.loader.grub.extraEntries = ''
-  menuentry "arch" {
-      insmod btrfs
-      search --no-floppy --fs-uuid --set=root ${WD}
-      linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch/root
-      initrd /WD/arch/boot/initramfs-linux.img
-  }
-'';
-*/
