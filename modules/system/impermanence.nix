@@ -69,47 +69,51 @@
       };
     })
     ({
+      utils,
       config,
-      pkgs,
       user,
       ...
     }: let
       cfg = config.services.impermanence;
     in {
       fileSystems."/persist".neededForBoot = true;
-      # nix-community/impermancence, issue 320, Author Doosty
+      # boot.initrd.postResumeCommands = lib.mkAfter ''
+      #   mkdir -p /mnt
+      #   mount -o subvolid=5 ${cfg.device} /mnt
+
+      #   btrfs subvolume list -o /mnt/${cfg.root.target} |
+      #   cut -f9 -d' ' |
+      #   while read subvolume; do
+      #       echo "deleting $subvolume subvolume..."
+      #       btrfs subvolume delete "/mnt/$subvolume"
+      #   done &&
+      #   echo "deleting ${cfg.root.target} subvolume..." &&
+      #   btrfs subvolume delete /mnt/${cfg.root.target}
+
+      #   echo "restoring blank ${cfg.root.target} subvolume..."
+      #   btrfs subvolume snapshot /mnt/${cfg.root.blank} /mnt/${cfg.root.target}
+
+      #   umount /mnt
+      # '';
       boot.initrd.systemd = {
-        initrdBin = [
-          pkgs.coreutils
-          pkgs.btrfs-progs
-        ];
-        services.impermance-btrfs-rolling-root = {
-          description = "Archiving existing BTRFS root subvolume and creating a fresh one";
+        enable = true; # Default in 26.05
+        services.wipe-file-systems = {
           # Specify dependencies explicitly
           unitConfig.DefaultDependencies = false;
           # The script needs to run to completion before this service is done
-          serviceConfig = {
-            Type = "oneshot";
-            # NOTE: to be able to see errors in your script do this
-            # StandardOutput = "journal+console";
-            # StandardError = "journal+console";
-          };
+          serviceConfig.Type = "oneshot";
           # This service is required for boot to succeed
           requiredBy = ["initrd.target"];
           # Should complete before any file systems are mounted
           before = ["sysroot.mount"];
 
-          # Wait until the root device is available
-          # If you're altering a different device, specify its device unit explicitly.
-          # see: systemd-escape(1)
-          requires = ["initrd-root-device.target"];
+          # Wait for the disk to appear
+          requires = ["${utils.escapeSystemdPath cfg.device}.device"];
           after = [
-            "initrd-root-device.target"
+            "${utils.escapeSystemdPath cfg.device}.device"
             # Allow hibernation to resume before trying to alter any data
             "local-fs-pre.target"
           ];
-
-          # The body of the script. Make your changes to data here
           script = ''
             mkdir -p /mnt
             mount -o subvolid=5 ${cfg.device} /mnt
