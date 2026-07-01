@@ -8,6 +8,7 @@
           nativeWayland = true;
         })
         (pkgs.callPackage ../../pkgs/openmw {})
+        (pkgs.callPackage ../../pkgs/momw-tools-pack {})
       ];
       programs.gamemode = {
         enable = true;
