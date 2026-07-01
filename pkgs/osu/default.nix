@@ -6,8 +6,7 @@
   appimageTools,
   makeWrapper,
   nativeWayland ? false,
-}:
-let
+}: let
   pname = "osu-lazer-bin";
   lock = builtins.fromJSON (builtins.readFile ./lock.json);
   version = lock.version;
@@ -29,7 +28,9 @@ let
         url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.AppImage";
       };
     }
-    .${stdenvNoCC.system} or (throw "osu-lazer-bin: ${stdenvNoCC.system} is unsupported.");
+    .${
+      stdenvNoCC.system
+    } or (throw "osu-lazer-bin: ${stdenvNoCC.system} is unsupported.");
 
   meta = {
     description = "Rhythm is just a *click* away (AppImage version for score submission and multiplayer, and binary distribution for Darwin systems)";
@@ -39,7 +40,7 @@ let
       cc-by-nc-40
       unfreeRedistributable # osu-framework contains libbass.so in repository
     ];
-    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+    sourceProvenance = with lib.sourceTypes; [binaryNativeCode];
     maintainers = with lib.maintainers; [
       gepbird
       stepbrobd
@@ -55,51 +56,50 @@ let
 
   passthru.updateScript = ./update.sh;
 in
-if stdenvNoCC.hostPlatform.isDarwin then
-  stdenvNoCC.mkDerivation {
-    inherit
-      pname
-      version
-      src
-      meta
-      passthru
-      ;
+  if stdenvNoCC.hostPlatform.isDarwin
+  then
+    stdenvNoCC.mkDerivation {
+      inherit
+        pname
+        version
+        src
+        meta
+        passthru
+        ;
 
-    nativeBuildInputs = [ makeWrapper ];
+      nativeBuildInputs = [makeWrapper];
 
-    installPhase = ''
-      runHook preInstall
-      OSU_WRAPPER="$out/Applications/osu!.app/Contents"
-      OSU_CONTENTS="osu!.app/Contents"
-      mkdir -p "$OSU_WRAPPER/MacOS"
-      cp -r "$OSU_CONTENTS/Info.plist" "$OSU_CONTENTS/Resources" "$OSU_WRAPPER"
-      cp -r "osu!.app" "$OSU_WRAPPER/Resources/osu-wrapped.app"
-      makeWrapper "$OSU_WRAPPER/Resources/osu-wrapped.app/Contents/MacOS/osu!" "$OSU_WRAPPER/MacOS/osu!" --set OSU_EXTERNAL_UPDATE_PROVIDER 1
-      runHook postInstall
-    '';
-  }
-else
-  appimageTools.wrapType2 {
-    inherit
-      pname
-      version
-      src
-      meta
-      passthru
-      ;
+      installPhase = ''
+        runHook preInstall
+        OSU_WRAPPER="$out/Applications/osu!.app/Contents"
+        OSU_CONTENTS="osu!.app/Contents"
+        mkdir -p "$OSU_WRAPPER/MacOS"
+        cp -r "$OSU_CONTENTS/Info.plist" "$OSU_CONTENTS/Resources" "$OSU_WRAPPER"
+        cp -r "osu!.app" "$OSU_WRAPPER/Resources/osu-wrapped.app"
+        makeWrapper "$OSU_WRAPPER/Resources/osu-wrapped.app/Contents/MacOS/osu!" "$OSU_WRAPPER/MacOS/osu!" --set OSU_EXTERNAL_UPDATE_PROVIDER 1
+        runHook postInstall
+      '';
+    }
+  else
+    appimageTools.wrapType2 {
+      inherit
+        pname
+        version
+        src
+        meta
+        passthru
+        ;
 
-    extraPkgs = pkgs: with pkgs; [ icu ];
+      extraPkgs = pkgs: with pkgs; [icu];
 
-    # fix OpenGL renderer on nvidia + wayland
-    extraBwrapArgs = [
-      "--ro-bind-try /etc/egl/egl_external_platform.d /etc/egl/egl_external_platform.d"
-    ];
+      # fix OpenGL renderer on nvidia + wayland
+      extraBwrapArgs = [
+        "--ro-bind-try /etc/egl/egl_external_platform.d /etc/egl/egl_external_platform.d"
+      ];
 
-    extraInstallCommands =
-      let
-        contents = appimageTools.extract { inherit pname version src; };
-      in
-      ''
+      extraInstallCommands = let
+        contents = appimageTools.extract {inherit pname version src;};
+      in ''
         . ${makeWrapper}/nix-support/setup-hook
         mv -v $out/bin/${pname} $out/bin/osu!
 
@@ -112,4 +112,4 @@ else
           install -D ${contents}/osu.png $out/share/icons/hicolor/''${i}x$i/apps/osu.png
         done
       '';
-  }
+    }

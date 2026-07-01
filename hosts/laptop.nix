@@ -71,9 +71,13 @@ with mod; {
       '';
     }
     # gpu related
-    ({lib, pkgs, ...}: {
+    ({
+      lib,
+      pkgs,
+      ...
+    }: {
       environment.systemPackages = [pkgs.moonlight-qt];
-      services.xserver.videoDrivers = [ "modesetting" ];
+      services.xserver.videoDrivers = ["modesetting"];
       hardware.graphics.extraPackages = lib.mkAfter [
         pkgs.intel-media-driver
       ];

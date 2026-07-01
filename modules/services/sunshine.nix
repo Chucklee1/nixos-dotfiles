@@ -8,10 +8,16 @@
       };
 
       networking.firewall = {
-        allowedTCPPorts = lib.mkAfter [ 47984 47989 47990 48010 ];
+        allowedTCPPorts = lib.mkAfter [47984 47989 47990 48010];
         allowedUDPPortRanges = lib.mkAfter [
-          { from = 47998; to = 48000; }
-          { from = 8000; to = 8010; }
+          {
+            from = 47998;
+            to = 48000;
+          }
+          {
+            from = 8000;
+            to = 8010;
+          }
         ];
       };
       # fix avahi stuff

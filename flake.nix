@@ -82,8 +82,9 @@
 
     packages = extlib.allSystemsWithPkgs (
       pkgs: {
-      nixvim = nixvim.package pkgs.stdenv.hostPlatform.system;
-    });
+        nixvim = nixvim.package pkgs.stdenv.hostPlatform.system;
+      }
+    );
 
     overlays = {
       inherit emacs;

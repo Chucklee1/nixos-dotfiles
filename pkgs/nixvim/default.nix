@@ -10,7 +10,7 @@
     };
 in {
   overlay = final: prev: {
-    nixvim= mkModule final.system;
+    nixvim = mkModule final.system;
   };
 
   package = system: mkModule system;

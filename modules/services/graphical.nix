@@ -44,7 +44,7 @@
           pkgs.xdg-desktop-portal-gnome
         ];
         config = {
-          common.default = [ "gtk" ];
+          common.default = ["gtk"];
         };
       };
       # specific apps require a gui file manager for xdg-open

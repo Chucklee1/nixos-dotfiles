@@ -28,8 +28,10 @@ with self.inputs.nixpkgs.lib; rec {
       last
     ];
 
-  /* recursively read directory, then transform
-   * paths to nested attribute set */
+  /*
+    recursively read directory, then transform
+  * paths to nested attribute set
+  */
   readDirRecToAttrset = dir:
     concatMapAttrs (file:
       flip getAttr {
@@ -42,8 +44,10 @@ with self.inputs.nixpkgs.lib; rec {
         symlink = {};
       }) (builtins.readDir dir);
 
-  /* merge all inner lists of same name
-   * assume key is of type list */
+  /*
+    merge all inner lists of same name
+  * assume key is of type list
+  */
   mergeInnerList = sets: (builtins.foldl' (
       acc: m:
         builtins.foldl'

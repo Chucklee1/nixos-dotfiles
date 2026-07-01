@@ -15,11 +15,10 @@
         '';
       };
 
-
       systemd.user.services.slstatus = {
         description = "slstatus";
-        wantedBy = [ "graphical-session.target" ];
-        partOf = [ "graphical-session.target" ];
+        wantedBy = ["graphical-session.target"];
+        partOf = ["graphical-session.target"];
         serviceConfig.ExecStart = "${inputs.slstatus.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/slstatus";
       };
     })

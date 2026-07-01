@@ -1,4 +1,4 @@
-{inputs, ... }: {
+{inputs, ...}: {
   opts.completeopt = [
     "menuone"
     "noselect"

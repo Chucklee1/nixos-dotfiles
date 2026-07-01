@@ -1,4 +1,4 @@
-{pkgs, ... }: { 
+{pkgs, ...}: {
   # ---- LSP ----
   plugins.lsp.enable = true;
   lsp.servers = {
