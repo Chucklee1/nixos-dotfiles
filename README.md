@@ -9,6 +9,7 @@
 | desktop  | x86-64-linux               | personal              |
 | macbook  | aarch64-darwin (m4 silcon) | work & school         |
 | umbra    | x86-64-linux               | vm & custom installer |
+| arm-vm    | aarch64-linux               | macos vm |
 | inspiron | x86-64-linux               | server                |
 | laptop   | x86-64-linux               | malware testing       |
 
@@ -25,7 +26,3 @@
 - [x] Find replacement for horrid recursiveMerge in libs.nix
 - [ ] Make neovim not look like poop
 - [ ] ~~Nix Flake Parts?~~ no
-- [ ]
-### Lower Priority:
-- Umbra features:
-  - [ ] aarch64 support
