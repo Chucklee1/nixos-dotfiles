@@ -340,6 +340,11 @@ Note that C-c cmds will also work with space prefix
                     ("C-<return>" . helper/open-split-term)
                     ("C-b"        . ibuffer)))
 #+end_src
+*** C-c
+#+begin_src elisp
+  (helper/mapkeys mode-specific-map
+                  '(("C-c" . compile)))
+#+end_src
 *** lsp
 #+begin_src elisp
   (defvar emap/lsp (make-sparse-keymap))

@@ -160,6 +160,9 @@
                   ("C-<return>" . helper/open-split-term)
                   ("C-b"        . ibuffer)))
 
+(helper/mapkeys mode-specific-map
+                '(("C-c" . compile)))
+
 (defvar emap/lsp (make-sparse-keymap))
 (global-set-key (kbd "C-c l") emap/lsp)
 
