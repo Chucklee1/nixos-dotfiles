@@ -1,8 +1,11 @@
 {
   lib,
   appimageTools,
-  stdenv,
   fetchzip,
+  makeWrapper,
+  stdenv,
+  tes3cmd,
+  _7zip-zstd-rar,
   generateFishCompletions ? false,
   ...
 }: let
@@ -50,6 +53,8 @@ in
     version = "1.48";
     src = source;
 
+    nativeBuildInputs = [ makeWrapper ];
+
     buildPhase = false;
     configurePhase = false;
 
@@ -72,6 +77,11 @@ in
       fi
 
       cp ${umoWrapped}/bin/umo $out/bin/
+
+      if [ -f $out/bin/tes3cmd ]; then
+        rm $out/bin/tes3cmd
+      fi
+      cp ${tes3cmd}/bin/tes3cmd $out/bin/
     '';
 
     postInstall = lib.optionalString generateFishCompletions ''
@@ -83,5 +93,12 @@ in
       mkdir -p $out/share/fish/vendor_completions.d
       cp "$HOME/.config/fish/completions/"*.fish \
         $out/share/fish/vendor_completions.d/ || true
+    '';
+
+    postFixup = ''
+      wrapProgram $out/bin/umo \
+        --prefix PATH : ${lib.makeBinPath [
+          _7zip-zstd-rar
+        ]}
     '';
   }
