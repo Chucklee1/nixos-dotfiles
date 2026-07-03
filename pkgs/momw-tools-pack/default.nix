@@ -1,9 +1,14 @@
 {
+  lib,
   appimageTools,
   stdenv,
   fetchzip,
+  generateFishCompletions ? false,
   ...
 }: let
+  safeSystem = stdenv.hostPlatform.system
+    or (throw "Error: Unsupported system");
+
   source =
     rec {
       aarch64-linux = fetchzip {
@@ -20,8 +25,19 @@
       };
       x86_64-darwin = aarch64-darwin;
     }.${
-      stdenv.hostPlatform.system
-    } or (throw "Unsupported system");
+      safeSystem
+    };
+
+  # to match naming scheme of momw tools
+  arch =
+    {
+      aarch64-linux = "linux-arm64";
+      x86_64-linux = "linux-amm64";
+      aarch64-darwin = "macos-arm64";
+      x86_64-darwin = "macos-amm64";
+    }.${
+      safeSystem
+    };
 
   umoWrapped = appimageTools.wrapType2 {
     pname = "umo";
@@ -43,13 +59,29 @@ in
 
       cp -r $src/* $out/bin
       chmod -R u+w $out/bin
-      mv $out/bin/Readmes/* $out/share/doc/momw-tools-pack
+
+      if [ -d $out/bin/Readmes ]; then
+        mv $out/bin/Readmes/* $out/share/doc/momw-tools-pack
+        rmdir $out/bin/Readmes
+      fi
+
       mv $out/bin/version.txt $out/share/doc/momw-tools-pack
-      rmdir $out/bin/Readmes
+
+      if [ -f $out/bin/umo ]; then
+        rm $out/bin/umo
+      fi
+
+      cp ${umoWrapped}/bin/umo $out/bin/
     '';
 
-    fixupPhase = ''
-      rm $out/bin/umo
-      cp ${umoWrapped}/bin/umo $out/bin/
+    postInstall = lib.optionalString generateFishCompletions ''
+      export HOME=$TMPDIR/home
+      mkdir -p "$HOME/.config/fish/completions"
+
+      $src/momw-configurator-${arch} completions || true
+
+      mkdir -p $out/share/fish/vendor_completions.d
+      cp "$HOME/.config/fish/completions/"*.fish \
+        $out/share/fish/vendor_completions.d/ || true
     '';
   }

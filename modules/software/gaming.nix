@@ -8,7 +8,7 @@
           nativeWayland = true;
         })
         (pkgs.callPackage ../../pkgs/openmw {})
-        (pkgs.callPackage ../../pkgs/momw-tools-pack {})
+        (pkgs.callPackage ../../pkgs/momw-tools-pack { generateFishCompletions = true; })
       ];
       programs.gamemode = {
         enable = true;
