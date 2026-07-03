@@ -97,6 +97,7 @@ with self.inputs.nixpkgs.lib; rec {
       pkgs = import self.inputs.nixpkgs {
         inherit system;
         overlays = builtins.attrValues self.overlays; # safe if overlays are pure
+        config.allowUnfree = true;
       };
     in
       f pkgs);
