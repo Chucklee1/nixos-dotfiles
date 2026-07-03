@@ -1,14 +1,14 @@
-{
+{self, ...}: {
   nix = [
-    ({pkgs, ...}: {
+    ({pkgs, ...}: let
+      selfPkgs = self.packages.${pkgs.stdenv.hostPlatform.system};
+    in {
       environment.systemPackages = with pkgs; [
         zenity
+        selfPkgs.openmw
         # mainstream nixpkgs lags behind a bit
-        (pkgs.callPackage ../../pkgs/osu {
-          nativeWayland = true;
-        })
-        (pkgs.callPackage ../../pkgs/openmw {})
-        (pkgs.callPackage ../../pkgs/momw-tools-pack { generateFishCompletions = true; })
+        (selfPkgs.osu.override {nativeWayland = true;})
+        (selfPkgs.momw-tools-pack.override {generateFishCompletions = true;})
       ];
       programs.gamemode = {
         enable = true;

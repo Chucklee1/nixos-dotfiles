@@ -70,10 +70,6 @@
     # ---- imports - flake ----
     extlib = import ./flake/libs.nix {inherit self;};
     sys = import ./flake/profiles.nix {inherit self extlib;};
-
-    # ---- imports - pkgs ----
-    nixvim = import ./pkgs/nixvim {inherit self;};
-    emacs = import ./pkgs/emacs;
   in {
     inherit extlib;
 
@@ -82,13 +78,15 @@
 
     packages = extlib.allSystemsWithPkgs (
       pkgs: {
-        nixvim = nixvim.package pkgs.stdenv.hostPlatform.system;
+        osu = pkgs.callPackage ./pkgs/osu {};
+        openmw = pkgs.callPackage ./pkgs/openmw {};
+        momw-tools-pack = pkgs.callPackage ./pkgs/momw-tools-pack {};
       }
     );
 
     overlays = {
-      inherit emacs;
-      nixvim = nixvim.overlay;
+      nixvim = import ./pkgs/nixvim {inherit self;};
+      emacs = import ./pkgs/emacs;
     };
   };
 }
