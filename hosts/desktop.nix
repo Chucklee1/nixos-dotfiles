@@ -16,12 +16,16 @@ with mod; {
     programs.niri
     programs.dwm
     programs.obs
-    programs.prismLauncher
     programs.rmpc
     programs.waybar
     programs.yazi
     programs.chromium
     programs.zen-browser
+
+    games.openmw
+    games.osu
+    games.prismLauncher
+    games.steam
 
     hardware.cachyos-kernel
     hardware.uinput
@@ -31,7 +35,6 @@ with mod; {
     software.java
     software.rust
     software.texlive
-    software.gaming
 
     system.boot
     system.home

@@ -12,7 +12,6 @@ with mod; {
     services.tailscale
 
     programs.nixvim
-    programs.prismLauncher
     programs.git
     programs.yazi
     programs.kitty
@@ -22,6 +21,8 @@ with mod; {
     software.texlive
     software.java
     software.rust
+
+    games.prismLauncher
 
     system.home
     system.pkgconfig
