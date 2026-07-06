@@ -1,9 +1,13 @@
-{self, ...}: {
+{inputs, ...}: {
   nix = [
     ({pkgs, ...}: {
+      nixpkgs.overlays = [
+        inputs.chucks-package-repo.overlays.openmw
+        inputs.chucks-package-repo.overlays.momw-tools-pack
+      ];
       environment.systemPackages = [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.openmw
-        (self.packages.${pkgs.stdenv.hostPlatform.system}.momw-tools-pack.override {generateFishCompletions = true;})
+        pkgs.openmw
+        (pkgs.momw-tools-pack.override {generateFishCompletions = true;})
       ];
     })
   ];

@@ -1,8 +1,8 @@
-# mainstream nixpkgs lags behind a bit
-{self, ...}: {
+{inputs, ...}: {
   nix = [
     ({pkgs, ...}: {
-      environment.systemPackages = [(self.packages.${pkgs.stdenv.hostPlatform.system}.osu.override {nativeWayland = true;})];
+      nixpkgs.overlays = [ inputs.chucks-package-repo.overlays.osu ];
+      environment.systemPackages = [(pkgs.osu.override {nativeWayland = true;})];
     })
   ];
 }

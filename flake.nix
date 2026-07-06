@@ -10,6 +10,8 @@
     nur.inputs.nixpkgs.follows = "nixpkgs";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    chucks-package-repo.url = "github:Chucklee1/chucks-package-repo";
+    chucks-package-repo.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---- disk formatting ----
     disko.url = "github:nix-community/disko";
@@ -75,14 +77,6 @@
 
     nixosConfigurations = sys.mkSystems;
     darwinConfigurations = sys.mkSystems;
-
-    packages = extlib.allSystemsWithPkgs (
-      pkgs: {
-        osu = pkgs.callPackage ./pkgs/osu {};
-        openmw = pkgs.callPackage ./pkgs/openmw {};
-        momw-tools-pack = pkgs.callPackage ./pkgs/momw-tools-pack {};
-      }
-    );
 
     overlays = {
       nixvim = import ./pkgs/nixvim {inherit self;};
