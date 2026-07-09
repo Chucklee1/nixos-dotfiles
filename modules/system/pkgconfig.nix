@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   nix = [
     ({lib, ...}: {
       nix.settings.experimental-features = "nix-command flakes";
@@ -7,6 +7,7 @@
         options = lib.mkDefault "--delete-older-than 7d";
       };
       nixpkgs.config.allowUnfree = true;
+      nixpkgs.overlays = [inputs.chucks-package-repo.overlays.default];
     })
   ];
 }
