@@ -187,17 +187,6 @@ with mod; {
         Identifier "DisplayPort-0"
         Option "PreferredMode" "1920x1080_165.00"
       '';
-
-      boot.loader.grub.useOSProber = true;
-      # dual boot entry so I dont need a seperate bootloader for arch
-      boot.loader.grub.extraEntries = ''
-        menuentry "arch" {
-            insmod btrfs
-            search --no-floppy --fs-uuid --set=root ${WD}
-            linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch/root
-            initrd /WD/arch/boot/initramfs-linux.img
-        }
-      '';
     })
     # impermenance setup
     {
@@ -211,18 +200,18 @@ with mod; {
         persist = {
           system.directories = [
             "/var/lib/tailscale"
-            "/var/lib/libvirt/images"
+            "/var/lib/libvirt"
           ];
           user.directories = [
             ".cache/zen"
             ".config/discord"
             ".config/listenbrainz-mpd"
+            ".config/mo2-lint"
             ".config/sunshine"
             ".config/zen"
-            ".config/openmw"
             ".local/share/direnv"
+            ".local/share/mo2-lint"
             ".local/share/mpd"
-            ".local/share/openmw"
             ".local/state/syncthing"
             ".local/share/zoxide"
             ".var"
@@ -245,11 +234,13 @@ with mod; {
     })
     ({
       lib,
+      pkgs,
       user,
       ...
     }: {
       # symlink setup on login
       home-manager.users.${user} = {
+        home.packages = [pkgs.mo2-lint];
         programs.fish.loginShellInit = ''
           sln $HOME/Repos/nixos-dotfiles $HOME/
           sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/config.el $HOME/.emacs.d/init.el
