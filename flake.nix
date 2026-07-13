@@ -57,8 +57,7 @@
     slstatus.inputs.nixpkgs.follows = "nixpkgs";
     dwm.url = "github:Chucklee1/dwm";
     dwm.flake = false;
-    niri.url = "github:sodiboo/niri-flake/very-refactor";
-    niri-pkg.url = "github:niri-wm/niri";
+    niri.url = "github:epireyn/niri-flake";
 
     # ---- Apps ----
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";

@@ -3,8 +3,8 @@
     inputs.niri.nixosModules.niri
     ({pkgs, ...}: {
       nixpkgs.overlays = [inputs.niri.overlays.niri];
-      programs.niri.package = inputs.niri-pkg.packages.${pkgs.stdenv.hostPlatform.system}.default;
       programs.niri.enable = true;
+      programs.niri.package = pkgs.niri-unstable;
     })
     # addition on nix-level
     ({pkgs, ...}: {
@@ -41,9 +41,6 @@
         latitude = 65.726;
         longitude = -94.806;
       };
-
-      systemd.user.services.xwayland-satellite = {
-      };
     })
     # niri config
     ({
@@ -51,36 +48,14 @@
       config,
       pkgs,
       machine,
-      user,
       ...
     }: {
-      home.file.".config/niri/blur.kdl".text =
-        # kdl
-        ''
-          layer-rule {
-          match namespace="^waybar$"
-              background-effect {
-              blur true
-              }
-          }
-          window-rule {
-          match app-id="^emacs$"
-          match app-id="^kitty$"
-              background-effect {
-              blur true
-              }
-          }
-        '';
       programs.niri.settings = with config.lib.niri.actions;
       with config.lib.stylix.colors.withHashtag; let
         # helpers
         get = pkg: lib.getExe pkgs.${pkg};
         sh = x: {action = spawn-sh x;};
       in {
-        includes = lib.mkAfter [
-          "/home/${user}/.config/niri/blur.kdl"
-        ];
-
         # general
         hotkey-overlay.skip-at-startup = machine != "umbra";
         prefer-no-csd = true;
@@ -128,10 +103,12 @@
           always-center-single-column = false;
         };
         # disable annoying hot-corners
-        gestures.hot-corners.bottom-left = false;
-        gestures.hot-corners.bottom-right = false;
-        gestures.hot-corners.top-left = false;
-        gestures.hot-corners.top-right = false;
+        gestures.hot-corners.enable = false;
+
+        layer-rules = [{
+          matches = [{namespace = "^waybar$";}];
+          background-effect.blur = true;
+        }];
 
         window-rules = let
           r = 1.0;
@@ -153,6 +130,13 @@
           {
             matches = [{app-id = "^xdg-desktop-portal-gtk$";}];
             open-floating = true;
+          }
+          {
+            matches = [
+              {app-id="^emacs$";}
+              {app-id="^kitty$";}
+            ];
+            background-effect.blur = true;
           }
         ];
 
