@@ -14,7 +14,6 @@ with mod; {
     programs.git
     programs.kitty
     programs.niri
-    programs.dwm
     programs.obs
     programs.rmpc
     programs.waybar
@@ -110,7 +109,6 @@ with mod; {
     ({
       lib,
       config,
-      pkgs,
       user,
       ...
     }: {
@@ -173,8 +171,6 @@ with mod; {
         ]
       '';
 
-      environment.systemPackages = [pkgs.looking-glass-client];
-
       # cpu
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
@@ -221,8 +217,66 @@ with mod; {
         };
       };
     }
-    # nix ld
-    {programs.nix-ld.enable = true;}
+    {
+      boot.loader.grub.useOSProber = true;
+      # dual boot entry so I dont need a seperate bootloader for arch
+      boot.loader.grub.extraEntries = ''
+        menuentry "arch" {
+            insmod btrfs
+            search --no-floppy --fs-uuid --set=root ${WD}
+            linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch/root
+            initrd /WD/arch/boot/initramfs-linux.img
+        }
+      '';
+    }
+    # pkgs
+    ({pkgs, ...}: {
+      environment.systemPackages = with pkgs; [
+        looking-glass-client
+        mo2-lint
+
+        guestfs-tools
+        virtiofsd
+
+        coreutils
+        openssl
+        bubblewrap
+        file
+      ];
+
+    })
+    # I just want fluorine to work
+    ({
+      pkgs,
+      user,
+      ...
+    }: {
+      services.envfs.enable = true;
+      users.users.${user}.extraGroups = ["fuse"];
+      programs.fuse.userAllowOther = true;
+
+      programs.nix-ld.enable = true;
+      programs.nix-ld.libraries = with pkgs; [
+        libGL
+        libGLX
+        libX11
+        libxkbcommon
+        libxcb
+        libxcb-cursor
+        libxcb-image
+        libxcb-keysyms
+        libxcb-render-util
+        libxcb-wm
+        stdenv.cc.cc.lib # libstdc++
+        fontconfig
+        freetype
+        wayland
+        glib
+        dbus
+        openssl
+        coreutils
+      ];
+    })
     # sops
     ({
       config,
@@ -234,13 +288,11 @@ with mod; {
     })
     ({
       lib,
-      pkgs,
       user,
       ...
     }: {
       # symlink setup on login
       home-manager.users.${user} = {
-        home.packages = [pkgs.mo2-lint];
         programs.fish.loginShellInit = ''
           sln $HOME/Repos/nixos-dotfiles $HOME/
           sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/config.el $HOME/.emacs.d/init.el
