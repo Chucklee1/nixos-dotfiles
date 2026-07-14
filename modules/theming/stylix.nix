@@ -20,15 +20,15 @@ base0F #5e81ac
 {
   self,
   inputs,
+  extlib,
+  target,
   ...
 }: {
-  nix = [
-    inputs.stylix.nixosModules.stylix
+  univ = [
     ({pkgs, ...}: {
       stylix = {
         enable = true;
         autoEnable = true;
-        homeManagerIntegration.autoImport = true;
         image = "${self}/assets/wallpaper/nordest.png";
         base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
         polarity = "dark";
@@ -58,16 +58,22 @@ base0F #5e81ac
       };
     })
   ];
-
-  home = [
-    ({pkgs, ...}: {
-      stylix.icons = {
-        enable = true;
-        package = pkgs.papirus-icon-theme;
-        dark = "Papirus-Dark";
-      };
-      gtk.enable = true;
-      qt.enable = true;
-    })
+  nix = [
+    inputs.stylix.nixosModules.stylix
+    {stylix.homeManagerIntegration.autoImport = true;}
   ];
+
+  home =
+    (extlib.homeOrNot target [inputs.stylix.homeModules.stylix])
+    ++ [
+      ({pkgs, ...}: {
+        stylix.icons = {
+          enable = true;
+          package = pkgs.papirus-icon-theme;
+          dark = "Papirus-Dark";
+        };
+        gtk.enable = true;
+        qt.enable = true;
+      })
+    ];
 }

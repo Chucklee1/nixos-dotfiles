@@ -1,11 +1,19 @@
-{inputs, ...}: {
-  nix = [
-    inputs.niri.nixosModules.niri
+{
+  inputs,
+  extlib,
+  target,
+  ...
+}: {
+  univ = [
     ({pkgs, ...}: {
       nixpkgs.overlays = [inputs.niri.overlays.niri];
       programs.niri.enable = true;
       programs.niri.package = pkgs.niri-unstable;
     })
+  ];
+
+  nix = [
+    inputs.niri.nixosModules.niri
     # addition on nix-level
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
@@ -21,206 +29,213 @@
     })
   ];
 
-  home = [
-    # addition on home-level
-    ({pkgs, ...}: {
-      programs.swaylock = {
-        enable = true;
-        package = pkgs.swaylock-effects;
-      };
-
-      services.swaync = {
-        enable = true;
-      };
-
-      services.wlsunset = {
-        enable = true;
-        temperature.day = 4201;
-        temperature.night = 4200;
-        # Kivalliq Region, Nunavut, Canada
-        latitude = 65.726;
-        longitude = -94.806;
-      };
-    })
-    # niri config
-    ({
-      lib,
-      config,
-      pkgs,
-      machine,
-      ...
-    }: {
-      programs.niri.settings = with config.lib.niri.actions;
-      with config.lib.stylix.colors.withHashtag; let
-        # helpers
-        get = pkg: lib.getExe pkgs.${pkg};
-        sh = x: {action = spawn-sh x;};
-      in {
-        # general
-        hotkey-overlay.skip-at-startup = machine != "umbra";
-        prefer-no-csd = true;
-        screenshot-path = "~/Pictures/Screenshots/Screenshot-%Y%m%d-%H%M%S.png";
-        environment = {
-          NIXOS_OZONE_WL = "1";
-          MOZ_ENABLE_WAYLAND = "1";
-          DISPLAY = ":0";
-          _JAVA_AWT_WM_NONREPARENTING = "1";
-          SDL_VIDEODRIVER = "x11";
-          QT_QPA_PLATFORM = "wayland;xcb";
-          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-          QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+  home =
+    (extlib.homeOrNot target [
+      inputs.niri.homeModules.niri
+      inputs.niri.homeModules.stylix
+    ])
+    ++ [
+      # addition on home-level
+      ({pkgs, ...}: {
+        programs.swaylock = {
+          enable = true;
+          package = pkgs.swaylock-effects;
         };
-        spawn-at-startup =
-          map (cmd: {
-            command = ["sh" "-c" cmd];
-          })
-          [
-            "${get "xwayland-satellite"}"
-            "${get "swaybg"} -m fill -i ${config.stylix.image}"
-            # safe to use systemd since it will not crash-out if waybar isnt installed
-            "systemctl --user restart waybar"
-          ];
-        # input
-        input = {
-          keyboard = {
-            xkb.options = "ctrl:nocaps";
-            numlock = true;
-          };
-          mouse.accel-speed = 0.0;
-          touchpad = {
-            tap = true;
-            dwt = true;
-            natural-scroll = true;
-            click-method = "clickfinger";
-          };
+
+        services.swaync = {
+          enable = true;
         };
-        cursor.hide-after-inactive-ms = 5000;
 
-        # layout n theming
-        layout = {
-          gaps = 0;
-          border.width = 2;
-          always-center-single-column = false;
+        services.wlsunset = {
+          enable = true;
+          temperature.day = 4201;
+          temperature.night = 4200;
+          # Kivalliq Region, Nunavut, Canada
+          latitude = 65.726;
+          longitude = -94.806;
         };
-        # disable annoying hot-corners
-        gestures.hot-corners.enable = false;
-
-        layer-rules = [{
-          matches = [{namespace = "^waybar$";}];
-          background-effect.blur = true;
-        }];
-
-        window-rules = let
-          r = 1.0;
-        in [
-          {
-            geometry-corner-radius = {
-              top-left = r;
-              top-right = r;
-              bottom-left = r;
-              bottom-right = r;
-            };
-            clip-to-geometry = true;
-          }
-          {
-            matches = [{app-id = "^org.kde.polkit-kde-authentication-agent$";}];
-            block-out-from = "screen-capture";
-            open-floating = true;
-          }
-          {
-            matches = [{app-id = "^xdg-desktop-portal-gtk$";}];
-            open-floating = true;
-          }
-          {
-            matches = [
-              {app-id="^emacs$";}
-              {app-id="^kitty$";}
-            ];
-            background-effect.blur = true;
-          }
-        ];
-
-        # keybinds
-        binds = let
-          # mod def
-          mod =
-            if (machine == "umbra" || machine == "arm-vmware")
-            then "Alt"
-            else "Mod";
-
-          wmenu = ''
-            ${pkgs.wmenu}/bin/wmenu-run \
-            -N "${base00}" \
-            -n "${base07}" \
-            -S "${base0D}" \
-            -s "${base00}"
-          '';
-
-          toggleWaybar = ''
-            if [ "$(systemctl is-active --user waybar)" == "active" ]; then
-                systemctl --user stop waybar
-            else
-                systemctl --user start waybar
-            fi
-          '';
+      })
+      # niri config
+      ({
+        lib,
+        config,
+        pkgs,
+        machine,
+        ...
+      }: {
+        programs.niri.settings = with config.lib.niri.actions;
+        with config.lib.stylix.colors.withHashtag; let
+          # helpers
+          get = pkg: lib.getExe pkgs.${pkg};
+          sh = x: {action = spawn-sh x;};
         in {
-          # programs
-          "${mod}+Return" = sh "kitty";
-          "${mod}+E" = sh "${get "emacs-pgtk"}"; # always use wayland native emacs
-          "${mod}+Shift+B" = sh "${config.home.sessionVariables.BROWSER}";
-          "${mod}+Space" = sh wmenu;
-          "${mod}+Shift+L" = sh "swaylock";
-          "${mod}+W" = sh toggleWaybar;
+          # general
+          hotkey-overlay.skip-at-startup = machine != "umbra";
+          prefer-no-csd = true;
+          screenshot-path = "~/Pictures/Screenshots/Screenshot-%Y%m%d-%H%M%S.png";
+          environment = {
+            NIXOS_OZONE_WL = "1";
+            MOZ_ENABLE_WAYLAND = "1";
+            DISPLAY = ":0";
+            _JAVA_AWT_WM_NONREPARENTING = "1";
+            SDL_VIDEODRIVER = "x11";
+            QT_QPA_PLATFORM = "wayland;xcb";
+            QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+            QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+          };
+          spawn-at-startup =
+            map (cmd: {
+              command = ["sh" "-c" cmd];
+            })
+            [
+              "${get "xwayland-satellite"}"
+              "${get "swaybg"} -m fill -i ${config.stylix.image}"
+              # safe to use systemd since it will not crash-out if waybar isnt installed
+              "systemctl --user restart waybar"
+            ];
+          # input
+          input = {
+            keyboard = {
+              xkb.options = "ctrl:nocaps";
+              numlock = true;
+            };
+            mouse.accel-speed = 0.0;
+            touchpad = {
+              tap = true;
+              dwt = true;
+              natural-scroll = true;
+              click-method = "clickfinger";
+            };
+          };
+          cursor.hide-after-inactive-ms = 5000;
 
-          # media keys
-          "XF86AudioRaiseVolume" = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
-          "XF86AudioLowerVolume" = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
-          "XF86AudioMute" = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          "XF86AudioPlay" = sh "${get "playerctl"} play-pause";
-          "XF86AudioPrev" = sh "${get "playerctl"} previous";
-          "XF86AudioNext" = sh "${get "playerctl"} next";
-          "XF86MonBrightnessUp" = sh "${get "brightnessctl"} set 5%+";
-          "XF86MonBrightnessDown" = sh "${get "brightnessctl"} set 5%-";
-          "XF86KbdBrightnessUp" = sh "${get "brightnessctl"} --device=smc::kbd_backlight set 10%+";
-          "XF86KbdBrightnessDown" = sh "${get "brightnessctl"} --device=smc::kbd_backlight set 10%-";
-          # screenshot
-          "Print".action.screenshot = [];
-          "${mod}+Print".action.screenshot-window = [];
-          # quits
-          "${mod}+Q".action.close-window = [];
-          "Ctrl+${mod}+Delete".action.quit = [];
-          "Ctrl+Shift+${mod}+Delete".action.quit = {skip-confirmation = true;};
+          # layout n theming
+          layout = {
+            gaps = 0;
+            border.width = 2;
+            always-center-single-column = false;
+          };
+          # disable annoying hot-corners
+          gestures.hot-corners.enable = false;
 
-          # moving
-          "${mod}+Up".action.focus-window-or-workspace-up = [];
-          "${mod}+Down".action.focus-window-or-workspace-down = [];
-          "${mod}+Shift+Up".action.move-window-up-or-to-workspace-up = [];
-          "${mod}+Shift+Down".action.move-window-down-or-to-workspace-down = [];
-          "${mod}+Left".action.focus-column-left = [];
-          "${mod}+Right".action.focus-column-right = [];
-          "${mod}+Shift+Left".action.move-column-left = [];
-          "${mod}+Shift+Right".action.move-column-right = [];
+          layer-rules = [
+            {
+              matches = [{namespace = "^waybar$";}];
+              background-effect.blur = true;
+            }
+          ];
 
-          # column width - using = since + needs shift
-          "${mod}+Minus".action = set-column-width "-10%";
-          "${mod}+Equal".action = set-column-width "+10%";
-          "${mod}+Shift+Minus".action = set-column-width "-1%";
-          "${mod}+Shift+Equal".action = set-column-width "+1%";
-          "${mod}+Ctrl+Minus".action = set-window-height "-10%";
-          "${mod}+Ctrl+Equal".action = set-window-height "+10%";
-          # window presets
-          "${mod}+R".action.switch-preset-column-width = [];
-          "${mod}+M".action.expand-column-to-available-width = [];
-          "${mod}+Ctrl+M".action.maximize-column = [];
-          "${mod}+Shift+M".action.fullscreen-window = [];
-          "${mod}+Period".action.consume-or-expel-window-right = [];
-          "${mod}+Comma".action.consume-or-expel-window-left = [];
-          # layouts
-          "${mod}+t".action.toggle-column-tabbed-display = [];
-          "${mod}+f".action.switch-focus-between-floating-and-tiling = [];
-          "${mod}+Shift+f".action.toggle-window-floating = [];
+          window-rules = let
+            r = 1.0;
+          in [
+            {
+              geometry-corner-radius = {
+                top-left = r;
+                top-right = r;
+                bottom-left = r;
+                bottom-right = r;
+              };
+              clip-to-geometry = true;
+            }
+            {
+              matches = [{app-id = "^org.kde.polkit-kde-authentication-agent$";}];
+              block-out-from = "screen-capture";
+              open-floating = true;
+            }
+            {
+              matches = [{app-id = "^xdg-desktop-portal-gtk$";}];
+              open-floating = true;
+            }
+            {
+              matches = [
+                {app-id = "^emacs$";}
+                {app-id = "^kitty$";}
+              ];
+              background-effect.blur = true;
+            }
+          ];
+
+          # keybinds
+          binds = let
+            # mod def
+            mod =
+              if (machine == "umbra" || machine == "arm-vmware")
+              then "Alt"
+              else "Mod";
+
+            wmenu = ''
+              ${pkgs.wmenu}/bin/wmenu-run \
+              -N "${base00}" \
+              -n "${base07}" \
+              -S "${base0D}" \
+              -s "${base00}"
+            '';
+
+            toggleWaybar = ''
+              if [ "$(systemctl is-active --user waybar)" == "active" ]; then
+                  systemctl --user stop waybar
+              else
+                  systemctl --user start waybar
+              fi
+            '';
+          in {
+            # programs
+            "${mod}+Return" = sh "kitty";
+            "${mod}+E" = sh "${get "emacs-pgtk"}"; # always use wayland native emacs
+            "${mod}+Shift+B" = sh "${config.home.sessionVariables.BROWSER}";
+            "${mod}+Space" = sh wmenu;
+            "${mod}+Shift+L" = sh "swaylock";
+            "${mod}+W" = sh toggleWaybar;
+
+            # media keys
+            "XF86AudioRaiseVolume" = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
+            "XF86AudioLowerVolume" = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
+            "XF86AudioMute" = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            "XF86AudioPlay" = sh "${get "playerctl"} play-pause";
+            "XF86AudioPrev" = sh "${get "playerctl"} previous";
+            "XF86AudioNext" = sh "${get "playerctl"} next";
+            "XF86MonBrightnessUp" = sh "${get "brightnessctl"} set 5%+";
+            "XF86MonBrightnessDown" = sh "${get "brightnessctl"} set 5%-";
+            "XF86KbdBrightnessUp" = sh "${get "brightnessctl"} --device=smc::kbd_backlight set 10%+";
+            "XF86KbdBrightnessDown" = sh "${get "brightnessctl"} --device=smc::kbd_backlight set 10%-";
+            # screenshot
+            "Print".action.screenshot = [];
+            "${mod}+Print".action.screenshot-window = [];
+            # quits
+            "${mod}+Q".action.close-window = [];
+            "Ctrl+${mod}+Delete".action.quit = [];
+            "Ctrl+Shift+${mod}+Delete".action.quit = {skip-confirmation = true;};
+
+            # moving
+            "${mod}+Up".action.focus-window-or-workspace-up = [];
+            "${mod}+Down".action.focus-window-or-workspace-down = [];
+            "${mod}+Shift+Up".action.move-window-up-or-to-workspace-up = [];
+            "${mod}+Shift+Down".action.move-window-down-or-to-workspace-down = [];
+            "${mod}+Left".action.focus-column-left = [];
+            "${mod}+Right".action.focus-column-right = [];
+            "${mod}+Shift+Left".action.move-column-left = [];
+            "${mod}+Shift+Right".action.move-column-right = [];
+
+            # column width - using = since + needs shift
+            "${mod}+Minus".action = set-column-width "-10%";
+            "${mod}+Equal".action = set-column-width "+10%";
+            "${mod}+Shift+Minus".action = set-column-width "-1%";
+            "${mod}+Shift+Equal".action = set-column-width "+1%";
+            "${mod}+Ctrl+Minus".action = set-window-height "-10%";
+            "${mod}+Ctrl+Equal".action = set-window-height "+10%";
+            # window presets
+            "${mod}+R".action.switch-preset-column-width = [];
+            "${mod}+M".action.expand-column-to-available-width = [];
+            "${mod}+Ctrl+M".action.maximize-column = [];
+            "${mod}+Shift+M".action.fullscreen-window = [];
+            "${mod}+Period".action.consume-or-expel-window-right = [];
+            "${mod}+Comma".action.consume-or-expel-window-left = [];
+            # layouts
+            "${mod}+t".action.toggle-column-tabbed-display = [];
+            "${mod}+f".action.switch-focus-between-floating-and-tiling = [];
+            "${mod}+Shift+f".action.toggle-window-floating = [];
+          };
         };
-      };
-    })
-  ];
+      })
+    ];
 }

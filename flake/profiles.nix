@@ -51,6 +51,7 @@ in {
           inherit (cfg) system;
           inherit specialArgs;
           modules = builtins.concatLists [
+            mod.univ
             mod.nix
             [{_module.args.homeMods = mod.home;}]
             [{home-manager.extraSpecialArgs = specialArgs;}]

@@ -1,4 +1,9 @@
-{mod, ...}:
+{
+  mod,
+  self,
+  inputs,
+  ...
+}:
 with mod; {
   system = "x86_64-linux";
   type = "home";
@@ -18,6 +23,14 @@ with mod; {
     theming.stylix
   ];
   extraConfig = [
+    # overlays
+    {
+      nixpkgs.overlays = [
+        (import self.inputs.emacs-overlay)
+        self.overlays.emacs
+        self.overlays.nixvim
+      ];
+    }
     # base hm stuff
     ({
       pkgs,

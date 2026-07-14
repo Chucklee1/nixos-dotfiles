@@ -1,4 +1,37 @@
 {
+  extlib,
+  target,
+  ...
+}: let
+  promptInit =
+    #fish
+    ''
+      # only show hostname on remote devices
+      set host_prompt ""
+      if set -q SSH_CONNECTION
+        set host_prompt @(hostname)
+      end
+
+      # indicate when in nix dev env
+      set shell_prefix ""
+      if set -q IN_NIX_SHEll
+        set shell_prefix nix-shell:
+      end
+
+      set user_prompt $shell_prefix$USER$host_prompt
+
+      function new_pwd
+        string replace "$HOME" "~" "$PWD"
+      end
+
+      function fish_prompt
+        echo -s (set_color red) "┌─[" (set_color normal) \
+        $user_prompt (set_color red) "] " (set_color normal) \
+        (set_color magenta) (new_pwd) (set_color normal) \
+        \n (set_color red) "└> " (set_color normal)
+      end
+    '';
+in {
   nix = [
     ({
       config,
@@ -7,42 +40,9 @@
     }: {
       users.users.${user}.shell = config.programs.fish.package;
       programs.fish = {
+        inherit promptInit;
         enable = true;
         useBabelfish = true;
-        promptInit =
-          #fish
-          ''
-            # only show hostname on remote devices
-            set host_prompt ""
-            if set -q SSH_CONNECTION
-              set host_prompt @(hostname)
-            end
-
-            # indicate when in nix dev env
-            set shell_prefix ""
-            if set -q IN_NIX_SHEll
-              set shell_prefix nix-shell:
-            end
-
-            set user_prompt $shell_prefix$USER$host_prompt
-
-            function new_pwd
-              string replace "$HOME" "~" "$PWD"
-            end
-
-            function fish_prompt
-              echo -s (set_color red) "┌─[" (set_color normal) \
-              $user_prompt (set_color red) "] " (set_color normal) \
-              (set_color magenta) (new_pwd) (set_color normal) \
-              \n (set_color red) "└> " (set_color normal)
-            end
-          '';
-        shellInit =
-          #fish
-          ''
-            # disable greeting
-            set -U fish_greeting ""
-          '';
       };
     })
   ];
@@ -97,9 +97,11 @@
         shellInitLast =
           # fish
           ''
+            set -U fish_greeting ""
             set -U fish_pager_color_description yellow
           '';
       };
     }
+    (extlib.homeOrNot target {programs.fish.shellInit = promptInit;})
   ];
 }

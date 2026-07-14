@@ -1,6 +1,7 @@
 {inputs, ...}: {
-  nix = [
-    ({lib, ...}: {
+  univ = [
+    ({lib, pkgs, ...}: {
+      nix.package = pkgs.nix;
       nix.settings.experimental-features = "nix-command flakes";
       nix.gc = {
         automatic = lib.mkDefault true;

@@ -83,6 +83,9 @@ with self.inputs.nixpkgs.lib; rec {
     then A
     else B;
 
+  homeOrNot = type: mods:
+    if type == "home" then mods else [];
+
   # idea from github:Misterio77/nix-starter-configs
   allSystems = genAttrs [
     "x86_64-linux"
