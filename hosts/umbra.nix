@@ -5,7 +5,7 @@
 }:
 with mod; {
   system = "aarch64-darwin";
-  builder = inputs.nix-darwin.lib.darwinSystem;
+  type = "nixos";
   user = "goat";
   modules = [
   ];

@@ -5,7 +5,7 @@
 }:
 with mod; {
   system = "aarch64-linux";
-  builder = inputs.nixpkgs.lib.nixosSystem;
+  type = "nixos";
   user = "goat";
   modules = [
     services.syncthing

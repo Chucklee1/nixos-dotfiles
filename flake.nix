@@ -76,6 +76,7 @@
 
     nixosConfigurations = sys.mkSystems;
     darwinConfigurations = sys.mkSystems;
+    homeConfigurations = sys.mkSystems;
 
     overlays = {
       nixvim = import ./pkgs/nixvim {inherit self;};

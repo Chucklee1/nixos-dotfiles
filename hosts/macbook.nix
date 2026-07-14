@@ -6,7 +6,7 @@
 }:
 with mod; {
   system = "aarch64-darwin";
-  builder = inputs.nix-darwin.lib.darwinSystem;
+  type = "darwin";
   user = "goat";
   modules = [
     services.tailscale
