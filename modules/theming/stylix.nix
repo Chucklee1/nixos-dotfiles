@@ -67,6 +67,7 @@ base0F #5e81ac
     (extlib.homeOrNot target [inputs.stylix.homeModules.stylix])
     ++ [
       ({pkgs, ...}: {
+        home.pointerCursor.enable = true;
         stylix.icons = {
           enable = true;
           package = pkgs.papirus-icon-theme;
