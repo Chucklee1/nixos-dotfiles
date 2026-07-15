@@ -56,6 +56,7 @@
           # misc
           age
           calc
+          git
           wget
           nurl
         ]
