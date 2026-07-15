@@ -1,6 +1,10 @@
 {inputs, ...}: {
   univ = [
-    ({lib, pkgs, ...}: {
+    ({
+      lib,
+      pkgs,
+      ...
+    }: {
       nix.package = pkgs.nix;
       nix.settings.experimental-features = "nix-command flakes";
       nix.gc = {

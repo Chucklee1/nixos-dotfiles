@@ -1,7 +1,6 @@
 {
   mod,
   self,
-  inputs,
   ...
 }:
 with mod; {

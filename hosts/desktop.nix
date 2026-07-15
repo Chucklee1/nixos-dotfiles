@@ -1,7 +1,4 @@
-{
-  mod,
-  ...
-}:
+{mod, ...}:
 with mod; {
   system = "x86_64-linux";
   type = "nixos";
