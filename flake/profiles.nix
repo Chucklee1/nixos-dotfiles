@@ -44,7 +44,7 @@ in {
           modules = builtins.concatLists [
             mod.univ
             mod.home
-            cfg.extraConfig
+            (cfg.extraConfig or [])
           ];
         }
         else {
@@ -53,8 +53,12 @@ in {
           modules = builtins.concatLists [
             mod.univ
             mod.nix
-            [{_module.args.homeMods = mod.home;}]
-            [{home-manager.extraSpecialArgs = specialArgs;}]
+            [
+              {
+                home-manager.users.${cfg.user}.imports = mod.home;
+                home-manager.extraSpecialArgs = specialArgs;
+              }
+            ]
             cfg.extraConfig
           ];
         }
