@@ -125,11 +125,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783624452,
-        "narHash": "sha256-bmefuF7wUXET3m0r6PtaNSOwmDoGjfdrU4P/QhPbQc0=",
+        "lastModified": 1784687821,
+        "narHash": "sha256-Hhm44Aue2WgVqXzgXhUkDV/GyVVZOhYWyDlvrjEC4C8=",
         "owner": "Chucklee1",
         "repo": "chucks-package-repo",
-        "rev": "809addb0af32ebd87709e920ea5ca4121a22cca0",
+        "rev": "9c6fa2a650e352b7391e5e08ccd7692ff60d3a6d",
         "type": "github"
       },
       "original": {
