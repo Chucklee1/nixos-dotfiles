@@ -11,7 +11,7 @@ with mod; {
     programs.kitty
     programs.niri
     programs.obs
-    programs.rmpc
+    # programs.rmpc
     programs.waybar
     programs.yazi
     programs.chromium
@@ -202,6 +202,7 @@ with mod; {
             ".config/sunshine"
             ".config/zen"
             ".local/share/direnv"
+            ".local/share/fluorine"
             ".local/share/mo2-lint"
             ".local/share/mpd"
             ".local/state/syncthing"
@@ -230,6 +231,7 @@ with mod; {
       environment.systemPackages = with pkgs; [
         looking-glass-client
         mo2-lint
+        steam-run
 
         guestfs-tools
         virtiofsd
@@ -239,7 +241,6 @@ with mod; {
         bubblewrap
         file
       ];
-
     })
     # I just want fluorine to work
     ({
@@ -257,20 +258,8 @@ with mod; {
         libGLX
         libX11
         libxkbcommon
-        libxcb
-        libxcb-cursor
-        libxcb-image
-        libxcb-keysyms
-        libxcb-render-util
-        libxcb-wm
-        stdenv.cc.cc.lib # libstdc++
-        fontconfig
-        freetype
+        stdenv.cc.cc.lib  # libstdc++      
         wayland
-        glib
-        dbus
-        openssl
-        coreutils
       ];
     })
     # sops
