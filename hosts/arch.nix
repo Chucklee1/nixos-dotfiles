@@ -13,6 +13,7 @@ with mod; {
     programs.niri
     programs.waybar
     programs.yazi
+    programs.zen-browser
 
     shell.fish
     software.qol
@@ -48,11 +49,7 @@ with mod; {
     })
     # target machine for hm to work properly + nixgl
     {
-      targets.genericLinux = {
-        enable = true;
-        nixGL.defaultWrapper = "mesa";
-        nixGL.vulkan.enable = true;
-      };
+      targets.genericLinux.enable = true;
     }
     # niri settings from nixos-desktop
     ({lib, ...}: {
