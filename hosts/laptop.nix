@@ -22,7 +22,7 @@ with mod; {
     programs.waybar
     programs.yazi
     programs.dwm
-    programs.rmpc
+    # programs.rmpc
     programs.discord
 
     software.dev
