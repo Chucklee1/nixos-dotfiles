@@ -11,7 +11,6 @@ with mod; {
     programs.kitty
     programs.niri
     programs.obs
-    # programs.rmpc
     programs.waybar
     programs.yazi
     programs.chromium
@@ -197,8 +196,10 @@ with mod; {
           user.directories = [
             ".cache/zen"
             ".config/discord"
+            ".config/fluorine"
             ".config/listenbrainz-mpd"
             ".config/mo2-lint"
+            ".config/Mod Organizer Team"
             ".config/sunshine"
             ".config/zen"
             ".local/share/direnv"
@@ -208,58 +209,18 @@ with mod; {
             ".local/state/syncthing"
             ".local/share/zoxide"
             ".var"
-            ".ollama"
             ".factorio"
           ];
         };
       };
     }
-    {
-      boot.loader.grub.useOSProber = true;
-      # dual boot entry so I dont need a seperate bootloader for arch
-      boot.loader.grub.extraEntries = ''
-        menuentry "arch" {
-            insmod btrfs
-            search --no-floppy --fs-uuid --set=root ${WD}
-            linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch/root
-            initrd /WD/arch/boot/initramfs-linux.img
-        }
-      '';
-    }
     # pkgs
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         looking-glass-client
-        mo2-lint
-        steam-run
 
         guestfs-tools
         virtiofsd
-
-        coreutils
-        openssl
-        bubblewrap
-        file
-      ];
-    })
-    # I just want fluorine to work
-    ({
-      pkgs,
-      user,
-      ...
-    }: {
-      services.envfs.enable = true;
-      users.users.${user}.extraGroups = ["fuse"];
-      programs.fuse.userAllowOther = true;
-
-      programs.nix-ld.enable = true;
-      programs.nix-ld.libraries = with pkgs; [
-        libGL
-        libGLX
-        libX11
-        libxkbcommon
-        stdenv.cc.cc.lib  # libstdc++      
-        wayland
       ];
     })
     # sops
@@ -309,3 +270,15 @@ with mod; {
     })
   ];
 }
+# {
+#   boot.loader.grub.useOSProber = true;
+#   # dual boot entry so I dont need a seperate bootloader for arch
+#   boot.loader.grub.extraEntries = ''
+#     menuentry "arch" {
+#         insmod btrfs
+#         search --no-floppy --fs-uuid --set=root ${WD}
+#         linux /WD/arch/boot/vmlinuz-linux root=UUID=${WD} rw rootflags=subvol=WD/arch/root
+#         initrd /WD/arch/boot/initramfs-linux.img
+#     }
+#   '';
+# }
