@@ -13,6 +13,7 @@
         };
       };
     }
+    {home.sessionVariables.TERMINAL = "kitty";}
     # qol aliases, maybe will ad more later
     {
       home.shellAliases = {
