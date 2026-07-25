@@ -55,6 +55,30 @@
           longitude = -94.806;
         };
       })
+      # custom scripts
+      ({
+        config,
+        pkgs,
+        ...
+      }:
+        with config.lib.stylix.colors.withHashtag; {
+          home.packages = [
+            (pkgs.writeShellScriptBin "wmenuScript" ''
+              ${pkgs.wmenu}/bin/wmenu-run \
+              -N "${base00}" \
+              -n "${base07}" \
+              -S "${base0D}" \
+              -s "${base00}"
+            '')
+            (pkgs.writeShellScriptBin "toggleWaybar" ''
+              if [ "$(systemctl is-active --user waybar)" == "active" ]; then
+                  systemctl --user stop waybar
+              else
+                  systemctl --user start waybar
+              fi
+            '')
+          ];
+        })
       # niri config
       ({
         lib,
@@ -63,8 +87,7 @@
         machine,
         ...
       }: {
-        programs.niri.settings = with config.lib.niri.actions;
-        with config.lib.stylix.colors.withHashtag; let
+        programs.niri.settings = with config.lib.niri.actions; let
           # helpers
           get = pkg: lib.getExe pkgs.${pkg};
           sh = x: {action = spawn-sh x;};
@@ -102,7 +125,7 @@
             mouse.accel-speed = 0.0;
             touchpad = {
               tap = true;
-              dwt = true;
+              dwt = false;
               natural-scroll = true;
               click-method = "clickfinger";
             };
@@ -162,30 +185,16 @@
               if (machine == "umbra" || machine == "arm-vmware")
               then "Alt"
               else "Mod";
-
-            wmenu = ''
-              ${pkgs.wmenu}/bin/wmenu-run \
-              -N "${base00}" \
-              -n "${base07}" \
-              -S "${base0D}" \
-              -s "${base00}"
-            '';
-
-            toggleWaybar = ''
-              if [ "$(systemctl is-active --user waybar)" == "active" ]; then
-                  systemctl --user stop waybar
-              else
-                  systemctl --user start waybar
-              fi
-            '';
           in {
             # programs
-            "${mod}+Return" = sh "kitty";
-            "${mod}+E" = sh "${get "emacs-pgtk"}"; # always use wayland native emacs
-            "${mod}+Shift+B" = sh "${config.home.sessionVariables.BROWSER}";
-            "${mod}+Space" = sh wmenu;
+            "${mod}+Return" = sh "${config.home.sessionVariables.TERMINAL or "kitty"}";
+            # yep, I will include emacs in the window manager module
+            "${mod}+E" = sh "${get "emacs-pgtk"}";
+            "${mod}+Shift+B" = sh "${config.home.sessionVariables.BROWSER or "chromium"}";
+            "${mod}+Space" = sh "wmenuScript";
             "${mod}+Shift+L" = sh "swaylock";
-            "${mod}+W" = sh toggleWaybar;
+            "${mod}+Shift+C" = sh "${get "wl-color-picker"}";
+            "${mod}+W" = sh "toggleWaybar";
 
             # media keys
             "XF86AudioRaiseVolume" = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
