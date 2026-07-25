@@ -1,7 +1,12 @@
 {
   nix = [
     ({pkgs, ...}: {
-      environment.systemPackages = [pkgs.zenity];
+      environment.systemPackages = with pkgs; [
+        file # for mo2-lint
+        mo2-lint
+        steam-run
+        zenity
+      ];
       programs.gamemode = {
         enable = true;
         settings.general.desiredgov = "performance";
@@ -16,7 +21,30 @@
         localNetworkGameTransfers.openFirewall = true;
       };
     })
+    # Nessecary stuff fhs-related tools
+    ({
+      pkgs,
+      user,
+      ...
+    }: {
+      services.envfs.enable = true;
+      users.users.${user}.extraGroups = ["fuse"];
+      programs.fuse.userAllowOther = true;
+
+      programs.nix-ld.enable = true;
+      programs.nix-ld.libraries = with pkgs; [
+        libGL
+        libGLX
+        libX11
+        libxkbcommon
+        stdenv.cc.cc.lib # libstdc++
+        wayland
+      ];
+    })
   ];
 
-  home = [{programs.mangohud.enable = true;}];
+  home = [
+    {home.sessionPath = ["$HOME/.local/bin"];}
+    {programs.mangohud.enable = true;}
+  ];
 }
