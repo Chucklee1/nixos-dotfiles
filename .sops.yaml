@@ -1,9 +1,11 @@
 keys:
     - &nixos-desktop age18nscr92wtfa3cr45gqr6hgu2d8566rd33e5e8el0dpg9rj0j25lqyyhlar
     - &nixos-laptop age1gavjdtq05m04cu7szcamdcc3elvvz0pw7q4suqp3jrxvg20ctyfqwdvmva
+    - &nixos-inspiron age1h4hmalxafv7zx2387ax0k3uakx74npkvtfj3e84mwm3l0jge59hqfa7twz
 creation_rules:
     - path_regex: secrets.yaml$
       key_groups:
       - age:
         - *nixos-desktop
         - *nixos-laptop
+        - *nixos-inspiron
