@@ -10,14 +10,9 @@ with mod; {
     services.the-server
     services.net-essentials
 
-    programs.zen-browser
     programs.nixvim
-    programs.emacs
     programs.git
-    programs.kitty
     programs.yazi
-    programs.niri
-    programs.waybar
 
     software.dev
     software.qol
@@ -27,9 +22,9 @@ with mod; {
     system.users
     system.network
     system.pkgconfig
+    system.sops
     system.sys-specs
 
-    services.graphical
     services.ext4
 
     shell.variables
@@ -66,6 +61,13 @@ with mod; {
         HandleLidSwitchDocked = "ignore";
         HandleLidSwitchExternalPower = "ignore";
       };
+    })
+    ({
+      config,
+      user,
+      ...
+    }: {
+      sops.age.keyFile = "${config.users.users.${user}.home}/.config/sops/age/keys.txt";
     })
   ];
 }
