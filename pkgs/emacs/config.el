@@ -2,7 +2,11 @@
 
 (setq use-package-always-ensure t)
 
-(setq gc-cons-threshold 100000000) ;; 100 MB
+;; gc stuff
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6
+      gc-cons-threshold (* 20 1000 1000) ;; 20 MB
+      gc-cons-percentage 0.1)
 
 ;; Improve performance with language servers.
 (setq read-process-output-max (* 1024 1024)) ;; 1 MB
@@ -13,8 +17,8 @@
 (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
 (defvar g/opacity/alpha (if (eq system-type 'darwin) 40 80))
 (defvar g/opacity/solid 100)
-;; default to no transparency
-(defvar g/opacity/current  g/opacity/solid)
+;; default to blur
+(defvar g/opacity/current g/opacity/alpha)
 
 ;; keybinds ;;
 (defun helper/mapkeys (leader-map keypairs)
@@ -85,7 +89,6 @@
   (blink-cursor-mode nil)     ;; Don't blink cursor
 
   ;; selection
-  (use-short-answers t)       ;; Use y/n instead of yes/no
   (delete-selection-mode t)   ;; Select text and delete it by typing.
   (vc-follow-symlinks nil)    ;; follow git-symlink without prompt
 
@@ -156,8 +159,7 @@
   (evil-terminal-cursor-changer-activate))
 
 (helper/mapkeys ctl-x-map
-                '(("C-r"        . (lambda () (interactive) (load-file g/path/elispcfg)))
-                  ("C-<return>" . helper/open-split-term)
+                '(("C-<return>" . helper/open-split-term)
                   ("C-b"        . ibuffer)))
 
 (helper/mapkeys mode-specific-map
@@ -167,7 +169,8 @@
 (global-set-key (kbd "C-c l") emap/lsp)
 
 (helper/mapkeys emap/lsp
-                '(("f" . eglot-format-buffer)
+                '(("l" . eglot-reconnect)
+                  ("f" . eglot-format-buffer)
                   ("r" . eglot-rename)
                   ("i" . imenu)))
 
@@ -204,6 +207,20 @@
 
 (use-package diredfl :hook ((dired-mode . diredfl-mode)))
 
+(defvar g/dired/goto-alist
+  '(("h" . "~/")
+    ("d" . "~/Downloads/")
+    ("r" . "~/Repos/")
+    ("o" . "/opt/")))
+
+(with-eval-after-load 'evil
+  (with-eval-after-load 'dired
+    (dolist (pair g/dired/goto-alist)
+      (evil-define-key 'normal dired-mode-map
+        (kbd (concat "g" (car pair)))
+        (let ((path (cdr pair)))
+          (lambda () (interactive) (dired path)))))))
+
 (if (executable-find "direnv") (use-package direnv))
 
 (use-package vterm)
@@ -239,6 +256,10 @@
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
+;; Nerd Font icons pull in a lot of distinct fonts/faces; compacting the
+;; font cache on every redisplay is expensive with them in play.
+(setq inhibit-compacting-font-caches t)
+
 (use-package doom-modeline
   :custom
   (display-time-24hr-format t)
@@ -248,29 +269,19 @@
   :hook (after-init . doom-modeline-mode))
 
 (use-package projectile
+  :init
+  (projectile-mode 1)
   :custom
   (projectile-indexing-method 'alien)
   (projectile-run-use-comint-mode t)
   (projectile-switch-project-action #'projectile-dired)
-  (projectile-project-search-path '("~/Documents/" "~/Repos/")))
-
-(use-package eglot
-  :ensure nil
-  :hook ((c-ts-mode
-          c++-ts-mode
-          go-mode
-          haskell-mode
-          java-mode
-          lua-mode
-          nix-ts-mode
-          python-mode
-          zig-mode)
-         . eglot-ensure)
-  :custom
-  (eglot-sync-connect 0)  ;; async startup
-  (eglot-autoshutdown t) ;; kill server when last buffer closes
-  (eglot-events-buffer-size 0) ;; prevent huge debug buffers
-  )
+  (projectile-project-search-path '("~/Documents/" "~/Repos/"))
+  :config
+  (defun g/project-projectile-root (dir)
+    (when-let ((root (projectile-project-root dir)))
+      (cons 'transient root)))
+  (with-eval-after-load 'project
+    (add-to-list 'project-find-functions #'g/project-projectile-root)))
 
 (use-package treesit-auto
   :after (tree-sitter)
@@ -279,6 +290,26 @@
   :config
   (global-treesit-auto-mode)
   (treesit-auto-add-to-auto-mode-alist 'all))
+
+(use-package eglot
+  :ensure nil
+  :after treesit-auto
+  :hook ((c-ts-mode
+          c++-ts-mode
+          go-ts-mode
+          haskell-mode
+          java-ts-mode
+          lua-ts-mode
+          nix-ts-mode
+          python-ts-mode
+          rust-ts-mode
+          zig-ts-mode)
+         . eglot-ensure)
+  :custom
+  (eglot-sync-connect 0)  ;; async startup
+  (eglot-autoshutdown t) ;; kill server when last buffer closes
+  (eglot-events-buffer-size 0) ;; prevent huge debug buffers
+  )
 
 ;; config/text
 (use-package just-mode)
@@ -317,6 +348,10 @@
   :custom
   (org-return-follows-link t)   ;; Sets RETURN key in org-mode to follow links
   :config
+  ;; Org guesses major mode for src block by appending "-mode" to
+  ;; language name (nix -> nix-mode), but nix files use nix-ts-mode,
+  ;; so "nix" src blocks were never getting fontified.
+  (add-to-list 'org-src-lang-modes '("nix" . nix-ts))
   (setq org-catch-invisible-edits 'show-and-error
         org-insert-heading-respect-content t
         ;; Org styling, hide markup etc.
