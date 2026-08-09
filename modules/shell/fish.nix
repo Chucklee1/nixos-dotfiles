@@ -54,13 +54,16 @@ in {
         programs.fish = {
           enable = true;
           functions = {
-            sln =
+            cprint =
               # fish
               ''
                 function cprint
                         echo -s (set_color $argv[1]) $argv[2] (set_color normal)
                 end
-
+            '';
+            sln =
+              # fish
+              ''
                 if test (count $argv) -ne 2
                         echo "Usage: s[afe]ln SOURCE TARGET"
                         return 1
