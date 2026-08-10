@@ -33,7 +33,7 @@
           certificateFile = "${config.sops.secrets."cloudflared/cert".path}";
           credentialsFile = "${config.sops.secrets."cloudflared/creds".path}";
           ingress = {
-            "chucklee.uk" = "http://localhost:6767"; # main site
+            "chucklee.uk" = "https://chucklee-uk.cooperkang4.workers.dev"; # main site
             "navidrome.chucklee.uk" = "http://localhost:4533"; # navidrome
             "audiobookshelf.chucklee.uk" = "http://localhost:8000"; # audiobookshelf
           };
