@@ -40,7 +40,7 @@ builtins.mapAttrs (_: package:
     ];
   })
   {
-    emacs = prev.emacs-gtk;
+    emacs = prev.emacs;
     emacs-macport = prev.emacs-macport;
     emacs-pgtk = prev.emacs-pgtk;
   }

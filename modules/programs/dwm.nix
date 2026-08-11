@@ -12,6 +12,8 @@
         extraSessionCommands = ''
           emacs --daemon &
           ${pkgs.feh}/bin/feh --bg-scale ${config.stylix.image}
+          systemctl --user enable --now redshift
+          systemctl --user enable --now slstatus
         '';
       };
 
