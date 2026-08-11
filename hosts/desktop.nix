@@ -10,6 +10,7 @@ with mod; {
     programs.git
     programs.kitty
     programs.niri
+    programs.dwm
     programs.obs
     programs.waybar
     programs.yazi
@@ -166,18 +167,21 @@ with mod; {
         ]
       '';
 
+      security.pam.loginLimits = [
+        {
+          domain = "@kvm";
+          item = "memlock";
+          type = "-";
+          value = "unlimited";
+        }
+      ];
+
       # cpu
       hardware.cpu.amd.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
 
       # gpu
       services.xserver.videoDrivers = lib.mkForce ["amdgpu"];
-
-      # monitor res on xserver
-      services.xserver.monitorSection = ''
-        Identifier "DisplayPort-0"
-        Option "PreferredMode" "1920x1080_165.00"
-      '';
     })
     # impermenance setup
     {
@@ -199,6 +203,7 @@ with mod; {
             ".config/fluorine"
             ".config/listenbrainz-mpd"
             ".config/mo2-lint"
+            ".config/nicotine"
             ".config/Mod Organizer Team"
             ".config/sunshine"
             ".config/zen"
@@ -206,7 +211,9 @@ with mod; {
             ".local/share/fluorine"
             ".local/share/mo2-lint"
             ".local/share/mpd"
+            ".local/share/nicotine"
             ".local/state/syncthing"
+            ".local/share/Terraria"
             ".local/share/zoxide"
             ".var"
             ".factorio"
@@ -218,9 +225,15 @@ with mod; {
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         looking-glass-client
+        nicotine-plus
 
         guestfs-tools
         virtiofsd
+      ];
+
+      networking.firewall.allowedTCPPorts = [
+        2234
+        2242
       ];
     })
     # sops
@@ -232,11 +245,10 @@ with mod; {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
     })
-    ({
-      lib,
-      user,
-      ...
-    }: {
+    ({lib, user, ...}: {
+      # for x11
+      services.libinput.mouse.accelSpeed = "-0.75";
+
       # symlink setup on login
       home-manager.users.${user} = {
         programs.fish.loginShellInit = ''
@@ -251,6 +263,7 @@ with mod; {
             sln $it $HOME/.local/share/
           end
         '';
+
         # monitor configuration
         programs.niri.settings = {
           # must use {} since niri does not like "key = function -float;"
@@ -282,3 +295,4 @@ with mod; {
 #     }
 #   '';
 # }
+
