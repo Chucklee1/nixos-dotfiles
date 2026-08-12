@@ -187,10 +187,10 @@
               else "Mod";
           in {
             # programs
-            "${mod}+Return" = sh "${config.home.sessionVariables.TERMINAL or "kitty"}";
+            "${mod}+Return" = sh "${config.home.sessionVariables.TERMINAL or "alacritty"}";
             # yep, I will include emacs in the window manager module
             "${mod}+E" = sh "${get "emacs-pgtk"}";
-            "${mod}+Shift+B" = sh "${config.home.sessionVariables.BROWSER or "chromium"}";
+            "${mod}+Shift+B" = sh "${config.home.sessionVariables.BROWSER or "firefox"}";
             "${mod}+Space" = sh "wmenuScript";
             "${mod}+Shift+L" = sh "swaylock";
             "${mod}+Shift+C" = sh "${get "wl-color-picker"}";
