@@ -44,7 +44,6 @@
   ];
 
   home = [
-    {home.sessionPath = ["$HOME/.local/bin"];}
     {programs.mangohud.enable = true;}
   ];
 }
