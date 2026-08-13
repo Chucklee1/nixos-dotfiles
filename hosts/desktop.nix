@@ -245,7 +245,11 @@ with mod; {
       sops.age.keyFile = "/persist/secrets/age.keys.txt";
       users.users.${user}.hashedPasswordFile = config.sops.secrets."gregtrain/goat".path;
     })
-    ({lib, user, ...}: {
+    ({
+      lib,
+      user,
+      ...
+    }: {
       # for x11
       services.libinput.mouse.accelSpeed = "-0.75";
 
@@ -261,6 +265,12 @@ with mod; {
           sln /opt/Steam $HOME/.local/share/
           for it in /opt/Games/*
             sln $it $HOME/.local/share/
+          end
+
+
+          if test -f $HOME/.local/share/fluorine/bin/fluorine-manager
+            mkdir -p $HOME/.local/bin
+            sln $HOME/.local/share/fluorine/bin/fluorine-manager $HOME/.local/bin/fluorine-manager
           end
         '';
 
