@@ -27,7 +27,7 @@
       xdg.desktopEntries.fluorine-nxm-handler = {
         name = "Fluorine Manager NXM Handler";
         exec = "${config.home.homeDirectory}/.local/bin/mo2-nxm-handler %u";
-        mimeType= [ "x-scheme-handler/nxm" "x-scheme-handler/modl" ];
+        mimeType = ["x-scheme-handler/nxm" "x-scheme-handler/modl"];
         noDisplay = true;
       };
 
@@ -39,4 +39,3 @@
     })
   ];
 }
-
