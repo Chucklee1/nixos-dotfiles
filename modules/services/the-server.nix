@@ -7,6 +7,7 @@
         6767
         8000
       ];
+      networking.firewall.allowedUDPPorts = [25565];
     })
     # cloudflared
     ({
@@ -33,14 +34,14 @@
           certificateFile = "${config.sops.secrets."cloudflared/cert".path}";
           credentialsFile = "${config.sops.secrets."cloudflared/creds".path}";
           ingress = {
-            "chucklee.uk" = "https://chucklee-uk.cooperkang4.workers.dev"; # main site
+            "chucklee.uk" = "http://localhost:6767"; # main site
             "navidrome.chucklee.uk" = "http://localhost:4533"; # navidrome
             "audiobookshelf.chucklee.uk" = "http://localhost:8000"; # audiobookshelf
           };
         };
       };
     })
-    (let
+    ({pkgs, ...}: let
       music_dir = "/srv/media/Music";
     in {
       services.nfs.server.exports = ''
@@ -59,6 +60,19 @@
         };
       };
       services.audiobookshelf.enable = true;
+      # mc server
+      systemd.user.services.gtnh-server = {
+        enable = true;
+        after = ["network.target"];
+        wantedBy = ["multi-user.target"];
+        description = "Server for GTNH 2.8.4 Java-25";
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.temurin-bin-25}/bin/java -Xmx8G -Dfml.readTimeout=180 @java9args.txt -jar lwjgl3ify-forgePatches.jar nogui";
+          WorkingDirectory = "/srv/Minecraft/GTNH";
+          Restart = "on-failure";
+        };
+      };
     })
   ];
 }
