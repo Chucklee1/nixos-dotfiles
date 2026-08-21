@@ -3,7 +3,9 @@
   inputs = {
     # ---- main pkg providers ----
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # for tailscale
+    nixpkgs-newer.url = "github:NixOS/nixpkgs/ffb3c9b700e759be2ef13237c9d8f953b32a1e46?narHash=sha256-RD2kNWCG%2BBjo6h%2BJVjWVNntZs2GtRoeY2xHjts/FNkA%3D";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nur.url = "github:nix-community/NUR";
