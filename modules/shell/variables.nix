@@ -18,7 +18,6 @@
     # shell scripts
     ({pkgs, ...}: {
       environment.systemPackages = [
-        (pkgs.writeShellScriptBin "getJDK25" (builtins.readFile "${self}/assets/scripts/getJDK25"))
         (pkgs.writeShellScriptBin "mkSnapshot" (builtins.readFile "${self}/assets/scripts/mkSnapshot"))
       ];
     })

@@ -4,7 +4,6 @@
       environment.systemPackages = with pkgs; [
         # java
         jdk
-        javaPackages.compiler.temurin-bin.jdk-25
         # build system that fabric uses
         gradle
         gradle-completion

@@ -1,3 +1,0 @@
-read -r path < <(ls /nix/store | rg "temurin-bin-25" | rg -v '\.drv$' | head -n1)
-
-echo "/nix/store/$path/bin/java"

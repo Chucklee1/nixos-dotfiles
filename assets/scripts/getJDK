@@ -1,0 +1,10 @@
+if [ -z "$1" ]; then
+    echo "please provide version number"
+    exit 1
+fi
+
+VER=$1
+
+read -r path < <(ls /nix/store | rg "temurin-bin-$VER" | rg -v '\.drv$' | head -n1)
+
+echo "/nix/store/$path/bin/java"
