@@ -22,6 +22,7 @@
           extlib.darwinOrLinux
           "/Users/${user}" "/home/${user}";
       };
+      xdg.enable = true;
       xdg.localBinInPath = true;
     })
   ];
