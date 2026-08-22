@@ -35,6 +35,8 @@
               "zen.view.compact.hide-toolbar" = true;
               "zen.welcome-screen.seen" = true;
               "zen.urlbar.behavior" = "normal";
+              "network.protocol-handler.expose.nxm" = false;
+              "network.protocol-handler.warn-external.nxm" = true;
             };
             search = {
               force = true;
