@@ -12,6 +12,8 @@
           flopts = "nixos-option --flake $HOME/nixos-dotfiles#${machine} --show-trace --impure";
           sysctl = "sudo systemctl";
           usrctl = "systemctl --user";
+          # for darwin and non-nixos systmes
+          l = "ls -al";
         };
       };
     })
