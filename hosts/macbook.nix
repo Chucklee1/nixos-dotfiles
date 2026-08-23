@@ -67,9 +67,10 @@ with mod; {
       fonts.packages = [pkgs.nerd-fonts.symbols-only];
       environment.systemPackages = with pkgs; [
         coreutils-prefixed
-        feishin
-        mpv
         emacs-macport
+        # better than macs crappy ones
+        coreutils
+        gnused
       ];
 
       # symlink nix & home manager apps to /Applications
