@@ -40,16 +40,19 @@
         };
       };
     })
-    (let
+    ({pkgs, ...}: let
       music_dir = "/srv/media/Music";
     in {
       services.nfs.server.enable = true;
       services.nfs.server.exports = ''
-        ${music_dir} nixos-desktop(ro,nohide,insecure,no_subtree_check)
-        ${music_dir} darwin-macbook(ro,fsid=0,no_subtree_check)
+        ${music_dir} nixos-desktop(ro, nohide,insecure,no_subtree_check)
+        ${music_dir} darwin-macbook(ro ,fsid=0,no_subtree_check)
       '';
       services.navidrome = {
         enable = true;
+        plugins = [
+          pkgs.navidromePlugins.discord-rich-presence
+        ];
         settings = {
           Address = "localhost";
           MusicFolder = music_dir;
