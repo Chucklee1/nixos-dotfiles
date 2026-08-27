@@ -76,6 +76,8 @@
   in {
     inherit extlib;
 
+    formatter = extlib.allSystems (system: inputs.nixpkgs.legacyPackages.${system}.alejandra);
+
     nixosConfigurations = sys.mkSystems;
     darwinConfigurations = sys.mkSystems;
     homeConfigurations = sys.mkSystems;

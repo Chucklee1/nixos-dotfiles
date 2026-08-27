@@ -1,4 +1,8 @@
-{inputs, self, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
   nix = [
     ({pkgs, ...}: {
       nixpkgs.overlays = [inputs.prismlauncher.overlays.default];

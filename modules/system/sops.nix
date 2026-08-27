@@ -17,8 +17,8 @@
       # sops.age.keyFile = string;
       sops.secrets = {
         "gregtrain/goat".neededForUsers = true;
-        "tokens/listenbrainz" = { owner = user; };
-        "api/lastfm" = { owner = user; };
+        "tokens/listenbrainz" = {owner = user;};
+        "api/lastfm" = {owner = user;};
       };
     })
   ];
