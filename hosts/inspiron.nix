@@ -4,7 +4,6 @@ with mod; {
   type = "nixos";
   user = "goat";
   modules = with mod; [
-    services.nfs
     services.syncthing
     services.tailscale
     services.the-server

@@ -10,7 +10,6 @@ with mod; {
   modules = with mod; [
     services.syncthing
     services.tailscale
-    services.nfs
     services.net-essentials
 
     programs.zen-browser

@@ -11,6 +11,7 @@ with mod; {
     programs.kitty
     programs.niri
     programs.dwm
+    programs.rmpc
     programs.obs
     programs.waybar
     programs.yazi
@@ -19,6 +20,7 @@ with mod; {
 
     games.openmw
     games.osu
+    games.fluorine
     games.prismLauncher
     games.steam
 
@@ -43,7 +45,6 @@ with mod; {
     services.flatpak
     services.graphical
     services.net-essentials
-    services.nfs
     services.syncthing
     services.tailscale
 
@@ -110,7 +111,6 @@ with mod; {
     }: {
       swapDevices = [];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
       # kernel
       boot.initrd.availableKernelModules = [
         "xhci_pci"
@@ -291,6 +291,18 @@ with mod; {
         };
       };
     })
+    # cuda cachix
+    {
+      nixpkgs.config.cudaSupport = true;
+      nix.settings = {
+        substituters = [
+          "https://cuda-maintainers.cachix.org"
+        ];
+        trusted-public-keys = [
+          "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+        ];
+      };
+    }
   ];
 }
 # {
