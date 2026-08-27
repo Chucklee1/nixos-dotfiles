@@ -4,66 +4,134 @@
   ...
 }:
 with mod; {
-  system = "aarch64-darwin";
+  system = "x86_64-linux";
   type = "nixos";
   user = "goat";
   modules = [
+    system.home
+    system.pkgconfig
+    system.sys-specs
+    system.users
+
+    shell.fish
+    shell.variables
+
+    services.ollama
+
+    programs.git
+    programs.yazi
+
+    theming.stylix
   ];
   extraConfig = [
-    "${inputs.nixpkgs}/installer/cd-dvd/installation-cd-base.nix"
-    # taken from graphical base
-    ({pkgs, ...}: {
-      # Whitelist wheel users to do anything
-      # This is useful for things like pkexec
-      #
-      # WARNING: this is dangerous for systems
-      # outside the installation-cd and shouldn't
-      # be used anywhere else.
-      security.polkit.extraConfig = ''
-        polkit.addRule(function(action, subject) {
-          if (subject.isInGroup("wheel")) {
-            return polkit.Result.YES;
-          }
-        });
-      '';
-
-      services.xserver.enable = true;
-      services.desktopManager.budgie.enable = true;
-
-      services.displayManager.gdm = {
-        enable = true;
-        # autoSuspend makes the machine automatically suspend after inactivity.
-        # It's possible someone could/try to ssh'd into the machine and obviously
-        # have issues because it's inactive.
-        # See:
-        # * https://github.com/NixOS/nixpkgs/pull/63790
-        # * https://gitlab.gnome.org/GNOME/gnome-control-center/issues/22
-        autoSuspend = false;
+    "${inputs.nixpkgs}/nixos/modules/virtualisation/qemu-vm.nix"
+    # super safe stuff here
+    {
+      services.getty.autologinUser = "goat";
+      security.sudo.wheelNeedsPassword = false;
+      nix.settings = {
+        substituters = [ "https://cache.nixos-cuda.org" ];
+        trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
+      };
+    }
+    {
+      virtualisation.cores = 8;
+      virtualisation.memorySize = 16384;
+      virtualisation.graphics = false;
+      virtualisation.sharedDirectories = {
+        repos = {
+          source = "/home/goat/Repos";
+          target = "/home/goat/Repos";
+        };
       };
 
-      services.displayManager.autoLogin = {
-        enable = true;
-        user = "nixos";
+      fileSystems."/var/lib/ollama" = {
+        device = "/dev/vdb";
+        fsType = "ext4";
       };
-      # there is no power management backend such as upower).
-      powerManagement.enable = true;
 
-      # VM guest additions to improve host-guest interaction
-      services.spice-vdagentd.enable = true;
-      services.qemuGuest.enable = true;
-      # set true since this will only be for x86 systems
-      virtualisation.vmware.guest.enable = true;
-      services.xe-guest-utilities.enable = true;
-      # The VirtualBox guest additions rely on an out-of-tree kernel module
-      # which lags behind kernel releases, potentially causing broken builds.
-      virtualisation.virtualbox.guest.enable = false;
-
-      environment.defaultPackages = with pkgs; [
-        vim
-        ed
-        qutebrowser
-        mesa-demos
+      virtualisation.qemu.options = [
+        "-drive"
+        "file=/var/lib/libvirt/images/nixos.img,format=raw,if=virtio,cache=none,aio=native"
+        "-device vfio-pci,host=0a:00.0,multifunction=on"
+        "-device vfio-pci,host=0a:00.1"
+        "-netdev user,id=net0,hostfwd=tcp::2222-:22,hostfwd=tcp::11434-:11434"
+        "-device virtio-net-pci,netdev=net0"
       ];
+
+      services.openssh.enable = true;
+      networking.firewall.allowedTCPPorts = [22];
+      users.users.goat.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF15qIVCXsm5U8+LD2lU3n3Ql9q8lwQ1FJuoh+MbW9SL goat@nixos-desktop"
+      ];
+    }
+    # gpu/cuda stuff
+    ({
+      config,
+      pkgs,
+      ...
+    }: {
+      nixpkgs.config = {
+        allowUnfree = true;
+        cudaSupport = true;
+      };
+
+      # just in case
+      boot.blacklistedKernelModules = ["nouveau"];
+
+      hardware.graphics.enable = true;
+      services.xserver.videoDrivers = ["nvidia"];
+      hardware.nvidia = {
+        branch = "production";
+        package = config.boot.kernelPackages.nvidiaPackages.stable;
+        open = false;
+      };
+
+      programs.nix-ld.enable = true;
+
+      environment.systemPackages = with pkgs; [
+        stdenv.cc
+        binutils
+        pciutils
+        file
+        cmake
+        ninja
+        gnumake
+        gcc
+
+        ffmpeg-full
+
+        python314
+        uv
+
+        ffmpeg
+        fmt.dev
+
+        cudaPackages.cuda_cudart
+        cudatoolkit
+        cudaPackages.cudnn
+
+        libGLU
+        libGL
+        libXi
+        libXmu
+        freeglut
+        libXext
+        libX11
+        libXv
+        libXrandr
+        zlib
+        ncurses
+      ];
+
+      environment.variables = {
+        LD_LIBRARY_PATH = "${config.hardware.nvidia.package}/lib:$LD_LIBRARY_PATH";
+        CUDA_PATH = "${pkgs.cudatoolkit}";
+        EXTRA_LDFLAGS = "-L/lib -L${config.hardware.nvidia.package}/lib";
+        EXTRA_CCFLAGS = "-I/usr/include";
+        CMAKE_PREFIX_PATH = "${pkgs.fmt.dev}:$CMAKE_PREFIX_PATH";
+        PKG_CONFIG_PATH = "${pkgs.fmt.dev}/lib/pkgconfig:$PKG_CONFIG_PATH";
+      };
     })
   ];
 }
