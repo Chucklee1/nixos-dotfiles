@@ -8,6 +8,7 @@ with mod; {
     services.syncthing
     services.tailscale
     services.the-server
+    services.mc-server
     services.net-essentials
 
     programs.nixvim

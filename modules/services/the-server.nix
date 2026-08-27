@@ -7,7 +7,6 @@
         6767
         8000
       ];
-      networking.firewall.allowedUDPPorts = [25565];
     })
     # cloudflared
     ({
@@ -41,13 +40,13 @@
         };
       };
     })
-    ({pkgs, ...}: let
+    (let
       music_dir = "/srv/media/Music";
     in {
+      services.nfs.server.enable = true;
       services.nfs.server.exports = ''
-        ${music_dir} nixos-desktop(ro,fsid=0,no_subtree_check)
-        ${music_dir} nixos-laptop(ro,fsid=0,no_subtree_check)
-        ${music_dir} goat-macbook(ro,fsid=0,no_subtree_check)
+        ${music_dir} nixos-desktop(ro,nohide,insecure,no_subtree_check)
+        ${music_dir} darwin-macbook(ro,fsid=0,no_subtree_check)
       '';
       services.navidrome = {
         enable = true;
@@ -60,19 +59,6 @@
         };
       };
       services.audiobookshelf.enable = true;
-      # mc server
-      systemd.user.services.gtnh-server = {
-        enable = true;
-        after = ["network.target"];
-        wantedBy = ["multi-user.target"];
-        description = "Server for GTNH 2.8.4 Java-25";
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${pkgs.temurin-bin-25}/bin/java -Xmx8G -Dfml.readTimeout=180 @java9args.txt -jar lwjgl3ify-forgePatches.jar nogui";
-          WorkingDirectory = "/srv/Minecraft/GTNH";
-          Restart = "on-failure";
-        };
-      };
     })
   ];
 }
