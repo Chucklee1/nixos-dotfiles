@@ -51,8 +51,6 @@
     # ---- editors ----
     nixvim.url = "github:nix-community/nixvim";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-    en_us-dictionary.url = "github:dwyl/english-words";
-    en_us-dictionary.flake = false;
 
     # ---- window managers ----
     slstatus.url = "github:Chucklee1/slstatus";

@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{
   opts.completeopt = [
     "menuone"
     "noselect"
@@ -42,12 +42,4 @@
     nvim-snippets.enable = true;
     friendly-snippets.enable = true;
   };
-  # dictionary lookip file
-  extraConfigLua = ''
-    require("cmp_dictionary").setup {
-      dic = {
-        ["*"] = "${inputs.en_us-dictionary}/words.txt"
-      },
-    }
-  '';
 }
