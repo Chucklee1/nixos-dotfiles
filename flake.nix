@@ -15,14 +15,12 @@
     chucks-package-repo.url = "github:Chucklee1/chucks-package-repo";
     chucks-package-repo.inputs.nixpkgs.follows = "nixpkgs";
 
-    # ---- disk formatting ----
+    # ---- utils ----
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
-
-    # ---- secrets ----
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---- macos - base ----
     nix-darwin.url = "github:LnL7/nix-darwin/master";
