@@ -331,6 +331,14 @@
   (use-package pdf-tools
     :init (pdf-loader-install))
 #+end_src
+** jarchive
+jar archive support
+  #+begin_src elisp
+(use-package jarchive
+  :after eglot
+  :config (jarchive-setup))
+  #+end_src
+
 
 -----
 
@@ -460,6 +468,15 @@ my system vs using a shell.
   (use-package gnuplot-mode)
   (use-package lua-mode)
   (use-package nushell-mode)
+
+  ;; real languages
+  ;; MAKE SURE TO SET JAVA_HOME
+  (use-package eglot-java)
+  (use-package go-mode :mode (("\\.go\\'" . go-mode)
+                              ("\\go.mod\\'" . go-mode)))
+#+end_src
+** Nix
+#+begin_src elisp
   (use-package nix-ts-mode :mode "\\.nix\\'")
   (with-eval-after-load 'eglot
     (setq-default
@@ -467,11 +484,6 @@ my system vs using a shell.
      '(:nixd
        (:formatting
         (:command ["alejandra"])))))
-#+end_src
-** Go
-#+begin_src elisp
-  (use-package go-mode :mode (("\\.go\\'" . go-mode)
-                              ("\\go.mod\\'" . go-mode)))
 #+end_src
 ** Rust
 #+begin_src elisp

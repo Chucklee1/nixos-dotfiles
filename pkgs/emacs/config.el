@@ -228,6 +228,10 @@
 (use-package pdf-tools
   :init (pdf-loader-install))
 
+(use-package jarchive
+  :after eglot
+  :config (jarchive-setup))
+
 (use-package doom-themes
   :custom
   ;; Global settings (defaults)
@@ -321,6 +325,13 @@
 (use-package gnuplot-mode)
 (use-package lua-mode)
 (use-package nushell-mode)
+
+;; real languages
+;; MAKE SURE TO SET JAVA_HOME
+(use-package eglot-java)
+(use-package go-mode :mode (("\\.go\\'" . go-mode)
+                            ("\\go.mod\\'" . go-mode)))
+
 (use-package nix-ts-mode :mode "\\.nix\\'")
 (with-eval-after-load 'eglot
   (setq-default
@@ -328,9 +339,6 @@
    '(:nixd
      (:formatting
       (:command ["alejandra"])))))
-
-(use-package go-mode :mode (("\\.go\\'" . go-mode)
-                            ("\\go.mod\\'" . go-mode)))
 
 (use-package rust-mode
   :init
