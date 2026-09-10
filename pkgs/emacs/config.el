@@ -280,7 +280,6 @@
   :init
   (projectile-mode 1)
   :custom
-  (projectile-indexing-method 'alien)
   (projectile-run-use-comint-mode t)
   (projectile-switch-project-action #'projectile-dired)
   (projectile-project-search-path g/project-paths)
@@ -307,9 +306,11 @@
           rust-ts-mode)
          . eglot-ensure)
   :custom
-  (eglot-sync-connect 0)  ;; async startup
-  (eglot-autoshutdown t) ;; kill server when last buffer closes
-  (eglot-events-buffer-size 0) ;; prevent huge debug buffers
+  ;; credit to kickstart.emacs
+  (eglot-autoshutdown t) ; Shutdown unused servers.
+  (eglot-code-action-indications nil) ; Can be annoying.
+  (eglot-report-progress nil) ; Disable LSP server logs (Don't show lsp messages at the bottom, java)
+  (flymake-show-diagnostics-at-end-of-line 'short) ; IDE like errors in the editor. There is also fancy.
   )
 
 ;; config/text
