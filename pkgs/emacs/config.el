@@ -437,11 +437,6 @@
   (add-to-list 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
   )
 
-(use-package flycheck
-  :hook after-init global-flycheck-mode
-  :config
-  (setq flycheck-indication-mode nil))
-
 (use-package vertico
   :init
   (vertico-mode))
@@ -515,18 +510,6 @@
 (use-package rainbow-mode
   :config (setq rainbow-x-colors nil)
   :hook (prog-mode . rainbow-mode))
-
-;; make flycheck wavy lines not-wavy
-(with-eval-after-load 'flycheck
-  (set-face-attribute 'flycheck-error nil
-                      :inherit 'error
-                      :underline t)
-  (set-face-attribute 'flycheck-warning nil
-                      :inherit 'warning
-                      :underline t)
-  (set-face-attribute 'flycheck-info nil
-                      :inherit 'success
-                      :underline t))
 
 (when (eq system-type 'darwin)
   (progn

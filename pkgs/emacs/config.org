@@ -611,14 +611,6 @@ my system vs using a shell.
     (add-to-list 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
     )
 #+end_src
-** Flycheck
-+ Checks your fly...
-#+begin_src elisp
-  (use-package flycheck
-    :hook after-init global-flycheck-mode
-    :config
-    (setq flycheck-indication-mode nil))
-#+end_src
 ** Vertico and Marginalia
 + "VERTical Interactive COmpletion"
 + "Marginalia in the minibuffer"
@@ -725,22 +717,6 @@ Cape integration with yansnippets
   (use-package rainbow-mode
     :config (setq rainbow-x-colors nil)
     :hook (prog-mode . rainbow-mode))
-#+end_src
-** Face overrides
-flycheck
-#+begin_src elisp
-
-  ;; make flycheck wavy lines not-wavy
-  (with-eval-after-load 'flycheck
-    (set-face-attribute 'flycheck-error nil
-                        :inherit 'error
-                        :underline t)
-    (set-face-attribute 'flycheck-warning nil
-                        :inherit 'warning
-                        :underline t)
-    (set-face-attribute 'flycheck-info nil
-                        :inherit 'success
-                        :underline t))
 #+end_src
 -----
 
