@@ -74,6 +74,9 @@
   (cadr (assoc color doom-themes--colors)))
 
 (use-package emacs
+  :init
+  ;; set starting opacity
+  (helper/opacity/set g/opacity/current)
   :custom
   ;; ui
   (menu-bar-mode nil)         ;; Disable the menu bar
@@ -217,7 +220,7 @@
   (with-eval-after-load 'dired
     (dolist (pair g/dired/goto-alist)
       (evil-define-key 'normal dired-mode-map
-        (kbd (concat "g" (car pair)))
+        (kbd (concat "G" (car pair)))
         (let ((path (cdr pair)))
           (lambda () (interactive) (dired path)))))))
 
