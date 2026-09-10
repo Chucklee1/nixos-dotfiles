@@ -418,14 +418,13 @@ jar archive support
 #+end_src
 ** Tree Sitter
 Tree, sitting...
+Auto install is now built into emacs 31! no need for an additional pkg (from kickstart.emacs)
 #+begin_src elisp
-  (use-package treesit-auto
-    :after (tree-sitter)
+  (use-package emacs
     :custom
-    (treesit-auto-install 't)
-    :config
-    (global-treesit-auto-mode)
-    (treesit-auto-add-to-auto-mode-alist 'all))
+    (treesit-font-lock-level 3)
+    (treesit-enabled-modes t)
+    (treesit-auto-install-grammar 'always))
 #+end_src
 ** Eglot
 I love lsp-mode semantic tokens but oh boy, it was
@@ -433,7 +432,6 @@ a pain working with c++ files...
 #+begin_src elisp
   (use-package eglot
     :ensure nil
-    :after treesit-auto
     :hook ((c-ts-mode
             c++-ts-mode
             go-ts-mode
@@ -442,8 +440,7 @@ a pain working with c++ files...
             lua-ts-mode
             nix-ts-mode
             python-ts-mode
-            rust-ts-mode
-            zig-ts-mode)
+            rust-ts-mode)
            . eglot-ensure)
     :custom
     (eglot-sync-connect 0)  ;; async startup

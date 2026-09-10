@@ -290,17 +290,14 @@
   (with-eval-after-load 'project
     (add-to-list 'project-find-functions #'g/project-projectile-root)))
 
-(use-package treesit-auto
-  :after (tree-sitter)
+(use-package emacs
   :custom
-  (treesit-auto-install 't)
-  :config
-  (global-treesit-auto-mode)
-  (treesit-auto-add-to-auto-mode-alist 'all))
+  (treesit-font-lock-level 3)
+  (treesit-enabled-modes t)
+  (treesit-auto-install-grammar 'always))
 
 (use-package eglot
   :ensure nil
-  :after treesit-auto
   :hook ((c-ts-mode
           c++-ts-mode
           go-ts-mode
@@ -309,8 +306,7 @@
           lua-ts-mode
           nix-ts-mode
           python-ts-mode
-          rust-ts-mode
-          zig-ts-mode)
+          rust-ts-mode)
          . eglot-ensure)
   :custom
   (eglot-sync-connect 0)  ;; async startup
