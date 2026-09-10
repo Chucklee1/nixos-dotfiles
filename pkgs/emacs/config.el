@@ -13,6 +13,7 @@
 
 (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
 (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
+(defvar g/project-paths '("~/Documents/" "~/Repos/"))
 (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
 (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
 (defvar g/opacity/alpha (if (eq system-type 'darwin) 40 80))
@@ -282,13 +283,10 @@
   (projectile-indexing-method 'alien)
   (projectile-run-use-comint-mode t)
   (projectile-switch-project-action #'projectile-dired)
-  (projectile-project-search-path '("~/Documents/" "~/Repos/"))
-  :config
-  (defun g/project-projectile-root (dir)
-    (when-let ((root (projectile-project-root dir)))
-      (cons 'transient root)))
-  (with-eval-after-load 'project
-    (add-to-list 'project-find-functions #'g/project-projectile-root)))
+  (projectile-project-search-path g/project-paths)
+  ;; idc, override existing project keymaps
+  :bind (:map projectile-mode-map
+           ("C-x p" . projectile-command-map)))
 
 (use-package emacs
   :custom
