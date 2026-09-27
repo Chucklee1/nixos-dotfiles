@@ -12,10 +12,14 @@
 
       programs.nix-ld.enable = true;
       programs.nix-ld.libraries = with pkgs; [
+        libgbm
         libGL
         libGLX
         libX11
+        libxcb
         libxkbcommon
+        nss
+        nspr
         stdenv.cc.cc.lib # libstdc++
         wayland
       ];
