@@ -5,11 +5,19 @@
 
   home = [
     inputs.zen-browser.homeModules.twilight
-    ({pkgs, ...}: {
+    ({
+      lib,
+      pkgs,
+      ...
+    }: let
+      nixosIcons = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps";
+    in {
       stylix.targets.zen-browser.profileNames = ["default"];
-      home.sessionVariables.BROWSER = "zen-twilight";
       programs.zen-browser = {
         enable = true;
+        setAsDefaultBrowser = true;
+        enablePrivateDesktopEntry = true;
+        languagePacks = ["en-US"];
         policies = {
           AutofillAddressEnabled = true;
           AutofillCreditCardEnabled = false;
@@ -27,68 +35,68 @@
             Cryptomining = true;
             Fingerprinting = true;
           };
-          profiles.default = {
-            name = "default";
-            isDefault = true;
-            settings = {
-              "zen.view.compact.hide-tabbar" = true;
-              "zen.view.compact.hide-toolbar" = true;
-              "zen.welcome-screen.seen" = true;
-              "zen.urlbar.behavior" = "normal";
-              "network.protocol-handler.expose.nxm" = false;
-              "network.protocol-handler.warn-external.nxm" = true;
-            };
-            search = {
-              force = true;
-              default = "ddg";
-              engines = {
-                "Nix Packages" = {
-                  urls = [
-                    {
-                      template = "https://search.nixos.org/packages";
-                      params = [
-                        {
-                          name = "type";
-                          value = "packages";
-                        }
-                        {
-                          name = "query";
-                          value = "{searchTerms}";
-                        }
-                      ];
-                    }
-                  ];
-                  icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                  definedAliases = ["@np"];
-                };
-                "NixOS Wiki" = {
-                  urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
-                  icon = "https://nixos.wiki/favicon.png";
-                  updateInterval = 24 * 60 * 60 * 1000; # every day
-                  definedAliases = ["@nw"];
-                };
-                "MyNixOS" = {
-                  urls = [{template = "https://mynixos.com/search?q={searchTerms}";}];
-                  icon = "https://mynixos.com/static/icons/mnos-logo.svg";
-                  updateInterval = 24 * 60 * 60 * 1000; # every day
-                  definedAliases = ["@mn"];
-                };
-              };
-            };
-            extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [ublock-origin];
+          SanitizeOnShutdown = {
+            FormData = true;
+            Cache = true;
           };
         };
-      };
-      xdg.mimeApps = {
-        enable = true;
-        defaultApplications = let
-          browser = "zen-twilight.desktop";
-        in {
-          "text/html" = browser;
-          "x-scheme-handler/http" = browser;
-          "x-scheme-handler/https" = browser;
-          "x-scheme-handler/about" = browser;
-          "x-scheme-handler/unknown" = browser;
+        profiles.default = {
+          containersForce = true;
+          pinsForce = true;
+          spacesForce = true;
+          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [ublock-origin];
+          settings = {
+            "browser.aboutConfig.showWarning" = false;
+            "privacy.userContext.enabled" = false; # disable containers
+            "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+            "zen.welcome-screen.seen" = true;
+            "zen.urlbar.behavior" = "normal";
+            "zen.view.compact.enable-at-startup" = true;
+            "zen.view.compact.hide-toolbar" = true;
+            "zen.view.compact.hide-tabbar" = true;
+            "zen.view.sidebar-expanded" = false;
+          };
+          search = {
+            force = true;
+            default = "ddg";
+            engines = {
+              "Nix Packages" = {
+                urls = [
+                  {
+                    template = "https://search.nixos.org/packages";
+                    params = [
+                      (lib.nameValuePair "channel" "unstable")
+                      (lib.nameValuePair "query" "{searchTerms}")
+                    ];
+                  }
+                ];
+                icon = "${nixosIcons}/nix-snowflake.svg";
+                definedAliases = ["@np"];
+              };
+              "MyNixOS" = {
+                urls = [{template = "https://mynixos.com/search?q={searchTerms}";}];
+                icon = "${nixosIcons}/nix-snowflake-white.svg";
+                definedAliases = ["@mn"];
+              };
+            };
+          };
+          spaces = {
+            "Default" = {
+              id = "2bea09b3-85df-4cb9-9437-2ce7cd314341";
+              icon = "chrome://browser/skin/zen-icons/selectable/cafe.svg";
+              position = 1000;
+            };
+            "Nerd" = {
+              id = "eb35ce6c-3084-4435-b0db-70358d7b4e53";
+              icon = "chrome://browser/skin/zen-icons/selectable/code.svg";
+              position = 2000;
+            };
+            "School" = {
+              id = "3cb834a1-0629-431e-a0f7-28f9cc609713";
+              icon = "chrome://browser/skin/zen-icons/selectable/school.svg";
+              position = 3000;
+            };
+          };
         };
       };
     })
