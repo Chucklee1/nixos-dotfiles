@@ -72,6 +72,7 @@
         mpv-unwrapped
         pavucontrol
         playerctl
+        libnotify
       ];
       programs.dconf.enable = true;
       services = {
