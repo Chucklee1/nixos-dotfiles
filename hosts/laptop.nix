@@ -20,7 +20,6 @@ with mod; {
     programs.niri
     programs.waybar
     programs.yazi
-    programs.dwm
     # programs.rmpc
     programs.discord
 
