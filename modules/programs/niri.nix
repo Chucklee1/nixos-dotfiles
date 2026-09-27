@@ -132,6 +132,17 @@
           };
           cursor.hide-after-inactive-ms = 5000;
 
+          switch-events = let
+            sh = cmd: {
+              spawn = ["sh" "-c" cmd];
+            };
+          in {
+            tablet-mode-on.action = sh "notify-send tablet-mode-on";
+            tablet-mode-off.action = sh "notify-send tablet-mode-off";
+            lid-open.action = sh "notify-send lid-open";
+            lid-close.action = sh "notify-send lid-close";
+          };
+
           # layout n theming
           layout = {
             gaps = 0;
@@ -212,6 +223,7 @@
             "${mod}+Print".action.screenshot-window = [];
             # quits
             "${mod}+Q".action.close-window = [];
+            "Ctrl+${mod}+BackSpace" = sh "systemctl suspend";
             "Ctrl+${mod}+Delete".action.quit = [];
             "Ctrl+Shift+${mod}+Delete".action.quit = {skip-confirmation = true;};
 
