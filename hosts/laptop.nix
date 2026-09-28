@@ -74,6 +74,7 @@ with mod; {
       pkgs,
       ...
     }: {
+      powerManagement.enable = true;
       environment.systemPackages = [pkgs.moonlight-qt];
       services.xserver.videoDrivers = ["modesetting"];
       hardware.graphics.extraPackages = lib.mkAfter [
