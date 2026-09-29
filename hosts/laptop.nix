@@ -37,6 +37,7 @@ with mod; {
     system.users
 
     services.graphical
+    services.midi
     hardware.uinput
 
     shell.variables
