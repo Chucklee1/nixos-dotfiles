@@ -21,7 +21,6 @@
         qt5.qtwayland
         qt6.qtwayland
         wev
-        swaynotificationcenter
         xwayland
         xwayland-run
         wl-clipboard
@@ -88,14 +87,21 @@
         ...
       }: {
         programs.niri.settings = with config.lib.niri.actions; let
+          vms = machine == "umbra" || machine == "arm-vmware";
+          mod =
+            if vms
+            then "Alt"
+            else "Mod";
           # helpers
           get = pkg: lib.getExe pkgs.${pkg};
           sh = x: {action = spawn-sh x;};
+          notify = x: {spawn = ["notify-send" x];};
         in {
           # general
-          hotkey-overlay.skip-at-startup = machine != "umbra";
+          hotkey-overlay.skip-at-startup = !vms;
           prefer-no-csd = true;
           screenshot-path = "~/Pictures/Screenshots/Screenshot-%Y%m%d-%H%M%S.png";
+          xwayland-satellite.path = get "xwayland-satellite-unstable";
           environment = {
             NIXOS_OZONE_WL = "1";
             MOZ_ENABLE_WAYLAND = "1";
@@ -106,42 +112,29 @@
             QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
             QT_AUTO_SCREEN_SCALE_FACTOR = "1";
           };
-          spawn-at-startup =
-            map (cmd: {
-              command = ["sh" "-c" cmd];
-            })
-            [
-              "${get "xwayland-satellite"}"
-              "${get "swaybg"} -m fill -i ${config.stylix.image}"
-              # safe to use systemd since it will not crash-out if waybar isnt installed
-              "systemctl --user restart waybar"
-            ];
+
+          spawn-at-startup = [
+            {sh = "${get "swaybg"} -m fill -i ${config.stylix.image}";}
+            {sh = "systemctl --user restart waybar";}
+          ];
+          switch-events = {
+            tablet-mode-on.action = notify "tablet-mode-on";
+            tablet-mode-off.action = notify "tablet-mode-off";
+            lid-open.action = notify "lid-open";
+            lid-close.action = notify "lid-close";
+          };
+
           # input
-          input = {
-            keyboard = {
-              xkb.options = "ctrl:nocaps";
-              numlock = true;
-            };
-            mouse.accel-speed = 0.0;
-            touchpad = {
-              tap = true;
-              dwt = false;
-              natural-scroll = true;
-              click-method = "clickfinger";
-            };
+          input.keyboard.xkb.options = "ctrl:nocaps";
+          input.keyboard.numlock = true;
+          input.mouse.accel-speed = 0.0;
+          input.touchpad = {
+            tap = true;
+            dwt = false;
+            natural-scroll = true;
+            click-method = "clickfinger";
           };
           cursor.hide-after-inactive-ms = 5000;
-
-          switch-events = let
-            sh = cmd: {
-              spawn = ["sh" "-c" cmd];
-            };
-          in {
-            tablet-mode-on.action = sh "notify-send tablet-mode-on";
-            tablet-mode-off.action = sh "notify-send tablet-mode-off";
-            lid-open.action = sh "notify-send lid-open";
-            lid-close.action = sh "notify-send lid-close";
-          };
 
           # layout n theming
           layout = {
@@ -190,13 +183,7 @@
           ];
 
           # keybinds
-          binds = let
-            # mod def
-            mod =
-              if (machine == "umbra" || machine == "arm-vmware")
-              then "Alt"
-              else "Mod";
-          in {
+          binds = {
             # programs
             "${mod}+Return" = sh "${config.home.sessionVariables.TERMINAL or "alacritty"}";
             # yep, I will include emacs in the window manager module
