@@ -96,6 +96,7 @@
           get = pkg: lib.getExe pkgs.${pkg};
           sh = x: {action = spawn-sh x;};
           notify = x: {spawn = ["notify-send" x];};
+          vars = config.home.sessionVariables;
         in {
           # general
           hotkey-overlay.skip-at-startup = !vms;
@@ -116,6 +117,7 @@
           spawn-at-startup = [
             {sh = "${get "swaybg"} -m fill -i ${config.stylix.image}";}
             {sh = "systemctl --user restart waybar";}
+            {sh = "emacs --daemon";}
           ];
           switch-events = {
             tablet-mode-on.action = notify "tablet-mode-on";
@@ -185,10 +187,9 @@
           # keybinds
           binds = {
             # programs
-            "${mod}+Return" = sh "${config.home.sessionVariables.TERMINAL or "alacritty"}";
-            # yep, I will include emacs in the window manager module
-            "${mod}+E" = sh "${get "emacs-pgtk"}";
-            "${mod}+Shift+B" = sh "${config.home.sessionVariables.BROWSER or "firefox"}";
+            "${mod}+Return" = sh "${vars.TERMINAL or "alacritty"}";
+            "${mod}+E" = sh "${vars.EDITOR or "emacseditor"}";
+            "${mod}+Shift+B" = sh "${vars.BROWSER or "firefox"}";
             "${mod}+Space" = sh "wmenuScript";
             "${mod}+Shift+L" = sh "swaylock";
             "${mod}+Shift+C" = sh "${get "wl-color-picker"}";
