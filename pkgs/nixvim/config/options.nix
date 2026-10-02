@@ -58,8 +58,8 @@
   };
   clipboard = {
     providers = {
-      wl-copy.enable = pkgs.stdenv.isLinux; # wayland
-      xsel.enable = pkgs.stdenv.isLinux; # X11
+      wl-copy.enable = pkgs.stdenv.hostPlatform.isLinux; # wayland
+      xsel.enable = pkgs.stdenv.hostPlatform.isLinux; # X11
     };
     register = "unnamedplus";
   };
