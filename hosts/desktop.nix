@@ -101,7 +101,7 @@ with mod; {
     (mkfs.btrfs "/.snapshots/WD" WD ["subvol=WD/.snapshots" "noatime" "compress=zstd"])
     (mkfs.btrfs "/.snapshots/EVO" EVO ["subvol=EVO/.snapshots" "noatime" "compress=zstd"])
 
-    (mkfs.ext4 "/srv/Pictures" SEGATE null)
+    (mkfs.ext4 "/srv/media" SEGATE null)
 
     ({
       lib,
@@ -228,10 +228,7 @@ with mod; {
         picard
       ];
 
-      networking.firewall.allowedTCPPorts = [
-        2234
-        2242
-      ];
+      networking.firewall.allowedTCPPorts = [2234 2242];
     })
     # sops
     ({
@@ -246,9 +243,17 @@ with mod; {
       lib,
       user,
       ...
-    }: {
+    }: let
+      mon = {
+        name = "HKC OVERSEAS LIMITED 24E4 0000000000001";
+        w = 1920;
+        h = 1080;
+        r = 165.001;
+      };
+      mouse.accelSpeed = -0.75;
+    in {
       # for x11
-      services.libinput.mouse.accelSpeed = "-0.75";
+      services.libinput.mouse.accelSpeed = "${toString mouse.accelSpeed}";
 
       # symlink setup on login
       home-manager.users.${user} = {
@@ -257,7 +262,9 @@ with mod; {
           sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/config.el $HOME/.emacs.d/init.el
           sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/snippets $HOME/.emacs.d/
 
-          sln /srv/Pictures $HOME/
+          sln /srv/media/Music $HOME/
+          sln /srv/media/Pictures $HOME/
+          sln /srv/media/Videos $HOME/
 
           sln /opt/Steam $HOME/.local/share/
           for it in /opt/Games/*
@@ -276,14 +283,10 @@ with mod; {
           # must use {} since niri does not like "key = function -float;"
           input.mouse = lib.mkForce {accel-speed = -0.75;};
           # no clue why my monitor has so many 0's...
-          outputs = {
-            "HKC OVERSEAS LIMITED 24E4 0000000000001" = {
-              mode = {
-                width = 1920;
-                height = 1080;
-                refresh = 165.001;
-              };
-            };
+          outputs."${mon.name}".mode = {
+            width = mon.w;
+            height = mon.h;
+            refresh = mon.r;
           };
         };
       };
