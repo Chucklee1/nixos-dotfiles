@@ -35,7 +35,7 @@
     ])
     ++ [
       # addition on home-level
-      ({pkgs, ...}: {
+      ({config, pkgs, ...}: {
         programs.swaylock = {
           enable = true;
           package = pkgs.swaylock-effects;
@@ -43,6 +43,11 @@
 
         services.swaync = {
           enable = true;
+        };
+
+        services.wpaperd = {
+          enable = true;
+          settings.any.path = "${config.stylix.image}";
         };
 
         services.wlsunset = {
@@ -115,7 +120,6 @@
           };
 
           spawn-at-startup = [
-            {sh = "${get "swaybg"} -m fill -i ${config.stylix.image}";}
             {sh = "systemctl --user restart waybar";}
             {sh = "emacs --daemon";}
           ];
