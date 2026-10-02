@@ -224,11 +224,8 @@ with mod; {
     # pkgs
     ({pkgs, ...}: {
       environment.systemPackages = with pkgs; [
-        looking-glass-client
         nicotine-plus
-
-        guestfs-tools
-        virtiofsd
+        picard
       ];
 
       networking.firewall.allowedTCPPorts = [

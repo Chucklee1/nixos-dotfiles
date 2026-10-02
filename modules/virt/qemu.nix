@@ -1,6 +1,15 @@
 {
   nix = [
-    ({user, ...}: {
+    ({
+      pkgs,
+      user,
+      ...
+    }: {
+      environment.systemPackages = [
+        pkgs.guestfs-tools
+        pkgs.virtiofsd
+      ];
+
       users.users.${user} = {
         extraGroups = ["libvirtd" "kvm"];
       };
