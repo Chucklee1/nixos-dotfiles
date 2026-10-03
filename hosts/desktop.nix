@@ -6,6 +6,7 @@ with mod; {
   modules = [
     programs.discord
     programs.emacs
+    programs.ewm
     programs.nixvim
     programs.git
     programs.kitty
