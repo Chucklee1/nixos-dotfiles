@@ -49,12 +49,14 @@
             "browser.aboutConfig.showWarning" = false;
             "privacy.userContext.enabled" = false; # disable containers
             "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-            "zen.welcome-screen.seen" = true;
+            "sidebar.visibility" = "hide-on-close";
             "zen.urlbar.behavior" = "normal";
+            "zen.welcome-screen.seen" = true;
             "zen.view.compact.enable-at-startup" = true;
             "zen.view.compact.hide-toolbar" = true;
             "zen.view.compact.hide-tabbar" = true;
-            "zen.view.sidebar-expanded" = false;
+            "zen.view.sidebar-expanded" = true;
+            "zen.view.use-single-toolbar" = true;
           };
           search = {
             force = true;
