@@ -51,6 +51,7 @@
 ;; opacity
 (defun helper/opacity/set (opacity)
   (set-frame-parameter (selected-frame) 'alpha-background opacity)
+  (add-to-list 'default-frame-alist '(blur-background . t))
   (add-to-list 'default-frame-alist `(alpha-background . ,opacity))
 
   ;; must manually set corfu frame-opacity
