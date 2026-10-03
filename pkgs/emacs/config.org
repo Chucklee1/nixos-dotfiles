@@ -479,7 +479,7 @@ my system vs using a shell.
           org-replace-disputed-keys t
           ;; use [...] for folded text
           org-ellipsis " [...]"))
-        #+end_src
+       #+end_src
 + Facename cheatsheet:
     - org-level-n, /where n is the header level/
     - org-document-{title, info, info-keyword}
@@ -520,10 +520,37 @@ my system vs using a shell.
   (with-eval-after-load 'org-modern
     (set-face-attribute 'org-modern-horizontal-rule nil :extend t))
 #+end_src
-
 * Completion
+Since completion can get pretty complicated, at least to me. I just
+use a slightly tweaked version of MiniApollo's kickstart.emacs. It's
+a great reference to look at and I would recommend checking it out
+** Consult
+While technically not completion, I still put it under here
+since it is /"Search and navigate via completing-read Topics"/
+#+begin_src elisp
+  (use-package consult
+    :hook (completion-list-mode . consult-preview-at-point-mode)
+    :init
+    (setq register-preview-delay 0.5
+          register-preview-function #'consult-register-format)
+    (advice-add #'register-preview :override #'consult-register-window)
+
+    ;; Use Consult to select xref locations with preview
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
+    :config
+    ;; Optionally configure preview. The default value
+    ;; is 'any, such that any key triggers the preview.
+    ;; (setq consult-preview-key 'any)
+    ;; (setq consult-preview-key "M-.")
+    ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
+
+    (autoload 'projectile-project-root "projectile")
+    (setq consult-project-function (lambda (_) (projectile-project-root)))
+    )
+#+end_src
 ** Corfu
-+ "COmpletion in Region FUnction"
+/"COmpletion in Region FUnction"/
 #+begin_src elisp
   (use-package corfu
     :custom
@@ -554,7 +581,7 @@ my system vs using a shell.
     :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 #+end_src
 ** Cape
-+ Completion extensions
+/"Completion At Point Extensions"/
 #+begin_src elisp
   (use-package cape
     :after corfu
@@ -567,9 +594,7 @@ my system vs using a shell.
     )
 #+end_src
 ** Vertico and Marginalia
-+ "VERTical Interactive COmpletion"
-+ "Marginalia in the minibuffer"
-+ AKA Completion in minibuffer
+/"VERTical Interactive COmpletion"/ and /"Marginalia in the minibuffer"/
 #+begin_src elisp
   (use-package vertico
     :init
@@ -589,6 +614,7 @@ my system vs using a shell.
     ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
 #+end_src
 ** Orderless
+/"Emacs completion style that matches multiple regexps in any order"/
 #+begin_src elisp
   (use-package orderless
     :custom
@@ -597,6 +623,14 @@ my system vs using a shell.
     (completion-category-defaults nil) ;; Disable defaults, use our settings
     (completion-pcm-leading-wildcard t) ;; Emacs 31: partial-completion behaves like substring
     )
+#+end_src
+** Embark
+Right click menu for Emacs
+#+begin_src elisp
+    (use-package embark)
+    (use-package embark-consult
+      :hook
+      (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 ** Yasnippet
 #+begin_src elisp
