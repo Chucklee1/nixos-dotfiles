@@ -10,7 +10,6 @@ with mod; {
     programs.git
     programs.kitty
     programs.niri
-    programs.dwm
     programs.rmpc
     programs.obs
     programs.waybar
@@ -47,6 +46,7 @@ with mod; {
     services.net-essentials
     services.syncthing
     services.tailscale
+    services.midi
 
     shell.fish
     shell.nushell
