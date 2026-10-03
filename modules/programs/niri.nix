@@ -35,7 +35,11 @@
     ])
     ++ [
       # addition on home-level
-      ({config, pkgs, ...}: {
+      ({
+        config,
+        pkgs,
+        ...
+      }: {
         programs.swaylock = {
           enable = true;
           package = pkgs.swaylock-effects;
@@ -121,6 +125,7 @@
 
           spawn-at-startup = [
             {sh = "systemctl --user restart waybar";}
+            {sh = "emacs --fg-daemon";}
           ];
           switch-events = {
             tablet-mode-on.action = notify "tablet-mode-on";

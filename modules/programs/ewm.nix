@@ -1,15 +1,23 @@
-# will conflict with emacs.nix
-# do not use both at same time
-{self, inputs, ...}: {
+{
+  self,
+  inputs,
+  ...
+}: {
   nix = [
     inputs.ewm.nixosModules.default
-    ({config, pkgs, ...}: {
+    ({
+      config,
+      pkgs,
+      ...
+    }: {
       nixpkgs.overlays = [
         (import self.inputs.emacs-overlay)
         inputs.ewm.overlays.default # for emacs31-pwayl
       ];
       programs.ewm = {
         enable = true;
+        # there probably is a better way over copying and pasting
+        # the same emacs derivation but if it works it works
         emacsPackage = pkgs.emacsWithPackagesFromUsePackage {
           package = pkgs.emacs31-pwayl;
           config = ''
