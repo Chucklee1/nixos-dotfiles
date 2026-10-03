@@ -29,16 +29,11 @@
     ;; pair format = ("key" . cmd)
     (define-key leader-map (kbd (car pair)) (cdr pair))))
 
-(defun helper/buffer/toggle (cmd)
+(defun helper/kbuff-and-dwin ()
+  "Kill current buffer then delete current window"
   (interactive)
-  (let* ((buf-name (concat "*" cmd "*"))
-         (buf      (get-buffer buf-name)))
-    (if buf
-        (progn
-          (when-let ((win (get-buffer-window buf)))
-            (delete-window win))
-          (kill-buffer buf))
-      (call-interactively (intern cmd)))))
+  (kill-buffer)
+  (delete-window))
 
 ;; program(s)
 (defun helper/open-split-term ()
@@ -165,7 +160,8 @@
   :bind (:map evil-motion-state-map
               ("SPC" . nil)
               ("RET" . nil)
-              ("TAB" . nil)))
+              ("TAB" . nil)
+              ("C-w k" . helper/kbuff-and-dwin)))
 
 (use-package evil-collection
   :after evil
