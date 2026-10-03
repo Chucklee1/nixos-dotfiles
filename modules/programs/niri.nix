@@ -121,7 +121,6 @@
 
           spawn-at-startup = [
             {sh = "systemctl --user restart waybar";}
-            {sh = "emacs --daemon";}
           ];
           switch-events = {
             tablet-mode-on.action = notify "tablet-mode-on";
@@ -181,7 +180,7 @@
             }
             {
               matches = [
-                {app-id = "^emacs$";}
+                {app-id = "^(?i)emacs$";}
                 {app-id = "^kitty$";}
               ];
               background-effect.blur = true;
@@ -192,7 +191,7 @@
           binds = {
             # programs
             "${mod}+Return" = sh "${vars.TERMINAL or "alacritty"}";
-            "${mod}+E" = sh "${vars.EDITOR or "emacseditor"}";
+            "${mod}+E" = sh "${vars.EDITOR or "emacs"}";
             "${mod}+Shift+B" = sh "${vars.BROWSER or "firefox"}";
             "${mod}+Space" = sh "wmenuScript";
             "${mod}+Shift+L" = sh "swaylock";

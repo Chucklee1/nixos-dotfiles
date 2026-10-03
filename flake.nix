@@ -56,6 +56,7 @@
     dwm.url = "github:Chucklee1/dwm";
     dwm.flake = false;
     niri.url = "github:epireyn/niri-flake";
+    ewm.url = "https://codeberg.org/ezemtsov/ewm/archive/master.tar.gz";
 
     # ---- Apps ----
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";

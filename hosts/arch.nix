@@ -24,13 +24,7 @@ with mod; {
   ];
   extraConfig = [
     # overlays
-    {
-      nixpkgs.overlays = [
-        (import self.inputs.emacs-overlay)
-        self.overlays.emacs
-        self.overlays.nixvim
-      ];
-    }
+    {nixpkgs.overlays = [self.overlays.nixvim];}
     # base hm stuff
     ({
       pkgs,

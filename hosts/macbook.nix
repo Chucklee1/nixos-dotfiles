@@ -67,7 +67,22 @@ with mod; {
       fonts.packages = [pkgs.nerd-fonts.symbols-only];
       environment.systemPackages = with pkgs; [
         coreutils-prefixed
-        emacs-macport
+        (pkgs.emacsWithPackagesFromUsePackage {
+          package = pkgs.emacs-macport;
+          config = ''
+            ,${builtins.readFile ../../pkgs/emacs/config.el}
+          '';
+          defaultInitFile = false;
+          # make sure to include `(setq use-package-always-ensure t)` in config
+          alwaysEnsure = true;
+          # alwaysTangle = true;
+
+          extraEmacsPackages = epkgs: [
+            epkgs.treesit-grammars.with-all-grammars
+            pkgs.tree-sitter-grammars.tree-sitter-kdl
+          ];
+        })
+
         # better than macs crappy ones
         coreutils
         gnused

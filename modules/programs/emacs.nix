@@ -1,30 +1,29 @@
-{self, ...}: {
+{self, inputs, ...}: {
   nix = [
-    ({
-      lib,
-      pkgs,
-      ...
-    }: let
-      emacs-pkg = pkgs.emacs-pgtk;
-    in {
+    ({pkgs, ...}: {
       nixpkgs.overlays = [
         (import self.inputs.emacs-overlay)
-        self.overlays.emacs
+        inputs.ewm.overlays.default # for emacs31-pwayl
       ];
 
-      environment.systemPackages = [
-        emacs-pkg
-        (pkgs.writeShellScriptBin "emacseditor" ''
-        if [ -z "$1" ]; then
-          exec ${emacs-pkg}/bin/emacsclient --create-frame --alternate-editor ${emacs-pkg}/bin/emacs
-        else
-          exec ${emacs-pkg}/bin/emacsclient --alternate-editor ${emacs-pkg}/bin/emacs "$@"
-        fi
-      '')
+      services.emacs = {
+        enable = true;
+        package = pkgs.emacsWithPackagesFromUsePackage {
+          package = pkgs.emacs31-pwayl;
+          config = ''
+            ,${builtins.readFile ../../pkgs/emacs/config.el}
+          '';
+          defaultInitFile = false;
+          # make sure to include `(setq use-package-always-ensure t)` in config
+          alwaysEnsure = true;
+          # alwaysTangle = true;
 
-      ];
-
-      environment.sessionVariables.EDITOR = lib.mkForce "emacseditor";
+          extraEmacsPackages = epkgs: [
+            epkgs.treesit-grammars.with-all-grammars
+            pkgs.tree-sitter-grammars.tree-sitter-kdl
+          ];
+        };
+      };
     })
   ];
 
