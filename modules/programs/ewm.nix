@@ -36,5 +36,13 @@
         };
       };
     })
+    # shell integration, just fish for now...
+    ({config, ...}: {
+      programs.fish.shellInit = ''
+        if test -z "$SSH_CLIENT" -a "$XDG_CURRENT_DESKTOP" = "ewm"
+          source ${config.programs.ewm.ewmPackage}/etc/emacs-ewm.fish
+        end
+      '';
+    })
   ];
 }
