@@ -41,7 +41,7 @@
   (let* ((height (floor (* 0.25 (window-total-height))))
          (new-win (split-window-below (- height))))
     (select-window new-win)
-    (vterm (getenv "SHELL"))))
+    (ghostel)))
 
 ;; opacity
 (defun helper/opacity/set (opacity)
@@ -244,9 +244,25 @@
         (let ((path (cdr pair)))
           (lambda () (interactive) (dired path)))))))
 
-(if (executable-find "direnv") (use-package direnv))
+(use-package ghostel
+  :bind (("C-x m" . ghostel)
+         :map ghostel-semi-char-mode-map
+         ("C-s"  . consult-line)
+         ("C-k"  . my/ghostel-send-C-k-and-kill)
+         :map project-prefix-map
+         ("m" . ghostel-project)
+         ("M" . ghostel-project-list-buffers))
+  :config
+  (defun my/ghostel-send-C-k-and-kill ()
+    (interactive)
+    (kill-ring-save (point) (line-end-position))
+    (ghostel-send-key "k" "ctrl"))
 
-(use-package vterm)
+  (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
+  (add-to-list 'project-switch-commands '(ghostel-project-list-buffers "Ghostel buffers") t)
+  (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer)))
+
+(if (executable-find "direnv") (use-package direnv))
 
 (use-package pdf-tools
   :init (pdf-loader-install))
