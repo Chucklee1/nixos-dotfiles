@@ -21,9 +21,11 @@
         qt5.qtwayland
         qt6.qtwayland
         wev
+        xwayland-satellite
         xwayland
         xwayland-run
         wl-clipboard
+        brightnessctl
       ];
     })
   ];
@@ -63,6 +65,18 @@
           longitude = -94.806;
         };
       })
+      # session vars
+      {
+        home.sessionVariables = {
+          NIXOS_OZONE_WL = "1";
+          MOZ_ENABLE_WAYLAND = "1";
+          DISPLAY = ":0";
+          _JAVA_AWT_WM_NONREPARENTING = "1";
+          QT_QPA_PLATFORM = "wayland;xcb";
+          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+          QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+        };
+      }
       # custom scripts
       ({
         config,
@@ -112,16 +126,8 @@
           prefer-no-csd = true;
           screenshot-path = "~/Pictures/Screenshots/Screenshot-%Y%m%d-%H%M%S.png";
           xwayland-satellite.path = get "xwayland-satellite-unstable";
-          environment = {
-            NIXOS_OZONE_WL = "1";
-            MOZ_ENABLE_WAYLAND = "1";
-            DISPLAY = ":0";
-            _JAVA_AWT_WM_NONREPARENTING = "1";
-            SDL_VIDEODRIVER = "x11";
-            QT_QPA_PLATFORM = "wayland;xcb";
-            QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-            QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-          };
+          # can't be set in ewm
+          environment.EDITOR = "emacseditor";
 
           spawn-at-startup = [
             {sh = "systemctl --user restart waybar";}
