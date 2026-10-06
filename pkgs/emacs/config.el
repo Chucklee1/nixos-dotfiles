@@ -126,50 +126,50 @@
          ("<C-wheel-down>" . text-scale-decrease)))
 
 (with-eval-after-load 'ewm
-    (setopt ewm-input-config
-            '((touchpad
-               :natural-scroll t
-               :tap t
-               :dwt nil
-               :click-method "clickfinger")
-              (keyboard :repeat-delay 500 :repeat-rate 25
-                        :xkb-layouts "us"
-                        :xkb-options "ctrl:nocaps")
-              ("Razer Razer Viper Mini"
-               :accel-speed -0.75)))
+  (setopt ewm-input-config
+          '((touchpad :natural-scroll t
+                      :tap t
+                      :dwt nil
+                      :click-method "clickfinger")
+            (keyboard :repeat-delay 500 :repeat-rate 25
+                      :xkb-layouts "us"
+                      :xkb-options "ctrl:nocaps")
+            ("Razer Razer Viper Mini" :accel-speed -0.75)))
 
-    (setopt ewm-output-config
-            ;; so many 0s...
-            '(("HKC OVERSEAS LIMITED 24E4 0000000000001"
-               :width 1920 :height 1080 :refresh 165.001)))
+  (setopt ewm-output-config
+          ;; so many 0s...
+          '(("HKC OVERSEAS LIMITED 24E4 0000000000001"
+             :width 1920 :height 1080 :refresh 165.001)))
 
-    (setopt ewm-focus-follows-mouse nil)
-    (setopt ewm-mouse-follows-focus nil)
-    (setopt ewm-cursor-auto-hide 5)
+  (setopt ewm-focus-follows-mouse nil)
+  (setopt ewm-mouse-follows-focus nil)
+  (setopt ewm-cursor-auto-hide 5)
 
-    ;; consult integration
-    (with-eval-after-load 'consult
-      (defvar consult-source-xdg-apps
-        `(:name "Apps"
-                :narrow ?a
-                :category app
-                :items ,(lambda ()
-                          (mapcar #'car (ewm-list-xdg-apps)))
-                :action ,#'ewm-launch-xdg-command))
+  ;; consult integration
+  (with-eval-after-load 'consult
+    (defvar consult-source-xdg-apps
+      `(:name "Apps"
+              :narrow ?a
+              :category app
+              :items ,(lambda ()
+                        (mapcar #'car (ewm-list-xdg-apps)))
+              :action ,#'ewm-launch-xdg-command))
 
-      (push 'consult-source-xdg-apps consult-buffer-sources))
+    (push 'consult-source-xdg-apps consult-buffer-sources))
 
-    (defun cmd/lock ()
-      (interactive)
-      (start-process "swaylock" nil "swaylock"))
-
-      ;; keybinds
-    (helper/mapkeys ewm-mode-map
-                    '(("s-d" . nil)
-                      ("s-SPC" . consult-buffer)
-                      ("s-m"   . ewm-toggle-fullscreen)
-                      ("s-f"   . ewm-floating-toggle)
-                      ("s-l"   . cmd/lock))))
+  ;; keybinds
+  (helper/mapkeys ewm-mode-map
+                  `(("s-SPC" . consult-buffer)
+                    ("s-d"   . nil)
+                    ("s-f"   . ewm-floating-toggle)
+                    ("s-l"   . cmd/lock-session)
+                    ("s-m"   . ewm-toggle-fullscreen)
+                    ("s-q"   . ewm-frame-close)
+                    ("s-w"   . ,(ewm--cmd "toggleWaybar"))
+                    ("<XF86AudioPlay>" . ,(ewm--cmd "playerctl" "play-pause"))
+                    ("<XF86AudioPrev>" . ,(ewm--cmd "playectl" "previous"))
+                    ("<XF86AudioNext>" . ,(ewm--cmd "playerctl" "next"))
+                    )))
 
 (use-package evil
   :init
@@ -212,14 +212,20 @@
 (helper/mapkeys mode-specific-map
                 '(("C-c" . compile)))
 
+(defvar emap/find (make-sparse-keymap))
+(global-set-key (kbd "C-c f") emap/find)
+
+(helper/mapkeys emap/find
+                '(("g" . consult-git-grep)
+                  ("i" . consult-imenu)
+                  ("r" . consult-ripgrep)))
+
 (defvar emap/lsp (make-sparse-keymap))
 (global-set-key (kbd "C-c l") emap/lsp)
 
 (helper/mapkeys emap/lsp
                 '(("l" . eglot-reconnect)
-                  ("f" . eglot-format-buffer)
-                  ("r" . eglot-rename)
-                  ("i" . imenu)))
+                  ("f" . eglot-format-buffer)))
 
 (defvar emap/toggle (make-sparse-keymap))
 (global-set-key (kbd "C-c t") emap/toggle)
