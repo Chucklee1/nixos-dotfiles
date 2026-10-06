@@ -13,7 +13,9 @@ with mod; {
     services.net-essentials
 
     programs.zen-browser
+    programs.chromium
     programs.emacs
+    programs.ewm
     programs.nixvim
     programs.git
     programs.kitty
