@@ -1,7 +1,7 @@
 {
   emacsWithPackagesFromUsePackage,
   emacs31-pwayl,
-  ewm,
+  ewmPackage ? null,
   tree-sitter-grammars,
   ...
 }:
@@ -15,9 +15,14 @@ emacsWithPackagesFromUsePackage {
   alwaysEnsure = true;
   # alwaysTangle = true;
 
-  extraEmacsPackages = epkgs: [
-    ewm
-    epkgs.treesit-grammars.with-all-grammars
-    tree-sitter-grammars.tree-sitter-kdl
-  ];
+  extraEmacsPackages = epkgs:
+    [
+      epkgs.treesit-grammars.with-all-grammars
+      tree-sitter-grammars.tree-sitter-kdl
+    ]
+    ++ (
+      if (ewmPackage != null)
+      then [ewmPackage]
+      else []
+    );
 }

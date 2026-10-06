@@ -35,6 +35,7 @@
       ];
 
       environment.systemPackages = [
+        emacs-pkg
         (pkgs.writeShellScriptBin "emacseditor" ''
           if [ -z "$1" ]; then
             exec ${emacs-pkg}/bin/emacsclient --create-frame --alternate-editor ${emacs-pkg}/bin/emacs
