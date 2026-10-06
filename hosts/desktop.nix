@@ -11,7 +11,7 @@ with mod; {
     programs.git
     programs.kitty
     programs.niri
-    programs.rmpc
+    # programs.rmpc
     programs.obs
     programs.waybar
     programs.yazi
@@ -242,6 +242,7 @@ with mod; {
     })
     ({
       lib,
+      config,
       user,
       ...
     }: let
