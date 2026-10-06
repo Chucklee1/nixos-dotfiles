@@ -177,19 +177,33 @@ like if Niri was fully integrated with Emacs.
 
       (push 'consult-source-xdg-apps consult-buffer-sources))
 
-    ;; keybinds
+    (defmacro defcmd (name program &rest args)
+      "Define NAME as an interactive command that starts PROGRAM with ARGS."
+      `(defun ,name () (interactive)
+              (start-process ,program nil ,program ,@args)))
+
+    (defcmd cmd/toggleBar "toggleWaybar")
+    (defcmd cmd/lock-session "swaylock")
+    (defcmd cmd/player/play-pause "playerctl" "play-pause")
+    (defcmd cmd/media/prev "playerctl" "previous")
+    (defcmd cmd/media/next "playerctl" "next")
+
+    ;; wipe conflicting keys first
+    (helper/mapkeys ewm-mode-map
+                    `(("s-SPC" . nil)
+                      ("s-w" . nil)
+                      ("s-d" . nil)))
+    ;; ok now keybinds
     (helper/mapkeys ewm-mode-map
                     `(("s-SPC" . consult-buffer)
-                      ("s-d"   . nil)
                       ("s-f"   . ewm-floating-toggle)
                       ("s-l"   . cmd/lock-session)
                       ("s-m"   . ewm-toggle-fullscreen)
                       ("s-q"   . ewm-frame-close)
-                      ("s-w"   . ,(ewm--cmd "toggleWaybar"))
-                      ("<XF86AudioPlay>" . ,(ewm--cmd "playerctl" "play-pause"))
-                      ("<XF86AudioPrev>" . ,(ewm--cmd "playectl" "previous"))
-                      ("<XF86AudioNext>" . ,(ewm--cmd "playerctl" "next"))
-                      )))
+                      ("s-w"   . cmd/toggleBar)
+                      ("<XF86AudioPlay>" . cmd/media/play-pause)
+                      ("<XF86AudioPrev>" . cmd/media/prev)
+                      ("<XF86AudioNext>" . cmd/media/next))))
 #+end_src
 ** Evil Mode
 "My name is retep, and I am evviilll"
