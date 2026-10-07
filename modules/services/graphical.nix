@@ -71,6 +71,8 @@
         udisks
         mpv-unwrapped
         pavucontrol
+        pulseaudio
+        alsa-utils
         playerctl
         libnotify
       ];
