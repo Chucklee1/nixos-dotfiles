@@ -424,10 +424,16 @@ jar archive support
 #+begin_src elisp
   (use-package doom-modeline
     :custom
+    (column-number-mode t)
+    (display-time-default-load-average nil)
     (display-time-24hr-format t)
+    (display-time-format "| %F | %H:%M ")
     (display-time-mode t)
-    (doom-modeline-spc-face-overrides nil)
+    (doom-modeline-time-icon nil)
     (doom-modeline-buffer-encoding nil)
+    (doom-modeline-percent-position nil)
+    (doom-modeline-position-column-line-format "%l:%c")
+    (doom-modeline-spc-face-overrides nil)
     :hook (after-init . doom-modeline-mode))
 #+end_src
 

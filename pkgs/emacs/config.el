@@ -163,11 +163,6 @@
 
     (push 'consult-source-xdg-apps consult-buffer-sources))
 
-  (defmacro defcmd (name program &rest args)
-    "Define NAME as an interactive command that starts PROGRAM with ARGS."
-    `(defun ,name () (interactive)
-            (start-process ,program nil ,program ,@args)))
-
   (defcmd cmd/toggleBar "toggleWaybar")
   (defcmd cmd/lock-session "swaylock")
   (defcmd cmd/player/play-pause "playerctl" "play-pause")
@@ -315,8 +310,6 @@
   (add-to-list 'project-switch-commands '(ghostel-project-list-buffers "Ghostel buffers") t)
   (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer)))
 
-(use-package trashed)
-
 (if (executable-find "direnv") (use-package direnv))
 
 (use-package pdf-tools
@@ -360,10 +353,16 @@
 
 (use-package doom-modeline
   :custom
+  (column-number-mode t)
+  (display-time-default-load-average nil)
   (display-time-24hr-format t)
+  (display-time-format "| %F | %H:%M ")
   (display-time-mode t)
-  (doom-modeline-spc-face-overrides nil)
+  (doom-modeline-time-icon nil)
   (doom-modeline-buffer-encoding nil)
+  (doom-modeline-percent-position nil)
+  (doom-modeline-position-column-line-format "%l:%c")
+  (doom-modeline-spc-face-overrides nil)
   :hook (after-init . doom-modeline-mode))
 
 (use-package projectile
