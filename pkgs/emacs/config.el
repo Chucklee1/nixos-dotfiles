@@ -21,6 +21,11 @@
 ;; default to blur
 (defvar g/opacity/current g/opacity/alpha)
 
+(defmacro defcmd (name program &rest args)
+  "Define NAME as an interactive command that starts PROGRAM with ARGS."
+  `(defun ,name () (interactive)
+          (start-process ,program nil ,program ,@args)))
+
 ;; keybinds ;;
 (defun helper/mapkeys (leader-map keypairs)
   "map keybinds to a prefixed leader"
@@ -29,13 +34,13 @@
     ;; pair format = ("key" . cmd)
     (define-key leader-map (kbd (car pair)) (cdr pair))))
 
+;; window-related ;;
 (defun helper/kbuff-and-dwin ()
   "Kill current buffer then delete current window"
   (interactive)
   (kill-buffer)
   (delete-window))
 
-;; program(s)
 (defun helper/open-split-term ()
   (interactive)
   (let* ((height (floor (* 0.25 (window-total-height))))
@@ -43,10 +48,9 @@
     (select-window new-win)
     (ghostel)))
 
-;; opacity
 (defun helper/opacity/set (opacity)
-  (set-frame-parameter (selected-frame) 'alpha-background opacity)
-  (add-to-list 'default-frame-alist '(blur-background . t))
+  (set-frame-parameter (selected-frame) 'alpha-background opacity) ;; emacs-pgtk
+  (add-to-list 'default-frame-alist '(blur-background . t)) ;; emacs-pwal
   (add-to-list 'default-frame-alist `(alpha-background . ,opacity))
 
   ;; must manually set corfu frame-opacity
@@ -69,6 +73,8 @@
 ;; theme ;;
 (defun doom/colors (color)
   (cadr (assoc color doom-themes--colors)))
+
+;; macro-like functions ;;
 
 (use-package emacs
   :init
@@ -267,7 +273,10 @@
     (let ((gls (executable-find "gls")))
       (when gls
         (setq dired-use-ls-dired t
-              insert-directory-program gls)))))
+              insert-directory-program gls))))
+
+  :bind (("S-<left>" . dired-up-directory)
+         ("S-<left>" . dired-find-file)))
 
 (use-package dired-collapse
   :hook (dired-mode . global-dired-collapse-mode))
@@ -305,6 +314,8 @@
   (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
   (add-to-list 'project-switch-commands '(ghostel-project-list-buffers "Ghostel buffers") t)
   (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer)))
+
+(use-package trashed)
 
 (if (executable-find "direnv") (use-package direnv))
 
