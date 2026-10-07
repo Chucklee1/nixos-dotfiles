@@ -5,7 +5,7 @@
 * Base Settings
 ** Fancy header
 #+begin_src elisp
-;;; -*- no-byte-compile: t; lexical-binding: t; -*
+;;; -*- no-byte-compile: t; lexical-binding: t; -*-
 #+end_src
 ** pkg setup
 #+begin_src elisp
@@ -22,8 +22,6 @@
 #+end_src
 ** Variables
 #+begin_src elisp
-  (defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
-  (defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
   (defvar g/project-paths '("~/Documents/" "~/Repos/"))
   (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
   (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
@@ -169,8 +167,8 @@ like if Niri was fully integrated with Emacs.
             '(("HKC OVERSEAS LIMITED 24E4 0000000000001"
                :width 1920 :height 1080 :refresh 165.001)))
 
-    (setopt ewm-focus-follows-mouse nil)
-    (setopt ewm-mouse-follows-focus nil)
+    (setopt ewm-focus-follows-mouse t)
+    (setopt ewm-mouse-follows-focus t)
     (setopt ewm-cursor-auto-hide 5)
 
     ;; consult integration
@@ -315,7 +313,7 @@ like if Niri was fully integrated with Emacs.
                 insert-directory-program gls))))
 
     :bind (("S-<left>" . dired-up-directory)
-           ("S-<left>" . dired-find-file)))
+           ("S-<right>" . dired-find-file)))
 
 #+end_src
 *** Dired Hacks - Collapse
