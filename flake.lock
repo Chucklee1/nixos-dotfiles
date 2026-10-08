@@ -521,6 +521,26 @@
         "type": "github"
       }
     },
+    "hytale-launcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791349658,
+        "narHash": "sha256-lA6l1XaB9mfGyp/RxYqayQaW/SDYYlsG+IXiax2RTUo=",
+        "owner": "visoredkon",
+        "repo": "hytale-launcher-flake",
+        "rev": "34ed7908917e13d2299b1c10b1e5d0ad0af5b7cc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "visoredkon",
+        "repo": "hytale-launcher-flake",
+        "type": "github"
+      }
+    },
     "impermanence": {
       "inputs": {
         "home-manager": "home-manager_2",
@@ -1102,6 +1122,7 @@
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "hytale-launcher": "hytale-launcher",
         "impermanence": "impermanence",
         "minecraft-plymouth-theme": "minecraft-plymouth-theme",
         "minegrub-theme": "minegrub-theme",

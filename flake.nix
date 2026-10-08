@@ -58,6 +58,8 @@
     ewm.url = "https://codeberg.org/ezemtsov/ewm/archive/master.tar.gz";
 
     # ---- Apps ----
+    hytale-launcher.url = "github:visoredkon/hytale-launcher-flake";
+    hytale-launcher.inputs.nixpkgs.follows = "nixpkgs";
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";
     prismlauncher.inputs.nixpkgs.follows = "nixpkgs";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
