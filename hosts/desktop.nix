@@ -18,9 +18,10 @@ with mod; {
     programs.chromium
     programs.zen-browser
 
+    games.fluorine
+    games.hytale
     games.openmw
     games.osu
-    games.fluorine
     games.prismLauncher
     games.steam
 
