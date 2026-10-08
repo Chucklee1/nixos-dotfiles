@@ -1,4 +1,4 @@
-;;; -*- no-byte-compile: t; lexical-binding: t; -*
+;;; -*- no-byte-compile: t; lexical-binding: t; -*-
 
 (setq use-package-always-ensure t)
 
@@ -11,8 +11,6 @@
 ;; Improve performance with language servers.
 (setq read-process-output-max (* 1024 1024)) ;; 1 MB
 
-(defvar g/path/elispcfg (expand-file-name "~/.emacs.d/init.el"))
-(defvar g/path/orgcfg   (expand-file-name "~/.emacs.d/init.org"))
 (defvar g/project-paths '("~/Documents/" "~/Repos/"))
 (defvar g/fheight       (if (eq system-type 'darwin) 150 130))
 (defvar g/ffamily       "JetBrainsMono Nerd Font Propo")
@@ -147,8 +145,8 @@
           '(("HKC OVERSEAS LIMITED 24E4 0000000000001"
              :width 1920 :height 1080 :refresh 165.001)))
 
-  (setopt ewm-focus-follows-mouse nil)
-  (setopt ewm-mouse-follows-focus nil)
+  (setopt ewm-focus-follows-mouse t)
+  (setopt ewm-mouse-follows-focus t)
   (setopt ewm-cursor-auto-hide 5)
 
   ;; consult integration
@@ -165,7 +163,7 @@
 
   (defcmd cmd/toggleBar "toggleWaybar")
   (defcmd cmd/lock-session "swaylock")
-  (defcmd cmd/player/play-pause "playerctl" "play-pause")
+  (defcmd cmd/media/play-pause "playerctl" "play-pause")
   (defcmd cmd/media/prev "playerctl" "previous")
   (defcmd cmd/media/next "playerctl" "next")
 
@@ -271,7 +269,7 @@
               insert-directory-program gls))))
 
   :bind (("S-<left>" . dired-up-directory)
-         ("S-<left>" . dired-find-file)))
+         ("S-<right>" . dired-find-file)))
 
 (use-package dired-collapse
   :hook (dired-mode . global-dired-collapse-mode))

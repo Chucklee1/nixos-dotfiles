@@ -185,7 +185,7 @@ like if Niri was fully integrated with Emacs.
 
     (defcmd cmd/toggleBar "toggleWaybar")
     (defcmd cmd/lock-session "swaylock")
-    (defcmd cmd/player/play-pause "playerctl" "play-pause")
+    (defcmd cmd/media/play-pause "playerctl" "play-pause")
     (defcmd cmd/media/prev "playerctl" "previous")
     (defcmd cmd/media/next "playerctl" "next")
 
