@@ -10,7 +10,6 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nur.url = "github:nix-community/NUR";
     nur.inputs.nixpkgs.follows = "nixpkgs";
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     chucks-package-repo.url = "github:Chucklee1/chucks-package-repo";
     chucks-package-repo.inputs.nixpkgs.follows = "nixpkgs";

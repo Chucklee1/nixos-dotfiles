@@ -42,7 +42,6 @@ with mod; {
     system.sys-specs
     system.users
 
-    services.flatpak
     services.graphical
     services.net-essentials
     services.syncthing
@@ -216,7 +215,6 @@ with mod; {
             ".local/state/syncthing"
             ".local/share/Terraria"
             ".local/share/zoxide"
-            ".var"
             ".factorio"
           ];
         };
@@ -227,6 +225,8 @@ with mod; {
       environment.systemPackages = with pkgs; [
         nicotine-plus
         picard
+        qbittorrent
+        teams-for-linux
       ];
 
       networking.firewall.allowedTCPPorts = [2234 2242];
@@ -242,7 +242,6 @@ with mod; {
     })
     ({
       lib,
-      config,
       user,
       ...
     }: let
@@ -307,4 +306,3 @@ with mod; {
 #     }
 #   '';
 # }
-
