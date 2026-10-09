@@ -8,10 +8,6 @@ with mod; {
   type = "nixos";
   user = "goat";
   modules = with mod; [
-    services.syncthing
-    services.tailscale
-    services.net-essentials
-
     programs.zen-browser
     programs.chromium
     programs.emacs
@@ -40,6 +36,10 @@ with mod; {
 
     services.graphical
     services.midi
+    services.net-essentials
+    services.power
+    services.syncthing
+    services.tailscale
     hardware.uinput
 
     shell.variables
@@ -68,7 +68,6 @@ with mod; {
       pkgs,
       ...
     }: {
-      powerManagement.enable = true;
       environment.systemPackages = [pkgs.moonlight-qt];
       services.xserver.videoDrivers = ["modesetting"];
       hardware.graphics.extraPackages = lib.mkAfter [
