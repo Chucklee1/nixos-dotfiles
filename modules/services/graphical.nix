@@ -12,9 +12,14 @@
           extraPackages = with pkgs; [
             libvdpau-va-gl
             vulkan-tools
+            vulkan-loader
+            vulkan-validation-layers
           ];
         }
-        // (lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 {enable32Bit = true;});
+        // (lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 {
+          enable32Bit = true;
+          extraPackages32 = [pkgs.pkgsi686Linux.vulkan-loader];
+        });
 
       # input
       services.libinput.enable = true;

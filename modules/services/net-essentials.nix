@@ -10,6 +10,15 @@
       };
     }
     # dns resolving
-    {services.resolved.enable = true;}
+    {
+      services.resolved = {
+        enable = true;
+        settings.Resolve = {
+          DNS = ["1.1.1.1" "1.0.0.1"];
+          FallbackDNS = ["8.8.8.8" "8.8.4.4"];
+          DNSSEC = "false";
+        };
+      };
+    }
   ];
 }
