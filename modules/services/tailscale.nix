@@ -1,8 +1,1 @@
-{
-  nix = [
-    ({npkgs, ...}: {
-      services.tailscale.enable = true;
-      services.tailscale.package = npkgs.tailscale;
-    })
-  ];
-}
+{nix = [{services.tailscale.enable = true;}];}
