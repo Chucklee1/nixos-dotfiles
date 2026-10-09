@@ -55,21 +55,12 @@ with mod; {
     {
       boot.initrd.supportedFilesystems = ["nfs" "btrfs"];
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
-      boot.loader.grub.useOSProber = true;
 
       boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
       boot.kernelModules = ["kvm-intel"];
 
       hardware.cpu.intel.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
-      boot.loader.grub.extraEntries = ''
-        menuentry "arch" {
-            insmod btrfs
-            search --no-floppy --fs-uuid --set=root 214653ac-2b13-441b-b405-46c709061f7a
-            linux /arch/boot/vmlinuz-linux root=UUID=214653ac-2b13-441b-b405-46c709061f7a rw rootflags=subvol=arch/root
-            initrd /arch/boot/initramfs-linux.img
-        }
-      '';
     }
     # gpu related
     ({
@@ -87,6 +78,8 @@ with mod; {
         LIBVA_DRIVER_NAME = "iHD";
       };
     })
+    # misc extra stuff
+    {programs.ewm.extraEmacsArgs = "--eval '(display-battery-mode)'";}
     # impermenance setup
     {
       # persistance stuff
