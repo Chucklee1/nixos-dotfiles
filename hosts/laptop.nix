@@ -12,14 +12,14 @@ with mod; {
     programs.chromium
     programs.emacs
     programs.ewm
+    programs.discord
     programs.nixvim
     programs.git
     programs.kitty
     programs.niri
     programs.waybar
     programs.yazi
-    # programs.rmpc
-    programs.discord
+    programs.ratune
 
     software.dev
     software.qol
