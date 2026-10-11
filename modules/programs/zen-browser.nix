@@ -102,5 +102,15 @@
         };
       };
     })
+    # override chromiums defaults when using chromium as well
+    {
+      xdg.mimeApps.defaultApplications = let
+        default = "zen-twilight.desktop";
+      in {
+        "text/html" = default;
+        "x-scheme-handler/http" = default;
+        "x-scheme-handler/https" = default;
+      };
+    }
   ];
 }
