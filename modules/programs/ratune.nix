@@ -40,7 +40,6 @@
         # Pick any three of: recent_albums, recent_tracks, rediscover, recently_added, recently_released
         ui.hometab.layout.panels = ["recent_albums" "recent_tracks" "rediscover"];
 
-
         ui.nptab.queue.position = "right";
         ui.nptab.art.show = true;
         ui.nptab.art.position = "left";
