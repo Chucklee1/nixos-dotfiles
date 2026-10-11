@@ -11,7 +11,7 @@ with mod; {
     programs.git
     programs.kitty
     programs.niri
-    # programs.rmpc
+    programs.ratune
     programs.obs
     programs.waybar
     programs.yazi
@@ -307,3 +307,4 @@ with mod; {
 #     }
 #   '';
 # }
+
