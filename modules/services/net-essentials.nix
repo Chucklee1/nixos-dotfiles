@@ -11,13 +11,10 @@
     }
     # dns resolving
     {
-      services.resolved = {
+      services.avahi = {
         enable = true;
-        settings.Resolve = {
-          DNS = ["1.1.1.1" "1.0.0.1"];
-          FallbackDNS = ["8.8.8.8" "8.8.4.4"];
-          DNSSEC = "false";
-        };
+        nssmdns4 = true;
+        openFirewall = true;
       };
     }
   ];
