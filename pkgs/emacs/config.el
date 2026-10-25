@@ -414,6 +414,7 @@
 ;; real languages
 ;; MAKE SURE TO SET JAVA_HOME
 (use-package eglot-java)
+(use-package haskell-mode)
 (use-package go-mode :mode (("\\.go\\'" . go-mode)
                             ("\\go.mod\\'" . go-mode)))
 

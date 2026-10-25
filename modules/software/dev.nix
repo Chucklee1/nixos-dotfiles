@@ -8,12 +8,14 @@
           just
           lua
           python3
+          ghc
           # lsps
           asm-lsp # GAS/GO assembly
           clang-tools # c/c++
           cmake-language-server
           bash-language-server
           lua-language-server
+          haskell-language-server
           marksman
           nixd
           python3Packages.python-lsp-server
