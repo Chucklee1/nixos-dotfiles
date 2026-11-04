@@ -1,7 +1,1 @@
-{inputs, ...}: {
-  nix = [
-    ({pkgs, ...}: {
-      environment.systemPackages = [(pkgs.osu.override {nativeWayland = true;})];
-    })
-  ];
-}
+{nix = [({npkgs, ...}: {environment.systemPackages = [(npkgs.osu-lazer-bin.override {nativeWayland = true;})];})];}

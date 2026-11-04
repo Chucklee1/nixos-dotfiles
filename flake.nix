@@ -3,6 +3,7 @@
   inputs = {
     # ---- main pkg providers ----
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-newer.url = "github:NixOS/nixpkgs?rev=3ec636362e1816bc2f0888fa0fa2c69f1bc9e504";
     # for tailscale
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     home-manager.url = "github:nix-community/home-manager";

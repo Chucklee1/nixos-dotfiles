@@ -32,7 +32,10 @@ in {
       specialArgs = {
         inherit self inputs extlib machine;
         spkgs = import inputs.nixpkgs-stable {inherit (cfg) system;};
-        npkgs = import inputs.nixpkgs-newer {inherit (cfg) system;};
+        npkgs = import inputs.nixpkgs-newer {
+          inherit (cfg) system;
+          config.allowUnfree = true;
+        };
         inherit (cfg) system user;
       };
     in
