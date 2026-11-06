@@ -12,22 +12,9 @@
       emacs-pkg =
         if config.programs.ewm.enable
         then config.programs.ewm.emacsPackage
-        else
-          (pkgs.emacsWithPackagesFromUsePackage {
-            package = pkgs.emacs31-pwayl;
-            config = ''
-              ,${builtins.readFile ../../pkgs/emacs/config.el}
-            '';
-            defaultInitFile = false;
-            # make sure to include `(setq use-package-always-ensure t)` in config
-            alwaysEnsure = true;
-            # alwaysTangle = true;
-
-            extraEmacsPackages = epkgs: [
-              epkgs.treesit-grammars.with-all-grammars
-              pkgs.tree-sitter-grammars.tree-sitter-kdl
-            ];
-          });
+        else if pkgs.stdenv.hostPlatform.isDarwin
+        then pkgs.callPackage ../../pkgs/emacs {emacsPackage = pkgs.emacs-macport;}
+        else pkgs.callPackage ../../pkgs/emacs {emacsPackage = pkgs.emacs31-pwayl;};
     in {
       nixpkgs.overlays = [
         (import self.inputs.emacs-overlay)

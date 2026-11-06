@@ -15,6 +15,8 @@ with mod; {
     programs.git
     programs.yazi
     programs.kitty
+    programs.emacs
+    programs.zen-browser
 
     software.dev
     software.qol
@@ -23,6 +25,7 @@ with mod; {
     software.rust
 
     games.prismLauncher
+    services.syncthing
 
     system.home
     system.pkgconfig
@@ -31,14 +34,12 @@ with mod; {
     shell.fish
   ];
   extraConfig = [
+    ({lib, ...}: {
+      options.programs.ewm.enable = lib.mkEnableOption "dummy option";
+    })
     ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
-
-      nixpkgs.overlays = [
-        (import self.inputs.emacs-overlay)
-        self.overlays.emacs
-      ];
 
       # general
       system.stateVersion = 6;
@@ -67,22 +68,6 @@ with mod; {
       fonts.packages = [pkgs.nerd-fonts.symbols-only];
       environment.systemPackages = with pkgs; [
         coreutils-prefixed
-        (pkgs.emacsWithPackagesFromUsePackage {
-          package = pkgs.emacs-macport;
-          config = ''
-            ,${builtins.readFile ../../pkgs/emacs/config.el}
-          '';
-          defaultInitFile = false;
-          # make sure to include `(setq use-package-always-ensure t)` in config
-          alwaysEnsure = true;
-          # alwaysTangle = true;
-
-          extraEmacsPackages = epkgs: [
-            epkgs.treesit-grammars.with-all-grammars
-            pkgs.tree-sitter-grammars.tree-sitter-kdl
-          ];
-        })
-
         # better than macs crappy ones
         coreutils
         gnused
@@ -165,16 +150,8 @@ with mod; {
 
         taps = builtins.attrNames config.nix-homebrew.taps; # Align homebrew taps config with nix-homebrew
 
-        brews = [
-          "syncthing"
-          "gcc"
-        ];
         casks = [
           "blackhole-2ch"
-          "krita"
-          "musescore"
-          "musicbrainz-picard"
-          "zen"
           "zoom"
         ];
       };

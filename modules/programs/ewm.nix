@@ -18,6 +18,7 @@
         enable = true;
         emacsPackage = pkgs.callPackage ../../pkgs/emacs {
           ewmPackage = config.programs.ewm.ewmPackage;
+          emacsPackage = pkgs.emacs31-pwayl;
         };
       };
     })
