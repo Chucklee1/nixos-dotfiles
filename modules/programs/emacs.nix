@@ -1,8 +1,4 @@
-{
-  self,
-  inputs,
-  ...
-}: {
+{self, ...}: {
   nix = [
     ({
       config,
@@ -14,12 +10,9 @@
         then config.programs.ewm.emacsPackage
         else if pkgs.stdenv.hostPlatform.isDarwin
         then pkgs.callPackage ../../pkgs/emacs {emacsPackage = pkgs.emacs-macport;}
-        else pkgs.callPackage ../../pkgs/emacs {emacsPackage = pkgs.emacs31-pwayl;};
+        else pkgs.callPackage ../../pkgs/emacs {emacsPackage = pkgs.emacs31-pgtk;};
     in {
-      nixpkgs.overlays = [
-        (import self.inputs.emacs-overlay)
-        inputs.ewm.overlays.default # for emacs31-pwayl
-      ];
+      nixpkgs.overlays = [(import self.inputs.emacs-overlay)];
 
       environment.systemPackages = [
         emacs-pkg

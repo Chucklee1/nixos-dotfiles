@@ -1,12 +1,12 @@
 {
   emacsWithPackagesFromUsePackage,
-  emacs31-pwayl,
+  emacsPackage ? null,
   ewmPackage ? null,
   tree-sitter-grammars,
   ...
 }:
 emacsWithPackagesFromUsePackage {
-  package = emacs31-pwayl;
+  package = emacsPackage;
   config = ''
     ,${builtins.readFile ./config.el}
   '';
