@@ -11,7 +11,6 @@ with mod; {
     programs.zen-browser
     programs.chromium
     programs.emacs
-    programs.ewm
     programs.discord
     programs.nixvim
     programs.git
@@ -20,6 +19,8 @@ with mod; {
     programs.waybar
     programs.yazi
     programs.ratune
+
+    games.steam
 
     software.dev
     software.qol
@@ -50,6 +51,9 @@ with mod; {
   ];
 
   extraConfig = [
+    ({lib, ...}: {
+      options.programs.ewm.enable = lib.mkEnableOption "dummy option";
+    })
     inputs.disko.nixosModules.default
     (import ../assets/disko/emphereal.nix {device = "/dev/nvme0n1";})
     {
@@ -77,8 +81,6 @@ with mod; {
         LIBVA_DRIVER_NAME = "iHD";
       };
     })
-    # misc extra stuff
-    {programs.ewm.extraEmacsArgs = "--eval '(display-battery-mode)'";}
     # impermenance setup
     {
       # persistance stuff
@@ -95,6 +97,7 @@ with mod; {
             ".local/share/direnv"
             ".local/state/syncthing"
             ".cache/zen"
+            ".config/discord"
             ".config/zen"
           ];
         };
