@@ -1,12 +1,13 @@
 {self, ...}: {
   nix = [
     ({
+      lib,
       config,
       pkgs,
       ...
     }: let
       emacs-pkg =
-        if config.programs.ewm.enable
+        if (lib.options ? programs.ewm) && config.programs.ewm.enable
         then config.programs.ewm.emacsPackage
         else if pkgs.stdenv.hostPlatform.isDarwin
         then pkgs.callPackage ../../pkgs/emacs {emacsPackage = pkgs.emacs-macport;}

@@ -51,9 +51,6 @@ with mod; {
   ];
 
   extraConfig = [
-    ({lib, ...}: {
-      options.programs.ewm.enable = lib.mkEnableOption "dummy option";
-    })
     inputs.disko.nixosModules.default
     (import ../assets/disko/emphereal.nix {device = "/dev/nvme0n1";})
     {

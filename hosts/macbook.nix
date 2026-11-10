@@ -34,9 +34,6 @@ with mod; {
     shell.fish
   ];
   extraConfig = [
-    ({lib, ...}: {
-      options.programs.ewm.enable = lib.mkEnableOption "dummy option";
-    })
     ({user, ...}: {
       # nix issue fix
       nix.settings.auto-optimise-store = false;
