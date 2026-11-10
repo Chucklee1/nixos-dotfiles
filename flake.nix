@@ -23,16 +23,7 @@
 
     # ---- macos - base ----
     nix-darwin.url = "github:LnL7/nix-darwin/master";
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-
-    # ---- macos - taps ----
-    homebrew-core.url = "github:homebrew/homebrew-core";
-    homebrew-core.flake = false;
-    homebrew-cask.url = "github:homebrew/homebrew-cask";
-    homebrew-cask.flake = false;
-    homebrew-bundle.url = "github:homebrew/homebrew-bundle";
-    homebrew-bundle.flake = false;
 
     # ---- theming ----
     stylix.url = "github:danth/stylix";

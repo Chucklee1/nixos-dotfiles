@@ -119,40 +119,32 @@ with mod; {
         "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
       };
     })
-    inputs.nix-homebrew.darwinModules.nix-homebrew
-    ({user, ...}: {
-      nix-homebrew = {
-        inherit user; # User owning the Homebrew prefix
-        enable = true;
-        autoMigrate = true;
-        enableRosetta = true;
-        # Declarative tap management
-        taps = {
-          "homebrew/homebrew-core" = inputs.homebrew-core;
-          "homebrew/homebrew-cask" = inputs.homebrew-cask;
-          "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
-        };
-        # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-        mutableTaps = false;
-      };
-    })
-    ({config, ...}: {
+    {
       homebrew = {
         enable = true;
+        enableFishIntegration = true;
         onActivation = {
           autoUpdate = true;
           upgrade = true;
           cleanup = "zap";
         };
 
-        taps = builtins.attrNames config.nix-homebrew.taps; # Align homebrew taps config with nix-homebrew
+        taps = [
+          "apple/apple"
+          "nohajc/anylinuxfs"
+          "fenio/tap"
+        ];
 
+        brews = [
+          "anylinuxfs"
+        ];
         casks = [
           "blackhole-2ch"
           "zoom"
+          "anylinuxfs-gui"
         ];
       };
-    })
+    }
     # not dealing with nixos/darwin stylix conflicts
     inputs.stylix.darwinModules.stylix
     ({pkgs, ...}: {

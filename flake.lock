@@ -68,23 +68,6 @@
         "type": "github"
       }
     },
-    "brew-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1789661079,
-        "narHash": "sha256-geVTQ51PGZ1mLULM5k7wO7qt/6xenOR/YG8X7Q3eCaI=",
-        "owner": "Homebrew",
-        "repo": "brew",
-        "rev": "edb70f031e4170c780799633a1226ff73e1077f4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Homebrew",
-        "ref": "7.0.4",
-        "repo": "brew",
-        "type": "github"
-      }
-    },
     "cachyos-kernel": {
       "flake": false,
       "locked": {
@@ -473,54 +456,6 @@
         "type": "github"
       }
     },
-    "homebrew-bundle": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1745335228,
-        "narHash": "sha256-TIKR2UgtyUmHLNZp255/vLs+1I10hXe+sciMEbAGFwE=",
-        "owner": "homebrew",
-        "repo": "homebrew-bundle",
-        "rev": "a3265c84b232e13048ecbf6fc18a2eedfadbeb08",
-        "type": "github"
-      },
-      "original": {
-        "owner": "homebrew",
-        "repo": "homebrew-bundle",
-        "type": "github"
-      }
-    },
-    "homebrew-cask": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1790808687,
-        "narHash": "sha256-2qPLRCpv7+X45CbS2HkmrsTaqVUlq1nhMxSfoKRC2Hw=",
-        "owner": "homebrew",
-        "repo": "homebrew-cask",
-        "rev": "8c4da2a8e14b70fc0409930d2adecc5ee0594d85",
-        "type": "github"
-      },
-      "original": {
-        "owner": "homebrew",
-        "repo": "homebrew-cask",
-        "type": "github"
-      }
-    },
-    "homebrew-core": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1790809683,
-        "narHash": "sha256-KtmFOfn4f2xci4VgZspFINmaF42YBbecLroNnbjAg/A=",
-        "owner": "homebrew",
-        "repo": "homebrew-core",
-        "rev": "8fd5d0ec8e36cda496d4ab277fefeab81b1753ae",
-        "type": "github"
-      },
-      "original": {
-        "owner": "homebrew",
-        "repo": "homebrew-core",
-        "type": "github"
-      }
-    },
     "hytale-launcher": {
       "inputs": {
         "nixpkgs": [
@@ -732,24 +667,6 @@
         "owner": "LnL7",
         "ref": "master",
         "repo": "nix-darwin",
-        "type": "github"
-      }
-    },
-    "nix-homebrew": {
-      "inputs": {
-        "brew-src": "brew-src"
-      },
-      "locked": {
-        "lastModified": 1789928041,
-        "narHash": "sha256-iV37ieTcE4ZLOYEe0VznW6dWMBe4lEL8AbK1vblyZGM=",
-        "owner": "zhaofengli",
-        "repo": "nix-homebrew",
-        "rev": "c11cccfdd36dd69b5323d70d354b2853379c2426",
-        "type": "github"
-      },
-      "original": {
-        "owner": "zhaofengli",
-        "repo": "nix-homebrew",
         "type": "github"
       }
     },
@@ -1118,9 +1035,6 @@
         "ewm": "ewm",
         "fenix": "fenix",
         "home-manager": "home-manager",
-        "homebrew-bundle": "homebrew-bundle",
-        "homebrew-cask": "homebrew-cask",
-        "homebrew-core": "homebrew-core",
         "hytale-launcher": "hytale-launcher",
         "impermanence": "impermanence",
         "minecraft-plymouth-theme": "minecraft-plymouth-theme",
@@ -1129,7 +1043,6 @@
         "niri": "niri",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nix-darwin": "nix-darwin",
-        "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_8",
         "nixpkgs-newer": "nixpkgs-newer",
         "nixpkgs-stable": "nixpkgs-stable_3",
