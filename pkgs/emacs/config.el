@@ -125,9 +125,7 @@
          ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
          ;; Zooming In/Out
          ("C-=" . text-scale-increase)
-         ("C--" . text-scale-decrease)
-         ("<C-wheel-up>" . text-scale-increase)
-         ("<C-wheel-down>" . text-scale-decrease)))
+         ("C--" . text-scale-decrease)))
 
 (with-eval-after-load 'ewm
   (setopt ewm-input-config

@@ -143,9 +143,7 @@
            ([escape] . keyboard-escape-quit) ;; Makes Escape quit prompts (Minibuffer Escape)
            ;; Zooming In/Out
            ("C-=" . text-scale-increase)
-           ("C--" . text-scale-decrease)
-           ("<C-wheel-up>" . text-scale-increase)
-           ("<C-wheel-down>" . text-scale-decrease)))
+           ("C--" . text-scale-decrease)))
 #+end_src
 ** EWM
 Emacs Wayland Manager. It's nice cause it's
