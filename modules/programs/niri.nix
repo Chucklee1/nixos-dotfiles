@@ -131,7 +131,7 @@
 
           spawn-at-startup = [
             {sh = "systemctl --user restart waybar";}
-            {sh = "emacs --daemon --fg-daemon";}
+            {sh = "emacs --fg-daemon";}
           ];
           switch-events = {
             tablet-mode-on.action = notify "tablet-mode-on";
