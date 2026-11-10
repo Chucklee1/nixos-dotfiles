@@ -3,9 +3,7 @@
 (setq use-package-always-ensure t)
 
 ;; gc stuff
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6
-      gc-cons-threshold (* 20 1000 1000) ;; 20 MB
+(setq gc-cons-threshold (* 20 1000 1000) ;; 20 MB
       gc-cons-percentage 0.1)
 
 ;; Improve performance with language servers.
@@ -361,17 +359,6 @@
   (doom-modeline-spc-face-overrides nil)
   :hook (after-init . doom-modeline-mode))
 
-(use-package projectile
-  :init
-  (projectile-mode 1)
-  :custom
-  (projectile-run-use-comint-mode t)
-  (projectile-switch-project-action #'projectile-dired)
-  (projectile-project-search-path g/project-paths)
-  ;; idc, override existing project keymaps
-  :bind (:map projectile-mode-map
-           ("C-x p" . projectile-command-map)))
-
 (use-package emacs
   :custom
   (treesit-font-lock-level 3)
@@ -383,7 +370,6 @@
   :hook ((c-ts-mode
           c++-ts-mode
           go-ts-mode
-          haskell-mode
           java-ts-mode
           lua-ts-mode
           nix-ts-mode
@@ -400,8 +386,7 @@
 
 ;; config/text
 (use-package just-mode)
-(use-package kdl-mode :mode "\\.kdl\\'")
-(use-package ron-mode :mode "\\.ron\\'")
+(use-package kdl-mode)
 
 ;; scripting/shell
 (use-package fish-mode)
@@ -412,9 +397,6 @@
 ;; real languages
 ;; MAKE SURE TO SET JAVA_HOME
 (use-package eglot-java)
-(use-package haskell-mode)
-(use-package go-mode :mode (("\\.go\\'" . go-mode)
-                            ("\\go.mod\\'" . go-mode)))
 
 (use-package nix-ts-mode :mode "\\.nix\\'")
 (with-eval-after-load 'eglot
@@ -423,18 +405,6 @@
    '(:nixd
      (:formatting
       (:command ["alejandra"])))))
-
-(use-package rust-mode
-  :init
-  (setq rust-mode-treesitter-derive t))
-
-(use-package rustic
-  :after (rust-mode)
-  :config
-  (setq rustic-format-on-save nil)
-  (setq rustic-lsp-client 'eglot)
-  :custom
-  (rustic-cargo-use-last-stored-arguments t))
 
 (use-package org
   :custom
@@ -496,9 +466,6 @@
   ;; (setq consult-preview-key 'any)
   ;; (setq consult-preview-key "M-.")
   ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
-
-  (autoload 'projectile-project-root "projectile")
-  (setq consult-project-function (lambda (_) (projectile-project-root)))
   )
 
 (use-package corfu
@@ -539,6 +506,23 @@
   (add-to-list 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
   )
 
+(use-package vertico
+  :init
+  (vertico-mode))
+
+(use-package marginalia
+  :after vertico
+  :init
+  (marginalia-mode))
+
+;; more nerd icon support
+(use-package nerd-icons-completion
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  :hook
+  ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
+
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
@@ -564,8 +548,7 @@
 
 (use-package diff-hl
   :hook ((dired-mode         . diff-hl-dired-mode-unless-remote)
-         (magit-post-refresh . diff-hl-magit-post-refresh))
-  :init (global-diff-hl-mode))
+         (magit-post-refresh . diff-hl-magit-post-refresh)))
 
 (use-package helpful
   :bind
@@ -592,9 +575,7 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package rainbow-mode
-  :config (setq rainbow-x-colors nil)
-  :hook (prog-mode . rainbow-mode))
+(use-package rainbow-mode :config (setq rainbow-x-colors nil))
 
 (when (eq system-type 'darwin)
   (progn

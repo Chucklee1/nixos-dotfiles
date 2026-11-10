@@ -12,9 +12,7 @@
   (setq use-package-always-ensure t)
 
   ;; gc stuff
-  (setq gc-cons-threshold most-positive-fixnum
-        gc-cons-percentage 0.6
-        gc-cons-threshold (* 20 1000 1000) ;; 20 MB
+  (setq gc-cons-threshold (* 20 1000 1000) ;; 20 MB
         gc-cons-percentage 0.1)
 
   ;; Improve performance with language servers.
@@ -434,20 +432,6 @@ jar archive support
 #+end_src
 
 * Nerd
-** Projectile
-+ Hmmm, project-ile, maybe has to do with projects?
-#+begin_src elisp
-  (use-package projectile
-    :init
-    (projectile-mode 1)
-    :custom
-    (projectile-run-use-comint-mode t)
-    (projectile-switch-project-action #'projectile-dired)
-    (projectile-project-search-path g/project-paths)
-    ;; idc, override existing project keymaps
-    :bind (:map projectile-mode-map
-             ("C-x p" . projectile-command-map)))
-#+end_src
 ** Tree Sitter
 Tree, sitting...
 Auto install is now built into emacs 31! no need for an additional pkg (from kickstart.emacs)
@@ -467,7 +451,6 @@ a pain working with c++ files...
     :hook ((c-ts-mode
             c++-ts-mode
             go-ts-mode
-            haskell-mode
             java-ts-mode
             lua-ts-mode
             nix-ts-mode
@@ -492,8 +475,7 @@ my system vs using a shell.
 #+begin_src elisp
   ;; config/text
   (use-package just-mode)
-  (use-package kdl-mode :mode "\\.kdl\\'")
-  (use-package ron-mode :mode "\\.ron\\'")
+  (use-package kdl-mode)
 
   ;; scripting/shell
   (use-package fish-mode)
@@ -504,9 +486,6 @@ my system vs using a shell.
   ;; real languages
   ;; MAKE SURE TO SET JAVA_HOME
   (use-package eglot-java)
-  (use-package haskell-mode)
-  (use-package go-mode :mode (("\\.go\\'" . go-mode)
-                              ("\\go.mod\\'" . go-mode)))
 #+end_src
 ** Nix
 #+begin_src elisp
@@ -517,20 +496,6 @@ my system vs using a shell.
      '(:nixd
        (:formatting
         (:command ["alejandra"])))))
-#+end_src
-** Rust
-#+begin_src elisp
-  (use-package rust-mode
-    :init
-    (setq rust-mode-treesitter-derive t))
-
-  (use-package rustic
-    :after (rust-mode)
-    :config
-    (setq rustic-format-on-save nil)
-    (setq rustic-lsp-client 'eglot)
-    :custom
-    (rustic-cargo-use-last-stored-arguments t))
 #+end_src
 
 * Org Mode
@@ -616,9 +581,6 @@ since it is /"Search and navigate via completing-read Topics"/
     ;; (setq consult-preview-key 'any)
     ;; (setq consult-preview-key "M-.")
     ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
-
-    (autoload 'projectile-project-root "projectile")
-    (setq consult-project-function (lambda (_) (projectile-project-root)))
     )
 #+end_src
 ** Corfu
@@ -667,7 +629,7 @@ since it is /"Search and navigate via completing-read Topics"/
 #+end_src
 ** Vertico and Marginalia
 /"VERTical Interactive COmpletion"/ and /"Marginalia in the minibuffer"/
-#+begin_src elisp :tangle no
+#+begin_src elisp
   (use-package vertico
     :init
     (vertico-mode))
@@ -726,8 +688,7 @@ Cape integration with yansnippets
 #+begin_src elisp
   (use-package diff-hl
     :hook ((dired-mode         . diff-hl-dired-mode-unless-remote)
-           (magit-post-refresh . diff-hl-magit-post-refresh))
-    :init (global-diff-hl-mode))
+           (magit-post-refresh . diff-hl-magit-post-refresh)))
 #+end_src
 ** Help!
 *** Helpful
@@ -765,9 +726,7 @@ Cape integration with yansnippets
 #+end_src
 *** Rainbow Mode
 #+begin_src elisp
-  (use-package rainbow-mode
-    :config (setq rainbow-x-colors nil)
-    :hook (prog-mode . rainbow-mode))
+  (use-package rainbow-mode :config (setq rainbow-x-colors nil))
 #+end_src
 
 * Darwin fixes
