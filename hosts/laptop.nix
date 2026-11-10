@@ -18,7 +18,6 @@ with mod; {
     programs.niri
     programs.waybar
     programs.yazi
-    programs.ratune
 
     games.steam
 

@@ -6,12 +6,10 @@ with mod; {
   modules = [
     programs.discord
     programs.emacs
-    programs.ewm
     programs.nixvim
     programs.git
     programs.kitty
     programs.niri
-    programs.ratune
     programs.obs
     programs.waybar
     programs.yazi
@@ -307,4 +305,3 @@ with mod; {
 #     }
 #   '';
 # }
-
