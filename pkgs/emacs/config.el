@@ -539,23 +539,6 @@
   (add-to-list 'completion-at-point-functions #'cape-tex) ;; Complete Unicode char from TeX command, e.g. \hbar
   )
 
-(use-package vertico
-  :init
-  (vertico-mode))
-
-(use-package marginalia
-  :after vertico
-  :init
-  (marginalia-mode))
-
-;; more nerd icon support
-(use-package nerd-icons-completion
-  :after marginalia
-  :config
-  (nerd-icons-completion-mode)
-  :hook
-  ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
-
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
@@ -563,11 +546,6 @@
   (completion-category-defaults nil) ;; Disable defaults, use our settings
   (completion-pcm-leading-wildcard t) ;; Emacs 31: partial-completion behaves like substring
   )
-
-(use-package embark)
-(use-package embark-consult
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package yasnippet
   :config

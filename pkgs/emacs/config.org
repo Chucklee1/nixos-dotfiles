@@ -667,7 +667,7 @@ since it is /"Search and navigate via completing-read Topics"/
 #+end_src
 ** Vertico and Marginalia
 /"VERTical Interactive COmpletion"/ and /"Marginalia in the minibuffer"/
-#+begin_src elisp
+#+begin_src elisp :tangle no
   (use-package vertico
     :init
     (vertico-mode))
@@ -695,14 +695,6 @@ since it is /"Search and navigate via completing-read Topics"/
     (completion-category-defaults nil) ;; Disable defaults, use our settings
     (completion-pcm-leading-wildcard t) ;; Emacs 31: partial-completion behaves like substring
     )
-#+end_src
-** Embark
-Right click menu for Emacs
-#+begin_src elisp
-    (use-package embark)
-    (use-package embark-consult
-      :hook
-      (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 ** Yasnippet
 #+begin_src elisp
