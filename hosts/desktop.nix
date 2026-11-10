@@ -257,6 +257,10 @@ with mod; {
 
       # symlink setup on login
       home-manager.users.${user} = {
+        # slow transition from lazygit and yazi to full emacs...
+        programs.fish.shellAliases = {
+          gg = "emacsclient -nw --eval '(magit)'";
+        };
         programs.fish.loginShellInit = ''
           sln $HOME/Repos/nixos-dotfiles $HOME/
           sln $HOME/Repos/nixos-dotfiles/pkgs/emacs/config.el $HOME/.emacs.d/init.el
