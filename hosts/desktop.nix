@@ -23,7 +23,6 @@ with mod; {
     games.prismLauncher
     games.steam
 
-    hardware.cachyos-kernel
     hardware.uinput
 
     software.dev
@@ -201,13 +200,11 @@ with mod; {
             ".config/listenbrainz-mpd"
             ".config/mo2-lint"
             ".config/nicotine"
-            ".config/Mod Organizer Team"
-            ".config/sunshine"
+            ".config/obs-studio"
             ".config/zen"
             ".local/share/direnv"
             ".local/share/fluorine"
             ".local/share/mo2-lint"
-            ".local/share/mpd"
             ".local/share/nicotine"
             ".local/state/syncthing"
             ".local/share/Terraria"
