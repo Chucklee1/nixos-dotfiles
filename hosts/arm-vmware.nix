@@ -10,7 +10,6 @@ with mod; {
   modules = [
     services.syncthing
     services.tailscale
-    services.net-essentials
 
     programs.zen-browser
     programs.emacs
@@ -30,7 +29,7 @@ with mod; {
     system.users
     system.network
     system.pkgconfig
-    system.sys-specs
+    system.core
 
     services.graphical
     services.ext4

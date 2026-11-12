@@ -8,7 +8,6 @@ with mod; {
     services.tailscale
     services.the-server
     services.mc-server
-    services.net-essentials
 
     programs.nixvim
     programs.git
@@ -23,7 +22,7 @@ with mod; {
     system.network
     system.pkgconfig
     system.sops
-    system.sys-specs
+    system.core
 
     services.ext4
 

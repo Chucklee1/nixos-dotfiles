@@ -38,11 +38,10 @@ with mod; {
     system.network
     system.pkgconfig
     system.sops
-    system.sys-specs
+    system.core
     system.users
 
     services.graphical
-    services.net-essentials
     services.syncthing
     services.tailscale
     services.midi

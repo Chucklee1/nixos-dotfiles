@@ -30,13 +30,12 @@ with mod; {
     system.impermanence
     system.network
     system.pkgconfig
-    system.sys-specs
+    system.core
     system.sops
     system.users
 
     services.graphical
     services.midi
-    services.net-essentials
     services.power
     services.syncthing
     services.tailscale

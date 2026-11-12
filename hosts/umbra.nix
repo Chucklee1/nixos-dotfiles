@@ -10,7 +10,7 @@ with mod; {
   modules = [
     system.home
     system.pkgconfig
-    system.sys-specs
+    system.core
     system.users
 
     shell.fish
