@@ -80,26 +80,25 @@ with mod; {
       btrfs = path: uuid: options: mkfs' "btrfs" path "/dev/disk/by-uuid/${uuid}" options;
       ext4 = path: uuid: options: mkfs' "ext4" path "/dev/disk/by-uuid/${uuid}" options;
       vfat = path: uuid: options: mkfs' "vfat" path "/dev/disk/by-uuid/${uuid}" options;
-      nfs = path: device: options: mkfs' "nfs" path device options;
     };
   in [
-    (mkfs.vfat "/boot/efi" EFI ["fmask=0022" "dmask=0022"])
+    (mkfs.vfat "/boot/efi" EFI ["fmask=0077" "dmask=0077"])
     (mkfs.btrfs "/boot" WD ["subvol=WD/nixos/boot" "noatime"])
-    (mkfs.btrfs "/persist" WD ["subvol=WD/nixos/persist" "noatime" "compress=zstd"])
-    (mkfs.btrfs "/nix" WD ["subvol=WD/nix" "noatime" "compress=zstd"])
+    (mkfs.btrfs "/persist" WD ["subvol=WD/nixos/persist" "noatime" "compress=zstd:1"])
+    (mkfs.btrfs "/nix" WD ["subvol=WD/nix" "noatime" "compress=zstd:1"])
 
-    (mkfs.btrfs "/" WD ["subvol=WD/nixos/root" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/" WD ["subvol=WD/nixos/root" "noatime" "compress=zstd:1"])
 
     (mkfs.btrfs "/opt" EVO ["subvol=EVO/opt" "noatime"])
     (mkfs.btrfs "/opt/Games" EVO ["subvol=EVO/Games" "noatime"])
     (mkfs.btrfs "/opt/Steam" EVO ["subvol=EVO/Steam" "noatime"])
 
-    (mkfs.btrfs "/srv" EVO ["subvol=EVO/srv" "relatime" "compress=zstd"])
+    (mkfs.btrfs "/srv" EVO ["subvol=EVO/srv" "noatime" "compress=zstd:1"])
 
-    (mkfs.btrfs "/.snapshots/WD" WD ["subvol=WD/.snapshots" "noatime" "compress=zstd"])
+    (mkfs.btrfs "/.snapshots/WD" WD ["subvol=WD/.snapshots" "noatime" "compress=zstd:1"])
     (mkfs.btrfs "/.snapshots/EVO" EVO ["subvol=EVO/.snapshots" "noatime" "compress=zstd"])
 
-    (mkfs.ext4 "/srv/media" SEGATE null)
+    (mkfs.ext4 "/srv/media" SEGATE ["noatime" "nofail"])
 
     ({
       lib,
