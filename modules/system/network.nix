@@ -13,8 +13,6 @@
       };
       networking.firewall.enable = true;
     })
-    # ntp timezone sync
-    {services.ntp.enable = true;}
     # ssh
     {
       services.openssh = {
