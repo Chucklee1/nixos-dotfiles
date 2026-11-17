@@ -22,7 +22,6 @@ with mod; {
     software.dev
     software.qol
     software.texlive
-    software.rust
 
     system.boot
     system.home

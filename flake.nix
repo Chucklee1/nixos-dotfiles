@@ -3,7 +3,7 @@
   inputs = {
     # ---- main pkg providers ----
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-newer.url = "github:NixOS/nixpkgs?rev=3ec636362e1816bc2f0888fa0fa2c69f1bc9e504";
+    nixpkgs-newer.url = "github:NixOS/nixpkgs?rev=c27cdad491a991b11ed731760aa2ef8db0cb0410";
     # for tailscale
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     home-manager.url = "github:nix-community/home-manager";
@@ -31,10 +31,6 @@
     minecraft-plymouth-theme.inputs.nixpkgs.follows = "nixpkgs";
     minesddm.url = "github:Chucklee1/sddm-theme-minesddm";
 
-    # ---- lang support ----
-    fenix.url = "github:nix-community/fenix";
-    fenix.inputs.nixpkgs.follows = "nixpkgs";
-
     # ---- editors ----
     nixvim.url = "github:nix-community/nixvim";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
@@ -45,7 +41,8 @@
     dwm.url = "github:Chucklee1/dwm";
     dwm.flake = false;
     niri.url = "github:epireyn/niri-flake";
-    ewm.url = "https://codeberg.org/ezemtsov/ewm/archive/master.tar.gz";
+    # ewm.url = "https://codeberg.org/ezemtsov/ewm/archive/master.tar.gz";
+    ewm.url = "git+file:///home/goat/Repos/ewm";
 
     # ---- Apps ----
     hytale-launcher.url = "github:visoredkon/hytale-launcher-flake";

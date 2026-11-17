@@ -22,7 +22,6 @@ with mod; {
     software.qol
     software.texlive
     software.java
-    software.rust
 
     games.prismLauncher
     services.syncthing

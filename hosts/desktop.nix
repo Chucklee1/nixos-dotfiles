@@ -28,7 +28,6 @@ with mod; {
     software.dev
     software.qol
     software.java
-    software.rust
     software.texlive
 
     system.boot
