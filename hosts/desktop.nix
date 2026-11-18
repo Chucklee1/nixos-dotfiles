@@ -26,7 +26,6 @@ with mod; {
     hardware.uinput
 
     software.dev
-    software.qol
     software.java
     software.texlive
 

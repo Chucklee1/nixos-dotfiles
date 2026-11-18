@@ -19,7 +19,6 @@ with mod; {
     programs.zen-browser
 
     software.dev
-    software.qol
     software.texlive
     software.java
 

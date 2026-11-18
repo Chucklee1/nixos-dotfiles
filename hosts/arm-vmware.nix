@@ -20,7 +20,6 @@ with mod; {
     programs.waybar
 
     software.dev
-    software.qol
     software.texlive
 
     system.boot

@@ -14,7 +14,6 @@ with mod; {
     programs.yazi
 
     software.dev
-    software.qol
 
     system.boot
     system.home

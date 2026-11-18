@@ -73,7 +73,13 @@
         btop.enable = true;
         direnv.enable = true;
         fzf.enable = true;
+
+        eza.enable = true;
         zathura.enable = true;
+        zoxide = {
+          enable = true;
+          options = ["--cmd cd"];
+        };
       };
       xdg.mimeApps.defaultApplications."application/pdf" = "org.pwmt.zathura.desktop";
     }

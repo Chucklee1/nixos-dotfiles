@@ -16,7 +16,6 @@ with mod; {
     programs.zen-browser
 
     shell.fish
-    software.qol
 
     system.pkgconfig
 

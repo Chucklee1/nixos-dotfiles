@@ -22,7 +22,6 @@ with mod; {
     games.steam
 
     software.dev
-    software.qol
     software.texlive
 
     system.boot
