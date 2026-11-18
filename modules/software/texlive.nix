@@ -8,8 +8,8 @@
               # for fonts like mathscr
               mathalpha
             ]))
-        # can be used in org/latex docs
-        pkgs.gnuplot
+        pkgs.gnuplot # can be used in org/latex docs
+        pkgs.lilypond # latex but sheet music
       ];
     })
   ];
