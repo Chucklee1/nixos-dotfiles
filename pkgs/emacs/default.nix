@@ -3,6 +3,8 @@
   emacsPackage ? null,
   ewmPackage ? null,
   tree-sitter-grammars,
+  lilypond-with-fonts,
+  gnuplot,
   ...
 }:
 emacsWithPackagesFromUsePackage {
@@ -19,6 +21,8 @@ emacsWithPackagesFromUsePackage {
     [
       epkgs.treesit-grammars.with-all-grammars
       tree-sitter-grammars.tree-sitter-kdl
+      lilypond-with-fonts
+      gnuplot
     ]
     ++ (
       if (ewmPackage != null)
