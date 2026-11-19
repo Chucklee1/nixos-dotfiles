@@ -59,6 +59,13 @@ with mod; {
 
       hardware.cpu.intel.updateMicrocode = true;
       hardware.enableRedistributableFirmware = true;
+
+      # zram, my system only has 11.2GB...
+      zramSwap = {
+        enable = true;
+        memoryPercent = 50;
+        algorithm = "zstd";
+      };
     }
     # gpu related
     ({pkgs, ...}: {
