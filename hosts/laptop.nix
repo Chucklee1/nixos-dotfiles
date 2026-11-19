@@ -61,19 +61,9 @@ with mod; {
       hardware.enableRedistributableFirmware = true;
     }
     # gpu related
-    ({
-      lib,
-      pkgs,
-      ...
-    }: {
+    ({pkgs, ...}: {
       environment.systemPackages = [pkgs.moonlight-qt];
-      services.xserver.videoDrivers = ["modesetting"];
-      hardware.graphics.extraPackages = lib.mkAfter [
-        pkgs.intel-media-driver
-      ];
-      environment.sessionVariables = {
-        LIBVA_DRIVER_NAME = "iHD";
-      };
+      hardware.graphics.extraPackages = [pkgs.intel-media-driver];
     })
     # impermenance setup
     {
