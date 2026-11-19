@@ -151,15 +151,13 @@
       "locked": {
         "lastModified": 1794419138,
         "narHash": "sha256-KjQbnWTenfn0OxNrFGydkNAm+ISxkA6jXqEuTIDDtwk=",
-        "ref": "refs/heads/master",
         "rev": "57394a20ed40ca1767880baa2bfd4aac53934e76",
-        "revCount": 1257,
-        "type": "git",
-        "url": "file:///home/goat/Repos/ewm"
+        "type": "tarball",
+        "url": "https://codeberg.org/api/v1/repos/ezemtsov/ewm/archive/57394a20ed40ca1767880baa2bfd4aac53934e76.tar.gz"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/goat/Repos/ewm"
+        "type": "tarball",
+        "url": "https://codeberg.org/ezemtsov/ewm/archive/master.tar.gz"
       }
     },
     "firefox-gnome-theme": {
