@@ -112,6 +112,8 @@
   (savehist-mode) ;; Enables save history mode
   (make-backup-files nil) ;; Stop creating ~ backup files
   (auto-save-default nil) ;; Stop creating # auto save files
+  (select-enable-clipboard t) ;; Enable tui clipboard
+
 
   :hook
   (before-save   . delete-trailing-whitespace)
@@ -312,6 +314,11 @@
 (use-package jarchive
   :after eglot
   :config (jarchive-setup))
+
+(when (locate-library "lilypond-init")
+  (load "lilypond-init")
+  ;; hotfix for broken init-file references in lilypond-init.el
+  (defalias 'LilyPond-mode #'lilypond-mode))
 
 (use-package doom-themes
   :custom

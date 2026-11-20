@@ -376,6 +376,15 @@ jar archive support
   :after eglot
   :config (jarchive-setup))
   #+end_src
+** Lilypond
+Comes shipped with it's own mode, this just checks
+if the init file exist then loads it
+#+begin_src elisp
+  (when (locate-library "lilypond-init")
+    (load "lilypond-init")
+    ;; hotfix for broken init-file references in lilypond-init.el
+    (defalias 'LilyPond-mode #'lilypond-mode))
+#+end_src
 
 * Appearance
 ** Theme
