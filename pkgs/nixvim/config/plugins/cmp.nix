@@ -19,27 +19,12 @@
           })
         '';
       };
-      window = {
-        completion.__raw = ''cmp.config.window.bordered()'';
-        documentation.__raw = ''cmp.config.window.bordered()'';
-      };
       sources = [
         {name = "async-path";}
-        {name = "buffer";}
-        {name = "dictionary";}
         {name = "emoji";}
-        {name = "luasnip";}
-        {name = "latex-symbols";}
         {name = "nvim_lsp";}
-        {name = "spell";}
         {name = "treesitter";}
-        {name = "vimtex";}
       ];
     };
-
-    # snippets
-    luasnip.enable = true;
-    nvim-snippets.enable = true;
-    friendly-snippets.enable = true;
   };
 }

@@ -2,17 +2,10 @@
   # ---- LSP ----
   plugins.lsp.enable = true;
   lsp.servers = {
-    # all profiles
-    bashls.enable = true;
-    lua_ls.enable = true;
     marksman.enable = true;
     nixd.enable = true;
-    # full profile only
-    asm_lsp.enable = true; # GAS/GO assembly
     clangd.enable = true;
-    html.enable = true;
     jdtls.enable = true; # java
-    qmlls.enable = true;
   };
 
   # ---- LANG QOL ----
